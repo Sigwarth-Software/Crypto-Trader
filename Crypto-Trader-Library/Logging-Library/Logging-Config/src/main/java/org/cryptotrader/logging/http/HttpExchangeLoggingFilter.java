@@ -1,5 +1,7 @@
 package org.cryptotrader.logging.http;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
@@ -27,6 +29,7 @@ import java.util.Objects;
  */
 @Slf4j
 public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
+    private static final ObjectMapper JSON_PRETTY_PRINTER = new ObjectMapper();
 
     private final boolean includeQueryString;
     private final boolean includeRequestPayload;
@@ -165,15 +168,21 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
             appendHeaders(sb, "Response-Headers", response);
         }
 
-        if (includeRequestPayload) {
-            String payload = getBody(req.getContentAsByteArray(), req.getCharacterEncoding(), maxRequestPayloadLength);
+        if (this.includeRequestPayload) {
+            String payload = this.formatPayloadForLog(
+                    getBody(req.getContentAsByteArray(), req.getCharacterEncoding(), this.maxRequestPayloadLength),
+                    req.getContentType()
+            );
             if (StringUtils.hasText(payload)) {
                 sb.append('\n').append(color("Request-Payload:", AnsiColor.BRIGHT_BLACK)).append(' ')
                   .append(color(payload, AnsiColor.WHITE));
             }
         }
-        if (includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
-            String payload = getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), maxResponsePayloadLength);
+        if (this.includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
+            String payload = this.formatPayloadForLog(
+                    getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), this.maxResponsePayloadLength),
+                    response.getContentType()
+            );
             if (StringUtils.hasText(payload)) {
                 sb.append('\n').append(color("Response-Payload:", AnsiColor.BRIGHT_BLACK)).append(' ')
                   .append(color(payload, AnsiColor.WHITE));
@@ -235,6 +244,37 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
             body += "…";
         }
         return body;
+    }
+
+    private String formatPayloadForLog(String payload, @Nullable String contentType) {
+        if (!StringUtils.hasText(payload)) {
+            return payload;
+        }
+
+        if (!this.isJsonContentType(contentType)) {
+            return payload;
+        }
+
+        try {
+            JsonNode tree = JSON_PRETTY_PRINTER.readTree(payload);
+            return JSON_PRETTY_PRINTER.writerWithDefaultPrettyPrinter().writeValueAsString(tree);
+        } catch (Exception ignored) {
+            return payload;
+        }
+    }
+
+    private boolean isJsonContentType(@Nullable String contentType) {
+        if (!StringUtils.hasText(contentType)) {
+            return false;
+        }
+
+        try {
+            MediaType mediaType = MediaType.parseMediaType(contentType);
+            String subtype = mediaType.getSubtype().toLowerCase();
+            return "json".equals(subtype) || subtype.endsWith("+json");
+        } catch (IllegalArgumentException ignored) {
+            return contentType.toLowerCase().contains("json");
+        }
     }
 
     private AnsiColor statusColor(int status) {
