@@ -22,6 +22,7 @@ open module org.cryptotrader.data.library.services {
     requires jakarta.persistence;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.data.library.communication;
+    requires org.cryptotrader.universal.library.communication;
     requires org.cryptotrader.data.library.repositories;
     requires spring.data.commons;
     requires org.cryptotrader.data.library.components;
