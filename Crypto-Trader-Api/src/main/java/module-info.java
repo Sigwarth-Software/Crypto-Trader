@@ -48,7 +48,6 @@ open module org.cryptotrader.api {
 
     requires org.hibernate.orm.core;
 
-
     requires static lombok;
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
