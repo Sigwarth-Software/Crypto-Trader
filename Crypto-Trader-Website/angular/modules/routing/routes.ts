@@ -154,6 +154,17 @@ export const statisticsRoute: Route = {
         },
     },
 };
+
+export const simulatorRoute: Route = {
+    path: 'simulator',
+    component: SimulatorComponent,
+    data: {
+        meta: {
+            title: 'Simulator | Crypto Trader',
+        },
+    },
+}
+
 export const routes: Routes = [
     accountRoute,
     authorizeRoute,
