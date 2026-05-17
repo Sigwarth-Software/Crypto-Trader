@@ -19,7 +19,7 @@ spring:
       region:
         static: us-east-1
     function:
-      definition: simulatorConsumer
+      definition: simulatorConsumer;detailedSimulatorConsumer
     stream:
       kafka:
         binder:
@@ -29,9 +29,12 @@ spring:
             batch.size: 65536
             compression.type: lz4
             acks: 1
+            max.request.size: 52428800
           consumer-properties:
             fetch.min.bytes: 1024
             fetch.max.wait.ms: 500
+            fetch.max.bytes: 52428800
+            max.partition.fetch.bytes: 52428800
         bindings:
           simulatorConsumer-in-0:
             consumer:
@@ -48,4 +51,11 @@ spring:
           contentType: application/json
         portfolioSimulationResponses-out-0:
           destination: ct.simulator.responses
+          contentType: application/json
+        detailedSimulatorConsumer-in-0:
+          destination: ct.simulator.detailed.requests
+          group: crypto-trader-simulator-detailed-group
+          contentType: application/json
+        detailedPortfolioSimulationResponses-out-0:
+          destination: ct.simulator.detailed.responses
           contentType: application/json
