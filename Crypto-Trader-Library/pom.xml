@@ -65,9 +65,9 @@
         <module>Console-Library/Console-Infrastructure</module>
         <module>Console-Library/Console-Repositories</module>
         <module>Console-Library/Console-Scripts</module>
-        <module>Agent-Library</module>
         <module>Chat-Library</module>
         <module>Chat-Library/Chat-Config</module>
+        <module>Agent-Library</module>
         <module>Agent-Library/Agent-Config</module>
         <module>Agent-Library/Agent-Communication</module>
         <module>Agent-Library/Agent-Components</module>
