@@ -5,11 +5,11 @@ import org.cryptotrader.api.library.communication.response.AssetValueResponse
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse
 import org.cryptotrader.api.library.communication.response.PerformanceRatingResponse
-import org.cryptotrader.api.library.communication.response.TimeValueResponse
 import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.data.library.model.currency.PerformanceRating
 import org.cryptotrader.data.library.services.CurrencyService
 import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.universal.library.communication.response.TimeValueResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
