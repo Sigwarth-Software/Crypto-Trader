@@ -12,6 +12,7 @@ open module org.cryptotrader.logging.library.config {
     requires ch.qos.logback.core;
     requires static lombok;
     requires org.slf4j;
+    requires com.fasterxml.jackson.databind;
 
     exports org.cryptotrader.logging.config;
     exports org.cryptotrader.logging.http;
