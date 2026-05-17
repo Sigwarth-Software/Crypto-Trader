@@ -50,6 +50,7 @@
         <module>Data-Library/Data-Communication</module>
         <module>Data-Library/Data-Components</module>
         <module>Universal-Library</module>
+        <module>Universal-Library/Universal-Communication</module>
         <module>Universal-Library/Universal-Config</module>
         <module>Universal-Library/Universal-Models</module>
         <module>Universal-Library/Universal-Extensions</module>
