@@ -6,12 +6,12 @@ import {
     OnInit,
     SimpleChanges,
     ViewChild,
-} from '@angular/core';
+} from '@angular/core'
 
-import { ElementLink, SsAnchorComponent } from '@theoliverlear/angular-suite';
-import { ImageAsset } from '@assets/imageAssets';
+import { ElementLink, SsAnchorComponent } from '@theoliverlear/angular-suite'
+import { ImageAsset } from '@assets/imageAssets'
 
-import { NavBarItemOption } from './models/NavBarItemOption';
+import { NavBarItemOption } from './models/NavBarItemOption'
 
 /** A nav bar item that can be clicked to navigate to a different page.
  *
@@ -23,10 +23,10 @@ import { NavBarItemOption } from './models/NavBarItemOption';
     styleUrls: ['./nav-bar-item.component.scss'],
 })
 export class NavBarItemComponent implements OnInit, OnChanges {
-    protected elementLink: ElementLink;
-    protected imageAsset: ImageAsset;
-    @Input() public navBarItemOption: NavBarItemOption;
-    @ViewChild(SsAnchorComponent) protected anchorComponent: SsAnchorComponent | undefined;
+    protected elementLink: ElementLink
+    protected imageAsset: ImageAsset
+    @Input() public navBarItemOption: NavBarItemOption
+    @ViewChild(SsAnchorComponent) protected anchorComponent: SsAnchorComponent | undefined
     constructor() {}
 
     /** WIP
@@ -44,8 +44,8 @@ export class NavBarItemComponent implements OnInit, OnChanges {
      */
     public ngOnChanges(changes: SimpleChanges): void {
         if ('navBarItemOption' in changes) {
-            this.elementLink = NavBarItemOption.getElementLink(this.navBarItemOption);
-            this.imageAsset = NavBarItemOption.getImageAsset(this.navBarItemOption);
+            this.elementLink = NavBarItemOption.getElementLink(this.navBarItemOption)
+            this.imageAsset = NavBarItemOption.getImageAsset(this.navBarItemOption)
         }
     }
 
@@ -54,6 +54,6 @@ export class NavBarItemComponent implements OnInit, OnChanges {
      */
     @HostListener('click')
     public onClick(): void {
-        this.anchorComponent?.onClick();
+        this.anchorComponent?.onClick()
     }
 }
