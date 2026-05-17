@@ -59,8 +59,9 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
     }
 
     override fun findAll(): List<Entity> {
-        log.info("Finding all {} entities.", this.getEntityName())
-        return this.repository.findAll()
+        val entities: List<Entity> = this.repository.findAll()
+        log.info("Finding all ({}) {} entities.", entities.size, this.getEntityName())
+        return entities
     }
 
     override fun exists(entity: Entity): Boolean {
