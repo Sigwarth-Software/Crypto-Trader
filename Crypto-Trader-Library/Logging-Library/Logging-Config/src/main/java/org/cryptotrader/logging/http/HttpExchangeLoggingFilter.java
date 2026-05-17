@@ -71,26 +71,28 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         Exception ex = null;
         try {
             filterChain.doFilter(req, res);
-        } catch (Exception e) {
-            ex = e;
-            throw e;
+        } catch (Exception exception) {
+            ex = exception;
+            throw exception;
         } finally {
             long tookMs = System.currentTimeMillis() - start;
             try {
-                logExchange(req, res, tookMs, ex);
+                this.logExchange(req, res, tookMs, ex);
             } catch (Exception loggingEx) {
                 log.warn("Failed to log HTTP exchange", loggingEx);
             }
-            // Important: copy cached body back to response
+            // Copy cached body back to response
             try {
                 res.copyBodyToResponse();
-            } catch (IOException ignore) {
+            } catch (IOException _) {
                 // ignore
             }
         }
     }
 
-    private void interceptStreamingLog(HttpServletResponse response, FilterChain filterChain, ContentCachingRequestWrapper req) throws IOException, ServletException {
+    private void interceptStreamingLog(HttpServletResponse response,
+                                       FilterChain filterChain,
+                                       ContentCachingRequestWrapper req) throws IOException, ServletException {
         long start = System.currentTimeMillis();
         Exception exception = null;
         try {
@@ -132,7 +134,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         sb.append(color(method, AnsiColor.BLUE, AnsiStyle.BOLD)).append(' ');
         // Path
         sb.append(color(uri, AnsiColor.WHITE));
-        if (includeQueryString && StringUtils.hasText(query)) {
+        if (this.includeQueryString && StringUtils.hasText(query)) {
             sb.append(color("?" + query, AnsiColor.BRIGHT_BLACK));
         }
         // Protocol
@@ -162,7 +164,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         // Scheme
         sb.append(' ').append(color("over " + scheme, AnsiColor.BRIGHT_BLACK));
 
-        if (includeHeaders) {
+        if (this.includeHeaders) {
             sb.append('\n');
             appendHeaders(sb, "Request-Headers", req);
             appendHeaders(sb, "Response-Headers", response);
@@ -203,14 +205,14 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         for (Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
             String name = names.nextElement();
             List<String> values = java.util.Collections.list(req.getHeaders(name));
-            sb.append("  ").append(color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.join(", ", values), AnsiColor.WHITE)).append('\n');
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(String.join(", ", values), AnsiColor.WHITE)).append('\n');
         }
     }
 
     private void appendHeaders(StringBuilder sb, String title, HttpServletResponse res) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
         for (String name : res.getHeaderNames()) {
-            sb.append("  ").append(color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.join(", ", res.getHeaders(name)), AnsiColor.WHITE)).append('\n');
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(String.join(", ", res.getHeaders(name)), AnsiColor.WHITE)).append('\n');
         }
     }
 
@@ -291,11 +293,11 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     }
 
     private String color(String text, AnsiColor color) {
-        return color(text, color, null);
+        return this.color(text, color, null);
     }
 
     private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
-        if (!colorEnabled) return text;
+        if (!this.colorEnabled) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);
         }
