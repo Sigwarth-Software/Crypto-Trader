@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse;
-import org.cryptotrader.api.library.communication.response.TimeValueResponse;
+import org.cryptotrader.universal.library.communication.response.TimeValueResponse;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.CurrencyHistory;
 import org.cryptotrader.data.library.entity.currency.UniqueCurrency;
