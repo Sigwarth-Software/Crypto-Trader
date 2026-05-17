@@ -44,7 +44,7 @@ spring:
         enabled: false
       sanitizing:
         enabled: false
-      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer
+      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer;detailedPortfolioSimulationResponsesConsumer
     stream:
       defaultBinder: kafka
       bindings:
@@ -65,9 +65,18 @@ spring:
           destination: ct.simulator.requests
           contentType: application/json
 
+        detailedPortfolioSimulationRequests-out-0:
+          destination: ct.simulator.detailed.requests
+          contentType: application/json
+
         portfolioSimulationResponsesConsumer-in-0:
           destination: ct.simulator.responses
           group: crypto-trader-api-simulator-responses
+          contentType: application/json
+
+        detailedPortfolioSimulationResponsesConsumer-in-0:
+          destination: ct.simulator.detailed.responses
+          group: crypto-trader-api-detailed-simulator-responses
           contentType: application/json
 
         contactCreated-in-0:
@@ -89,14 +98,24 @@ spring:
             batch.size: 65536
             compression.type: lz4
             acks: 1
+            max.request.size: 52428800
           consumer-properties:
             fetch.min.bytes: 1024
             fetch.max.wait.ms: 500
+            fetch.max.bytes: 52428800
+            max.partition.fetch.bytes: 52428800
         bindings:
           portfolioSimulationResponsesConsumer-in-0:
             consumer:
               configuration:
                 group.instance.id: api-simulator-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          detailedPortfolioSimulationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-detailed-simulator-responder-01
                 session.timeout.ms: 30000
                 heartbeat.interval.ms: 10000
                 max.poll.interval.ms: 900000
