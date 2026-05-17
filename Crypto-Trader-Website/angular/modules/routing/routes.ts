@@ -1,24 +1,27 @@
-import { type Route, type Routes } from '@angular/router';
+import { type Route, type Routes } from '@angular/router'
 
-import { AccountComponent } from '@components/pages/account/account.component';
-import { AuthorizeComponent } from '@components/pages/authorize/authorize.component';
-import { ChatComponent } from '@components/pages/chat/chat.component';
-import { ConsoleComponent } from '@components/pages/console/console.component';
-import { CurrenciesComponent } from '@components/pages/currencies/currencies.component';
-import { DashboardComponent } from '@components/pages/dashboard/dashboard.component';
-import { HomeComponent } from '@components/pages/home/home.component';
-import { ModulesComponent } from '@components/pages/modules/modules.component';
-import { PortfolioComponent } from '@components/pages/portfolio/portfolio.component';
-import { StatisticsComponent } from '@components/pages/statistics/statistics.component';
-import { TermsOfServiceComponent } from '@components/pages/terms-of-service/terms-of-service.component';
-import { TradeComponent } from '@components/pages/trade/trade.component';
-import { TraderComponent } from '@components/pages/trader/trader.component';
-import { environment } from '@environments/environment';
-import { AccountGuard } from '@guards/account.guard';
-import { AuthGuard } from '@guards/auth.guard';
-import { DashboardGuard } from '@guards/dashboard.guard';
+import { AccountComponent } from '@components/pages/account/account.component'
+import { AuthorizeComponent } from '@components/pages/authorize/authorize.component'
+import { ChatComponent } from '@components/pages/chat/chat.component'
+import { ConsoleComponent } from '@components/pages/console/console.component'
+import { CurrenciesComponent } from '@components/pages/currencies/currencies.component'
+import { DashboardComponent } from '@components/pages/dashboard/dashboard.component'
+import { HomeComponent } from '@components/pages/home/home.component'
+import { ModulesComponent } from '@components/pages/modules/modules.component'
+import { PortfolioComponent } from '@components/pages/portfolio/portfolio.component'
+import { StatisticsComponent } from '@components/pages/statistics/statistics.component'
+import { TermsOfServiceComponent } from '@components/pages/terms-of-service/terms-of-service.component'
+import { TradeComponent } from '@components/pages/trade/trade.component'
+import { TraderComponent } from '@components/pages/trader/trader.component'
+import { environment } from '@environments/environment'
+import { AccountGuard } from '@guards/account.guard'
+import { AuthGuard } from '@guards/auth.guard'
+import { DashboardGuard } from '@guards/dashboard.guard'
+import {
+    SimulatorComponent
+} from '@components/pages/simulator/simulator.component'
 
-const isDevelopment: boolean = environment.environmentName === 'development';
+const isDevelopment: boolean = environment.environmentName === 'development'
 
 export const accountRoute: Route = {
     path: 'account',
@@ -30,7 +33,7 @@ export const accountRoute: Route = {
             title: 'Account | Crypto Trader',
         },
     },
-};
+}
 export const authorizeRoute: Route = {
     path: 'authorize',
     component: AuthorizeComponent,
@@ -40,19 +43,20 @@ export const authorizeRoute: Route = {
             title: 'Authorize | Crypto Trader',
         },
     },
-};
+}
 export const homeRoute: Route = {
     path: '',
     component: HomeComponent,
     pathMatch: 'full',
-    canActivate: isDevelopment ? [] : [DashboardGuard],
+    // canActivate: isDevelopment ? [] : [DashboardGuard],
+    canActivate: [DashboardGuard],
     data: {
         meta: {
             title: 'Crypto Trader',
             // showNavBar: false,
         },
     },
-};
+}
 export const modulesRoute: Route = {
     path: 'modules',
     component: ModulesComponent,
@@ -61,7 +65,7 @@ export const modulesRoute: Route = {
             title: 'Modules | Crypto Trader',
         },
     },
-};
+}
 export const portfolioRoute: Route = {
     path: 'portfolio',
     component: PortfolioComponent,
@@ -71,7 +75,7 @@ export const portfolioRoute: Route = {
             title: 'Portfolio | Crypto Trader',
         },
     },
-};
+}
 export const termsOfServiceRoute: Route = {
     path: 'terms',
     component: TermsOfServiceComponent,
@@ -80,7 +84,7 @@ export const termsOfServiceRoute: Route = {
             title: 'Terms of Service | Crypto Trader',
         },
     },
-};
+}
 export const traderRoute: Route = {
     path: 'trader',
     component: TraderComponent,
@@ -90,7 +94,7 @@ export const traderRoute: Route = {
             title: 'Trader | Crypto Trader',
         },
     },
-};
+}
 
 export const currenciesRoute: Route = {
     path: 'currencies',
@@ -100,7 +104,7 @@ export const currenciesRoute: Route = {
             title: 'Currencies | Crypto Trader',
         },
     },
-};
+}
 
 export const chatRoute: Route = {
     path: 'chat',
@@ -111,7 +115,7 @@ export const chatRoute: Route = {
             title: 'Chat | Crypto Trader',
         },
     },
-};
+}
 export const consoleRoute: Route = {
     path: 'console',
     component: ConsoleComponent,
@@ -121,7 +125,7 @@ export const consoleRoute: Route = {
             title: 'Console | Crypto Trader',
         },
     },
-};
+}
 export const tradeRoute: Route = {
     path: 'trade',
     component: TradeComponent,
@@ -131,7 +135,7 @@ export const tradeRoute: Route = {
             title: 'Trade | Crypto Trader',
         },
     },
-};
+}
 
 export const dashboardRoute: Route = {
     path: 'dashboard',
@@ -142,7 +146,7 @@ export const dashboardRoute: Route = {
             title: 'Dashboard | Crypto Trader',
         },
     },
-};
+}
 
 export const statisticsRoute: Route = {
     path: 'statistics',
@@ -153,7 +157,7 @@ export const statisticsRoute: Route = {
             title: 'Statistics | Crypto Trader',
         },
     },
-};
+}
 
 export const simulatorRoute: Route = {
     path: 'simulator',
@@ -179,4 +183,5 @@ export const routes: Routes = [
     tradeRoute,
     dashboardRoute,
     statisticsRoute,
-];
+    simulatorRoute,
+]
