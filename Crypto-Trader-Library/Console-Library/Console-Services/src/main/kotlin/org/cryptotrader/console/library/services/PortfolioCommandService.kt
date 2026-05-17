@@ -42,7 +42,7 @@ open class PortfolioCommandService @Autowired constructor(
 
     @CommandHelp(
         command = "portfolio show",
-        description = "Show the authenticated user's portfolio"
+        description = "Show the user's portfolio"
     )
     private fun executeShowCommand(): ConsoleCommandResponse {
         val currentUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?:
