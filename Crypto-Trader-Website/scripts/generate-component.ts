@@ -71,7 +71,11 @@ if (fs.existsSync(targetDir) && fs.readdirSync(targetDir).length > 0) {
     }
 
     // HTML content
-    const htmlContent = `<!-- ${htmlFileName} -->\n`;
+    const htmlContent = `<!-- ${htmlFileName} -->
+<ng-container>
+
+
+</ng-container>`;
 
     // TypeScript content
     const tsContent = `// ${tsFileName}
