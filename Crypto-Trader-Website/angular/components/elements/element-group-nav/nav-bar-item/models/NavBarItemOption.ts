@@ -14,7 +14,8 @@ import {
     stockScaleIcon,
     walletIcon,
     type ImageAsset,
-} from '@assets/imageAssets';
+    whitePotionIcon,
+} from '@assets/imageAssets'
 
 /** The options for a navigation bar item.
  *
@@ -36,6 +37,7 @@ export namespace NavBarItemOption {
     export function getImageAsset(option: NavBarItemOption): ImageAsset {
         switch (option) {
             case NavBarItemOption.Currencies:
+                return coinIcon
             case NavBarItemOption.Portfolio:
                 return walletIcon
             case NavBarItemOption.Trader:
@@ -47,6 +49,7 @@ export namespace NavBarItemOption {
             case NavBarItemOption.Simulator:
                 return whitePotionIcon
             default:
+                throw new Error(`Invalid option: ${option}`)
         }
     }
 
@@ -57,6 +60,12 @@ export namespace NavBarItemOption {
      */
     export function getElementLink(option: NavBarItemOption): ElementLink {
         switch (option) {
+            case NavBarItemOption.Currencies:
+                return currenciesElementLink
+            case NavBarItemOption.Portfolio:
+                return portfolioElementLink
+            case NavBarItemOption.Trader:
+                return traderElementLink
             case NavBarItemOption.Trade:
                 return tradeElementLink
             case NavBarItemOption.Statistics:
@@ -74,8 +83,6 @@ export namespace NavBarItemOption {
      */
     export function values(): NavBarItemOption[] {
         return [
-            NavBarItemOption.CURRENCIES,
-            NavBarItemOption.PORTFOLIO,
             NavBarItemOption.Currencies,
             NavBarItemOption.Portfolio,
             NavBarItemOption.Trader,
