@@ -818,6 +818,16 @@
 
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>universal-library</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>universal-communication</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-components</artifactId>
                 <version>0.0.2</version>
             </dependency>
@@ -835,11 +845,6 @@
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-extensions</artifactId>
                 <version>0.0.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.cryptotrader</groupId>
-                <artifactId>universal-library</artifactId>
-                <version>0.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
