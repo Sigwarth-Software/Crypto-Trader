@@ -17,7 +17,7 @@ export const navBarHomeLink: TextElementLink = new TextElementLink(
     false,
     'Home',
     TagType.H4,
-);
+)
 
 export const currenciesElementLink: ElementLink = new ElementLink(
     '/currencies',
@@ -70,9 +70,10 @@ export const navBarTraderTextLink: TextElementLink = new TextElementLink(
     false,
     'Trader',
     TagType.H4,
-);
-export const navBarAccountLink: ElementLink = new ElementLink(
-    '/account',
+)
+
+export const simulatorElementLink: ElementLink = new ElementLink(
+    '/simulator',
     TargetType.SELF,
     false,
 );
@@ -101,11 +102,7 @@ export const docsElementLink: TextElementLink = new TextElementLink(
     TagType.H4,
 );
 
-export const upgradeElementLink: ElementLink = new ElementLink(
-    '/upgrade',
-    TargetType.SELF,
-    false,
-);
+export const upgradeElementLink: ElementLink = new ElementLink('/upgrade', TargetType.SELF, false)
 
 export const consoleElementLink: ElementLink = new ElementLink(
     '/console',
