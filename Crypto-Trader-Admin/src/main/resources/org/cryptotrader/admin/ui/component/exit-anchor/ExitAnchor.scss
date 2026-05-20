@@ -1,5 +1,5 @@
 // ExitAnchor.scss
-@use "../../../styles/globals" as *;
+@use "../../../styles/global-placeholders" as placeholders;
 
 ExitAnchor {
     //-fx-background-color: add-alpha(gray, 0.75);
@@ -8,5 +8,5 @@ ExitAnchor {
     // outline in white
     //-fx-border-color: white;
     //-fx-border-width: 1px;
-    @extend %hover-box-shadow;
+    @extend placeholders.%hover-box-shadow;
 }

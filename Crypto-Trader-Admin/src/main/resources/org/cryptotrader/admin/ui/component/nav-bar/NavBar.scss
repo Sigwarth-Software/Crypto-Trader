@@ -1,9 +1,9 @@
 // NavBar.scss
-@use "../../../styles/globals" as *;
+@use "../../../styles/global-variables" as vars;
 
 NavBar {
     //-fx-background-color: #444;
-    -fx-background-color: linear-gradient(to bottom, $charcoal, $light-charcoal);
+    -fx-background-color: linear-gradient(to bottom, vars.$charcoal, vars.$light-charcoal);
     -fx-alignment: center;
     -fx-padding: 10px;
     -fx-spacing: 25px;

@@ -1,8 +1,8 @@
 // HomeAnchor.scss
-@use "../../../styles/globals" as *;
+@use "../../../styles/global-placeholders" as placeholders;
 
 HomeAnchor {
-    @extend %hover-box-shadow;
+    @extend placeholders.%hover-box-shadow;
     ImageView {
 
     }
