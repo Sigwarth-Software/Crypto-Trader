@@ -1,28 +1,31 @@
 // nav-bar.component.scss
 
 // =================================-Imports-==================================
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
 
-$nav-bar-height: calc-size(6, 3, 2);
+$nav-bar-height: funcs.calc-size(6, 3, 2);
 
 nav-bar {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    background-color: $almost-white;
-    box-shadow: 0 0 simple-calc(0.1, 0.5) 0 add-alpha($charcoal, 0.5);
+    background-color: vars.$almost-white;
+    box-shadow: 0 0 funcs.simple-calc(0.1, 0.5) 0 funcs.add-alpha(vars.$charcoal, 0.5);
 
     // border-bottom: $very-thin-border solid $muted-blue-half-opacity;
     height: $nav-bar-height;
 
     nav {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
 
         @extend %fill-container;
 
         .nav-items-div {
-            @include flex(space-around, center, row);
+            @include mixins.flex(space-around, center, row);
             width: 32%;
 
             nav-bar-item {

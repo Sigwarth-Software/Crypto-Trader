@@ -1,6 +1,8 @@
 // page-title-stripe.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 page-title-stripe {
     width: 100%;
@@ -8,12 +10,12 @@ page-title-stripe {
     content-stripe {
         background-image: linear-gradient(
             to right,
-            $blue-gray 50%,
-            $muted-blue
+            vars.$blue-gray 50%,
+            vars.$muted-blue
         );
-        box-shadow: $eighth-percent 0 $half-percent add-alpha(black, 0.4);
-        padding: simple-calc(3.25, 0.15) 0;
-        margin: simple-calc(1, 0.5) 0;
+        box-shadow: vars.$eighth-percent 0 vars.$half-percent funcs.add-alpha(black, 0.4);
+        padding: funcs.simple-calc(3.25, 0.15) 0;
+        margin: funcs.simple-calc(1, 0.5) 0;
 
         ss-title {
             @extend %signature-brand-gradient-text;
@@ -22,7 +24,7 @@ page-title-stripe {
         .page-stripe-text-div {
             width: 100%;
 
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
         }
     }
 }

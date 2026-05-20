@@ -1,57 +1,60 @@
 // meet-crypto-trader-promo.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 meet-crypto-trader-promo {
-    @include promo-section-block;
+    @include mixins.promo-section-block;
     overflow: hidden;
     width: 100%;
     border-radius: 0;
     .meet-ct-stripe {
-        @include two-column-layout;
+        @include mixins.two-column-layout;
         background: radial-gradient(
                 ellipse at 30% 50%,
-                add-alpha($muted-blue, 0.15),
+                funcs.add-alpha(vars.$muted-blue, 0.15),
                 transparent
             ),
-            $midnight-navy;
-        padding: $two-percent $three-percent;
-        border-radius: $quarter-percent;
+            vars.$midnight-navy;
+        padding: vars.$two-percent vars.$three-percent;
+        border-radius: vars.$quarter-percent;
 
         .copy-col {
             .flipline {
-                @include flex(flex-start, baseline, column);
+                @include mixins.flex(flex-start, baseline, column);
                 gap: 0.4ch;
 
                 ss-title,
                 flip-words {
                     display: inline-block;
-                    color: $pure-white;
+                    color: vars.$pure-white;
                 }
             }
 
             subtitle {
-                color: $alabaster-stone;
-                margin-top: $quarter-percent;
+                color: vars.$alabaster-stone;
+                margin-top: vars.$quarter-percent;
             }
 
             .lead {
                 width: 90%;
-                color: add-alpha($alabaster-stone, 0.85);
-                margin-top: $quarter-percent;
+                color: funcs.add-alpha(vars.$alabaster-stone, 0.85);
+                margin-top: vars.$quarter-percent;
             }
 
             cta-button {
-                margin-top: $one-percent;
+                margin-top: vars.$one-percent;
             }
         }
     }
 
-    @include mobile-breakpoint {
+    @include mixins.mobile-breakpoint {
         .meet-ct-stripe {
-            @include two-column-responsive;
+            @include mixins.two-column-responsive;
         }
     }
 }

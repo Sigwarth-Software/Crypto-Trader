@@ -1,5 +1,6 @@
 // popup.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 @keyframes popupFloatDownUp {
     0% {
@@ -27,8 +28,8 @@
 
 popup {
     .popup-container {
-        @include flex(center, center, column);
-        background-color: $pure-white;
+        @include mixins.flex(center, center, column);
+        background-color: vars.$pure-white;
         border: 1px solid rgba(90, 120, 170, 0.18);
         box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
         border-radius: 24px;
@@ -45,7 +46,7 @@ popup {
         animation: popupFloatDownUp 4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
         .popup-content {
-            @include flex(center, center, row);
+            @include mixins.flex(center, center, row);
             gap: 12px;
         }
 

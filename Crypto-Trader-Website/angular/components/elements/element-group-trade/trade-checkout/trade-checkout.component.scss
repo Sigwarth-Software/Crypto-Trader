@@ -1,13 +1,14 @@
 // trade-checkout.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 trade-checkout {
-    @include flex(space-around, center, row);
+    @include mixins.flex(space-around, center, row);
     width: 100%;
     flex: 1;
 
     trade-currency {
-        margin-right: $one-percent;
+        margin-right: vars.$one-percent;
     }
 
     .checkout-input {
@@ -15,24 +16,24 @@ trade-checkout {
         flex: 1;
         width: 100%;
 
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
 
         input {
-            margin-left: $two-percent;
-            min-width: $ten-percent;
+            margin-left: vars.$two-percent;
+            min-width: vars.$ten-percent;
         }
     }
 
     .checkout-results {
         width: 100%;
 
-        @include flex(center, center, column);
-        margin: $half-percent 0 $one-percent 0;
+        @include mixins.flex(center, center, column);
+        margin: vars.$half-percent 0 vars.$one-percent 0;
 
         .result-div {
             width: 100%;
 
-            @include flex(space-between, center, row);
+            @include mixins.flex(space-between, center, row);
         }
     }
 }

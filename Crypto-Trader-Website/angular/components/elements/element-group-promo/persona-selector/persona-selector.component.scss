@@ -1,60 +1,60 @@
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
-// ─── Per-persona accent colors ───
 $persona-colors: (
-    believer:   $teal-green,
-    strategist:  $sea-blue,
-    equalizer:   $mint-green,
-    builder:     $jungle-green,
-    tycoon:      $sunbeam-yellow,
+    believer:   vars.$teal-green,
+    strategist:  vars.$sea-blue,
+    equalizer:   vars.$mint-green,
+    builder:     vars.$jungle-green,
+    tycoon:      vars.$sunbeam-yellow,
 );
 // TODO: Replace pixels with variables.
 persona-selector {
     display: block;
-    padding: $three-percent $five-percent;
+    padding: vars.$three-percent vars.$five-percent;
     background:
-        radial-gradient(ellipse at 50% 70%, add-alpha($mint-green, 0.07), transparent 55%),
-        linear-gradient(180deg, $pure-white 0%, add-alpha($pale-mint, 0.2) 60%, add-alpha($teal-green, 0.06) 100%);
+        radial-gradient(ellipse at 50% 70%, funcs.add-alpha(vars.$mint-green, 0.07), transparent 55%),
+        linear-gradient(180deg, vars.$pure-white 0%, funcs.add-alpha(vars.$pale-mint, 0.2) 60%, funcs.add-alpha(vars.$teal-green, 0.06) 100%);
 
     .persona-section {
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    // ─── Section header ───
     .section-header {
-        @include section-header-centered($midnight-navy, 0.8);
+        @include mixins.section-header-centered(vars.$midnight-navy, 0.8);
 
         eyebrow-label {
-            color: $teal-green;
+            color: vars.$teal-green;
         }
 
         ss-title h2 {
-            @include gradient-text($regular-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
         }
 
         subtitle {
-            color: $blue-gray;
+            color: vars.$blue-gray;
         }
     }
 
-    // ─── Avatar row (character select slots) ───
     .avatar-row {
-        @include flex(center, stretch, row);
-        gap: $one-percent;
-        margin-bottom: $two-percent;
+        @include mixins.flex(center, stretch, row);
+        gap: vars.$one-percent;
+        margin-bottom: vars.$two-percent;
     }
 
     .avatar-slot {
-        @include flex(center, center, column);
-        gap: $quarter-percent;
-        padding: $half-percent $one-percent;
-        background: $pure-white;
-        border: 2px solid add-alpha($teal-green, 0.15);
-        border-radius: $half-percent;
+        @include mixins.flex(center, center, column);
+        gap: vars.$quarter-percent;
+        padding: vars.$half-percent vars.$one-percent;
+        background: vars.$pure-white;
+        border: 2px solid funcs.add-alpha(vars.$teal-green, 0.15);
+        border-radius: vars.$half-percent;
         cursor: pointer;
         transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
         flex: 1 1 0;
@@ -63,21 +63,21 @@ persona-selector {
 
         &:hover {
             transform: translateY(-3px);
-            box-shadow: add-alpha($teal-green, 0.15) 0 6px 20px;
+            box-shadow: funcs.add-alpha(vars.$teal-green, 0.15) 0 6px 20px;
         }
 
         &.active {
-            border-color: $teal-green;
-            box-shadow: add-alpha($teal-green, 0.2) 0 4px 16px;
+            border-color: vars.$teal-green;
+            box-shadow: funcs.add-alpha(vars.$teal-green, 0.2) 0 4px 16px;
             transform: translateY(-4px);
 
             .avatar-icon-ring {
-                background: add-alpha($teal-green, 0.12);
-                border-color: $teal-green;
+                background: funcs.add-alpha(vars.$teal-green, 0.12);
+                border-color: vars.$teal-green;
             }
 
             .avatar-name {
-                color: $teal-green;
+                color: vars.$teal-green;
                 font-weight: 700;
             }
         }
@@ -86,10 +86,10 @@ persona-selector {
         @each $name, $color in $persona-colors {
             &.#{$name}.active {
                 border-color: $color;
-                box-shadow: add-alpha($color, 0.2) 0 4px 16px;
+                box-shadow: funcs.add-alpha($color, 0.2) 0 4px 16px;
 
                 .avatar-icon-ring {
-                    background: add-alpha($color, 0.12);
+                    background: funcs.add-alpha($color, 0.12);
                     border-color: $color;
                 }
 
@@ -99,69 +99,67 @@ persona-selector {
             }
 
             &.#{$name}:hover {
-                box-shadow: add-alpha($color, 0.15) 0 6px 20px;
+                box-shadow: funcs.add-alpha($color, 0.15) 0 6px 20px;
             }
         }
     }
 
     .avatar-icon-ring {
-        @include flex(center, center, row);
-        @include square-size(3.5rem);
+        @include mixins.flex(center, center, row);
+        @include mixins.square-size(3.5rem);
         border-radius: 50%;
-        border: 2px solid add-alpha($teal-green, 0.2);
-        background: add-alpha($pale-mint, 0.15);
+        border: 2px solid funcs.add-alpha(vars.$teal-green, 0.2);
+        background: funcs.add-alpha(vars.$pale-mint, 0.15);
         transition: background 250ms ease, border-color 250ms ease;
     }
 
     .avatar-icon {
-        @include square-size(1.8rem);
+        @include mixins.square-size(1.8rem);
     }
 
     .avatar-name {
-        font-size: $smaller-p-font-size;
+        font-size: vars.$smaller-p-font-size;
         font-weight: 600;
-        color: $blue-gray;
+        color: vars.$blue-gray;
         text-align: center;
         transition: color 250ms ease;
     }
 
-    // ─── Detail panel ───
     .detail-panel {
-        @include flex(space-between, center, row);
-        gap: $two-percent;
-        background: $pure-white;
-        border: 1px solid add-alpha($teal-green, 0.12);
-        border-radius: $half-percent;
-        padding: $two-percent $three-percent;
-        box-shadow: add-alpha($teal-green, 0.08) 0 8px 30px;
+        @include mixins.flex(space-between, center, row);
+        gap: vars.$two-percent;
+        background: vars.$pure-white;
+        border: 1px solid funcs.add-alpha(vars.$teal-green, 0.12);
+        border-radius: vars.$half-percent;
+        padding: vars.$two-percent vars.$three-percent;
+        box-shadow: funcs.add-alpha(vars.$teal-green, 0.08) 0 8px 30px;
         transition: border-color 300ms ease, box-shadow 300ms ease;
         min-height: 280px;
 
-        // Per-persona panel border
         @each $name, $color in $persona-colors {
             &.#{$name} {
-                border-color: add-alpha($color, 0.25);
-                box-shadow: add-alpha($color, 0.1) 0 8px 30px;
+                border-color: funcs.add-alpha($color, 0.25);
+                box-shadow: funcs.add-alpha($color, 0.1) 0 8px 30px;
 
                 .tier-badge {
-                    background: add-alpha($color, 0.12);
+                    background: funcs.add-alpha($color, 0.12);
                     color: $color;
-                    border-color: add-alpha($color, 0.3);
+                    border-color: funcs.add-alpha($color, 0.3);
                 }
 
                 .trait-chip {
-                    background: add-alpha($color, 0.08);
-                    border-color: add-alpha($color, 0.2);
+                    background: funcs.add-alpha($color, 0.08);
+                    border-color: funcs.add-alpha($color, 0.2);
                 }
 
                 .persona-emblem {
                     background:
-                        radial-gradient(circle, add-alpha($color, 0.12), add-alpha($color, 0.03));
-                    border-color: add-alpha($color, 0.2);
+                        radial-gradient(circle, funcs.add-alpha($color, 0.12), funcs.add-alpha($color, 0.03));
+                    border-color: funcs.add-alpha($color, 0.2);
                 }
 
                 .emblem-icon {
-                    filter: drop-shadow(0 0 1.5rem add-alpha($color, 0.3));
+                    filter: drop-shadow(0 0 1.5rem funcs.add-alpha($color, 0.3));
                 }
             }
         }
@@ -169,97 +167,94 @@ persona-selector {
 
     .detail-copy {
         flex: 1 1 60%;
-        @include flex(flex-start, flex-start, column);
-        gap: $half-percent;
+        @include mixins.flex(flex-start, flex-start, column);
+        gap: vars.$half-percent;
     }
 
     .detail-header {
-        @include flex(flex-start, center, row);
-        gap: $one-percent;
+        @include mixins.flex(flex-start, center, row);
+        gap: vars.$one-percent;
 
         ss-title h3 {
-            @include gradient-text($regular-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
         }
     }
 
     .tier-badge {
         display: inline-block;
-        padding: $eighth-percent $half-percent;
-        border: 1px solid add-alpha($teal-green, 0.3);
-        border-radius: $quarter-percent;
-        font-size: $smallest-p-font-size;
+        padding: vars.$eighth-percent vars.$half-percent;
+        border: 1px solid funcs.add-alpha(vars.$teal-green, 0.3);
+        border-radius: vars.$quarter-percent;
+        font-size: vars.$smallest-p-font-size;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        background: add-alpha($teal-green, 0.08);
-        color: $teal-green;
+        background: funcs.add-alpha(vars.$teal-green, 0.08);
+        color: vars.$teal-green;
     }
 
     .detail-tagline {
         font-size: 1.15rem;
         font-style: italic;
-        color: $blue-gray;
+        color: vars.$blue-gray;
         font-weight: 500;
     }
 
     .detail-description {
-        color: $charcoal;
+        color: vars.$charcoal;
         line-height: 1.6;
         max-width: 90%;
     }
 
     .trait-row {
-        @include flex(flex-start, center, row);
-        gap: $quarter-percent;
+        @include mixins.flex(flex-start, center, row);
+        gap: vars.$quarter-percent;
         flex-wrap: wrap;
-        margin-top: $quarter-percent;
+        margin-top: vars.$quarter-percent;
     }
 
     .trait-chip {
-        padding: $eighth-percent $half-percent;
-        border: 1px solid add-alpha($teal-green, 0.2);
-        border-radius: $quarter-percent;
-        font-size: $smallest-p-font-size;
+        padding: vars.$eighth-percent vars.$half-percent;
+        border: 1px solid funcs.add-alpha(vars.$teal-green, 0.2);
+        border-radius: vars.$quarter-percent;
+        font-size: vars.$smallest-p-font-size;
         font-weight: 600;
-        background: add-alpha($pale-mint, 0.15);
-        color: $dark-teal;
+        background: funcs.add-alpha(vars.$pale-mint, 0.15);
+        color: vars.$dark-teal;
         white-space: nowrap;
     }
 
-    // ─── Emblem visual (right column) ───
     .detail-visual {
         flex: 0 0 35%;
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
     }
 
     .persona-emblem {
-        @include flex(center, center, row);
-        @include square-size(10rem);
+        @include mixins.flex(center, center, row);
+        @include mixins.square-size(10rem);
         border-radius: 50%;
         background:
-            radial-gradient(circle, add-alpha($pale-mint, 0.3), add-alpha($teal-green, 0.05));
-        border: 2px solid add-alpha($teal-green, 0.15);
+            radial-gradient(circle, funcs.add-alpha(vars.$pale-mint, 0.3), funcs.add-alpha(vars.$teal-green, 0.05));
+        border: 2px solid funcs.add-alpha(vars.$teal-green, 0.15);
 
         .emblem-icon {
-            @include square-size(5rem);
+            @include mixins.square-size(5rem);
             transition: filter 300ms ease;
         }
     }
 
-    // ─── Entrance animation via scroll-reveal ───
     .section-header {
-        @include scroll-reveal-entrance;
+        @include mixins.scroll-reveal-entrance;
     }
 
     .avatar-row {
-        @include scroll-reveal-entrance($delay: 150ms);
+        @include mixins.scroll-reveal-entrance($delay: 150ms);
     }
 
     .detail-panel {
-        @include scroll-reveal-entrance($delay: 300ms);
+        @include mixins.scroll-reveal-entrance($delay: 300ms);
     }
 
-    // ─── Scroll-reveal entrance triggers ───
     scroll-reveal.in-view {
         .section-header,
         .avatar-row,
@@ -268,13 +263,12 @@ persona-selector {
         }
     }
 
-    // ─── Responsive ───
-    @include mobile-breakpoint {
-        padding: $two-percent $three-percent;
+    @include mixins.mobile-breakpoint {
+        padding: vars.$two-percent vars.$three-percent;
 
         .avatar-row {
             flex-wrap: wrap;
-            gap: $half-percent;
+            gap: vars.$half-percent;
 
             .avatar-slot {
                 max-width: 45%;
@@ -283,7 +277,7 @@ persona-selector {
         }
 
         .detail-panel {
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
             text-align: center;
 
             .detail-copy {
@@ -291,25 +285,24 @@ persona-selector {
             }
 
             .detail-visual {
-                margin-top: $one-percent;
+                margin-top: vars.$one-percent;
             }
         }
     }
 
-    @include mobile-breakpoint(480px) {
+    @include mixins.mobile-breakpoint(480px) {
         .avatar-row .avatar-slot {
             max-width: 100%;
             flex: 1 1 100%;
         }
     }
 
-    // ─── Reduced motion ───
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .avatar-slot,
         .detail-panel,
         .section-header,
         .avatar-row {
-            @include reduced-motion-reset;
+            @include mixins.reduced-motion-reset;
         }
     }
 }

@@ -1,5 +1,6 @@
 // auth-guard-popup.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 // Keyframes for slide/float from top, slight grow, longer pause, then reverse up
 @keyframes authGuardFloatDownUp {
@@ -27,13 +28,13 @@
 }
 
 auth-guard-popup {
-    @include flex(center, center, column);
-    background-color: $pure-white;
+    @include mixins.flex(center, center, column);
+    background-color: vars.$pure-white;
     border: 1px solid rgba(90, 120, 170, 0.18);
     box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
     border-radius: 24px;
 
-    padding: $one-percent;
+    padding: vars.$one-percent;
     position: fixed;
     left: 50%;
     top: 0;
@@ -46,7 +47,7 @@ auth-guard-popup {
         forwards;
 
     .auth-popup-content {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         gap: 12px;
     }
 

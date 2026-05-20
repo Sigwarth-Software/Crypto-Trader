@@ -1,30 +1,32 @@
 // nav-console.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 nav-console {
-    @include flex(center, center, row);
-    border-radius: $quarter-percent;
+    @include mixins.flex(center, center, row);
+    border-radius: vars.$quarter-percent;
 
     // background-color: $ocean-blue;
-    background-color: $light-charcoal;
-    padding: $quarter-percent;
+    background-color: vars.$light-charcoal;
+    padding: vars.$quarter-percent;
     position: relative;
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
-        simplest-calc(0.001);
+    box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.5) 0 0 vars.$quarter-percent
+        funcs.simplest-calc(0.001);
     transition: background-color, box-shadow, scale, 0.15s;
 
     ss-anchor {
         ss-img {
-            @include square-size($two-half-percent);
+            @include mixins.square-size(vars.$two-half-percent);
             filter: invert(1);
         }
     }
 
     &:hover {
         // background-color: $almost-white;
-        $box-shadow-size: simplest-calc(0.25);
-        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent
-            simplest-calc(0.005);
+        $box-shadow-size: funcs.simplest-calc(0.25);
+        box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.25) 0 0 vars.$half-percent
+            funcs.simplest-calc(0.005);
         cursor: pointer;
     }
 

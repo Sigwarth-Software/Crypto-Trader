@@ -1,21 +1,24 @@
 // quick-action-card.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/backgrounds/global_background_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/backgrounds/global-background-placeholders' as background-placeholders;
 
 quick-action-card {
     display: flex;
 
     .dashboard-card {
-        @include flex(flex-start, center, column);
+        @include mixins.flex(flex-start, center, column);
         flex: 1;
-        gap: $quarter-percent;
-        padding: $one-percent $half-percent;
+        gap: vars.$quarter-percent;
+        padding: vars.$one-percent vars.$half-percent;
         cursor: pointer;
 
-        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
-        border: $very-thin-border $charcoal solid;
-        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+        background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.85, vars.$pure-white);
+        border: vars.$very-thin-border vars.$charcoal solid;
+        box-shadow: vars.$quarter-percent vars.$quarter-percent 0 vars.$absolute-black;
 
         @extend %softer-border-radius;
 
@@ -24,15 +27,15 @@ quick-action-card {
         &:hover,
         &:focus {
             transform: translateY(-2px);
-            box-shadow: $half-percent $half-percent 0 $absolute-black;
+            box-shadow: vars.$half-percent vars.$half-percent 0 vars.$absolute-black;
             outline: none;
         }
 
         .card-icon {
-            @include square-size($three-percent);
+            @include mixins.square-size(vars.$three-percent);
             border-radius: 50%;
-            padding: $quarter-percent;
-            background-color: $air-blue;
+            padding: vars.$quarter-percent;
+            background-color: vars.$air-blue;
         }
 
         .card-label {
@@ -40,7 +43,7 @@ quick-action-card {
         }
 
         .card-description {
-            color: $charcoal;
+            color: vars.$charcoal;
             text-align: center;
             font-size: 0.8rem;
         }

@@ -1,12 +1,14 @@
 // allocation-badge.component.scss
 @use 'sass:color';
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+
 // TODO: Replace pixels with variables.
 allocation-badge {
     .badge {
-        @include flex(center, center, row);
-        gap: $half-percent;
-        padding: $half-percent $one-percent;
+        @include mixins.flex(center, center, row);
+        gap: vars.$half-percent;
+        padding: vars.$half-percent vars.$one-percent;
         border-radius: 20px;
         cursor: pointer;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -30,20 +32,20 @@ allocation-badge {
     }
 
     .badge-cash {
-        background-color: rgba($ocean-blue, 0.12);
-        color: $ocean-blue;
-        border: 1px solid rgba($ocean-blue, 0.25);
+        background-color: rgba(vars.$ocean-blue, 0.12);
+        color: vars.$ocean-blue;
+        border: 1px solid rgba(vars.$ocean-blue, 0.25);
     }
 
     .badge-crypto {
-        background-color: rgba($teal-green, 0.12);
-        color: $teal-green;
-        border: 1px solid rgba($teal-green, 0.25);
+        background-color: rgba(vars.$teal-green, 0.12);
+        color: vars.$teal-green;
+        border: 1px solid rgba(vars.$teal-green, 0.25);
     }
 
     .badge-assets {
-        background-color: rgba($bitcoin-color, 0.12);
-        color: color.adjust($bitcoin-color, $lightness: -12%);
-        border: 1px solid rgba($bitcoin-color, 0.25);
+        background-color: rgba(vars.$bitcoin-color, 0.12);
+        color: color.adjust(vars.$bitcoin-color, $lightness: -12%);
+        border: 1px solid rgba(vars.$bitcoin-color, 0.25);
     }
 }

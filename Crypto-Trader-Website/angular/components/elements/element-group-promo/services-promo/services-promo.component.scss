@@ -1,31 +1,34 @@
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 services-promo {
     width: 100%;
 
     .section-content {
-        width: $eighty-percent;
+        width: vars.$eighty-percent;
         max-width: 1200px;
         margin: 0 auto;
-        padding: $three-percent 0;
+        padding: vars.$three-percent 0;
     }
 
     .section-header {
-        @include section-header-centered($midnight-navy, 0.8);
+        @include mixins.section-header-centered(vars.$midnight-navy, 0.8);
 
         eyebrow-label {
-            color: $teal-green;
+            color: vars.$teal-green;
         }
 
         ss-title h2 {
-            @include gradient-text($regular-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
         }
 
         subtitle {
-            color: $blue-gray;
+            color: vars.$blue-gray;
         }
     }
 
@@ -34,17 +37,17 @@ services-promo {
         background:
             linear-gradient(
                 180deg,
-                $ivory-white 0%,
-                $pure-white 40%,
-                add-alpha($ocean-blue, 0.06) 100%
+                vars.$ivory-white 0%,
+                vars.$pure-white 40%,
+                funcs.add-alpha(vars.$ocean-blue, 0.06) 100%
             );
-        border-top: 3px solid add-alpha($ocean-blue, 0.3);
-        padding: $two-percent 0;
+        border-top: 3px solid funcs.add-alpha(vars.$ocean-blue, 0.3);
+        padding: vars.$two-percent 0;
     }
 
     .services-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: $one-percent;
+        gap: vars.$one-percent;
     }
 }

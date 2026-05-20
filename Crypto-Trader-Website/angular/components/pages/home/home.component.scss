@@ -1,37 +1,39 @@
 // home.component.scss
-@use '../../../styles/globals' as *;
-@use '../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-functions' as funcs;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 home {
     #home-cta .cta-section {
         background:
-            radial-gradient(ellipse at 50% 0%, add-alpha($teal-green, 0.08), transparent 60%),
-            linear-gradient(180deg, $deep-ocean 0%, $midnight-navy 100%);
+            radial-gradient(ellipse at 50% 0%, funcs.add-alpha(vars.$teal-green, 0.08), transparent 60%),
+            linear-gradient(180deg, vars.$deep-ocean 0%, vars.$midnight-navy 100%);
 
         eyebrow-label {
-            color: $mint-green;
+            color: vars.$mint-green;
         }
 
         ss-title h2 {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         }
 
         subtitle {
-            color: $alabaster-stone;
+            color: vars.$alabaster-stone;
             opacity: 0.85;
         }
     }
 
     ss-anchor.home-buttons {
-        background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
-        max-height: $three-half-percent;
-        padding: $quarter-percent $one-percent;
+        background-color: funcs.add-alpha-opaque(vars.$sunbeam-yellow, 0.5, vars.$pure-white);
+        max-height: vars.$three-half-percent;
+        padding: vars.$quarter-percent vars.$one-percent;
 
         &:hover {
-            $box-shadow-size: simplest-calc(0.25);
-            box-shadow: add-alpha-opaque($sunbeam-yellow, 0.75, $pure-white)
+            $box-shadow-size: funcs.simplest-calc(0.25);
+            box-shadow: funcs.add-alpha-opaque(vars.$sunbeam-yellow, 0.75, vars.$pure-white)
                 $box-shadow-size $box-shadow-size 0 0;
             cursor: pointer;
         }
@@ -39,7 +41,7 @@ home {
         &:active {
             box-shadow: none;
 
-            $top-and-right: simplest-calc(0.25);
+            $top-and-right: funcs.simplest-calc(0.25);
             transform: translate($top-and-right, $top-and-right);
         }
     }

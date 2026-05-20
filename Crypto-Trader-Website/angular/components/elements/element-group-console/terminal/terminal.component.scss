@@ -1,19 +1,22 @@
 // terminal.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 @import '@xterm/xterm/css/xterm.css';
 
 terminal {
-    @include flex(center, center, column);
-    background-color: $charcoal;
+    @include mixins.flex(center, center, column);
+    background-color: vars.$charcoal;
 
     @extend %fill-container;
     flex: 1;
     height: 100%;
     min-height: 0;
-    padding: $half-percent $three-quarter-percent;
+    padding: vars.$half-percent vars.$three-quarter-percent;
     box-sizing: border-box;
-    border-radius: $half-percent;
+    border-radius: vars.$half-percent;
 
     .terminal-wrap {
         @extend %fill-container;
@@ -21,7 +24,7 @@ terminal {
         height: 100%;
         min-height: 0;
 
-        @include flex(center, center, column);
+        @include mixins.flex(center, center, column);
 
         .term-host {
             @extend %fill-container;
@@ -52,11 +55,11 @@ terminal {
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background: add-alpha($pure-white, 0.15);
+                    background: funcs.add-alpha(vars.$pure-white, 0.15);
                     border-radius: 3px;
 
                     &:hover {
-                        background: add-alpha($pure-white, 0.25);
+                        background: funcs.add-alpha(vars.$pure-white, 0.25);
                     }
                 }
             }

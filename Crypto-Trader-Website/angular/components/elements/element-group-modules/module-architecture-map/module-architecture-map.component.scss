@@ -1,27 +1,31 @@
 // module-architecture-map.component.scss
 @use 'sass:color';
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+
 // TODO: Replace pixels with variables.
 module-architecture-map {
     display: block;
 
     .architecture-map {
-        @include flex(center, center, column);
+        @include mixins.flex(center, center, column);
         gap: 0;
-        padding: $two-percent;
-        background: add-alpha($pure-white, 0.04);
+        padding: vars.$two-percent;
+        background: funcs.add-alpha(vars.$pure-white, 0.04);
         backdrop-filter: blur(16px);
-        border: 1px solid add-alpha($mint-green, 0.15);
-        border-radius: $half-percent;
-        margin-bottom: $two-percent;
+        border: 1px solid funcs.add-alpha(vars.$mint-green, 0.15);
+        border-radius: vars.$half-percent;
+        margin-bottom: vars.$two-percent;
     }
 
     .arch-layer {
-        @include flex(center, center, column);
-        gap: $half-percent;
+        @include mixins.flex(center, center, column);
+        gap: vars.$half-percent;
         width: 100%;
-        padding: $one-percent;
+        padding: vars.$one-percent;
     }
 
     .arch-layer-label {
@@ -29,14 +33,14 @@ module-architecture-map {
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: add-alpha($pale-mint, 0.6);
-        margin-bottom: $quarter-percent;
+        color: funcs.add-alpha(vars.$pale-mint, 0.6);
+        margin-bottom: vars.$quarter-percent;
     }
 
     .arch-nodes {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         flex-wrap: wrap;
-        gap: $half-percent;
+        gap: vars.$half-percent;
     }
 
     .arch-node {
@@ -44,16 +48,16 @@ module-architecture-map {
         padding: 6px 16px;
         font-size: 0.8rem;
         font-weight: 600;
-        color: $pale-mint;
-        background: add-alpha($pure-white, 0.08);
-        border: 1px solid add-alpha($mint-green, 0.2);
-        border-radius: $quarter-percent;
+        color: vars.$pale-mint;
+        background: funcs.add-alpha(vars.$pure-white, 0.08);
+        border: 1px solid funcs.add-alpha(vars.$mint-green, 0.2);
+        border-radius: vars.$quarter-percent;
         transition: background 0.2s ease;
 
         &.highlight {
-            background: add-alpha($teal-green, 0.15);
-            border-color: add-alpha($teal-green, 0.4);
-            color: $mint-green;
+            background: funcs.add-alpha(vars.$teal-green, 0.15);
+            border-color: funcs.add-alpha(vars.$teal-green, 0.4);
+            color: vars.$mint-green;
         }
 
         &.small {
@@ -63,14 +67,14 @@ module-architecture-map {
     }
 
     .arch-connector {
-        color: add-alpha($mint-green, 0.4);
+        color: funcs.add-alpha(vars.$mint-green, 0.4);
         font-size: 1.2rem;
         line-height: 1;
-        padding: $quarter-percent 0;
+        padding: vars.$quarter-percent 0;
     }
 
     .badge-grid-wrapper {
-        margin-top: $one-percent;
+        margin-top: vars.$one-percent;
 
         badge-grid {
             width: 100%;

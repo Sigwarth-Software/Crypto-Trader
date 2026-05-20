@@ -1,14 +1,16 @@
 // performance-arrow.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 performance-arrow {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
 
     ss-img {
-        @include square-size(calc($one-half-percent + $quarter-percent));
+        @include mixins.square-size(calc(#{vars.$one-half-percent} + #{vars.$quarter-percent}));
 
         @extend %circle-border-radius;
-        padding: $quarter-percent;
+        padding: vars.$quarter-percent;
 
         // border: $thinnest-border solid $pure-white;
         // box-shadow: $alabaster-stone 0 0 $quarter-percent;
@@ -16,7 +18,7 @@ performance-arrow {
 
     &.down {
         ss-title {
-            color: $red-orange;
+            color: vars.$red-orange;
         }
 
         ss-img {
@@ -30,7 +32,7 @@ performance-arrow {
 
     &.up {
         ss-title {
-            color: $lime;
+            color: vars.$lime;
         }
 
         ss-img {

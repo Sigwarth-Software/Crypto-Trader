@@ -1,33 +1,35 @@
 // vendor-option.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/global-fonts' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use '../../../../styles/global-fonts' as fonts;
 
 vendor-option {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
 
     @extend %nav-button;
     position: relative;
 
     // scale: 1.5;
-    min-width: $six-percent;
-    min-height: calc($six-percent * 1.08);
-    padding: $half-percent;
+    min-width: vars.$six-percent;
+    min-height: calc(#{vars.$six-percent} * 1.08);
+    padding: vars.$half-percent;
 
     // @include square-size($five-percent);
     ss-img {
-        padding: calc($quarter-percent);
+        padding: calc(#{vars.$quarter-percent});
     }
 
     ss-title {
-        color: $pure-white;
-        font-family: $fira-sans-font;
+        color: vars.$pure-white;
+        font-family: fonts.$fira-sans-font;
     }
 
     .recommended-icon {
-        top: calc($one-percent * -1);
-        right: calc($one-percent * -1);
+        top: calc(#{vars.$one-percent} * -1);
+        right: calc(#{vars.$one-percent} * -1);
 
-        @include square-size(calc(($one-percent + $quarter-percent) * 1.5));
+        @include mixins.square-size(calc((#{vars.$one-percent} + #{vars.$quarter-percent}) * 1.5));
         position: absolute;
 
         // filter: drop-shadow(0 0 $quarter-percent $turquoise-blue);
@@ -36,14 +38,14 @@ vendor-option {
     }
 
     &.selected {
-        background-color: $sunbeam-yellow;
+        background-color: vars.$sunbeam-yellow;
 
         ss-title {
             color: gray;
         }
 
         .recommended-icon {
-            filter: drop-shadow(0 $quarter-percent $quarter-percent black)
+            filter: drop-shadow(0 #{vars.$quarter-percent} #{vars.$quarter-percent} black)
                 brightness(1.1);
         }
     }

@@ -1,21 +1,23 @@
 // chat-input.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 chat-input {
     display: block;
-    padding: $three-quarter-percent $one-percent;
+    padding: vars.$three-quarter-percent vars.$one-percent;
 
     .chat-input-wrap {
-        @include flex(center, center, row);
-        gap: $half-percent;
+        @include mixins.flex(center, center, row);
+        gap: vars.$half-percent;
 
         .chat-textarea {
             flex: 1;
-            background: add-alpha($pure-white, 0.06);
-            border: 1px solid add-alpha($pure-white, 0.12);
-            border-radius: $half-percent;
-            color: $alabaster-stone;
-            padding: $half-percent $three-quarter-percent;
+            background: funcs.add-alpha(vars.$pure-white, 0.06);
+            border: 1px solid funcs.add-alpha(vars.$pure-white, 0.12);
+            border-radius: vars.$half-percent;
+            color: vars.$alabaster-stone;
+            padding: vars.$half-percent vars.$three-quarter-percent;
             font-size: 0.95rem;
             font-family: inherit;
             resize: none;
@@ -23,20 +25,20 @@ chat-input {
             transition: border-color 200ms ease;
 
             &::placeholder {
-                color: add-alpha($pure-white, 0.35);
+                color: funcs.add-alpha(vars.$pure-white, 0.35);
             }
 
             &:focus {
-                border-color: add-alpha($sunbeam-yellow, 0.5);
+                border-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.5);
             }
         }
 
         .chat-send-button {
-            @include flex(center, center, row);
-            background-color: $sunbeam-yellow;
-            color: $midnight-navy;
+            @include mixins.flex(center, center, row);
+            background-color: vars.$sunbeam-yellow;
+            color: vars.$midnight-navy;
             border: none;
-            border-radius: $half-percent;
+            border-radius: vars.$half-percent;
             width: 2.5rem;
             height: 2.5rem;
             cursor: pointer;
@@ -46,20 +48,20 @@ chat-input {
                 transform 200ms ease;
 
             &:hover {
-                $box-shadow-size: simplest-calc(0.15);
-                box-shadow: add-alpha($sunbeam-yellow, 0.4)
-                    0 $box-shadow-size simplest-calc(0.175);
+                $box-shadow-size: funcs.simplest-calc(0.15);
+                box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.4)
+                    0 $box-shadow-size funcs.simplest-calc(0.175);
             }
 
             &:active {
                 box-shadow: none;
-                $offset: simplest-calc(0.25);
+                $offset: funcs.simplest-calc(0.25);
                 transform: translate($offset, $offset);
             }
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .chat-input-wrap {
             .chat-textarea {
                 transition: none;

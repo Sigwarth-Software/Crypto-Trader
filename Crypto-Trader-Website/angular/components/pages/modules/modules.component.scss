@@ -1,11 +1,13 @@
 // modules.component.scss
 @use 'sass:color';
-@use '../../../styles/globals' as *;
-@use '../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 modules {
-    @include flex(flex-start, center, column);
+    @include mixins.flex(flex-start, center, column);
     width: 100%;
 }

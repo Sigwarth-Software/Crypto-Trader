@@ -1,55 +1,57 @@
 // tier-promo.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+
 // TODO: Replace pixels with variables.
 tier-promo {
     display: block;
     position: relative;
 
     .tier-card {
-        @include elevated-card;
-        @include flex(flex-start, center, column);
-        padding: $one-half-percent $one-percent;
+        @include mixins.elevated-card;
+        @include mixins.flex(flex-start, center, column);
+        padding: vars.$one-half-percent vars.$one-percent;
         height: 100%;
         position: relative;
         overflow: visible;
 
         // --- Tier-specific accent colors ---
         &.tier-free {
-            border-top-color: $muted-blue;
+            border-top-color: vars.$muted-blue;
         }
 
         &.tier-pro {
-            border-top-color: $teal-green;
+            border-top-color: vars.$teal-green;
         }
 
         &.tier-ultimate {
-            border-top-color: $sunbeam-yellow;
+            border-top-color: vars.$sunbeam-yellow;
             transform: scale(1.03);
             box-shadow:
-                add-alpha($sunbeam-yellow, 0.2) 0 0 20px,
-                add-alpha(black, 0.1) 0 8px 30px;
+                funcs.add-alpha(vars.$sunbeam-yellow, 0.2) 0 0 20px,
+                funcs.add-alpha(black, 0.1) 0 8px 30px;
             z-index: 1;
 
             &:hover {
                 transform: scale(1.03) translateY(-4px);
                 box-shadow:
-                    add-alpha($sunbeam-yellow, 0.3) 0 0 28px,
-                    add-alpha(black, 0.18) 0 12px 36px;
+                    funcs.add-alpha(vars.$sunbeam-yellow, 0.3) 0 0 28px,
+                    funcs.add-alpha(black, 0.18) 0 12px 36px;
             }
         }
     }
 
-    // --- Recommended badge ---
     .recommended-badge {
         position: absolute;
-        top: simplest-calc(-0.4);
+        top: funcs.simplest-calc(-0.4);
         left: 50%;
         transform: translateX(-50%);
-        background: $teal-green;
-        color: $pure-white;
-        padding: $eighth-percent $half-percent;
-        border-radius: $quarter-percent;
-        font-size: $smallest-p-font-size;
+        background: vars.$teal-green;
+        color: vars.$pure-white;
+        padding: vars.$eighth-percent vars.$half-percent;
+        border-radius: vars.$quarter-percent;
+        font-size: vars.$smallest-p-font-size;
         font-weight: 700;
         letter-spacing: 0.03em;
         text-transform: uppercase;
@@ -57,13 +59,12 @@ tier-promo {
         z-index: 2;
     }
 
-    // --- Icon ---
     .icon-wrap {
-        margin-bottom: $quarter-percent;
+        margin-bottom: vars.$quarter-percent;
 
         ss-img {
-            @include square-size($five-percent);
-            padding: $quarter-percent;
+            @include mixins.square-size(vars.$five-percent);
+            padding: vars.$quarter-percent;
             border-radius: 50%;
             background-repeat: no-repeat;
             background-size: cover;
@@ -73,57 +74,54 @@ tier-promo {
     .tier-free .icon-wrap ss-img {
         background-image: radial-gradient(
             circle,
-            add-alpha($muted-blue, 0.15),
-            add-alpha($muted-blue, 0.05)
+            funcs.add-alpha(vars.$muted-blue, 0.15),
+            funcs.add-alpha(vars.$muted-blue, 0.05)
         );
-        border: 2px solid add-alpha($muted-blue, 0.3);
+        border: 2px solid funcs.add-alpha(vars.$muted-blue, 0.3);
     }
 
     .tier-pro .icon-wrap ss-img {
         background-image: radial-gradient(
             circle,
-            add-alpha($teal-green, 0.15),
-            add-alpha($teal-green, 0.05)
+            funcs.add-alpha(vars.$teal-green, 0.15),
+            funcs.add-alpha(vars.$teal-green, 0.05)
         );
-        border: 2px solid add-alpha($teal-green, 0.3);
+        border: 2px solid funcs.add-alpha(vars.$teal-green, 0.3);
     }
 
     .tier-ultimate .icon-wrap ss-img {
         background-image: radial-gradient(
             circle,
-            add-alpha($sunbeam-yellow, 0.25),
-            add-alpha($sunbeam-yellow, 0.05)
+            funcs.add-alpha(vars.$sunbeam-yellow, 0.25),
+            funcs.add-alpha(vars.$sunbeam-yellow, 0.05)
         );
-        border: 2px solid add-alpha($sunbeam-yellow, 0.5);
-        box-shadow: 0 0 12px add-alpha($sunbeam-yellow, 0.3);
+        border: 2px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.5);
+        box-shadow: 0 0 12px funcs.add-alpha(vars.$sunbeam-yellow, 0.3);
     }
 
-    // --- Title ---
     ss-title {
-        margin: $quarter-percent 0;
+        margin: vars.$quarter-percent 0;
 
         h3 {
-            color: $midnight-navy;
+            color: vars.$midnight-navy;
             font-weight: 700;
         }
     }
 
-    // --- Price label ---
     .price-label {
-        font-size: $smallest-p-font-size;
+        font-size: vars.$smallest-p-font-size;
         font-weight: 600;
-        color: $blue-gray;
-        margin-bottom: $quarter-percent;
+        color: vars.$blue-gray;
+        margin-bottom: vars.$quarter-percent;
         letter-spacing: 0.02em;
     }
 
-    // --- Description ---
     ss-paragraph {
         text-align: center;
 
         p {
-            color: $blue-gray;
-            font-size: $smallest-p-font-size;
+            color: vars.$blue-gray;
+            font-size: vars.$smallest-p-font-size;
             line-height: 1.5;
         }
     }
@@ -132,67 +130,66 @@ tier-promo {
     .feature-list {
         list-style: none;
         padding: 0;
-        margin: $half-percent 0;
+        margin: vars.$half-percent 0;
         width: 100%;
         text-align: left;
 
         li {
             display: flex;
             align-items: center;
-            gap: $quarter-percent;
-            padding: $eighth-percent 0;
-            font-size: $smallest-p-font-size;
-            color: $blue-gray;
+            gap: vars.$quarter-percent;
+            padding: vars.$eighth-percent 0;
+            font-size: vars.$smallest-p-font-size;
+            color: vars.$blue-gray;
 
             .check {
-                color: $teal-green;
+                color: vars.$teal-green;
                 font-weight: 700;
                 flex-shrink: 0;
             }
 
             &.highlight {
                 font-weight: 700;
-                color: $midnight-navy;
+                color: vars.$midnight-navy;
 
                 .check {
-                    color: $sunbeam-yellow;
+                    color: vars.$sunbeam-yellow;
                 }
             }
         }
     }
 
     .tier-free .feature-list .check {
-        color: $muted-blue;
+        color: vars.$muted-blue;
     }
 
     .tier-pro .feature-list .check {
-        color: $teal-green;
+        color: vars.$teal-green;
     }
 
     .tier-ultimate .feature-list .check {
-        color: $sunbeam-yellow;
+        color: vars.$sunbeam-yellow;
     }
 
-    // --- Ultimate exclusive section ---
     .ultimate-exclusive {
         width: 100%;
-        margin: $half-percent 0;
-        padding: $half-percent;
-        border-radius: $quarter-percent;
+        margin: vars.$half-percent 0;
+        padding: vars.$half-percent;
+        border-radius: vars.$quarter-percent;
         background: linear-gradient(
             135deg,
-            add-alpha($sunbeam-yellow, 0.08),
-            add-alpha($midnight-navy, 0.06)
+            funcs.add-alpha(vars.$sunbeam-yellow, 0.08),
+            funcs.add-alpha(vars.$midnight-navy, 0.06)
         );
-        border: 1px solid add-alpha($sunbeam-yellow, 0.3);
+        border: 1px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.3);
 
         .exclusive-badge {
-            @include flex(flex-start, center, row);
-            gap: $quarter-percent;
+            @include mixins.flex(flex-start, center, row);
+            gap: vars.$quarter-percent;
             font-weight: 700;
             font-size: 0.95rem;
-            color: $midnight-navy;
-            margin-bottom: $eighth-percent;
+            color: vars.$midnight-navy;
+            margin-bottom: vars.$eighth-percent;
 
             .bolt {
                 font-size: 1.1rem;
@@ -200,10 +197,10 @@ tier-promo {
         }
 
         .exclusive-desc {
-            font-size: $smallest-p-font-size;
-            color: $blue-gray;
+            font-size: vars.$smallest-p-font-size;
+            color: vars.$blue-gray;
             line-height: 1.4;
-            margin: 0 0 $quarter-percent 0;
+            margin: 0 0 vars.$quarter-percent 0;
 
             &:last-child {
                 margin-bottom: 0;
@@ -211,10 +208,9 @@ tier-promo {
         }
     }
 
-    // --- CTA button ---
     cta-button {
         margin-top: auto;
-        padding-top: $half-percent;
+        padding-top: vars.$half-percent;
         width: 100%;
         text-align: center;
 
@@ -224,39 +220,38 @@ tier-promo {
     }
 
     .tier-free cta-button .cta-button {
-        background-color: $muted-blue;
-        color: $pure-white;
+        background-color: vars.$muted-blue;
+        color: vars.$pure-white;
 
         &:hover {
-            box-shadow: add-alpha($muted-blue, 0.4) 0 simplest-calc(0.25)
-                simplest-calc(0.75);
+            box-shadow: funcs.add-alpha(vars.$muted-blue, 0.4) 0 funcs.simplest-calc(0.25)
+                funcs.simplest-calc(0.75);
         }
     }
 
     .tier-pro cta-button .cta-button {
-        background-color: $teal-green;
-        color: $pure-white;
+        background-color: vars.$teal-green;
+        color: vars.$pure-white;
 
         &:hover {
-            box-shadow: add-alpha($teal-green, 0.4) 0 simplest-calc(0.25)
-                simplest-calc(0.75);
+            box-shadow: funcs.add-alpha(vars.$teal-green, 0.4) 0 funcs.simplest-calc(0.25)
+                funcs.simplest-calc(0.75);
         }
     }
 
     .tier-ultimate cta-button .cta-button {
-        background-color: $sunbeam-yellow;
-        color: $midnight-navy;
+        background-color: vars.$sunbeam-yellow;
+        color: vars.$midnight-navy;
 
         &:hover {
-            box-shadow: add-alpha($sunbeam-yellow, 0.5) 0 simplest-calc(0.25)
-                simplest-calc(0.75);
+            box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.5) 0 funcs.simplest-calc(0.25)
+                funcs.simplest-calc(0.75);
         }
     }
 
-    // --- Responsive ---
-    @include mobile-breakpoint {
+    @include mixins.mobile-breakpoint {
         .tier-card {
-            padding: $one-percent $half-percent;
+            padding: vars.$one-percent vars.$half-percent;
 
             &.tier-ultimate {
                 transform: none;
@@ -268,7 +263,7 @@ tier-promo {
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .tier-card {
             transition: none;
 

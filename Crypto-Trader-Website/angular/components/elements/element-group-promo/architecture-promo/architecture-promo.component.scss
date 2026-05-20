@@ -1,31 +1,34 @@
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 architecture-promo {
     width: 100%;
 
     .section-content {
-        width: $eighty-percent;
+        width: vars.$eighty-percent;
         max-width: 1200px;
         margin: 0 auto;
-        padding: $three-percent 0;
+        padding: vars.$three-percent 0;
     }
 
     .section-header {
-        @include section-header-centered($midnight-navy, 0.8);
+        @include mixins.section-header-centered(vars.$midnight-navy, 0.8);
 
         eyebrow-label {
-            color: $mint-green;
+            color: vars.$mint-green;
         }
 
         ss-title h2 {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         }
 
         subtitle {
-            color: $alabaster-stone;
+            color: vars.$alabaster-stone;
             opacity: 0.85;
         }
     }
@@ -33,8 +36,8 @@ architecture-promo {
     .architecture-section {
         width: 100%;
         background:
-            radial-gradient(ellipse at 50% 30%, add-alpha($teal-green, 0.06), transparent 60%),
-            linear-gradient(180deg, $deep-ocean, $midnight-navy);
-        padding: $two-percent 0;
+            radial-gradient(ellipse at 50% 30%, funcs.add-alpha(vars.$teal-green, 0.06), transparent 60%),
+            linear-gradient(180deg, vars.$deep-ocean, vars.$midnight-navy);
+        padding: vars.$two-percent 0;
     }
 }

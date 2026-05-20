@@ -1,9 +1,9 @@
 // accordion.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
 
 accordion {
     display: block;
-    margin: $half-percent 0;
+    margin: vars.$half-percent 0;
     ss-title {
         p {
             font-size: 1rem;

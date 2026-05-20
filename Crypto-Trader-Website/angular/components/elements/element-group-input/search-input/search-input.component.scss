@@ -1,36 +1,38 @@
 // search-input.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 search-input {
     background-color: #d0d2dc;
-    min-width: $twenty-percent;
-    min-height: $four-percent;
+    min-width: vars.$twenty-percent;
+    min-height: vars.$four-percent;
 
     @extend %softer-border-radius;
 
     // box-shadow: $charcoal 0 0 $quarter-percent;
     .search-input-field {
         @extend %softer-border-radius;
-        border: $thinnest-border solid $charcoal;
-        font-family: $jetbrains-mono-font;
+        border: vars.$thinnest-border solid vars.$charcoal;
+        font-family: vars.$jetbrains-mono-font;
 
         .input-with-icon {
-            @include flex(flex-start, center, row);
+            @include mixins.flex(flex-start, center, row);
 
             mat-icon {
-                margin-right: $half-percent;
+                margin-right: vars.$half-percent;
             }
 
             input {
-                border-bottom: calc($very-thin-border * 1.5) solid
-                    $light-charcoal;
-                padding: $quarter-percent;
+                border-bottom: calc(#{vars.$very-thin-border} * 1.5) solid
+                    vars.$light-charcoal;
+                padding: vars.$quarter-percent;
             }
         }
     }
 
     &.disabled {
-        background-color: $charcoal;
+        background-color: vars.$charcoal;
         filter: brightness(0.7);
         opacity: 0.4;
 
@@ -46,6 +48,6 @@ search-input {
 
 .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
     background-color: #d0d2dc;
-    min-width: $twenty-percent;
-    min-height: $four-percent;
+    min-width: vars.$twenty-percent;
+    min-height: vars.$four-percent;
 }

@@ -1,17 +1,19 @@
 // vendor-options.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 vendor-options {
     // background-color: $pure-white;
     // padding: $one-percent;
-    @include flex(space-around, center, column);
+    @include mixins.flex(space-around, center, column);
 
     @extend %soft-border-radius;
 
     .vendors-title-div {
-        @include flex(center, center, column);
-        margin: $half-percent 0 $one-half-percent 0;
+        @include mixins.flex(center, center, column);
+        margin: vars.$half-percent 0 vars.$one-half-percent 0;
 
         ss-title {
             @extend %signature-brand-gradient-text;
@@ -19,7 +21,7 @@ vendor-options {
     }
 
     .vendor-options-list {
-        @include flex(space-around, center, row);
+        @include mixins.flex(space-around, center, row);
         width: 100%;
         height: 100%;
     }

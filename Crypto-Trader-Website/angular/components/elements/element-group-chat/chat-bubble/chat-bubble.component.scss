@@ -1,5 +1,7 @@
 // chat-bubble.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 chat-bubble {
     display: block;
@@ -7,8 +9,8 @@ chat-bubble {
 
     .chat-bubble {
         max-width: 75%;
-        padding: $half-percent $three-quarter-percent;
-        border-radius: $half-percent;
+        padding: vars.$half-percent vars.$three-quarter-percent;
+        border-radius: vars.$half-percent;
         word-wrap: break-word;
 
         .chat-bubble-role {
@@ -28,21 +30,21 @@ chat-bubble {
 
         &.user {
             margin-left: auto;
-            background-color: add-alpha($sunbeam-yellow, 0.15);
-            color: $alabaster-stone;
+            background-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.15);
+            color: vars.$alabaster-stone;
 
             .chat-bubble-role {
-                color: $sunbeam-yellow;
+                color: vars.$sunbeam-yellow;
             }
         }
 
         &.assistant {
             margin-right: auto;
-            background-color: add-alpha($pure-white, 0.06);
-            color: $alabaster-stone;
+            background-color: funcs.add-alpha(vars.$pure-white, 0.06);
+            color: vars.$alabaster-stone;
 
             .chat-bubble-role {
-                color: add-alpha($pure-white, 0.5);
+                color: funcs.add-alpha(vars.$pure-white, 0.5);
             }
         }
     }

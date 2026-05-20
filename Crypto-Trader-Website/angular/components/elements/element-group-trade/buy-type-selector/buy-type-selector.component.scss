@@ -1,18 +1,20 @@
 // buy-type-selector.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 buy-type-selector {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
     background-color: white;
-    margin: $one-percent 0;
+    margin: vars.$one-percent 0;
 
     // box-shadow: add-alpha($blue-gray, 0.5) 0 $quarter-percent $quarter-percent 0;
     @extend %softer-border-radius;
-    padding: $half-percent;
+    padding: vars.$half-percent;
 
     buy-type {
         &:first-child {
-            margin-right: $half-percent;
+            margin-right: vars.$half-percent;
         }
     }
 }

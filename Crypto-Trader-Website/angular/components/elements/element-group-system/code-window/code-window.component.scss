@@ -1,29 +1,31 @@
 // code-window.component.scss
-@use 'angular/styles/globals' as *;
-@use 'angular/styles/gradients/global_gradient_variables' as *;
+@use 'angular/styles/global-variables' as vars;
+@use 'angular/styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
 
 // TODO: Replace pixels with variables.
 
 code-window {
     display: block;
     width: 100%;
-    background: add-alpha($midnight-navy, 0.7);
+    background: funcs.add-alpha(vars.$midnight-navy, 0.7);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid add-alpha($pure-white, 0.08);
-    border-radius: $half-percent;
+    border: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
+    border-radius: vars.$half-percent;
     overflow: hidden;
-    box-shadow: 0 12px 40px add-alpha(black, 0.4);
+    box-shadow: 0 12px 40px funcs.add-alpha(black, 0.4);
 
     .window-bar {
-        @include flex(flex-start, center, row);
+        @include mixins.flex(flex-start, center, row);
         gap: 6px;
-        padding: $quarter-percent $half-percent;
-        background: add-alpha(black, 0.3);
-        border-bottom: 1px solid add-alpha($pure-white, 0.06);
+        padding: vars.$quarter-percent vars.$half-percent;
+        background: funcs.add-alpha(black, 0.3);
+        border-bottom: 1px solid funcs.add-alpha(vars.$pure-white, 0.06);
 
         .dot {
-            @include code-window-dot;
+            @include mixins.code-window-dot;
 
             &.red { background: #ff5f57; }
             &.yellow { background: #febc2e; }
@@ -31,16 +33,16 @@ code-window {
         }
 
         .window-title {
-            margin-left: $half-percent;
+            margin-left: vars.$half-percent;
             font-size: 0.75rem;
-            color: add-alpha($pure-white, 0.5);
+            color: funcs.add-alpha(vars.$pure-white, 0.5);
             font-family: monospace;
         }
     }
 
     .code-body {
-        padding: $one-percent;
-        color: add-alpha($teal-green, 0.85);
+        padding: vars.$one-percent;
+        color: funcs.add-alpha(vars.$teal-green, 0.85);
         font-family: monospace;
         font-size: 0.85rem;
         line-height: 1.8;

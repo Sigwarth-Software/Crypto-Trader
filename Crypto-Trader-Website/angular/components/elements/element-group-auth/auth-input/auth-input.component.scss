@@ -1,5 +1,5 @@
 // auth-input-style.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
 
 $auth-font: 'Inter', system-ui, 'Segoe UI', sans-serif;
 // TODO: Replace pixels with variables.
@@ -47,7 +47,7 @@ auth-input {
 
             &:focus {
                 outline: none;
-                border-color: $muted-blue;
+                border-color: vars.$muted-blue;
                 box-shadow: 0 0 0 4px rgba(64, 116, 168, 0.14);
             }
 
@@ -79,7 +79,7 @@ auth-input {
                     width: 18px;
                     height: 18px;
                     border-radius: 4px;
-                    accent-color: $muted-blue;
+                    accent-color: vars.$muted-blue;
                     cursor: pointer;
 
                     &:hover {
@@ -98,7 +98,7 @@ auth-input {
     }
 
     .terms-link {
-        color: $muted-blue;
+        color: vars.$muted-blue;
         text-decoration: none;
         font-weight: 500;
 

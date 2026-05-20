@@ -1,17 +1,20 @@
 // chat-panel.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 chat-panel {
-    @include flex(stretch, stretch, column);
+    @include mixins.flex(stretch, stretch, column);
     @extend %fill-container;
-    background-color: $charcoal;
+    background-color: vars.$charcoal;
     height: 100%;
 
     .chat-header {
-        @include flex(center, flex-start, row);
-        gap: $half-percent;
-        padding: $three-quarter-percent $one-percent;
-        border-bottom: 1px solid add-alpha($pure-white, 0.08);
+        @include mixins.flex(center, flex-start, row);
+        gap: vars.$half-percent;
+        padding: vars.$three-quarter-percent vars.$one-percent;
+        border-bottom: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
 
         .chat-header-icon {
             width: 1.5rem;
@@ -20,11 +23,11 @@ chat-panel {
     }
 
     .chat-messages {
-        @include flex(flex-start, flex-start, column);
+        @include mixins.flex(flex-start, flex-start, column);
         flex: 1;
         overflow-y: auto;
-        padding: $one-percent;
-        gap: $half-percent;
+        padding: vars.$one-percent;
+        gap: vars.$half-percent;
 
         &::-webkit-scrollbar {
             width: 6px;
@@ -35,16 +38,16 @@ chat-panel {
         }
 
         &::-webkit-scrollbar-thumb {
-            background: add-alpha($pure-white, 0.15);
+            background: funcs.add-alpha(vars.$pure-white, 0.15);
             border-radius: 3px;
 
             &:hover {
-                background: add-alpha($pure-white, 0.25);
+                background: funcs.add-alpha(vars.$pure-white, 0.25);
             }
         }
     }
 
     chat-input {
-        border-top: 1px solid add-alpha($pure-white, 0.08);
+        border-top: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
     }
 }

@@ -1,13 +1,15 @@
 // buy-type.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 buy-type {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
 
     // max-width: $seven-percent;
     @extend %nav-button;
 
     ss-img {
-        @include square-size($five-percent);
+        @include mixins.square-size(vars.$five-percent);
     }
 }

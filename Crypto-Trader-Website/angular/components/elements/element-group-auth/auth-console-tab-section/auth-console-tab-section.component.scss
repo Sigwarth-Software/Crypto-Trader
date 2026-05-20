@@ -1,8 +1,8 @@
 // auth-console-tab-section-style.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-mixins' as mixins;
 // TODO: Replace pixels with variables.
 auth-console-tab-section {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
     width: 100%;
     background: #f1f5f9;
     border-radius: 12px;

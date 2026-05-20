@@ -1,32 +1,31 @@
 //=================================-Imports-==================================
-@use 'global-variables' as *;
-@use 'global-mixins' as *;
-@use 'global-functions' as *;
-@use '@theoliverlear/styles-suite/sigwarth-placeholders' as *;
-@use '@theoliverlear/styles-suite/sigwarth-functions' as *;
-@use '@theoliverlear/styles-suite/sigwarth-mixins' as *;
-@use '@theoliverlear/styles-suite/sigwarth-variables' as *;
-
+@use 'global-variables' as vars;
+@use 'global-mixins' as mixins;
+@use 'global-functions' as funcs;
+@use '@theoliverlear/styles-suite/sigwarth-functions' as ss-funcs;
+@use '@theoliverlear/styles-suite/sigwarth-mixins' as ss-mixins;
+@use '@theoliverlear/styles-suite/sigwarth-variables' as ss-vars;
+@use '@theoliverlear/styles-suite/sigwarth-placeholders' as ss-placeholders;
 //===============================-Placeholders-===============================
 
 %nav-bar-padding-top {
-    padding-top: $four-percent;
+    padding-top: vars.$four-percent;
 }
 
 %transparent-text {
-    -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
-    color: add-alpha($pure-white, 1);
+    -webkit-text-stroke: 2px ss-funcs.add-alpha(ss-vars.$charcoal, 0.1);
+    color: ss-funcs.add-alpha(vars.$pure-white, 1);
     text-decoration: underline;
 }
 
 %nav-button {
-    background-color: $ocean-blue;
-    border-radius: $quarter-percent;
-    padding: $quarter-percent;
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
-        simplest-calc(0.001);
+    background-color: vars.$ocean-blue;
+    border-radius: vars.$quarter-percent;
+    padding: vars.$quarter-percent;
+    box-shadow: ss-funcs.add-alpha(ss-vars.$light-charcoal, 0.5) 0 0 vars.$quarter-percent
+        ss-funcs.simplest-calc(0.001);
 
-    @include square-size($two-half-percent);
+    @include ss-mixins.square-size(vars.$two-half-percent);
     transition: background-color, box-shadow, transform, scale, 0.2s;
 
     ss-anchor {
@@ -46,8 +45,8 @@
     }
 
     &:hover {
-        $hover-box-shadow-size: simplest-calc(0.15);
-        box-shadow: $morning-frost-blue $hover-box-shadow-size
+        $hover-box-shadow-size: ss-funcs.simplest-calc(0.15);
+        box-shadow: vars.$morning-frost-blue $hover-box-shadow-size
             $hover-box-shadow-size;
         cursor: pointer;
     }
@@ -55,22 +54,38 @@
     &:active {
         box-shadow: none;
 
-        $hover-box-shadow-size: simplest-calc(0.15);
+        $hover-box-shadow-size: ss-funcs.simplest-calc(0.15);
         transform: translate($hover-box-shadow-size, $hover-box-shadow-size);
     }
 }
 
+%fill-container {
+    @include ss-mixins.square-size(100%);
+}
+
+%soft-border-radius {
+    border-radius: ss-vars.$one-percent;
+}
+
+%circle-border-radius {
+    border-radius: 50%;
+}
+
 %softer-border-radius {
-    border-radius: $quarter-percent;
+    border-radius: vars.$quarter-percent;
 }
 
 %light-box-shadow {
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
-        simplest-calc(0.001);
+    box-shadow: ss-funcs.add-alpha(ss-vars.$light-charcoal, 0.5) 0 0 vars.$quarter-percent
+        ss-funcs.simplest-calc(0.001);
+}
+
+%soft-text-shadow {
+    text-shadow: ss-funcs.add-alpha(ss-vars.$absolute-black, 0.3) 0 0 vars.$half-percent;
 }
 
 %softer-text-shadow {
-    text-shadow: add-alpha($absolute-black, 0.2) 0 0 $half-percent;
+    text-shadow: ss-funcs.add-alpha(ss-vars.$absolute-black, 0.2) 0 0 vars.$half-percent;
 }
 // TODO: Move to global animations file.
 @keyframes fadeSlideUp {

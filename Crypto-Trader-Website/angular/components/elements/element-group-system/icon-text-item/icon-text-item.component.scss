@@ -1,14 +1,15 @@
 // icon-text-item.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 icon-text-item {
-    @include flex(flex-start, center, row);
-    gap: $half-percent;
+    @include mixins.flex(flex-start, center, row);
+    gap: vars.$half-percent;
     font-size: 1rem;
     line-height: 1.5;
 
     .item-icon {
-        @include square-size(1.4rem);
+        @include mixins.square-size(1.4rem);
         flex-shrink: 0;
     }
 }

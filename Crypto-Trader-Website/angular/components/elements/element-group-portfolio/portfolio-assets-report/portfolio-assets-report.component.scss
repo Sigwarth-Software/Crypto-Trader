@@ -1,17 +1,18 @@
 // portfolio-assets-report.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 portfolio-assets-report {
-    background-color: $off-white;
+    background-color: vars.$off-white;
 
     @extend %softer-border-radius;
-    padding: $one-percent;
-    width: $sixty-percent;
-    margin: $one-percent 0;
+    padding: vars.$one-percent;
+    width: vars.$sixty-percent;
+    margin: vars.$one-percent 0;
 
     hr {
-        border: $very-thin-border $charcoal solid;
+        border: vars.$very-thin-border vars.$charcoal solid;
         width: 95%;
     }
 

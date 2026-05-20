@@ -1,24 +1,27 @@
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 interface-promo {
     width: 100%;
 
     .section-content {
-        width: $eighty-percent;
+        width: vars.$eighty-percent;
         max-width: 1200px;
         margin: 0 auto;
-        padding: $three-percent 0;
+        padding: vars.$three-percent 0;
     }
 
     .interfaces-section {
         width: 100%;
         background:
-            radial-gradient(ellipse at 30% 50%, add-alpha($muted-blue, 0.15), transparent),
-            $midnight-navy;
-        padding: $two-percent 0;
+            radial-gradient(ellipse at 30% 50%, funcs.add-alpha(vars.$muted-blue, 0.15), transparent),
+            vars.$midnight-navy;
+        padding: vars.$two-percent 0;
 
         .section-header {
             text-align: left;
@@ -26,30 +29,30 @@ interface-promo {
     }
 
     .interfaces-layout {
-        @include flex(space-between, flex-start, row);
-        gap: $three-percent;
+        @include mixins.flex(space-between, flex-start, row);
+        gap: vars.$three-percent;
     }
 
     .interfaces-copy {
         flex: 0 0 40%;
 
         eyebrow-label {
-            color: $mint-green;
+            color: vars.$mint-green;
         }
 
         ss-title h2 {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         }
 
         subtitle {
-            color: $alabaster-stone;
+            color: vars.$alabaster-stone;
             opacity: 0.85;
-            margin-bottom: $one-percent;
+            margin-bottom: vars.$one-percent;
             display: block;
         }
 
         cta-button {
-            margin-top: $one-percent;
+            margin-top: vars.$one-percent;
         }
     }
 }

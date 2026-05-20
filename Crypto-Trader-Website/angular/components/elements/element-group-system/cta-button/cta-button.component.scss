@@ -1,5 +1,7 @@
 // cta-button.component.scss
-@use 'angular/styles/globals' as *;
+@use 'angular/styles/global-variables' as vars;
+@use 'angular/styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 // TODO: Replace pixels with variables.
 
@@ -8,11 +10,11 @@ cta-button {
 
     .cta-button {
         display: inline-block;
-        background-color: $sunbeam-yellow;
-        color: $midnight-navy;
+        background-color: vars.$sunbeam-yellow;
+        color: vars.$midnight-navy;
         border: none;
-        border-radius: $half-percent;
-        padding: $half-percent $one-half-percent;
+        border-radius: vars.$half-percent;
+        padding: vars.$half-percent vars.$one-half-percent;
         font-size: 1.05rem;
         font-weight: 700;
         letter-spacing: 0.03em;
@@ -22,42 +24,42 @@ cta-button {
             transform 200ms ease;
 
         &:hover {
-            $box-shadow-size: simplest-calc(0.15);
-            box-shadow: add-alpha($sunbeam-yellow, 0.4)
-                0 $box-shadow-size simplest-calc(0.175);
+            $box-shadow-size: funcs.simplest-calc(0.15);
+            box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.4)
+                0 $box-shadow-size funcs.simplest-calc(0.175);
             cursor: pointer;
         }
 
         &:active {
             box-shadow: none;
-            $offset: simplest-calc(0.25);
+            $offset: funcs.simplest-calc(0.25);
             transform: translate($offset, $offset);
         }
     }
 
     &.ghost .cta-button {
         background-color: transparent;
-        color: $alabaster-stone;
-        border: 2px solid $alabaster-stone;
+        color: vars.$alabaster-stone;
+        border: 2px solid vars.$alabaster-stone;
 
         &:hover {
-            background-color: add-alpha($alabaster-stone, 0.1);
-            box-shadow: add-alpha($alabaster-stone, 0.2) 0 0 simplest-calc(0.5);
+            background-color: funcs.add-alpha(vars.$alabaster-stone, 0.1);
+            box-shadow: funcs.add-alpha(vars.$alabaster-stone, 0.2) 0 0 funcs.simplest-calc(0.5);
         }
     }
 
     &.ghost-glass .cta-button {
         background: transparent;
-        color: add-alpha($pure-white, 0.85);
-        border: 1px solid add-alpha($pure-white, 0.2);
+        color: funcs.add-alpha(vars.$pure-white, 0.85);
+        border: 1px solid funcs.add-alpha(vars.$pure-white, 0.2);
 
         &:hover {
-            background: add-alpha($pure-white, 0.06);
-            border-color: add-alpha($pure-white, 0.4);
+            background: funcs.add-alpha(vars.$pure-white, 0.06);
+            border-color: funcs.add-alpha(vars.$pure-white, 0.4);
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .cta-button {
             transition: none;
         }

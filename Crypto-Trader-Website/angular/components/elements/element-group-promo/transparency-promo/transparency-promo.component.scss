@@ -1,43 +1,46 @@
 // transparency-promo.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 // TODO: Replace pixels with variables.
 transparency-promo {
-    @include promo-section-block;
+    @include mixins.promo-section-block;
 
     .transparency-backdrop {
-        @include dark-section-backdrop;
-        padding: $three-percent $five-percent;
+        @include mixins.dark-section-backdrop;
+        padding: vars.$three-percent vars.$five-percent;
         background:
-            radial-gradient(ellipse at 20% 80%, add-alpha($teal-green, 0.08), transparent 50%),
-            radial-gradient(ellipse at 80% 20%, add-alpha($muted-blue, 0.1), transparent 50%),
-            linear-gradient(180deg, $midnight-navy, $deep-ocean);
+            radial-gradient(ellipse at 20% 80%, funcs.add-alpha(vars.$teal-green, 0.08), transparent 50%),
+            radial-gradient(ellipse at 80% 20%, funcs.add-alpha(vars.$muted-blue, 0.1), transparent 50%),
+            linear-gradient(180deg, vars.$midnight-navy, vars.$deep-ocean);
     }
 
     // --- Floating orbs behind the glass ---
     .orb {
-        @include decorative-orb;
+        @include mixins.decorative-orb;
 
         &.orb-1 {
-            @include square-size(200px);
-            background: add-alpha($teal-green, 0.15);
+            @include mixins.square-size(200px);
+            background: funcs.add-alpha(vars.$teal-green, 0.15);
             top: 10%;
             left: 15%;
         }
 
         &.orb-2 {
-            @include square-size(150px);
-            background: add-alpha($muted-blue, 0.12);
+            @include mixins.square-size(150px);
+            background: funcs.add-alpha(vars.$muted-blue, 0.12);
             bottom: 15%;
             right: 20%;
         }
 
         &.orb-3 {
-            @include square-size(100px);
-            background: add-alpha($sunbeam-yellow, 0.08);
+            @include mixins.square-size(100px);
+            background: funcs.add-alpha(vars.$sunbeam-yellow, 0.08);
             top: 50%;
             right: 40%;
         }
@@ -53,46 +56,46 @@ transparency-promo {
         font-family: monospace;
         font-size: 0.85rem;
         line-height: 2.5;
-        color: add-alpha($teal-green, 0.06);
+        color: funcs.add-alpha(vars.$teal-green, 0.06);
         white-space: pre;
         overflow: hidden;
         pointer-events: none;
         user-select: none;
-        padding: $two-percent;
+        padding: vars.$two-percent;
     }
 
     // --- Frosted glass panel ---
     .glass-panel {
-        @include glass-panel;
-        @include two-column-layout;
-        padding: $two-percent $three-percent;
+        @include mixins.glass-panel;
+        @include mixins.two-column-layout;
+        padding: vars.$two-percent vars.$three-percent;
 
         // Reflective accent line at top
         &::before {
-            @include glass-reflection-line;
+            @include mixins.glass-reflection-line;
         }
 
         // Shimmer animation sweep
         &::after {
-            @include shimmer-overlay;
+            @include mixins.shimmer-overlay;
         }
 
         // --- Entrance animation ---
-        @include scroll-reveal-entrance($distance: 16px);
+        @include mixins.scroll-reveal-entrance($distance: 16px);
         transform: scale(0.97) translateY(16px);
     }
 
     // --- Copy column ---
     .copy-col {
         ss-title {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         }
 
         .trust-points {
-            @include flex(flex-start, flex-start, column);
-            gap: $half-percent;
-            margin-top: $half-percent;
-            color: add-alpha($pure-white, 0.9);
+            @include mixins.flex(flex-start, flex-start, column);
+            gap: vars.$half-percent;
+            margin-top: vars.$half-percent;
+            color: funcs.add-alpha(vars.$pure-white, 0.9);
 
             icon-text-item .item-icon {
                 filter: brightness(1.2);
@@ -100,27 +103,27 @@ transparency-promo {
         }
 
         .cta-row {
-            @include flex(flex-start, center, row);
-            gap: $one-percent;
-            margin-top: $one-percent;
+            @include mixins.flex(flex-start, center, row);
+            gap: vars.$one-percent;
+            margin-top: vars.$one-percent;
         }
     }
 
     // --- Glass-primary CTA override ---
     .glass-primary .cta-button {
-        background: add-alpha($teal-green, 0.25);
-        border: 1px solid add-alpha($teal-green, 0.4);
-        color: $pure-white;
+        background: funcs.add-alpha(vars.$teal-green, 0.25);
+        border: 1px solid funcs.add-alpha(vars.$teal-green, 0.4);
+        color: vars.$pure-white;
 
         &:hover {
-            background: add-alpha($teal-green, 0.4);
-            box-shadow: 0 0 16px add-alpha($teal-green, 0.3);
+            background: funcs.add-alpha(vars.$teal-green, 0.4);
+            box-shadow: 0 0 16px funcs.add-alpha(vars.$teal-green, 0.3);
         }
     }
 
     // --- Code window entrance ---
     code-window {
-        @include scroll-reveal-entrance($delay: 200ms, $distance: 20px);
+        @include mixins.scroll-reveal-entrance($delay: 200ms, $distance: 20px);
     }
 
     // --- Scroll-reveal entrance triggers ---
@@ -136,20 +139,20 @@ transparency-promo {
     }
 
     // --- Responsive ---
-    @include mobile-breakpoint {
+    @include mixins.mobile-breakpoint {
         .glass-panel {
-            @include two-column-responsive;
+            @include mixins.two-column-responsive;
         }
 
         .cta-row {
-            @include flex(flex-start, center, column);
+            @include mixins.flex(flex-start, center, column);
         }
     }
 
     // --- Reduced motion ---
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .glass-panel {
-            @include reduced-motion-reset;
+            @include mixins.reduced-motion-reset;
 
             &::after {
                 animation: none;
@@ -158,7 +161,7 @@ transparency-promo {
         }
 
         .code-window {
-            @include reduced-motion-reset;
+            @include mixins.reduced-motion-reset;
         }
     }
 }

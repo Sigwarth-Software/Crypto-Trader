@@ -1,7 +1,8 @@
 // nav-arrows.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 nav-arrows {
-    @include flex(center, center, row);
-    margin: $half-percent;
+    @include mixins.flex(center, center, row);
+    margin: vars.$half-percent;
 }

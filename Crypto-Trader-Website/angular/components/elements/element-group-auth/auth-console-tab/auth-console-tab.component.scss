@@ -1,10 +1,11 @@
 // auth-console-tab-style.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 $auth-font: 'Inter', system-ui, 'Segoe UI', sans-serif;
 // TODO: Replace px with variables.
 auth-console-tab {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
     flex: 1;
     padding: 10px 0;
     border-radius: 10px;
@@ -26,7 +27,7 @@ auth-console-tab {
     }
 
     &.active {
-        background: $pure-white;
+        background: vars.$pure-white;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
         ss-title {

@@ -1,31 +1,34 @@
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 pipeline-promo {
     width: 100%;
 
     .section-content {
-        width: $eighty-percent;
+        width: vars.$eighty-percent;
         max-width: 1200px;
         margin: 0 auto;
-        padding: $three-percent 0;
+        padding: vars.$three-percent 0;
     }
 
     .section-header {
-        @include section-header-centered($midnight-navy, 0.8);
+        @include mixins.section-header-centered(vars.$midnight-navy, 0.8);
 
         eyebrow-label {
-            color: $mint-green;
+            color: vars.$mint-green;
         }
 
         ss-title h2 {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         }
 
         subtitle {
-            color: $alabaster-stone;
+            color: vars.$alabaster-stone;
             opacity: 0.85;
         }
     }
@@ -33,16 +36,16 @@ pipeline-promo {
     .pipeline-section {
         width: 100%;
         background:
-            radial-gradient(ellipse at 30% 50%, add-alpha($teal-green, 0.08), transparent 50%),
-            linear-gradient(180deg, $midnight-navy, $deep-ocean);
-        padding: $two-percent 0;
+            radial-gradient(ellipse at 30% 50%, funcs.add-alpha(vars.$teal-green, 0.08), transparent 50%),
+            linear-gradient(180deg, vars.$midnight-navy, vars.$deep-ocean);
+        padding: vars.$two-percent 0;
     }
 
     .pipeline-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: $one-half-percent;
-        margin-bottom: $two-percent;
+        gap: vars.$one-half-percent;
+        margin-bottom: vars.$two-percent;
     }
 
     .code-showcase {

@@ -1,5 +1,5 @@
 // trade-row.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
 // TODO: Replace pixels with variables.
 trade-row {
     display: contents;
@@ -9,7 +9,7 @@ trade-row {
         transition: background-color 0.12s ease;
 
         &:hover {
-            background-color: rgba($air-blue, 0.3);
+            background-color: rgba(vars.$air-blue, 0.3);
         }
     }
 
@@ -27,13 +27,13 @@ trade-row {
     }
 
     .badge-buy {
-        background-color: rgba($teal-green, 0.15);
-        color: $teal-green;
+        background-color: rgba(vars.$teal-green, 0.15);
+        color: vars.$teal-green;
     }
 
     .badge-sell {
-        background-color: rgba($red-orange, 0.15);
-        color: $red-orange;
+        background-color: rgba(vars.$red-orange, 0.15);
+        color: vars.$red-orange;
     }
 
     .trade-value {
@@ -41,15 +41,15 @@ trade-row {
     }
 
     .trade-buy .trade-value {
-        color: $teal-green;
+        color: vars.$teal-green;
     }
 
     .trade-sell .trade-value {
-        color: $red-orange;
+        color: vars.$red-orange;
     }
 
     .trade-time {
-        color: $charcoal;
+        color: vars.$charcoal;
         opacity: 0.7;
         font-size: 0.8rem;
     }
