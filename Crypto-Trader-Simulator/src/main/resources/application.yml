@@ -23,7 +23,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
           producer-properties:
             linger.ms: 20
             batch.size: 65536
