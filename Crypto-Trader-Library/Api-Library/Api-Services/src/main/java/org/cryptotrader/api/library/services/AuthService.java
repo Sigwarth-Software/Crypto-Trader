@@ -12,6 +12,7 @@ import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.universal.library.model.http.AuthStatus;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.services.jwt.JwtTokenService;
+import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,12 @@ public class AuthService {
         this.userEventsPublisher = userEventsPublisher;
         this.jwtService = jwtService;
     }
+    @TimeTracked(expectedMillis = 500, shouldPersist = true)
     public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest) {
         return signup(signupRequest, null);
     }
 
+    @TimeTracked(expectedMillis = 500, shouldPersist = true)
     public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest, String jwkThumbprint) {
         String email = signupRequest.getEmail();
         String password = signupRequest.getPassword();
@@ -66,10 +69,12 @@ public class AuthService {
         this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
     }
 
+    @TimeTracked(expectedMillis = 300, shouldPersist = true)
     public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest) {
         return login(loginRequest, null);
     }
 
+    @TimeTracked(expectedMillis = 300, shouldPersist = true)
     public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest, String jwkThumbprint) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
