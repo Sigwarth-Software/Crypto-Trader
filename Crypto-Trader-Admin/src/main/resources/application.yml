@@ -39,7 +39,7 @@ spring:
           contentType: application/json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
         bindings:
           exampleEvent-in-0:
             consumer:
