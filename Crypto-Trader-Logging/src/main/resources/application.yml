@@ -24,7 +24,7 @@ spring:
       region:
         static: us-east-1
     function:
-      definition: frontendLogsConsumer
+      definition: frontendLogsConsumer;executionSpeedLogsConsumer
     stream:
       enabled: true
       defaultBinder: kafka
@@ -33,9 +33,13 @@ spring:
           destination: ct.logging.frontend.v1
           group: crypto-trader-logging
           contentType: application/json
+        executionSpeedLogsConsumer-in-0:
+          destination: ct.logging.execution-speed.v1
+          group: crypto-trader-logging
+          contentType: application/json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
           producer-properties:
             linger.ms: 20
             batch.size: 65536
@@ -50,7 +54,16 @@ spring:
               enableDlq: true
               dlqName: ct.logging.frontend.v1.DLT
               configuration:
-                group.instance.id: logging-service-01
+                group.instance.id: logging-service-frontend-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          executionSpeedLogsConsumer-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.logging.execution-speed.v1.DLT
+              configuration:
+                group.instance.id: logging-service-execution-speed-01
                 session.timeout.ms: 30000
                 heartbeat.interval.ms: 10000
                 max.poll.interval.ms: 900000
