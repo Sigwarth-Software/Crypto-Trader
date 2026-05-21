@@ -8,6 +8,16 @@ spring:
     aws:
       region:
         static: us-east-1
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        executionSpeedLogs-out-0:
+          destination: ct.logging.execution-speed.v1
+          contentType: application/json
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   jpa:
     open-in-view: false
     hibernate:
@@ -37,30 +47,6 @@ spring:
     scheduling:
       pool:
         size: 4
-#  cloud:
-#    stream:
-#      function:
-#        sanitizing:
-#          enabled: false
-#      defaultBinder: kafka
-#      bindings: # Outbound (publisher example)
-#              exampleEvent-out-0:
-#                destination: ct.example.v1
-#                contentType: application/json
-#
-#              # Inbound (subscriber example)
-#              exampleEvent-in-0:
-#                destination: ct.example.v1
-#                group: ${spring.application.name}
-#                contentType: application/json
-#      kafka:
-#        binder:
-#          brokers: localhost:9092
-#        bindings:
-#          exampleEvent-in-0:
-#            consumer:
-#              enableDlq: true
-#              dlqName: ct.example.v1.DLT
   application:
     name: crypto-trader-data
 management:
