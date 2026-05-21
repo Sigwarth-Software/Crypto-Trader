@@ -214,14 +214,13 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(payload);
     }
 
-/**
+    /**
      * Quick status check used by the UI.
      * Returns authorized=true if the current request is authenticated.
      */
     @GetMapping("/logged-in")
     public ResponseEntity<AuthResponse> isLoggedIn() {
         boolean authenticated = this.authContextService.isAuthenticated();
-        log.info("User logged in: {}", authenticated);
         AuthResponse authResponse = new AuthResponse(authenticated);
         return ResponseEntity.ok(authResponse);
     }
