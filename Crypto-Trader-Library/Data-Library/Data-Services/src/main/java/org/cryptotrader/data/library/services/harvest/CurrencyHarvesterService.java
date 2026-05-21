@@ -12,7 +12,9 @@ import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class CurrencyHarvesterService {
     private final MarketSnapshotOperations snapshotService;
     private final CurrencyJsonGenerator currencyJsonGenerator;
     private final CurrencyService currencyService;
+    private final ObjectProvider<CurrencyHarvesterService> selfProvider;
 
     //===========================-Constructors-===============================
     @Autowired
@@ -44,7 +47,8 @@ public class CurrencyHarvesterService {
                                     MarketSnapshotsBackfiller backfiller,
                                     MarketSnapshotOperations snapshotService,
                                     CurrencyJsonGenerator currencyJsonGenerator,
-                                    CurrencyService currencyService) {
+                                    CurrencyService currencyService,
+                                    ObjectProvider<CurrencyHarvesterService> selfProvider) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
         this.uniqueCurrencyRepository = uniqueCurrencyRepository;
@@ -54,11 +58,17 @@ public class CurrencyHarvesterService {
         this.snapshotService = snapshotService;
         this.currencyJsonGenerator = currencyJsonGenerator;
         this.currencyService = currencyService;
+        this.selfProvider = selfProvider;
     }
     //============================-Methods-===================================
 
     //--------------------------Save-Currencies-------------------------------
     @Scheduled(fixedRate = 5000)
+    public void runCurrencySavingSchedule() {
+        this.self().saveCurrencies();
+    }
+
+    @TimeTracked(expectedMillis = 5000, shouldPersist = true)
     public void saveCurrencies() {
         log.info("Updating currencies...");
         try {
@@ -88,7 +98,12 @@ public class CurrencyHarvesterService {
         }
     }
 
+    @TimeTracked
     public void buildMarketSnapshots(boolean fullRefresh) {
         this.backfiller.buildSnapshots(fullRefresh);
+    }
+
+    private CurrencyHarvesterService self() {
+        return this.selfProvider.getObject();
     }
 }
