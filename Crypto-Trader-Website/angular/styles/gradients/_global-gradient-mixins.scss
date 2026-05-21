@@ -1,13 +1,13 @@
-@use 'global_gradient_variables' as *;
+@use './global-gradient-variables' as gradient-vars;
 
 @mixin crypto-logo-linear-gradient($angle: 0deg) {
-    background-image: linear-gradient($angle, $crypto-logo-stops...);
+    background-image: linear-gradient($angle, gradient-vars.$crypto-logo-stops...);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 @mixin crypto-logo-radial-gradient($shape: ellipse at center) {
-    background-image: radial-gradient($shape, $crypto-logo-stops...);
+    background-image: radial-gradient($shape, gradient-vars.$crypto-logo-stops...);
     background-repeat: no-repeat;
     background-size: cover;
 }

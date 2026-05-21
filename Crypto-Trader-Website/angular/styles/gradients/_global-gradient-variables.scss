@@ -1,4 +1,4 @@
-@use '../globals' as globals;
+@use '../global-variables' as vars;
 @use 'sass:math';
 
 $light-logo: radial-gradient(
@@ -32,7 +32,7 @@ $regular-logo-webkit: -webkit-radial-gradient(
 $prominent-logo: radial-gradient(
     114.74% 114.74% at 96.86% 3.84%,
     #26929d 15%,
-    globals.$lime 50%,
+    vars.$lime 50%,
     #03404f 75%,
     #26929d 85%
 );
