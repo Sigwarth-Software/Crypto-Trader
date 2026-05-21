@@ -5,6 +5,7 @@ import org.cryptotrader.data.library.component.NewsSentimentHarvesterClient;
 import org.cryptotrader.data.library.entity.news.NewsSentiment;
 import org.cryptotrader.data.library.repository.NewsSentimentRepository;
 import org.cryptotrader.data.library.services.NewsSentimentService;
+import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class NewsSentimentHarvesterService {
 
     //    @Async
 //    @Scheduled(fixedRate = 3600000)
+    @TimeTracked(expectedMillis = 10000, shouldPersist = true)
     public void triggerDailySentimentHarvest() {
         log.info("Triggering hourly news sentiment harvest...");
         this.sentimentHarvesterClient.triggerHarvest();
@@ -33,6 +35,7 @@ public class NewsSentimentHarvesterService {
 
     //    @Async
 //    @Scheduled(fixedRate = 2592000000L)
+    @TimeTracked(expectedMillis = 60000, shouldPersist = true)
     public void backFillDailySentimentHarvest() {
         log.info("Back-filling daily news sentiment harvest...");
         this.sentimentHarvesterClient.backFillDaily();
@@ -40,6 +43,7 @@ public class NewsSentimentHarvesterService {
 
     //    @Async
 //    @Scheduled(fixedRate = 604800000L)
+    @TimeTracked(expectedMillis = 300000, shouldPersist = true)
     public void backFillWeeklySentimentHarvest() {
         log.info("Back-filling weekly news sentiment harvest...");
         this.sentimentHarvesterClient.backFillWeekly();
