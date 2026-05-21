@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
 import org.cryptotrader.data.library.model.http.ApiDataRetriever;
+import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
     public CurrencyDataRetriever() {
         super(API_URL);
     }
+    @TimeTracked(expectedMillis = 3000, shouldPersist = true)
     public Map<String ,Currency> getUpdatedCurrencies() {
         Map<String, Double> currencyMap = this.getCurrencyMap();
         Map<String, Currency> updatedCurrencyMap = new HashMap<>();
