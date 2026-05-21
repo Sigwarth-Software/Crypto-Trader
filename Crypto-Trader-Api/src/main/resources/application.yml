@@ -46,10 +46,15 @@ spring:
         enabled: false
       definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer;detailedPortfolioSimulationResponsesConsumer
     stream:
+      enabled: true
       defaultBinder: kafka
       bindings:
         userRegistered-out-0:
           destination: ct.user.registered.v1
+          contentType: application/json
+
+        executionSpeedLogs-out-0:
+          destination: ct.logging.execution-speed.v1
           contentType: application/json
 
         consoleRequests-out-0:
@@ -92,7 +97,7 @@ spring:
 
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
           producer-properties:
             linger.ms: 20
             batch.size: 65536
