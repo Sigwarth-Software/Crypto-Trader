@@ -16,11 +16,15 @@ spring:
       region:
         static: us-east-1
     stream:
+      enabled: true
       defaultBinder: kafka
       bindings:
         # Outbound (publisher example)
         exampleEvent-out-0:
           destination: ct.example.v1
+          contentType: application/json
+        executionSpeedLogs-out-0:
+          destination: ct.logging.execution-speed.v1
           contentType: application/json
 
         # Inbound (subscriber example)
@@ -30,7 +34,7 @@ spring:
           contentType: application/json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
         bindings:
           exampleEvent-in-0:
             consumer:
