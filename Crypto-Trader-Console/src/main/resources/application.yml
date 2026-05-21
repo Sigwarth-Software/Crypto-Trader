@@ -30,7 +30,7 @@ spring:
 
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
           producer-properties:
             linger.ms: 20
             batch.size: 65536
@@ -54,4 +54,3 @@ security:
     issuers: http://localhost:8080,https://api.cryptotrader.com
     issuer: https://api.cryptotrader.com
     audience: crypto-trader-api
-
