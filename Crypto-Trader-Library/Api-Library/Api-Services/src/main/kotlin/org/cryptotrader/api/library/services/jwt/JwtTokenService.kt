@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.Verification
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
+import org.cryptotrader.universal.library.model.annotation.TimeTracked
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -39,6 +40,10 @@ class JwtTokenService(
     private val verifyAlgorithm: Algorithm = Algorithm.RSA256(this.rsaKeyService.publicKey, null)
     private val audiences: List<String> = this.audienceCsv.split(",").map { it.trim() }.filter { it.isNotBlank() }
 
+    companion object {
+        private val log = LoggerFactory.getLogger(JwtTokenService::class.java)
+    }
+
     /**
      * Create a short-lived access token (JWT).
      *
@@ -51,6 +56,7 @@ class JwtTokenService(
      * @return the signed JWT as a compact string
      */
     @JvmOverloads
+    @TimeTracked(expectedMillis = 200, shouldPersist = true)
     fun generateToken(subject: String, email: String, jwkThumbprint: String? = null): String {
         val now: Instant = Instant.now()
         val expiresAt: Instant = now.plusSeconds(this.ttlSeconds)
@@ -67,6 +73,7 @@ class JwtTokenService(
             val jwtConfirmation = mapOf("jkt" to jwkThumbprint)
             jwtBuilder.withClaim("cnf", jwtConfirmation)
         }
+        log.info("Generated JWT for {}.", subject)
         return jwtBuilder.sign(this.signAlgorithm)
     }
 
@@ -81,6 +88,7 @@ class JwtTokenService(
      * @return a simple Kotlin data object with the claims we care about
      * @throws com.auth0.jwt.exceptions.JWTVerificationException if the token is invalid/expired
      */
+    @TimeTracked(expectedMillis = 200, shouldPersist = true)
     fun validateAndParse(token: String): JwtClaims {
         val verifierBuilder: Verification = JWT.require(this.verifyAlgorithm)
                                                .withIssuer(this.issuer)
@@ -94,10 +102,7 @@ class JwtTokenService(
         val expiresAt: Date? = verifiedJwt.expiresAt
         val confirmationMap: Map<String?, Any?>? = verifiedJwt.getClaim("cnf")?.asMap()
         val jwkThumbprint: String? = confirmationMap?.get("jkt")?.toString()
+        log.info("Validated JWT for {}.", email ?: "unknown user")
         return JwtClaims(subject, email, issuedAt, expiresAt, jwkThumbprint)
-    }
-
-    companion object {
-        private val log = LoggerFactory.getLogger(JwtTokenService::class.java)
     }
 }
