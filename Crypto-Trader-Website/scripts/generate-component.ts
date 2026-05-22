@@ -100,7 +100,10 @@ export class ${className} {
     const levelsUp = pathSegments.length - 1; // subtract 'angular' prefix
     const relativeLevels = '../'.repeat(levelsUp);
     const scssContent = `// ${scssFileName}
-@use '${relativeLevels}styles/globals' as *;
+@use '${relativeLevels}styles/global-variables' as vars;
+@use '${relativeLevels}styles/global-functions' as funcs;
+@use '${relativeLevels}styles/global-mixins' as mixins;
+@use '${relativeLevels}styles/global-placeholders' as placeholders;
 
 ${componentName} {
 
