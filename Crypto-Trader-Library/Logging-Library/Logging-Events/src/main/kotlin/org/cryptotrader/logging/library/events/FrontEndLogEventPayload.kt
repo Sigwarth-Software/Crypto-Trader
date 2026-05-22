@@ -2,7 +2,7 @@ package org.cryptotrader.logging.library.events
 
 import java.time.LocalDateTime
 
-open class LogEvent(
+open class FrontEndLogEventPayload(
     open val timestamp: LocalDateTime,
     open val level: String,
     open val logger: String,
