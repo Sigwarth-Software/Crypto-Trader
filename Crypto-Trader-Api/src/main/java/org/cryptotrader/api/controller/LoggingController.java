@@ -7,7 +7,6 @@ import org.cryptotrader.logging.library.communication.request.FrontendLogRequest
 import org.cryptotrader.logging.library.communication.response.FrontendLogResponse;
 import org.cryptotrader.logging.library.events.FrontendLogBatchEvent;
 import org.cryptotrader.logging.library.events.FrontendLogEvent;
-import org.cryptotrader.logging.library.events.LogEventBinding;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +38,14 @@ public class LoggingController {
     }
     //=============================-Methods-==================================
 
+    // TODO: User should agree to "advanced support" logs for instant support.
+    //       If accepted, the logs are saved. If not, they are never sent. By
+    //       default, logs are not saved.
+
+    // TODO: Admins can enable temporary "advanced support" while in contact
+    //       with the user, while they attempt to replicate the issue. This
+    //       would be in Crypto-Trader-Admin where a button with configs can
+    //       be pressed to enable for 15/30/60 mins.
     @PostMapping(value = "/website", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FrontendLogResponse> receiveSingleLog(
         @RequestBody FrontendLogRequest logEntry,
@@ -46,7 +53,7 @@ public class LoggingController {
         FrontendLogEvent event = this.mapToEvent(logEntry, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
             List.of(event), LocalDateTime.now(ZoneId.of("America/Chicago")));
-        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS_REQUESTS.getBindingName(), batch);
+        this.logEventsPublisher.publishBatch(batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(1, "accepted"));
     }
@@ -58,7 +65,7 @@ public class LoggingController {
         List<FrontendLogEvent> entries = this.parseNdjson(ndjsonBody, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
             entries, LocalDateTime.now(ZoneId.of("America/Chicago")));
-        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS_REQUESTS.getBindingName(), batch);
+        this.logEventsPublisher.publishBatch(batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(entries.size(), "accepted"));
     }
@@ -100,11 +107,11 @@ public class LoggingController {
             while ((line = reader.readLine()) != null) {
                 if (!line.isBlank()) {
                     FrontendLogRequest dto = this.objectMapper.readValue(line, FrontendLogRequest.class);
-                    events.add(mapToEvent(dto, request));
+                    events.add(this.mapToEvent(dto, request));
                 }
             }
-        } catch (Exception e) {
-            log.error("Failed to parse NDJSON frontend log batch", e);
+        } catch (Exception exception) {
+            log.error("Failed to parse NDJSON frontend log batch", exception);
         }
         return events;
     }
