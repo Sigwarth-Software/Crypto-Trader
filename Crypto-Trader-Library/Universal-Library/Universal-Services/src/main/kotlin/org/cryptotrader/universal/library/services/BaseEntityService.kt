@@ -1,6 +1,7 @@
 package org.cryptotrader.universal.library.services
 
 import org.cryptotrader.universal.library.entity.Identifiable
+import org.cryptotrader.universal.library.model.Ansi
 import org.cryptotrader.universal.library.model.annotation.Loggable
 import org.cryptotrader.universal.library.model.exception.EntityNotFoundException
 import org.slf4j.Logger
@@ -16,17 +17,6 @@ import java.util.concurrent.ConcurrentHashMap
 abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository : JpaRepository<Entity, Id>>(
     val repository: Repository
 ) : EntityHandler<Entity, Id> {
-
-    // TODO: Move to logging or universal.
-    private object Ansi {
-        const val RESET = "\u001B[0m"
-        const val BOLD = "\u001B[1m"
-        const val MAGENTA = "\u001B[35m"
-        const val BLUE = "\u001B[34m"
-        const val WHITE = "\u001B[37m"
-        const val RED = "\u001B[31m"
-        const val GRAY = "\u001B[90m"
-    }
 
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
     private val entityType: Class<out Entity> by lazy { this.resolveEntityType() }
