@@ -21,21 +21,21 @@ public class EventPublisher {
         this.streamBridge = streamBridge;
     }
 
-    public <T> void publish(String bindingName, T payload) {
+    public <T> boolean publish(String bindingName, T payload) {
         this.logPublish(bindingName, payload);
-        this.streamBridge.send(bindingName, payload);
+        return this.streamBridge.send(bindingName, payload);
     }
-    public <T> void publish(String bindingName, T payload, Map<String, Object> headers) {
+    public <T> boolean publish(String bindingName, T payload, Map<String, Object> headers) {
         Message<T> message = MessageBuilder
                 .withPayload(payload)
                 .copyHeaders(headers)
                 .build();
 
         this.logPublish(bindingName, payload);
-        this.streamBridge.send(bindingName, message);
+        return this.streamBridge.send(bindingName, message);
     }
 
     private void logPublish(String bindingName, Object payload) {
-        log.info("Publishing event to binding '{}' with payload: \n{}", bindingName, payload);
+        log.debug("Publishing event to binding '{}' with payload: \n{}", bindingName, payload);
     }
 }
