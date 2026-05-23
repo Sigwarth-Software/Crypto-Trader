@@ -30,7 +30,7 @@ public class PortfolioTradeExecutionService {
     }
 
     @Transactional
-    @TimeTracked(expectedMillis = 100, shouldPersist = true)
+    @TimeTracked(expectedMillis = 750, shouldPersist = true)
     public void executeTrader(Trader trader, TradingEngine assetTrader) {
         PortfolioAsset traderAsset = assetTrader.getAsset();
         PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
@@ -78,6 +78,7 @@ public class PortfolioTradeExecutionService {
         trader.getPortfolio().updateValues();
     }
 
+    @TimeTracked(expectedMillis = 100, shouldPersist = true)
     private void saveTradeEvent(PortfolioAssetHistory portfolioAssetHistory) {
         TradeType tradeType = TradeEvent.getTradeType(portfolioAssetHistory);
         TradeEvent tradeEvent = new TradeEvent(portfolioAssetHistory,
@@ -99,7 +100,7 @@ public class PortfolioTradeExecutionService {
         return this.portfolioService.getLatestPreviousAssetHistoryWithShares(assetToLookRetrospectively);
     }
 
-    @TimeTracked(expectedMillis = 100, shouldPersist = true)
+    @TimeTracked(expectedMillis = 500, shouldPersist = true)
     private void saveAll(PortfolioAsset traderAsset,
                          Portfolio traderPortfolio,
                          PortfolioAssetHistory portfolioAssetHistory,
