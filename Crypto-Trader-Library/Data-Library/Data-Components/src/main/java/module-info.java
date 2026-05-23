@@ -1,4 +1,4 @@
-module org.cryptotrader.data.library.components {
+open module org.cryptotrader.data.library.components {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
@@ -12,6 +12,7 @@ module org.cryptotrader.data.library.components {
     requires spring.jdbc;
     requires spring.web;
     requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.universal.library.models;
     requires org.slf4j;
 
     exports org.cryptotrader.data.library.component;
