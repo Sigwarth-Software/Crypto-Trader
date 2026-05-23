@@ -1,12 +1,14 @@
 // display-currency.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 display-currency {
-    @include flex(space-between, center, row);
+    @include mixins.flex(space-between, center, row);
     width: 90%;
-    min-height: $ten-percent;
-    padding: $one-percent;
+    min-height: vars.$ten-percent;
+    padding: vars.$one-percent;
 
     // background-color: add-alpha-opaque($alabaster-stone, 0.5, $muted-blue);
     background: linear-gradient(
@@ -16,23 +18,23 @@ display-currency {
     );
 
     .currency-price-div {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
 
         subtitle {
-            margin: 0 $half-percent;
+            margin: 0 vars.$half-percent;
         }
     }
-    margin: $half-percent 0;
+    margin: vars.$half-percent 0;
 
     @extend %soft-border-radius;
 
     .display-action-div {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         flex: 1;
 
         .image-code-div {
-            @include flex(center, center, column);
-            padding: $half-percent;
+            @include mixins.flex(center, center, column);
+            padding: vars.$half-percent;
 
             @extend %soft-border-radius;
 
@@ -41,43 +43,43 @@ display-currency {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%2300C8B6' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%233bd7a9' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%236ae496' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%2399f080' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%23caf869' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23FFFD56' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
             background-attachment: fixed;
             background-size: cover;
-            border: $thinnest-border solid $pure-white;
+            border: vars.$thinnest-border solid vars.$pure-white;
 
             ss-img {
-                @include square-size($six-percent);
-                padding: $half-percent;
-                background-color: $alabaster-stone;
+                @include mixins.square-size(vars.$six-percent);
+                padding: vars.$half-percent;
+                background-color: vars.$alabaster-stone;
 
                 @extend %circle-border-radius;
             }
         }
 
         .display-currency-title {
-            border-left: $thin-border solid $pure-white;
-            padding: 0 $half-percent;
+            border-left: vars.$thin-border solid vars.$pure-white;
+            padding: 0 vars.$half-percent;
 
-            @include flex(center, flex-start, column);
+            @include mixins.flex(center, flex-start, column);
             flex: 1;
-            margin: 0 $one-percent;
+            margin: 0 vars.$one-percent;
 
             > * {
-                margin-left: $half-percent;
+                margin-left: vars.$half-percent;
             }
 
             .display-currency-name {
                 // font-size: calc($h4-font-size * 1.25);
                 @extend %soft-text-shadow;
-                color: $pure-white;
+                color: vars.$pure-white;
                 text-align: left;
             }
 
             .currency-price {
-                color: $sunbeam-yellow;
+                color: vars.$sunbeam-yellow;
             }
 
             .currency-action-buttons-div {
-                @include flex(flex-start, center, row);
-                margin: $half-percent 0;
+                @include mixins.flex(flex-start, center, row);
+                margin: vars.$half-percent 0;
                 width: 80%;
 
                 ss-button {
@@ -85,11 +87,11 @@ display-currency {
                 }
 
                 ss-button:first-child {
-                    margin-right: $half-percent;
+                    margin-right: vars.$half-percent;
                 }
 
                 ss-button:last-child {
-                    margin-left: $half-percent;
+                    margin-left: vars.$half-percent;
                 }
             }
         }
@@ -99,7 +101,7 @@ display-currency {
         .display-action-div {
             .display-currency-title {
                 .currency-price {
-                    color: $lime;
+                    color: vars.$lime;
                 }
             }
         }
@@ -109,13 +111,19 @@ display-currency {
         .display-action-div {
             .display-currency-title {
                 .currency-price {
-                    color: $red-orange;
+                    color: vars.$red-orange;
                 }
             }
         }
     }
 
-    @media screen and (width <= 768px) {
-        @include flex(center, center, column);
+    @media screen and (width <= 1100px) {
+        @include mixins.flex(center, center, column);
+        day-currency-chart {
+            //width: 100%;
+            ling-chart {
+                width: 100%;
+            }
+        }
     }
 }
