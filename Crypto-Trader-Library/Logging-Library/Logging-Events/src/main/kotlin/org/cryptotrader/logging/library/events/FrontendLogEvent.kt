@@ -16,4 +16,18 @@ class FrontendLogEvent(
     userAgent: String?,
     ipAddress: String?,
     remoteAddress: String?
-) : LogEvent(timestamp, level, logger, context, message, metadata, errorName, errorMessage, errorStack, clientApp, userAgent, ipAddress, remoteAddress)
+) : FrontEndLogEventPayload(
+    timestamp,
+    level,
+    logger,
+    context,
+    message,
+    metadata,
+    errorName,
+    errorMessage,
+    errorStack,
+    clientApp,
+    userAgent,
+    ipAddress,
+    remoteAddress
+)
