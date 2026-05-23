@@ -75,6 +75,7 @@
         <module>Agent-Library/Agent-Models</module>
         <module>Agent-Library/Agent-Infrastructure</module>
         <module>Engine-Library</module>
+        <module>Engine-Library/Engine-Models</module>
         <module>Engine-Library/Engine-Services</module>
         <module>Logging-Library</module>
         <module>Logging-Library/Logging-Config</module>
@@ -105,6 +106,8 @@
         <module>Simulator-Library/Simulator-Events</module>
         <module>Simulator-Library/Simulator-Config</module>
         <module>Simulator-Library/Simulator-Communication</module>
+        <module>Testing-Library</module>
+        <module>Testing-Library/Testing-Scripts</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
