@@ -60,7 +60,7 @@ public class TimeTrackingAspect {
         }
 
         try {
-            log.info("Publishing execution speed log for {}", fullMethodQualifiedName);
+            log.debug("Publishing execution speed log for {}", fullMethodQualifiedName);
             this.logEventsPublisher.publish(new ExecutionSpeedLogEventPayload(
                 elapsedMillis,
                 fullMethodQualifiedName,
@@ -75,11 +75,18 @@ public class TimeTrackingAspect {
     }
 
     private static String getDurationString(long elapsedMillis, long expectedMillis) {
-        String durationColor = elapsedMillis <= expectedMillis * 2 ? Ansi.GREEN
-            : elapsedMillis <= expectedMillis * 3 ? Ansi.YELLOW
-            : elapsedMillis <= expectedMillis * 6 ? Ansi.RED
-            : Ansi.WHITE;
-        String duration = durationColor + elapsedMillis + "ms" + Ansi.RESET;
+        String durationColor;
+        if (elapsedMillis <= expectedMillis * 2) {
+            durationColor = Ansi.GREEN;
+        } else if (elapsedMillis <= expectedMillis * 3) {
+            durationColor = Ansi.YELLOW;
+        }
+        else if (elapsedMillis > expectedMillis * 3) {
+            durationColor = Ansi.RED;
+        } else {
+            durationColor = Ansi.WHITE;
+        }
+        String duration = "%s%dms%s".formatted(durationColor, elapsedMillis, Ansi.RESET);
         return duration;
     }
 
