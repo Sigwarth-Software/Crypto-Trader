@@ -20,6 +20,8 @@
             <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
             <NavItem page="ADMIN_USERS" fx:id="adminButton"/>
             <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
+            <NavItem page="TABLES" fx:id="tablesButton"/>
+            <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
         </HBox>
         <ExitAnchor fx:id="exitAnchor"/>
     </children>
