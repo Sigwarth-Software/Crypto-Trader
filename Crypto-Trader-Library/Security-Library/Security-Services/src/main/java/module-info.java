@@ -13,6 +13,7 @@ open module org.cryptotrader.security.library.services {
     requires java.net.http;
     requires static lombok;
     requires org.cryptotrader.universal.library.services;
+    requires org.cryptotrader.universal.library.models;
     requires spring.aop;
     requires spring.core;
 
