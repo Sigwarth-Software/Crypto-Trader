@@ -3,6 +3,7 @@ open module org.cryptotrader.engine.library.services {
     requires static lombok;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.services;
+    requires org.cryptotrader.universal.library.models;
     requires spring.beans;
     requires spring.boot.autoconfigure;
     requires spring.context;
