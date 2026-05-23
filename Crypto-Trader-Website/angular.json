@@ -63,6 +63,7 @@
                             "angular/components/elements/element-group-auth/auth-input/auth-input.component.scss",
                             "angular/components/elements/element-group-chart/line-chart/line-chart.component.scss",
                             "angular/components/elements/element-group-chart/live-chart/live-chart.component.scss",
+                            "angular/components/elements/element-group-chart/sparkline-chart/sparkline-chart.component.scss",
                             "angular/components/elements/element-group-chat/chat-bubble/chat-bubble.component.scss",
                             "angular/components/elements/element-group-chat/chat-input/chat-input.component.scss",
                             "angular/components/elements/element-group-chat/chat-overlay/chat-overlay.component.scss",
