@@ -18,10 +18,19 @@ import org.springframework.stereotype.Component;
 public class NavBar extends HBox {
     @FXML
     private HomeAnchor homeAnchor;
-    
+
     @FXML
     private ExitAnchor exitAnchor;
-    
+
+    @FXML
+    private NavItem authButton;
+
+    @FXML
+    private NavItem adminButton;
+
+    @FXML
+    private NavItem tablesButton;
+
     @Autowired
     private ApplicationEventPublisher events;
 
@@ -31,6 +40,6 @@ public class NavBar extends HBox {
 
     @FXML
     public void initialize() {
-        
+
     }
 }
