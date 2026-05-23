@@ -753,6 +753,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>engine-models</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>engine-services</artifactId>
                 <version>0.1.0</version>
             </dependency>
@@ -994,6 +999,16 @@
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>crypto-trader-testing</artifactId>
                 <version>0.0.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>testing-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>testing-scripts</artifactId>
+                <version>0.0.1</version>
             </dependency>
 
             <dependency>
