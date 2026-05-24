@@ -12,7 +12,7 @@ import {
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 
 import { ElementSize, TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
-import { defaultChartProperties } from '@assets/chartAssets';
+import { defaultChartConfig } from '@assets/chartAssets';
 import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
 import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
 import { CurrencyDayPerformanceService } from '@http/currency/currency-day-performance.service';
@@ -20,7 +20,7 @@ import { CurrencyHistoryService } from '@http/currency/currency-history.service'
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { NumberTweenService } from '@ui/number-tween.service';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
-import { ChartDisplayProperties, SparkPoint } from '@models/chart/types';
+import { type ChartConfig, type SparkPoint } from '@models/chart/types';
 import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/currency/types';
 
 /** Displays a currency's price and performance.
@@ -44,7 +44,7 @@ export class DisplayCurrencyComponent
         changePercent: '0%',
     };
     protected currencyPrice: string = '';
-    protected chartProperties: ChartDisplayProperties = defaultChartProperties;
+    protected chartConfig: ChartConfig = { ...defaultChartConfig, dimensions: { ...defaultChartConfig.dimensions } };
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
 
@@ -107,9 +107,9 @@ export class DisplayCurrencyComponent
                 value: point.value,
             }),
         );
-        this.chartProperties = {
-            ...defaultChartProperties,
-            margin: { ...defaultChartProperties.margin },
+        this.chartConfig = {
+            ...defaultChartConfig,
+            dimensions: { ...defaultChartConfig.dimensions, margin: { ...defaultChartConfig.dimensions.margin } },
             data: prices,
         };
     }
