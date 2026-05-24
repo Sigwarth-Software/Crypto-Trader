@@ -7,4 +7,5 @@ open module org.cryptotrader.universal.library.services {
     requires spring.tx;
 
     exports org.cryptotrader.universal.library.services;
+    exports org.cryptotrader.universal.library.services.search;
 }
