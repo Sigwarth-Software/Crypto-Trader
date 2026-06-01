@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger as TsLogger } from 'tslog';
-import { LogLayer } from 'loglayer';
+import { LogLayer, type LogLayerPlugin } from 'loglayer';
 import { TsLogTransport } from '@loglayer/transport-tslog';
 import { HttpTransport } from '@loglayer/transport-http';
 import { redactionPlugin } from '@loglayer/plugin-redaction';
@@ -104,7 +104,7 @@ export class CryptoTraderLoggerService {
             plugins: [
                 redactionPlugin({
                     paths: ['password', 'token', 'authorization', 'cookie'],
-                }),
+                }) as LogLayerPlugin,
             ],
         });
     }
