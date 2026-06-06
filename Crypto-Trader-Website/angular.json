@@ -161,6 +161,7 @@
                             "angular/components/pages/currencies/currencies.component.scss",
                             "angular/components/pages/dashboard/dashboard.component.scss",
                             "angular/components/pages/home/home.component.scss",
+                            "angular/components/pages/intelligence-panel/intelligence-panel.component.scss",
                             "angular/components/pages/modules/modules.component.scss",
                             "angular/components/pages/not-found/not-found.component.scss",
                             "angular/components/pages/portfolio/portfolio.component.scss",
