@@ -128,6 +128,7 @@
                             "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.scss",
                             "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.scss",
                             "angular/components/elements/element-group-promo/transparency-promo/transparency-promo.component.scss",
+                            "angular/components/elements/element-group-simulator/simulation-builder/simulation-builder.component.scss",
                             "angular/components/elements/element-group-system/accordion/accordion.component.scss",
                             "angular/components/elements/element-group-system/arrow/arrow.component.scss",
                             "angular/components/elements/element-group-system/badge-grid/badge-grid.component.scss",
