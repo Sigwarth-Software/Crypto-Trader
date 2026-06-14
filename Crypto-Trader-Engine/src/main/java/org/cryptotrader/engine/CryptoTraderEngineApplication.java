@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -31,7 +30,6 @@ import static org.cryptotrader.health.library.model.ServiceStatusChecker.isServi
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 @EntityScan(basePackages = {
     "org.cryptotrader.api.library.entity",
     "org.cryptotrader.data.library.entity"
@@ -39,7 +37,10 @@ import static org.cryptotrader.health.library.model.ServiceStatusChecker.isServi
 @ComponentScan(basePackages = {
     "org.cryptotrader.api.library.component",
     "org.cryptotrader.engine",
-    "org.cryptotrader.api.library",
+    "org.cryptotrader.api.library.services",
+    "org.cryptotrader.api.library.infrastructure",
+    "org.cryptotrader.api.library.events",
+    "org.cryptotrader.api.library.model",
     "org.cryptotrader.data.library",
     "org.cryptotrader.engine.library.services",
     "org.cryptotrader.universal.library.events"
