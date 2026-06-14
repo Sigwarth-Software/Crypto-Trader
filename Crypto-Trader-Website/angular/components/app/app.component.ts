@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
                 mergeMap((route: ActivatedRoute): Observable<Data> => route.data),
             )
             .subscribe((data: Data): void => {
+                // TODO: Move to a models file.
                 type Meta = {
                     title: string;
                     description: string;
@@ -83,9 +84,15 @@ export class AppComponent implements OnInit {
      *
      */
     private async triggerAuthPopup(): Promise<void> {
-        this.logger.info('Triggering auth guard popup.', 'App');
-        this.showAuthGuardPopup = true;
-        await this.delayService.delay(4200);
-        this.showAuthGuardPopup = false;
+        // TODO: Implement a navigation history service to make this easier
+        //       and more correct for pages which intend for the popup.
+        const currentUrl: string = this.router.url;
+        this.logger.debug(`Current URL: ${currentUrl}`, 'App');
+        if (!currentUrl.includes('/authorize') && !currentUrl.includes('/account') && currentUrl !== '/') {
+            this.logger.info('Triggering auth guard popup.', 'App');
+            this.showAuthGuardPopup = true;
+            await this.delayService.delay(4200);
+            this.showAuthGuardPopup = false;
+        }
     }
 }
