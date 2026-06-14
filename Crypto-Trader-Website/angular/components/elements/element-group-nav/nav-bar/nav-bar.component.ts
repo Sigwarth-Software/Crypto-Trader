@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, HostBinding, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 
 import { TextElementLink } from '@theoliverlear/angular-suite'
 import {
@@ -21,12 +21,29 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnChanges {
+    /**
+     * Listens for auth status changes to update nav bar styling.
+     * @returns Whether the user is logged in.
+     */
+    @HostBinding('class.logged-in') public get loggedInStyle(): boolean {
+        return this.isLoggedIn
+    }
     protected isLoggedIn: boolean = false
     constructor(
         private readonly loggedInService: LoggedInService,
         private readonly log: CryptoTraderLoggerService,
     ) {}
+
+    /**
+     * On changes, make sure the login status is up to date.
+     * @param simpleChanges
+     */
+    public ngOnChanges(simpleChanges: SimpleChanges): void {
+        if ('isLoggedIn' in simpleChanges) {
+            this.isLoggedIn = Boolean(simpleChanges.isLoggedIn.currentValue)
+        }
+    }
 
     /** On init, listen for auth status changes and verify login status.
      *
@@ -47,6 +64,12 @@ export class NavBarComponent implements OnInit {
 
     // TODO: Add more robust options filters.
     protected shouldShowNavItem(navBarItemOption: NavBarItemOption): boolean {
+        if (
+            navBarItemOption === NavBarItemOption.Simulator ||
+            navBarItemOption === NavBarItemOption.Currencies
+        ) {
+            return true
+        }
         return this.isLoggedIn
     }
 
