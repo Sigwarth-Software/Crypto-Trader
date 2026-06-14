@@ -32,8 +32,12 @@ export class LoggedInService extends HttpClientService<never, AuthResponse> {
     public isLoggedIn(): Observable<AuthResponse> {
         return this.get().pipe(
             map((response: AuthResponse): AuthResponse => {
-                if (response?.authorized && !response.token) {
-                    this.authState$.next(response?.authorized || false)
+                const isAuthorized: boolean = response?.authorized || false
+                this.authState$.next(isAuthorized)
+                if (isAuthorized) {
+                    if (response.token) {
+                        return { ...response, token: response.token }
+                    }
                     const token: PossibleToken = this.tokenStorage.getToken()
                     return token ? { ...response, token } : response
                 }
