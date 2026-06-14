@@ -4,12 +4,14 @@ open module org.cryptotrader.engine {
     requires spring.context;
     requires spring.aop;
 
+    requires org.cryptotrader.api.library.infrastructure;
     requires spring.boot.autoconfigure;
     requires spring.data.jpa;
     requires spring.boot;
     requires static lombok;
     requires org.slf4j;
     requires org.cryptotrader.api.library.services;
+    requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.engine.library.services;
     requires org.cryptotrader.logging.library.config;
