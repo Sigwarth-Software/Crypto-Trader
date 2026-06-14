@@ -1,5 +1,5 @@
 // icon-text-item.component.ts
-import { Component, Input } from '@angular/core';
+import {Component, HostBinding, Input} from '@angular/core';
 import { ImageAsset } from '@assets/imageAssets';
 
 @Component({
@@ -9,7 +9,11 @@ import { ImageAsset } from '@assets/imageAssets';
     styleUrls: ['./icon-text-item.component.scss'],
 })
 export class IconTextItemComponent {
+    @HostBinding('class.use-invert-color') get invertColorClass(): boolean {
+        return this.invertColor;
+    }
     // TODO: Remove the non-null assertion.
     @Input() public icon!: ImageAsset;
     @Input() public text: string = '';
+    @Input() public invertColor: boolean = false;
 }
