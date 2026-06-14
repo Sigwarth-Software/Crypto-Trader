@@ -25,15 +25,31 @@ nav-bar {
         @extend %fill-container;
 
         .nav-items-div {
-            @include mixins.flex(space-around, center, row);
+            @include mixins.flex(center, center, row);
             width: 32%;
 
             nav-bar-item {
                 scale: 1.3;
-
                 // margin-right: $two-percent;
                 &:last-child {
                     margin-right: 0;
+                }
+            }
+        }
+    }
+
+    &.logged-in {
+        nav {
+            .nav-items-div {
+                @include mixins.flex(space-around, center, row);
+            }
+        }
+    }
+    &:not(.logged-in) {
+        nav {
+            .nav-items-div {
+                nav-bar-item {
+                    margin: 0 vars.$one-percent;
                 }
             }
         }
