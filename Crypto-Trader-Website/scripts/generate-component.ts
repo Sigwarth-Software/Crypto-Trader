@@ -74,7 +74,6 @@ if (fs.existsSync(targetDir) && fs.readdirSync(targetDir).length > 0) {
     const htmlContent = `<!-- ${htmlFileName} -->
 <ng-container>
 
-
 </ng-container>`;
 
     // TypeScript content
