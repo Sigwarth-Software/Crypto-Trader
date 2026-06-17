@@ -1,3 +1,11 @@
+/**
+ * The pages shown within the simulation builder.
+ */
 export enum SimulationBuilderPage {
-    // TODO: Fill in pages.
+    Welcome = 'Welcome',
+    SelectFeatures = 'Select Features',
+    AddCurrency = 'Add Currency',
+    Review = 'Review',
+    LoadingResults = 'Loading Results',
+    Results = 'Results',
 }
