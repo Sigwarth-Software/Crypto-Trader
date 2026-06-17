@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +30,14 @@ public class TraderController {
     }
     
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping("/events/all")
+    @GetMapping("/events/all")
     public ResponseEntity<TradeEventListResponse> getAllEvents(@AuthenticationPrincipal ProductUser user) {
         TradeEventListResponse tradeEvents = this.traderService.getTradeEvents(user);
         logTradeEvents(tradeEvents);
         return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/events/batch", params = {"offset", "limit"})
+    @GetMapping(value = "/events/batch", params = {"offset", "limit"})
     public ResponseEntity<TradeEventListResponse> getBatchEvents(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                                                  @RequestParam(value = "limit", defaultValue = "10") int limit) {
         boolean isAuthorized = this.authContextService.isAuthenticated();
@@ -50,7 +51,7 @@ public class TraderController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping("/events/exists")
+    @GetMapping("/events/exists")
     public ResponseEntity<Boolean> hasEvents(@AuthenticationPrincipal ProductUser user) {
         boolean hasEvents = this.traderService.userHasTrades(user);
         return new ResponseEntity<>(hasEvents, HttpStatus.OK);
