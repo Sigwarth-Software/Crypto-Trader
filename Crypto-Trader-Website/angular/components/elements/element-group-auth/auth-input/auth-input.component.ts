@@ -1,9 +1,9 @@
 // auth-input.component.ts
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 
-import { InputType, TagType } from '@theoliverlear/angular-suite';
+import { InputType, TagType } from '@theoliverlear/angular-suite'
 
-import { AuthInputType } from './models/AuthInputType';
+import { AuthInputType } from './models/AuthInputType'
 
 /** A text input for authentication.
  *
@@ -15,39 +15,39 @@ import { AuthInputType } from './models/AuthInputType';
     styleUrls: ['./auth-input.component.scss'],
 })
 export class AuthInputComponent implements OnInit {
-    @Input() public authInputType: AuthInputType;
-    @Input() public authTypeString: string = '';
-    @Output() public inputChange: EventEmitter<string> = new EventEmitter<string>();
-    protected inputText: string = '';
+    @Input() public authInputType: AuthInputType
+    @Input() public authTypeString: string = ''
+    @Output() public inputChange: EventEmitter<string> = new EventEmitter<string>()
+    protected inputText: string = ''
     constructor() {}
     /** Emits the input text to the parent component.
      *
      */
     protected emitInputText(): void {
-        this.inputChange.emit(this.inputText);
+        this.inputChange.emit(this.inputText)
     }
     /**
      * Updates the input text and emits it.
      * @param text The new input text.
      */
     public updateInputText(text: string): void {
-        this.inputText = text;
-        this.emitInputText();
+        this.inputText = text
+        this.emitInputText()
     }
     /**
      * On init, initialize the auth text string.
      */
     public ngOnInit(): void {
-        this.initAuthText();
+        this.initAuthText()
     }
 
     private initAuthText(): void {
-        if (this.authInputType !== AuthInputType.AGREED_TERMS) {
-            this.authTypeString = `${this.authInputType}:`;
+        if (this.authInputType !== AuthInputType.AgreeTerms) {
+            this.authTypeString = `${this.authInputType}:`
         } else {
-            this.authTypeString = this.authInputType;
+            this.authTypeString = this.authInputType
         }
-        this.authTypeString = this.authTypeString.toUpperCase();
+        this.authTypeString = this.authTypeString.toUpperCase()
     }
 
     /**
@@ -55,7 +55,7 @@ export class AuthInputComponent implements OnInit {
      * @returns The label string.
      */
     public getLabel(): string {
-        return this.authInputType;
+        return this.authInputType
     }
 
     /**
@@ -105,5 +105,5 @@ export class AuthInputComponent implements OnInit {
         }
     }
 
-    protected readonly TagType: typeof TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }

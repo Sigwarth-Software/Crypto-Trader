@@ -1,7 +1,7 @@
 // auth-guard-popup.component.ts
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-import { TagType } from '@theoliverlear/angular-suite';
+import { TagType } from '@theoliverlear/angular-suite'
 
 /** A validation popup for authentication.
  *
@@ -15,5 +15,5 @@ import { TagType } from '@theoliverlear/angular-suite';
 export class AuthGuardPopupComponent {
     constructor() {}
 
-    protected readonly TagType: typeof TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }
