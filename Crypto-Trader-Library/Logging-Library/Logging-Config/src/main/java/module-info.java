@@ -25,6 +25,7 @@ open module org.cryptotrader.logging.library.config {
     exports org.cryptotrader.logging.http;
     exports org.cryptotrader.logging.logback;
     exports org.cryptotrader.logging.properties;
+    exports org.cryptotrader.logging.redaction;
     exports org.cryptotrader.logging.websocket;
     exports org.cryptotrader.logging.config.aspect;
 }
