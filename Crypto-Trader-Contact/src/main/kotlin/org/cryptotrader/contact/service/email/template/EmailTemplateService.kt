@@ -5,12 +5,12 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 
 @Service
-class TemplateService (
+class EmailTemplateService (
     private val templateEngine: TemplateEngine
 ) {
-    fun process(template: Template, data: Map<String, String>): String {
-        return when (template) {
-            Template.WELCOME -> this.processWelcome(data)
+    fun process(emailTemplate: EmailTemplate, data: Map<String, String>): String {
+        return when (emailTemplate) {
+            EmailTemplate.WELCOME -> this.processWelcome(data)
         }
     }
 
