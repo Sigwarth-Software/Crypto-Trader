@@ -64,16 +64,16 @@ export class AuthInputComponent implements OnInit {
      */
     public getPlaceholder(): string {
         switch (this.authInputType) {
-            case AuthInputType.EMAIL:
-                return 'you@example.com';
-            case AuthInputType.PASSWORD:
-                return 'Enter your password';
-            case AuthInputType.CONFIRM_PASSWORD:
-                return 'Confirm your password';
-            case AuthInputType.USERNAME:
-                return 'Enter your username';
+            case AuthInputType.Email:
+                return 'you@example.com'
+            case AuthInputType.Password:
+                return 'Enter your password'
+            case AuthInputType.ConfirmPassword:
+                return 'Confirm your password'
+            case AuthInputType.Username:
+                return 'Enter your username'
             default:
-                return '';
+                return ''
         }
     }
 
@@ -82,7 +82,7 @@ export class AuthInputComponent implements OnInit {
      * @returns True if this is the terms input.
      */
     public isTermsInput(): boolean {
-        return this.authInputType === AuthInputType.AGREED_TERMS;
+        return this.authInputType === AuthInputType.AgreeTerms
     }
 
     /**
@@ -91,17 +91,17 @@ export class AuthInputComponent implements OnInit {
      */
     public getInputType(): InputType {
         switch (this.authInputType) {
-            case AuthInputType.USERNAME:
-                return InputType.TEXT;
-            case AuthInputType.EMAIL:
-                return InputType.EMAIL;
-            case AuthInputType.PASSWORD:
-            case AuthInputType.CONFIRM_PASSWORD:
-                return InputType.PASSWORD;
-            case AuthInputType.AGREED_TERMS:
-                return InputType.CHECKBOX;
+            case AuthInputType.Username:
+                return InputType.TEXT
+            case AuthInputType.Email:
+                return InputType.EMAIL
+            case AuthInputType.Password:
+            case AuthInputType.ConfirmPassword:
+                return InputType.PASSWORD
+            case AuthInputType.AgreeTerms:
+                return InputType.CHECKBOX
             default:
-                return InputType.TEXT;
+                return InputType.TEXT
         }
     }
 
