@@ -32,7 +32,7 @@ class TimeTrackingAspectTest {
                             .contains("TrackedService")
                             .contains("logged()")
                             .contains("executed in")
-                            .contains("expected 1000ms"));
+                            .contains("expected 1ms"));
         } finally {
             logger.detachAppender(appender);
         }
