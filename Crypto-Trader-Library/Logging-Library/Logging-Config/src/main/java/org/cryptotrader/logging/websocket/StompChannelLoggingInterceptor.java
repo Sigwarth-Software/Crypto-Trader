@@ -3,6 +3,7 @@ package org.cryptotrader.logging.websocket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.properties.CryptoTraderWebSocketLoggingProperties;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -24,6 +25,7 @@ import java.util.Objects;
 public class StompChannelLoggingInterceptor implements ChannelInterceptor {
 
     private final CryptoTraderWebSocketLoggingProperties props;
+    private final LogRedactor logRedactor;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -62,14 +64,15 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
 
         if (props.isIncludeHeaders()) {
             sb.append('\n').append(color("Headers:", AnsiColor.BRIGHT_BLACK)).append('\n');
-            for (Map.Entry<String, Object> e : message.getHeaders().entrySet()) {
-                sb.append("  ").append(color(e.getKey() + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.valueOf(e.getValue()), AnsiColor.WHITE)).append('\n');
+            for (Map.Entry<String, Object> objectEntry : message.getHeaders().entrySet()) {
+                String value = this.logRedactor.redactHeader(objectEntry.getKey(), String.valueOf(objectEntry.getValue()));
+                sb.append("  ").append(color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK)).append(color(value, AnsiColor.WHITE)).append('\n');
             }
         }
         if (props.isIncludePayload() && payload != null) {
             String text = asText(payload, props.getMaxPayloadLength());
             if (!text.isEmpty()) {
-                sb.append('\n').append(color("Payload:", AnsiColor.BRIGHT_BLACK)).append(' ').append(color(text, AnsiColor.WHITE));
+                sb.append('\n').append(color("Payload:", AnsiColor.BRIGHT_BLACK)).append(' ').append(color(this.logRedactor.redactText(text), AnsiColor.WHITE));
             }
         }
 
@@ -94,6 +97,7 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         return s.getBytes(Charset.defaultCharset()).length;
     }
 
+    // TODO: Move to script.
     private String humanSize(int bytes) {
         if (bytes < 1024) return bytes + "B";
         int kb = bytes / 1024;
@@ -119,7 +123,7 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
     }
 
     private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
-        if (!props.isColorEnabled()) return text;
+        if (!this.props.isColorEnabled()) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);
         }
