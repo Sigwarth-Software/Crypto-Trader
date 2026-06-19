@@ -4,5 +4,5 @@
               class="flip-word"
               [class.swap]="swap"
               aria-live="polite"
-              [text]="`${words[current]}${shouldPunctuate ? '.' : ''}`"/>
+              [text]="getCurrentPhrase()"/>
 </ng-container>
