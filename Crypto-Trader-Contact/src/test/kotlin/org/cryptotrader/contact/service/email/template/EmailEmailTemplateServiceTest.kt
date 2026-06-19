@@ -1,6 +1,5 @@
 package org.cryptotrader.contact.service.email.template
 
-import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.contact.natives.normalized
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.DisplayName
@@ -14,11 +13,11 @@ import kotlin.test.assertEquals
     "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
     "docs.autoconfigure.enabled=false"
 ])
-class TemplateServiceTest @Autowired constructor(
-    private val templateService: TemplateService
+class EmailEmailTemplateServiceTest @Autowired constructor(
+    private val emailTemplateService: EmailTemplateService
 ) : CryptoTraderTest() {
 
-    val testTemplate = Template.WELCOME
+    val testEmailTemplate = EmailTemplate.WELCOME
     val testSubject: String = "Testing Crypto Trader"
     val testBody: String = "Hello from Spring Boot in Kotlin"
     val name: String = "User"
@@ -27,13 +26,13 @@ class TemplateServiceTest @Autowired constructor(
 
     @Nested
     @DisplayName("Process Template")
-    inner class ProcessTemplate {
+    inner class ProcessEmailTemplate {
         @Test
         @DisplayName("Should properly inject variables")
         fun processTemplate_InjectsVariables() {
             val expectedHtml: String = getExpectedWelcomeHtml(testSubject, testBody, name, ctaLabel, year).normalized()
-            val actualHtml: String = templateService.process(
-                testTemplate,
+            val actualHtml: String = emailTemplateService.process(
+                testEmailTemplate,
                 mapOf(
                     "subject" to testSubject,
                     "body" to testBody,
