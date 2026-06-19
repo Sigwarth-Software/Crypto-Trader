@@ -109,6 +109,7 @@ export class CryptoTraderLoggerService {
         });
     }
 
+    // TODO: Make an enum.
     /** Sets the context of the logger.
      *
      * @param context
