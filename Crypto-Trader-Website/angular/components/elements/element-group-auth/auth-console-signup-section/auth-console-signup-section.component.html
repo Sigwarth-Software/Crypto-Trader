@@ -1,19 +1,19 @@
 <!-- auth-console-signup-section.component.html -->
 <ng-container>
     <auth-input
-        [authInputType]="AuthInputType.EMAIL"
+        [authInputType]="AuthInputType.Email"
         (inputChange)="updateEmail($event)"
     />
     <auth-input
-        [authInputType]="AuthInputType.PASSWORD"
+        [authInputType]="AuthInputType.Password"
         (inputChange)="updatePassword($event)"
     />
     <auth-input
-        [authInputType]="AuthInputType.CONFIRM_PASSWORD"
+        [authInputType]="AuthInputType.ConfirmPassword"
         (inputChange)="updateConfirmPassword($event)"
     />
     <auth-input
-        [authInputType]="AuthInputType.AGREED_TERMS"
+        [authInputType]="AuthInputType.AgreeTerms"
         (inputChange)="updateAgreedTerms($event)"
     />
     <ss-button
