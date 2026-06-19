@@ -3,6 +3,7 @@ package org.cryptotrader.logging.http;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -23,6 +24,7 @@ import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Colorful, structured HTTP exchange logger for both HTTP and WebSocket handshakes.
@@ -38,6 +40,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     private final boolean includeResponsePayload;
     private final int maxResponsePayloadLength;
     private final boolean colorEnabled;
+    private final LogRedactor logRedactor;
 
     public HttpExchangeLoggingFilter(boolean includeQueryString,
                                      boolean includeRequestPayload,
@@ -45,7 +48,8 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                                      boolean includeHeaders,
                                      boolean includeResponsePayload,
                                      int maxResponsePayloadLength,
-                                     boolean colorEnabled) {
+                                     boolean colorEnabled,
+                                     LogRedactor logRedactor) {
         this.includeQueryString = includeQueryString;
         this.includeRequestPayload = includeRequestPayload;
         this.maxRequestPayloadLength = maxRequestPayloadLength;
@@ -53,6 +57,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         this.includeResponsePayload = includeResponsePayload;
         this.maxResponsePayloadLength = maxResponsePayloadLength;
         this.colorEnabled = colorEnabled;
+        this.logRedactor = logRedactor;
     }
 
     @Override
@@ -135,7 +140,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         // Path
         sb.append(color(uri, AnsiColor.WHITE));
         if (this.includeQueryString && StringUtils.hasText(query)) {
-            sb.append(color("?" + query, AnsiColor.BRIGHT_BLACK));
+            sb.append(color("?" + this.logRedactor.redactQueryString(query), AnsiColor.BRIGHT_BLACK));
         }
         // Protocol
         sb.append(' ').append(color(protocol, AnsiColor.BRIGHT_BLACK));
@@ -205,14 +210,20 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         for (Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
             String name = names.nextElement();
             List<String> values = java.util.Collections.list(req.getHeaders(name));
-            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(String.join(", ", values), AnsiColor.WHITE)).append('\n');
+            String redactedValues = values.stream()
+                    .map(value -> this.logRedactor.redactHeader(name, value))
+                    .collect(Collectors.joining(", "));
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
     private void appendHeaders(StringBuilder sb, String title, HttpServletResponse res) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
         for (String name : res.getHeaderNames()) {
-            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(String.join(", ", res.getHeaders(name)), AnsiColor.WHITE)).append('\n');
+            String redactedValues = res.getHeaders(name).stream()
+                    .map(value -> this.logRedactor.redactHeader(name, value))
+                    .collect(Collectors.joining(", "));
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
@@ -254,14 +265,15 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
 
         if (!this.isJsonContentType(contentType)) {
-            return payload;
+            return this.logRedactor.redactText(payload);
         }
 
         try {
             JsonNode tree = JSON_PRETTY_PRINTER.readTree(payload);
-            return JSON_PRETTY_PRINTER.writerWithDefaultPrettyPrinter().writeValueAsString(tree);
+            JsonNode redactedTree = this.logRedactor.redact(tree);
+            return JSON_PRETTY_PRINTER.writerWithDefaultPrettyPrinter().writeValueAsString(redactedTree);
         } catch (Exception ignored) {
-            return payload;
+            return this.logRedactor.redactText(payload);
         }
     }
 
