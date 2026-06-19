@@ -99,9 +99,6 @@ public class AuthController {
                                                                              issue.getExpiresAt(),
                                                                              this.securityProperties.cookieSecure(),
                                                                              this.securityProperties.cookieSamesite());
-            // Publish event
-            UserRegisteredEvent registerEvent = new UserRegisteredEvent(possibleUser, LocalDateTime.now());
-            this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
             return ResponseEntity.status(signupResponse.getStatus())
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(signupResponse.getPayload());
