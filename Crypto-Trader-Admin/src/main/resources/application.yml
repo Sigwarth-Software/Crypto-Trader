@@ -30,13 +30,13 @@ spring:
         # Outbound (publisher example)
         exampleEvent-out-0:
           destination: ct.example.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         # Inbound (subscriber example)
         exampleEvent-in-0:
           destination: ct.example.v1
           group: ${spring.application.name}
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
           brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
@@ -49,5 +49,10 @@ logging:
   level:
     org:
       springframework: INFO
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 management:
   endpoints.web.exposure.include: health,info
