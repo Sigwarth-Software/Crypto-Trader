@@ -11,6 +11,7 @@ open module org.cryptotrader.data {
     requires org.cryptotrader.data.library.communication;
     requires org.cryptotrader.logging.library.config;
     requires org.cryptotrader.logging.library.events;
+    requires org.cryptotrader.security.library.config;
     requires org.cryptotrader.universal.library.events;
     requires spring.cloud.stream;
     requires spring.aspects;
