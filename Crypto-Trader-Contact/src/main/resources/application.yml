@@ -41,7 +41,7 @@ spring:
         userRegistered-in-0:
           destination: ct.user.registered.v1
           group: ${spring.application.name}
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
           consumer:
             maxAttempts: 1
       kafka:
@@ -61,3 +61,9 @@ management:
     web:
       exposure:
         include: health,info
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
