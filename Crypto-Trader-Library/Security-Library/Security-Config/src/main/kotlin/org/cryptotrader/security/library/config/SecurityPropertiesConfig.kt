@@ -2,6 +2,7 @@ package org.cryptotrader.security.library.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
+// TODO: Clean up and migrate code.
 @ConfigurationProperties(prefix = "security")
 data class SecurityPropertiesConfig(
     val bans: Bans = Bans(),
@@ -22,7 +23,8 @@ data class SecurityPropertiesConfig(
         val tink: Tink = Tink()
     ) {
         data class Tink(
-            val keysetPath: String = "file:./tink/aead.json"
+            val keysetName: String = "default-aead",
+            val generateIfMissing: Boolean = true
         )
     }
 }
