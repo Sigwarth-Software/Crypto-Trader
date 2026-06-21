@@ -62,6 +62,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.config;
     requires org.cryptotrader.security.library.config;
+    requires org.cryptotrader.security.library.repositories;
     requires org.cryptotrader.universal.library.components;
     requires org.cryptotrader.universal.library.events;
     requires org.cryptotrader.console.library.components;
