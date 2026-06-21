@@ -11,6 +11,7 @@ abstract class BaseEventConsumer<Request, Response>(
     private val outboundBindingName: String
 ) {
     protected abstract val log: Logger
+    private val eventBindingHeader: String = "ct-event-binding"
 
     protected fun createConsumer(processor: (Request, String?) -> Response): Consumer<Message<Request>> {
         return Consumer { message ->
@@ -21,7 +22,7 @@ abstract class BaseEventConsumer<Request, Response>(
                 is String -> rawAuth
                 is ByteArray -> try {
                     String(rawAuth, Charsets.UTF_8)
-                } catch (e: Exception) { null }
+                } catch (exception: Exception) { null }
                 else -> null
             }
 
@@ -37,12 +38,13 @@ abstract class BaseEventConsumer<Request, Response>(
             val responseMessageBuilder = MessageBuilder
                 .withPayload(result)
                 .setHeader("correlationId", correlationIdHeader)
+                .setHeader(this.eventBindingHeader, this.outboundBindingName)
 
             if (authorizationHeader != null) {
                 responseMessageBuilder.setHeader("Authorization", authorizationHeader)
             }
 
-            this.streamBridge.send(outboundBindingName, responseMessageBuilder.build())
+            this.streamBridge.send(this.outboundBindingName, responseMessageBuilder.build())
         }
     }
 
