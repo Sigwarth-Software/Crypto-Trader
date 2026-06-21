@@ -40,7 +40,6 @@ import java.time.LocalDateTime;
 @PermitAll
 public class AuthController {
     private final AuthService authService;
-    private final UserEventsPublisher userEventsPublisher;
     private final ProductUserService productUserService;
     private final AuthContextService authContextService;
     private final JwtTokenService jwtTokenService;
@@ -51,7 +50,6 @@ public class AuthController {
 
     @Autowired
     public AuthController(AuthService authService,
-                          UserEventsPublisher userEventsPublisher,
                           ProductUserService productUserService,
                           AuthContextService authContextService,
                           JwtTokenService jwtTokenService,
@@ -60,7 +58,6 @@ public class AuthController {
                           DpopVerifierService dpopVerifier,
                           SecurityProperties securityProperties) {
         this.authService = authService;
-        this.userEventsPublisher = userEventsPublisher;
         this.productUserService = productUserService;
         this.authContextService = authContextService;
         this.jwtTokenService = jwtTokenService;
