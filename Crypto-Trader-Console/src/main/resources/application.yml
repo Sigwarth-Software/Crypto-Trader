@@ -22,11 +22,11 @@ spring:
         consoleRequestsConsumer-in-0:
           destination: ct.console.requests
           group: crypto-trader-console
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         consoleResponses-out-0:
           destination: ct.console.responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
       kafka:
         binder:
@@ -54,3 +54,7 @@ security:
     issuers: http://localhost:8080,https://api.cryptotrader.com
     issuer: https://api.cryptotrader.com
     audience: crypto-trader-api
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
