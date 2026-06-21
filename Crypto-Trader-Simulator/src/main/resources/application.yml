@@ -48,14 +48,20 @@ spring:
         simulatorConsumer-in-0:
           destination: ct.simulator.requests
           group: crypto-trader-simulator-group
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
         portfolioSimulationResponses-out-0:
           destination: ct.simulator.responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
         detailedSimulatorConsumer-in-0:
           destination: ct.simulator.detailed.requests
           group: crypto-trader-simulator-detailed-group
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
         detailedPortfolioSimulationResponses-out-0:
           destination: ct.simulator.detailed.responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
