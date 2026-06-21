@@ -270,6 +270,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>admin-models</artifactId>
         </dependency>
     </dependencies>
