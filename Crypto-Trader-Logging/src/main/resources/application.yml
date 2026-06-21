@@ -32,11 +32,11 @@ spring:
         frontendLogsConsumer-in-0:
           destination: ct.logging.frontend.v1
           group: crypto-trader-logging
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
         executionSpeedLogsConsumer-in-0:
           destination: ct.logging.execution-speed.v1
           group: crypto-trader-logging
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
           brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
@@ -71,3 +71,9 @@ spring:
 logging:
   level:
     org.springframework: INFO
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
