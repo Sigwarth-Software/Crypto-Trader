@@ -51,49 +51,49 @@ spring:
       bindings:
         userRegistered-out-0:
           destination: ct.user.registered.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         executionSpeedLogs-out-0:
           destination: ct.logging.execution-speed.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         consoleRequests-out-0:
           destination: ct.console.requests
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         consoleResponsesConsumer-in-0:
           destination: ct.console.responses
           group: crypto-trader-api-console-responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         portfolioSimulationRequests-out-0:
           destination: ct.simulator.requests
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         detailedPortfolioSimulationRequests-out-0:
           destination: ct.simulator.detailed.requests
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         portfolioSimulationResponsesConsumer-in-0:
           destination: ct.simulator.responses
           group: crypto-trader-api-simulator-responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         detailedPortfolioSimulationResponsesConsumer-in-0:
           destination: ct.simulator.detailed.responses
           group: crypto-trader-api-detailed-simulator-responses
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         contactCreated-in-0:
           destination: ct.contact.created.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
         orderFilled-in-0:
           destination: ct.order.filled.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         frontendLogs-out-0:
           destination: ct.logging.frontend.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
       kafka:
         binder:
@@ -168,14 +168,16 @@ security:
     cookie-samesite: Strict
     cookie-secure: false
     allow-rebind-once: true
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 cryptotrader:
   api:
     jpa:
       enabled: true
     websocket:
       enabled: true
-  load:
-    aead: true
   cors:
     allowed-origins: "http://localhost:4200"
     allowed-headers: "authorization,dpop,content-type,x-client-app"
