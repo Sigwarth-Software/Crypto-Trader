@@ -9,6 +9,7 @@ import {
 } from '@theoliverlear/angular-suite';
 import { environment } from '@environments/environment';
 import { AuthResponse, LoginRequest, PersistMethod } from '@models/auth/types';
+import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver';
 
 import { DpopKeyService } from '../../../../auth/dpop/dpop-key.service';
 import { DpopProofService } from '../../../../auth/dpop/dpop-proof.service';
@@ -37,7 +38,7 @@ export class LoginService extends HttpClientService<
                 await this.keys.ensureKeys();
                 const dpop: string = await this.proofs.buildProof(
                     'POST',
-                    LoginService.URL,
+                    resolveAbsoluteHttpUrl(LoginService.URL),
                 );
                 const headers: HttpHeaders = new HttpHeaders({
                     DPoP: dpop,
