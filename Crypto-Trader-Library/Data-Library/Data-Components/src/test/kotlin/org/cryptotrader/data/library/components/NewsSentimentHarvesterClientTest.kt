@@ -30,7 +30,7 @@ class NewsSentimentHarvesterClientTest : CryptoTraderTest() {
 
     @BeforeEach
     fun setUp() {
-        client = NewsSentimentHarvesterClient(httpPost, objectMapper, httpClient)
+        client = NewsSentimentHarvesterClient(httpPost, objectMapper, httpClient, "https://localhost:8000")
     }
 
     @Nested
