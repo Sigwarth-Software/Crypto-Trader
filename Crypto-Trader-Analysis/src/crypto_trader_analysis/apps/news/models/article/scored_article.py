@@ -7,6 +7,7 @@ from attrs import define
 from src.crypto_trader_analysis.apps.news.models.analysis.sentiment.sentiment_analyzer import SentimentAnalyzer
 from src.crypto_trader_analysis.apps.news.models.analysis.sentiment.sentiment_result import SentimentResult
 from src.crypto_trader_analysis.apps.news.models.article.article import Article
+from src.crypto_trader_analysis.core.service_client import post_json
 
 @define
 class ScoredArticle(Article):
@@ -40,8 +41,8 @@ class ScoredArticle(Article):
             self.score_article()
         payload: dict = self.to_json()
         try:
-            import requests
-            response = requests.post('http://localhost:8080/api/news-sentiment/add', json=payload, verify=False)
+            from django.conf import settings
+            response = post_json(settings.CT_DATA_BASE_URL, "/data/news-sentiment/add", payload)
             if response.status_code == 200:
                 logging.info("Article sent successfully.")
             else:
