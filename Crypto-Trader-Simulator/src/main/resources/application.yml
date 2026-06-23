@@ -29,12 +29,12 @@ spring:
             batch.size: 65536
             compression.type: lz4
             acks: 1
-            max.request.size: 52428800
+            max.request.size: 524288000
           consumer-properties:
             fetch.min.bytes: 1024
             fetch.max.wait.ms: 500
-            fetch.max.bytes: 52428800
-            max.partition.fetch.bytes: 52428800
+            fetch.max.bytes: 524288000
+            max.partition.fetch.bytes: 524288000
         bindings:
           simulatorConsumer-in-0:
             consumer:
