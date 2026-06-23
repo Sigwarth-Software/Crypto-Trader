@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { WebSocketService } from '@theoliverlear/angular-suite';
 import { environment } from '@environments/environment';
 import { AuthResponse, SignupRequest } from '@models/auth/types';
+import { resolveWebSocketUrl } from '@services/net/url-resolver';
 
 /**
  * WebSocket client for signup events/messages.
@@ -18,7 +19,9 @@ export class SignupWsService extends WebSocketService<
     SignupRequest,
     AuthResponse
 > {
-    private static readonly URL: string = `${environment.websocketUrl}/signup`;
+    private static readonly URL: string = resolveWebSocketUrl(
+        `${environment.websocketUrl}/signup`,
+    );
     constructor() {
         super(SignupWsService.URL);
     }
