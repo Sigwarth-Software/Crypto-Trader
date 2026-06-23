@@ -1,5 +1,14 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+  ssl:
+    enabled: ${SERVER_SSL_ENABLED:false}
+    key-store: ${SERVER_SSL_KEY_STORE:}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE:PKCS12}
+    key-alias: ${SERVER_SSL_KEY_ALIAS:}
+    certificate: ${SERVER_SSL_CERTIFICATE:}
+    certificate-private-key: ${SERVER_SSL_CERTIFICATE_PRIVATE_KEY:}
 
 spring:
   config:
@@ -155,7 +164,7 @@ management:
 security:
   jwt:
     secret: ${JWT_SECRET}
-    issuer: "http://localhost:8080"
+    issuer: ${SECURITY_JWT_ISSUER:http://localhost:8080}
     expiration: 360000
   auth:
     dpop:
@@ -166,7 +175,7 @@ security:
   refresh:
     cookie-name: rt
     cookie-samesite: Strict
-    cookie-secure: false
+    cookie-secure: ${SECURITY_REFRESH_COOKIE_SECURE:false}
     allow-rebind-once: true
   crypto:
     tink:
@@ -178,6 +187,6 @@ cryptotrader:
       enabled: true
     websocket:
       enabled: true
-  cors:
-    allowed-origins: "http://localhost:4200"
-    allowed-headers: "authorization,dpop,content-type,x-client-app"
+    cors:
+      allowed-origins: ${CRYPTO_TRADER_ALLOWED_ORIGINS:http://localhost:4200}
+      allowed-headers: ${CRYPTO_TRADER_ALLOWED_HEADERS:authorization,dpop,content-type,x-client-app}
