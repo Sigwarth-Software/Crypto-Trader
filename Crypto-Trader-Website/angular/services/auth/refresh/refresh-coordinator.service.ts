@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 export class RefreshCoordinatorService {
     private readonly channel: BroadcastChannel | null;
     private readonly lockKey: string = 'ct-auth-refresh-lock';
+    private readonly lockTtlMs: number = 15000;
 
     constructor() {
         // BroadcastChannel is widely supported in modern browsers; fall back to
@@ -88,7 +89,11 @@ export class RefreshCoordinatorService {
             const becomeLeader = (): boolean => {
                 try {
                     const current = localStorage.getItem(this.lockKey);
-                    if (!current) {
+                    if (this.isStaleLock(current)) {
+                        localStorage.removeItem(this.lockKey);
+                    }
+                    const available = localStorage.getItem(this.lockKey);
+                    if (!available) {
                         localStorage.setItem(this.lockKey, id);
                         return true;
                     }
@@ -156,5 +161,14 @@ export class RefreshCoordinatorService {
                 cleanup();
             };
         });
+    }
+
+    private isStaleLock(lockValue: string | null): boolean {
+        if (!lockValue) {
+            return false;
+        }
+        const [startedAt] = lockValue.split(':');
+        const startedAtMs = Number(startedAt);
+        return !Number.isFinite(startedAtMs) || Date.now() - startedAtMs > this.lockTtlMs;
     }
 }
