@@ -23,5 +23,5 @@ RUN useradd -m analysisuser
 USER analysisuser
 
 EXPOSE 8000
-# Default entrypoint using gunicorn for production, or manage.py for development
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
+# Default entrypoint using gunicorn for production, or manage.py for development.
+ENTRYPOINT ["gunicorn", "--pythonpath", "/app/src", "--bind", "0.0.0.0:8000", "crypto_trader_analysis.api.wsgi:application"]
