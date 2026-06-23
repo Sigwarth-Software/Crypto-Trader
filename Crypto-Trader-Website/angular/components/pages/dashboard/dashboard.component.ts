@@ -316,7 +316,8 @@ export class DashboardComponent implements OnInit {
     }
 
     protected getShareBalance(): string {
-        return this.sharesFormatter.formatShares(this.portfolio.shareBalance, '');
+        const formattedShares: string = this.sharesFormatter.formatShares(this.portfolio.shareBalance, '');
+        return this.currencyFormatter.formatCurrency(Number(formattedShares));
     }
 
     protected getLastUpdated(): string {
