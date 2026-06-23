@@ -9,6 +9,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.cryptotrader.data.library.communication.request.NewsSentimentHarvestRequest;
 import org.cryptotrader.data.library.communication.request.NewsSentimentTargetedHarvestRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,22 +20,25 @@ import java.time.Month;
 @Component
 @Slf4j
 public class NewsSentimentHarvesterClient {
-    private static final String DAILY_API_URL = "http://localhost:8000/api/news/sentiment/harvest";
-    private static final String TARGETED_API_URL = "http://localhost:8000/api/news/sentiment/harvest/targeted/by-date";
+    private static final String DAILY_HARVEST_PATH = "/api/news/sentiment/harvest";
+    private static final String TARGETED_HARVEST_PATH = "/api/news/sentiment/harvest/targeted/by-date";
     private static final LocalDate START_DATE = LocalDate.of(2025, Month.MARCH, 15);
     private static final int MAX_ARTICLES = 100;
     private static final NewsSentimentHarvestRequest DEFAULT_REQUEST = new NewsSentimentHarvestRequest(MAX_ARTICLES, 1, 1, true);
     private final HttpPost httpPost;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
+    private final String analysisBaseUrl;
 
     @Autowired
     public NewsSentimentHarvesterClient(HttpPost httpPost,
                                         ObjectMapper objectMapper,
-                                        CloseableHttpClient httpClient) {
+                                        CloseableHttpClient httpClient,
+                                        @Value("${cryptotrader.analysis.base-url:https://localhost:8000}") String analysisBaseUrl) {
         this.httpPost = httpPost;
         this.initHeaders();
-        this.httpPost.setURI(URI.create(DAILY_API_URL));
+        this.analysisBaseUrl = normalizeBaseUrl(analysisBaseUrl);
+        this.httpPost.setURI(URI.create(this.analysisUrl(DAILY_HARVEST_PATH)));
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
     }
@@ -59,7 +63,7 @@ public class NewsSentimentHarvesterClient {
     }
     
     public void triggerHarvest(NewsSentimentHarvestRequest request) {
-        this.httpPost.setURI(URI.create(DAILY_API_URL));
+        this.httpPost.setURI(URI.create(this.analysisUrl(DAILY_HARVEST_PATH)));
         log.info("Sending harvest request...");
         String json = this.requestToJson(request);
         try {
@@ -72,7 +76,7 @@ public class NewsSentimentHarvesterClient {
     }
     
     public void triggerHarvest(NewsSentimentTargetedHarvestRequest request) {
-        this.httpPost.setURI(URI.create(TARGETED_API_URL));
+        this.httpPost.setURI(URI.create(this.analysisUrl(TARGETED_HARVEST_PATH)));
         log.info("Sending targeted harvest request...");
         String json = this.requestToJson(request);
         try {
@@ -125,5 +129,16 @@ public class NewsSentimentHarvesterClient {
             startDay = startDay.minusDays(1);
             endDay = endDay.minusDays(1);
         }
+    }
+
+    private String analysisUrl(String path) {
+        return this.analysisBaseUrl + path;
+    }
+
+    private static String normalizeBaseUrl(String baseUrl) {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return "https://localhost:8000";
+        }
+        return baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
 }
