@@ -9,7 +9,9 @@
     />
 
     <!-- ── 2. Portfolio Snapshot Strip ── -->
-    <loading-wheel [visible]="isFetching" />
+    @if (isFetching) {
+        <loading-wheel [visible]="isFetching" />
+    }
     @if (!isFetching) {
         <div class="snapshot-strip">
             <div class="snapshot-card" (click)="navigateTo('/portfolio')">
@@ -131,7 +133,9 @@
         />
         <span class="see-all">See All →</span>
     </div>
-    <loading-wheel [visible]="isFetchingCurrencies" />
+    @if (isFetchingCurrencies) {
+        <loading-wheel [visible]="isFetchingCurrencies" />
+    }
     @if (!isFetchingCurrencies && currencies.length > 0) {
         <div class="currency-ticker">
             @for (currency of currencies; track currency.currencyCode) {
@@ -153,7 +157,9 @@
         />
         <span class="see-all">See All →</span>
     </div>
-    <loading-wheel [visible]="isFetchingTrades" />
+    @if (isFetchingTrades) {
+        <loading-wheel [visible]="isFetchingTrades" />
+    }
     @if (!isFetchingTrades && recentTrades.length > 0) {
         <div class="trades-table-wrapper">
             <table class="trades-table">
