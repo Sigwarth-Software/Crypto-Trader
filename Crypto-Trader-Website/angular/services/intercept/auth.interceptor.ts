@@ -11,6 +11,7 @@ import { DpopProofService } from '@auth/dpop/dpop-proof.service'
 import { TokenStorageService } from '@auth/token-storage.service'
 import { type PossibleToken } from '@models/auth/types'
 import { type PossibleString } from '@models/types'
+import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver'
 
 import { type PossibleStringObservable } from './types'
 
@@ -38,8 +39,7 @@ function isExpired(token: PossibleString): boolean {
 }
 
 function absoluteUrl(request: HttpRequest<any>): string {
-    // req.url is already absolute in this app
-    return request.urlWithParams
+    return resolveAbsoluteHttpUrl(request.urlWithParams)
 }
 
 function withDpopHeaders(
