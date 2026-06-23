@@ -6,7 +6,7 @@ import {
     statisticsElementLink,
     tradeElementLink,
     traderElementLink,
-} from '@assets/elementLinkAssets'
+} from '@assets/element-link.assets'
 import {
     circleCheckmarkIcon,
     coinIcon,
@@ -15,7 +15,7 @@ import {
     walletIcon,
     type ImageAsset,
     whitePotionIcon,
-} from '@assets/imageAssets'
+} from '@assets/image.assets'
 
 /** The options for a navigation bar item.
  *

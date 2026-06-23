@@ -1,7 +1,7 @@
 // chat-overlay.component.ts
 import { Component, OnInit } from '@angular/core';
 
-import { chatModuleIcon, ImageAsset } from '@assets/imageAssets';
+import { chatModuleIcon, ImageAsset } from '@assets/image.assets';
 import { LoggedInService } from '@http/auth/status/logged-in.service';
 import { MySubscriptionTierService } from '@http/user/my-subscription-tier.service';
 import { SubscriptionTier } from '@models/user/types';

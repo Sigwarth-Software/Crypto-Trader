@@ -5,8 +5,8 @@ import {
     circleCheckmarkIcon,
     bookIcon,
     electricPlugIcon,
-} from '@assets/imageAssets';
-import { homeEngineCodeWindow } from '@assets/codeWindowAssets';
+} from '@assets/image.assets';
+import { homeEngineCodeWindow } from '@assets/code-window.assets';
 
 @Component({
     selector: 'transparency-promo',

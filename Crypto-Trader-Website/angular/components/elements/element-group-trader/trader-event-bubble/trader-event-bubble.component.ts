@@ -6,8 +6,8 @@ import {
     defaultCurrencyIcon,
     ImageAsset,
     paperIcon,
-} from '@assets/imageAssets';
-import { defaultTradeEvent } from '@assets/tradeEventAssets';
+} from '@assets/image.assets';
+import { defaultTradeEvent } from '@assets/trade-event.assets';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { TimeFormatterService } from '@ui/time-formatter.service';
 import { TradeEvent } from '@models/trader/types';

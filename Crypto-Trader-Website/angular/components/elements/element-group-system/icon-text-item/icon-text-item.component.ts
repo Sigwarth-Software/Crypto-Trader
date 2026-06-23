@@ -1,6 +1,6 @@
 // icon-text-item.component.ts
 import {Component, HostBinding, Input} from '@angular/core';
-import { ImageAsset } from '@assets/imageAssets';
+import { ImageAsset } from '@assets/image.assets';
 
 @Component({
     selector: 'icon-text-item',

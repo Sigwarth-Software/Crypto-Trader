@@ -2,7 +2,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { ImageAsset } from '@assets/imageAssets';
+import { ImageAsset } from '@assets/image.assets';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { CurrencyImageService } from '@ui/currency-image.service';
 import { SharesFormatterService } from '@ui/shares-formatter.service';

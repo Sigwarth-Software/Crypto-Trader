@@ -3,8 +3,8 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ElementLink } from '@theoliverlear/angular-suite';
-import { homeElementLink } from '@assets/elementLinkAssets';
-import { exitIcon, ImageAsset } from '@assets/imageAssets';
+import { homeElementLink } from '@assets/element-link.assets';
+import { exitIcon, ImageAsset } from '@assets/image.assets';
 import { LogoutService } from '@http/auth/access/logout.service';
 import { TokenStorageService } from '@auth/token-storage.service';
 import { AuthResponse } from '@models/auth/types';

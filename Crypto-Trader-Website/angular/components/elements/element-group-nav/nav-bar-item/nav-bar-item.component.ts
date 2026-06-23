@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 
 import { ElementLink, SsAnchorComponent } from '@theoliverlear/angular-suite'
-import { ImageAsset } from '@assets/imageAssets'
+import { ImageAsset } from '@assets/image.assets'
 
 import { NavBarItemOption } from './models/NavBarItemOption'
 

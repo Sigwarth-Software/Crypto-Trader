@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 
 import { SsImgComponent } from '@theoliverlear/angular-suite';
-import { defaultAvatar, ImageAsset, profileIcon } from '@assets/imageAssets';
+import { defaultAvatar, ImageAsset, profileIcon } from '@assets/image.assets';
 
 /** A component for displaying a profile picture.
  *

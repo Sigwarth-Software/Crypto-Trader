@@ -1,8 +1,8 @@
 // home-anchor.component.ts
 import { Component } from '@angular/core';
 
-import { homeElementLink, navBarHomeLink } from '@assets/elementLinkAssets';
-import { transparentLogo } from '@assets/imageAssets';
+import { homeElementLink, navBarHomeLink } from '@assets/element-link.assets';
+import { transparentLogo } from '@assets/image.assets';
 
 @Component({
     selector: 'home-anchor',

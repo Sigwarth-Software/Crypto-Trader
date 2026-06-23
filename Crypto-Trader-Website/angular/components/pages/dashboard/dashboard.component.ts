@@ -19,8 +19,8 @@ import {
     consoleIcon,
     profileIcon,
     type ImageAsset,
-} from '@assets/imageAssets';
-import { defaultPortfolio } from '@assets/portfolioAssets';
+} from '@assets/image.assets';
+import { defaultPortfolio } from '@assets/portfolio.assets';
 import { PortfolioService } from '@http/portfolio/portfolio.service';
 import { DisplayCurrenciesService } from '@http/currency/display-currencies.service';
 import { CurrencyDayPerformanceService } from '@http/currency/currency-day-performance.service';

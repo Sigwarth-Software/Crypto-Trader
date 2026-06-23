@@ -1,7 +1,7 @@
 // chat-panel.component.ts
 import { Component } from '@angular/core';
 
-import { chatModuleIcon, ImageAsset } from '@assets/imageAssets';
+import { chatModuleIcon, ImageAsset } from '@assets/image.assets';
 import { ChatMessage } from '@models/chat/types';
 
 @Component({

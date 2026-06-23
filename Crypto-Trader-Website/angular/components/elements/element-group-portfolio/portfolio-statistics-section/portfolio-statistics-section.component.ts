@@ -1,7 +1,7 @@
 // portfolio-statistics-section.component.ts
 import { Component } from '@angular/core';
 
-import { defaultSparklineConfig } from '@assets/chartAssets';
+import { defaultSparklineConfig } from '@assets/chart.assets';
 import { type ChartConfig } from '@models/chart/types';
 
 @Component({

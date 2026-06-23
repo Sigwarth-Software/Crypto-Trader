@@ -2,7 +2,7 @@
 import { Component, Input } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { ImageAsset } from '@assets/imageAssets';
+import { ImageAsset } from '@assets/image.assets';
 
 @Component({
     selector: 'quick-action-card',

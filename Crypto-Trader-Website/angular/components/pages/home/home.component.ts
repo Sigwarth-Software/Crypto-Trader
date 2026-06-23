@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ElementSize } from '@theoliverlear/angular-suite';
-import { getStartedElementLink } from '@assets/elementLinkAssets';
+import { getStartedElementLink } from '@assets/element-link.assets';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 @Component({

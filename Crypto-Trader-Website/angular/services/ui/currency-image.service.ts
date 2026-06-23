@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
+import { defaultCurrencyIcon, ImageAsset } from '@assets/image.assets';
 import { DisplayCurrency } from '@models/currency/types';
 
 @Injectable({

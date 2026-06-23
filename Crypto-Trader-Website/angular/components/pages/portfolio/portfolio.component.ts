@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { defaultPortfolio } from '@assets/portfolioAssets';
+import { defaultPortfolio } from '@assets/portfolio.assets';
 import { PortfolioService } from '@http/portfolio/portfolio.service';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { Portfolio } from '@models/portfolio/types';

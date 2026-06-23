@@ -12,8 +12,8 @@ import {
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 
 import { ElementSize, TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
-import { defaultChartConfig } from '@assets/chartAssets';
-import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
+import { defaultChartConfig } from '@assets/chart.assets';
+import { defaultCurrencyIcon, ImageAsset } from '@assets/image.assets';
 import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
 import { CurrencyDayPerformanceService } from '@http/currency/currency-day-performance.service';
 import { CurrencyHistoryService } from '@http/currency/currency-history.service';

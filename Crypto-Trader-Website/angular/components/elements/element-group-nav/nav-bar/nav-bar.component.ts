@@ -6,7 +6,7 @@ import {
     navBarHomeLink,
     navBarPortfolioTextLink,
     navBarTraderTextLink,
-} from '@assets/elementLinkAssets'
+} from '@assets/element-link.assets'
 import { LoggedInService } from '@http/auth/status/logged-in.service'
 
 import { NavBarItemOption } from '../nav-bar-item/models/NavBarItemOption'

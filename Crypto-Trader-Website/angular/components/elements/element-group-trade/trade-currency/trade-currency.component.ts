@@ -13,7 +13,7 @@ import {
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 
 import { TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
-import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
+import { defaultCurrencyIcon, ImageAsset } from '@assets/image.assets';
 import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { CurrencyImageService } from '@ui/currency-image.service';

@@ -9,7 +9,7 @@ import {
     versionModuleIcon,
     assetsModuleIcon,
     docsModuleIcon,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 import { ModuleInfo } from '@models/module/ModuleInfo';
 @Component({
     selector: 'infra-promo',

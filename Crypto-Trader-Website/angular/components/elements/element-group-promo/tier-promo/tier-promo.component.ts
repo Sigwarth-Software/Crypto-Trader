@@ -7,7 +7,7 @@ import {
     brainIcon,
     ImageAsset,
     stockIcon
-} from '@assets/imageAssets'
+} from '@assets/image.assets'
 
 import { SubscriptionTier } from './models/SubscriptionTier'
 import { SubscriptionTierPrices, TierFeature } from '@models/promo/types'

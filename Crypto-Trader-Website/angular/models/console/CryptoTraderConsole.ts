@@ -14,7 +14,7 @@ import {
 } from 'rxjs'
 
 import { AuthType, HashPasswordService } from '@theoliverlear/angular-suite'
-import { createTerminal } from '@assets/consoleAssets'
+import { createTerminal } from '@assets/console.assets'
 import { type AuthService } from '@http/auth/auth.service'
 import { type LoggedInService } from '@http/auth/status/logged-in.service'
 import { type ConsoleCommandService } from '@http/console/console-command.service'

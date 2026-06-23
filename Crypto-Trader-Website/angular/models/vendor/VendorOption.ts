@@ -3,7 +3,7 @@ import {
     coinbaseBrandLogo,
     paperIcon,
     type ImageAsset,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 
 export enum VendorOption {
     PAPER_MODE = 'Paper Mode',

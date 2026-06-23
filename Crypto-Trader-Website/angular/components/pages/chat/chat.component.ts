@@ -1,7 +1,7 @@
 // chat.component.ts
 import { Component, OnInit } from '@angular/core';
 
-import { chatModuleIcon, ImageAsset } from '@assets/imageAssets';
+import { chatModuleIcon, ImageAsset } from '@assets/image.assets';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { ChatConversation, ChatMessage } from '@models/chat/types';
 
