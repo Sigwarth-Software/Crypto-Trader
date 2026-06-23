@@ -87,7 +87,7 @@ open class SecurityConfig {
 
     @Bean
     @ConditionalOnMissingBean(CorsConfigurationSource::class)
-    open fun corsConfigurationSource(@Value("\${cryptotrader.cors.allowed-origins:https://sscryptotrader.com}") origins: String): CorsConfigurationSource {
+    open fun corsConfigurationSource(@Value("\${cryptotrader.api.cors.allowed-origins:https://sscryptotrader.com}") origins: String): CorsConfigurationSource {
         val allowedOrigins: List<String> = origins.split(",").map {
             it.trim()
         }.filter { it.isNotBlank() }
