@@ -13,6 +13,7 @@ import { DpopProofService } from '@auth/dpop/dpop-proof.service';
 import { RefreshCoordinatorService } from '@auth/refresh/refresh-coordinator.service';
 import { TokenStorageService } from '@auth/token-storage.service';
 import { AuthResponse } from '@models/auth/types';
+import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver';
 
 @Injectable({
     providedIn: 'root',
@@ -40,7 +41,7 @@ export class TokenRefreshService extends HttpClientService<any, AuthResponse> {
                         const current = this.tokenStore.getToken() || undefined;
                         const dpop: string = await this.proofs.buildProof(
                             'POST',
-                            TokenRefreshService.URL,
+                            resolveAbsoluteHttpUrl(TokenRefreshService.URL),
                             current,
                         );
                         const headers = new HttpHeaders({
