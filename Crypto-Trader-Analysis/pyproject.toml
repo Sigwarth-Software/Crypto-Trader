@@ -36,6 +36,7 @@ dependencies = [
 [project.optional-dependencies]
 web = [
   "Django>=5.1",
+  "gunicorn>=23.0.0",
 ]
 data = [
   "numpy>=1.23",
@@ -48,6 +49,7 @@ ml = [
 ]
 all = [
   "Django>=5.1",
+  "gunicorn>=23.0.0",
   "numpy>=1.23",
   "pandas>=2.0",
   "tensorflow>=2.14",
