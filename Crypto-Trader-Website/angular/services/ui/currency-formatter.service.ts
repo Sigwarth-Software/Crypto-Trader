@@ -7,7 +7,7 @@ export class CurrencyFormatterService {
     constructor() {}
 
     public formatCurrency(amount: number): string {
-        if (amount == null || isNaN(amount as any)) {
+        if (amount == null || isNaN(amount)) {
             amount = 0;
         }
         let numDigits: number = 2;
@@ -19,6 +19,7 @@ export class CurrencyFormatterService {
                 numDigits = decimalSplit.length;
             }
         }
+        numDigits = Math.max(numDigits, 2)
         const formatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
