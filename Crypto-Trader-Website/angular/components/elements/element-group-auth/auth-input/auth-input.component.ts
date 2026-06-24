@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { InputType, TagType } from '@theoliverlear/angular-suite'
 
 import { AuthInputType } from './models/AuthInputType'
+import {PossibleString} from "@models/types"
 
 /** A text input for authentication.
  *
@@ -19,6 +20,7 @@ export class AuthInputComponent implements OnInit {
     @Input() public authTypeString: string = ''
     @Output() public inputChange: EventEmitter<string> = new EventEmitter<string>()
     protected inputText: string = ''
+    @Input() public errorMessage: PossibleString = null
     constructor() {}
     /** Emits the input text to the parent component.
      *
