@@ -15,6 +15,14 @@ auth-input {
         gap: 6px;
     }
 
+    .error-message {
+        font-family: $auth-font;
+        font-size: 13px;
+        font-weight: 500;
+        color: #dc2626;
+        letter-spacing: 0.01em;
+    }
+
     .input-label {
         font-family: $auth-font;
         font-size: 13px;
