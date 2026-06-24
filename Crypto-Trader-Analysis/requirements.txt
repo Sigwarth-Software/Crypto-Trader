@@ -31,3 +31,4 @@ transformers==4.55.0
 django==5.1.7
 boto3==1.37.9
 worldnewsapi==2.2.0
+gunicorn>=23.0.0
