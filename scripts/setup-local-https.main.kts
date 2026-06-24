@@ -90,14 +90,16 @@ fun printNextSteps() {
           ${'$'}env:SERVER_SSL_ENABLED='true'
           ${'$'}env:SERVER_SSL_CERTIFICATE='$certUri'
           ${'$'}env:SERVER_SSL_CERTIFICATE_PRIVATE_KEY='$keyUri'
-          ${'$'}env:CRYPTOTRADER_ANALYSIS_BASE_URL='https://localhost:8000'
+          ${'$'}env:CT_ANALYSIS_BASE_URL='https://localhost:8000'
           mvn -pl Crypto-Trader-Data -am spring-boot:run
         
         Run Analysis with HTTPS-aware service URLs:
           ${'$'}env:CT_API_BASE_URL='https://localhost:8080'
           ${'$'}env:CT_DATA_BASE_URL='https://localhost:8085'
           ${'$'}env:CT_CA_BUNDLE='$rootCaPath'
-          gunicorn --pythonpath Crypto-Trader-Analysis/src --bind 0.0.0.0:8000 --certfile ${certFile.absolutePath} --keyfile ${keyFile.absolutePath} crypto_trader_analysis.api.wsgi:application
+          ${'$'}env:CT_ANALYSIS_CERT_FILE='${certFile.absolutePath}'
+          ${'$'}env:CT_ANALYSIS_KEY_FILE='${keyFile.absolutePath}'
+          python Crypto-Trader-Analysis/scripts/run-local-https.py
         
         Then start the website from Crypto-Trader-Website:
           npm run start:https
