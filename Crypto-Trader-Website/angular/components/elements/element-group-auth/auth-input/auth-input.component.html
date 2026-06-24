@@ -22,4 +22,9 @@
             </span>
         </div>
     }
+    @if (errorMessage) {
+        <div class="error-message">
+            {{ errorMessage }}
+        </div>
+    }
 </ng-container>
