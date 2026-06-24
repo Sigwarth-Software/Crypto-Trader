@@ -21,10 +21,20 @@ QUERIES = [
     # "(ethereum OR eth OR blockchain OR web3 OR defi OR stablecoin)",
     # "(xrp OR solana OR cardano OR bnb OR dogecoin OR litecoin or crypto mining)"
 ]
-SOURCES = ','.join(ALL_NEWS_SOURCES_LINKS)
-FILTERED_SOURCES = ','.join(FILTERED_NEWS_SOURCES_LINKS)
 SLEEP_DURATION = 0.6
 PAGE_SIZE = 100
+NEWS_SOURCES_LIMIT = 10
+QUOTA_STOP_THRESHOLD = 5.0
+
+def chunk_sources(source_links: list[str]) -> list[str]:
+    return [
+        ','.join(source_links[index:index + NEWS_SOURCES_LIMIT])
+        for index in range(0, len(source_links), NEWS_SOURCES_LIMIT)
+    ]
+
+def get_source_groups(include_forbes: bool) -> list[str]:
+    source_links: list[str] = ALL_NEWS_SOURCES_LINKS if include_forbes else FILTERED_NEWS_SOURCES_LINKS
+    return chunk_sources(source_links)
 
 def get_time_bounds(start_date: date, end_date: date) -> tuple[str, str, str]:
     day_label: str = start_date.isoformat()
@@ -57,62 +67,71 @@ def fetch_articles(earliest_date: str,
                    include_forbes: bool = True):
     total_points_used: float = 0.0
     collected: dict[str, dict] = {}
+    source_groups: list[str] = get_source_groups(include_forbes)
     for query in QUERIES:
-        offset: int = 0
-        while len(collected) < num_articles:
-            api_response: ApiResponse[SearchNews200Response] = api_instance.search_news_with_http_info(
-                language="en",
-                source_country="us",
-                news_sources=SOURCES if include_forbes else FILTERED_SOURCES,
-                number=PAGE_SIZE,
-                categories="business,technology,politics,science",
-                sort="publish-time",
-                sort_direction="desc",
-                text=query,
-                earliest_publish_date=earliest_date,
-                latest_publish_date=latest_date,
-                offset=offset,
-            )
-            remaining_points: float = get_points_remaining(api_response.headers)
-            points_used: float = get_points_used(api_response.headers)
-            total_points_used += points_used
-            print(f"""
-            Used: {points_used:.4f} points
-            Remaining: {remaining_points:.4f} points
-            """)
-            if remaining_points < 50:
-                return list(collected)
-            data: dict = api_response.data.to_dict()
-            news_items: list = data.get("news", []) or []
-            if not news_items:
-                break
-            for news_item in news_items:
-                print(news_item)
-                url = news_item.get("url")
-                if not url or url in collected:
-                    continue
-                author: str = news_item.get("author")
-                # author: str = get_author(news_item, url)
-                collected[url] = {
-                    "id": news_item.get("id"),
-                    "title": news_item.get("title"),
-                    "url": url,
-                    "publish_date": news_item.get("publish_date"),
-                    "author": author,
-                    # "summary": news_item.get("summary"),
-                    # "language": news_item.get("language"),
-                    # "source_country": news_item.get("source_country"),
-                    # "sentiment_api": news_item.get("sentiment"),
-                    "text": news_item.get("text"),
-                    "keywords": query,
-                    "source": get_by_link(url).name if get_by_link(url) else "Unknown",
-                }
-                if len(collected) >= num_articles:
+        for news_sources in source_groups:
+            offset: int = 0
+            while len(collected) < num_articles:
+                source_count: int = len(news_sources.split(','))
+                if source_count > NEWS_SOURCES_LIMIT:
+                    raise ValueError(f"Too many news sources in request batch: {source_count}")
+                api_response: ApiResponse[SearchNews200Response] = api_instance.search_news_with_http_info(
+                    language="en",
+                    source_country="us",
+                    news_sources=news_sources,
+                    number=PAGE_SIZE,
+                    categories="business,technology,politics,science",
+                    sort="publish-time",
+                    sort_direction="desc",
+                    text=query,
+                    earliest_publish_date=earliest_date,
+                    latest_publish_date=latest_date,
+                    offset=offset,
+                )
+                remaining_points: float = get_points_remaining(api_response.headers)
+                points_used: float = get_points_used(api_response.headers)
+                total_points_used += points_used
+                print(f"""
+                Used: {points_used:.4f} points
+                Remaining: {remaining_points:.4f} points
+                """)
+                data: dict = api_response.data.to_dict()
+                news_items: list = data.get("news", []) or []
+                print(f"Returned {len(news_items)} news items for {source_count} sources")
+                if not news_items:
                     break
-            returned: int = len(news_items)
-            if returned < PAGE_SIZE:
+                for news_item in news_items:
+                    print(news_item)
+                    url = news_item.get("url")
+                    if not url or url in collected:
+                        continue
+                    author: str = news_item.get("author")
+                    # author: str = get_author(news_item, url)
+                    collected[url] = {
+                        "id": news_item.get("id"),
+                        "title": news_item.get("title"),
+                        "url": url,
+                        "publish_date": news_item.get("publish_date"),
+                        "author": author,
+                        # "summary": news_item.get("summary"),
+                        # "language": news_item.get("language"),
+                        # "source_country": news_item.get("source_country"),
+                        # "sentiment_api": news_item.get("sentiment"),
+                        "text": news_item.get("text"),
+                        "keywords": query,
+                        "source": get_by_link(url).name if get_by_link(url) else "Unknown",
+                    }
+                    if len(collected) >= num_articles:
+                        break
+                if remaining_points < QUOTA_STOP_THRESHOLD:
+                    return list(collected.values())
+                returned: int = len(news_items)
+                if returned < PAGE_SIZE:
+                    break
+                offset += returned
+                rate_limit_sleep()
+            if len(collected) >= num_articles:
                 break
-            offset += returned
             rate_limit_sleep()
         if len(collected) >= num_articles:
             break
