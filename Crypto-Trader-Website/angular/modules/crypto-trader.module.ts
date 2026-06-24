@@ -34,6 +34,7 @@ import { PromoModule } from './feature/promo.module';
 import { TradeModule } from './feature/trade.module';
 import { TraderModule } from './feature/trader.module';
 import { AngularSuiteModule } from '@theoliverlear/angular-suite';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 @NgModule({
     declarations: [AppComponent, ...elements, ...pages],
@@ -66,8 +67,8 @@ import { AngularSuiteModule } from '@theoliverlear/angular-suite';
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CryptoTraderModule {
-    constructor(private logService: CryptoTraderLoggerService) {
-        this.logService.setContext('System');
-        this.logService.info(`Crypto-Trader-Website initialized.`);
+    constructor(private readonly logger: CryptoTraderLoggerService) {
+        this.logger.setContext(LoggerContext.System)
+        this.logger.info(`Crypto-Trader-Website initialized.`)
     }
 }

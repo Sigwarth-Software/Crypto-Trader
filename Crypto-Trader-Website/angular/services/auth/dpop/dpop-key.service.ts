@@ -4,6 +4,7 @@ import { environment } from '@environments/environment'
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
 import { DpopKeyStoreService } from './dpop-key-store.service'
 import { PossibleCryptoKeyPair, PossibleJsonWebKey } from './types'
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /**
  * Manages the client's DPoP key pair using WebCrypto.
@@ -25,34 +26,34 @@ export class DpopKeyService {
     // TODO: Clean up code.
     constructor(
         private readonly store: DpopKeyStoreService,
-        private readonly log: CryptoTraderLoggerService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {
-        this.log.setContext('DPoP')
+        this.logger.setContext(LoggerContext.Dpop)
     }
 
     /** Ensure a keypair exists. */
     public async ensureKeys(): Promise<void> {
         if (this.keyPair) return
 
-        this.log.debug(`Ensuring keys...`)
+        this.logger.debug(`Ensuring keys...`)
 
         // Try to load from IndexedDB if enabled
         if (environment.persistDpopKey) {
             try {
                 const loaded: PossibleCryptoKeyPair = await this.store.load()
                 if (loaded) {
-                    this.log.info(`Keys loaded from store.`)
+                    this.logger.info(`Keys loaded from store.`)
                     this.keyPair = loaded
                     this.cachedJwk = null
                     this.cachedJkt = null
                     return
                 }
             } catch {
-                this.log.warn(`Failed to load keys from store.`)
+                this.logger.warn(`Failed to load keys from store.`)
             }
         }
 
-        this.log.info(`Generating new key pair...`)
+        this.logger.info(`Generating new key pair...`)
         // Generate a new EC P-256 key pair for ES256
         this.keyPair = await crypto.subtle.generateKey(
             {

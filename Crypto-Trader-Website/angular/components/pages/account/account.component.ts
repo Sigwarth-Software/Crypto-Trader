@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 @Component({
     selector: 'account',
@@ -13,7 +14,6 @@ export class AccountComponent implements OnInit {
     constructor(private readonly log: CryptoTraderLoggerService) {}
 
     ngOnInit(): void {
-        this.log.setContext('Account');
-        this.log.info('Account component initialized');
+        this.log.setContext(LoggerContext.Account)
     }
 }

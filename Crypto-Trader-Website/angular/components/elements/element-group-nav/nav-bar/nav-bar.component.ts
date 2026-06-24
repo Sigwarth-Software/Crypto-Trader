@@ -11,6 +11,7 @@ import { LoggedInService } from '@http/auth/status/logged-in.service'
 
 import { NavBarItemOption } from '../nav-bar-item/models/NavBarItemOption'
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /** A navigation bar that contains links to different pages.
  *
@@ -49,8 +50,7 @@ export class NavBarComponent implements OnInit, OnChanges {
      *
      */
     public ngOnInit(): void {
-        this.log.setContext('NavBar')
-        this.log.info('NavBar component initialized')
+        this.log.setContext(LoggerContext.Navigation)
         this.listenForAuthStatus()
         this.verifyLoginStatus()
     }

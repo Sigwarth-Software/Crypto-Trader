@@ -6,6 +6,7 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { DisplayCurrencyList } from '@models/currency/types';
 
 import { listStagger } from '../../animations/animations';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 @Component({
     selector: 'currencies',
@@ -55,7 +56,7 @@ export class CurrenciesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.log.setContext('Currencies');
+        this.log.setContext(LoggerContext.Currencies);
         this.initializeCurrencies();
         this.loadCurrencies(0);
     }

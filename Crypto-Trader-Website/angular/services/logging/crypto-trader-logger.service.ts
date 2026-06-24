@@ -6,6 +6,7 @@ import { HttpTransport } from '@loglayer/transport-http';
 import { redactionPlugin } from '@loglayer/plugin-redaction';
 import { serializeError } from 'serialize-error';
 import { environment } from '@environments/environment';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 // TODO: Move to utils.
 function formatTimestamp(date: Date): string {
@@ -114,7 +115,7 @@ export class CryptoTraderLoggerService {
      *
      * @param context
      */
-    public setContext(context: string): void {
+    public setContext(context: LoggerContext): void {
         this.context = context;
         prettyLogger.settings.name = context;
     }

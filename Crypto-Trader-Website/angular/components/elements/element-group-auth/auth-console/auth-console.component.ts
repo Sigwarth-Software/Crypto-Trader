@@ -13,6 +13,7 @@ import { AuthResponse, LoginRequest, SignupRequest } from '@models/auth/types'
 import {
     CryptoTraderLoggerService
 } from "@services/logging/crypto-trader-logger.service";
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /**
  * Authentication console component for the landing/authorize page.
@@ -42,7 +43,7 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         private readonly tokenStorageService: TokenStorageService,
         private readonly logger: CryptoTraderLoggerService,
     ) {
-        this.logger.setContext('Auth')
+        this.logger.setContext(LoggerContext.Auth)
     }
 
     /** Attempts to log in a user with input credentials.

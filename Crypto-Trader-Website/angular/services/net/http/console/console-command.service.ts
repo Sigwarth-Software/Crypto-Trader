@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpClientService } from '@theoliverlear/angular-suite';
 import { ConsoleCommandRequest, ConsoleCommandResponse } from '@models/console/types';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /** A service for executing console commands by sending HTTP requests.
  *
@@ -20,7 +21,7 @@ export class ConsoleCommandService extends HttpClientService<
 
     constructor(private readonly log: CryptoTraderLoggerService) {
         super(ConsoleCommandService.URL);
-        this.log.setContext('Console');
+        this.log.setContext(LoggerContext.Console);
     }
 
     /** Executes a console command by sending a POST request to the server

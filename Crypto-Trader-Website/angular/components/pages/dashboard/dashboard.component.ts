@@ -32,6 +32,7 @@ import { TimeFormatterService } from '@ui/time-formatter.service';
 import { Portfolio, PortfolioAsset } from '@models/portfolio/types';
 import { DisplayCurrency, PerformanceRating } from '@models/currency/types';
 import { TradeEvent } from '@models/trader/types';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 export interface DashboardCard {
     label: string;
@@ -218,8 +219,7 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        this.log.setContext('Dashboard');
-        this.log.info('Dashboard component initialized');
+        this.log.setContext(LoggerContext.Dashboard);
 
         this.log.debug('Fetching portfolio...');
         this.portfolioService.getPortfolio().subscribe({

@@ -6,6 +6,7 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { LoginCredentials } from '@models/auth/LoginCredentials'
 
 import { AuthInputType } from '../auth-input/models/AuthInputType'
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /** A section for login in the auth console.
  *
@@ -20,17 +21,17 @@ export class AuthConsoleLoginSectionComponent implements OnInit {
     protected loginCredentials: LoginCredentials = new LoginCredentials()
     @Output() protected loginButtonClicked: EventEmitter<LoginCredentials> =
         new EventEmitter<LoginCredentials>()
-    constructor(private readonly log: CryptoTraderLoggerService) {}
+    constructor(private readonly logger: CryptoTraderLoggerService) {}
 
     /**
      * On initialization, set the logger context.
      */
     public ngOnInit(): void {
-        this.log.setContext('AuthConsoleLogin')
+        this.logger.setContext(LoggerContext.Auth)
     }
 
     protected emitFields(): void {
-        this.log.info('Login button clicked, emitting credentials')
+        this.logger.info('Login button clicked, emitting credentials')
         this.loginButtonClicked.emit(this.loginCredentials)
     }
 
