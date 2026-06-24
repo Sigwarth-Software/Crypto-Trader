@@ -64,7 +64,7 @@ security:
       generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 cryptotrader:
   analysis:
-    base-url: ${CRYPTOTRADER_ANALYSIS_BASE_URL:https://localhost:8000}
+    base-url: ${CT_ANALYSIS_BASE_URL:https://localhost:8000}
 management:
   endpoints.web.exposure.include: health,info
 #logging:
