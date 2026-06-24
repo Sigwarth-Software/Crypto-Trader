@@ -6,6 +6,8 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { SignupCredentials } from '@models/auth/SignupCredentials'
 
 import { AuthInputType } from '../auth-input/models/AuthInputType'
+import {PossibleString} from "@models/types";
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 /** A section for signup up in the auth console.
  *
@@ -21,13 +23,19 @@ export class AuthConsoleSignupSectionComponent implements OnInit {
     @Output() public signupButtonClicked: EventEmitter<SignupCredentials> =
         new EventEmitter<SignupCredentials>()
     @Output() public authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>()
+
+    protected emailErrorMessage: PossibleString = ''
+    protected passwordErrorMessage: PossibleString = ''
+    protected confirmPasswordErrorMessage: PossibleString = ''
+    protected agreedTermsErrorMessage: PossibleString = ''
+
     constructor(private readonly log: CryptoTraderLoggerService) {}
 
     /**
      * On initialization, set the logger context.
      */
     public ngOnInit(): void {
-        this.log.setContext('AuthConsoleSignup')
+        this.log.setContext(LoggerContext.Auth)
     }
 
     /** Emits an authorization popup event to the parent component.
@@ -62,9 +70,23 @@ export class AuthConsoleSignupSectionComponent implements OnInit {
     private emitPossibleInvalidEmail(): void {
         if (!this.signupCredentials.isValidEmail()) {
             this.log.warn('Invalid email format detected during signup')
-            this.emitAuthPopup(AuthPopup.INVALID_EMAIL)
+            this.emailErrorMessage = AuthPopup.INVALID_EMAIL
         } else {
-            this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue())
+            this.handleTypingIssue()
+        }
+    }
+
+    private handleTypingIssue(): void {
+        const typingIssue: AuthPopup = this.signupCredentials.getAnyTypingIssue()
+        if (typingIssue === AuthPopup.INVALID_EMAIL) {
+            this.emailErrorMessage = AuthPopup.INVALID_EMAIL
+        }
+        if (typingIssue === AuthPopup.PASSWORDS_DONT_MATCH) {
+            this.confirmPasswordErrorMessage = AuthPopup.PASSWORDS_DONT_MATCH
+        }
+
+        if (typingIssue === AuthPopup.NONE) {
+            this.clearAllErrorMessages()
         }
     }
 
@@ -74,20 +96,27 @@ export class AuthConsoleSignupSectionComponent implements OnInit {
      */
     protected updatePassword(password: string): void {
         this.signupCredentials.password = password
-        this.emitPossibleMismatch()
+        this.handlePossibleMismatch()
     }
 
     /** Emits an authorization popup event if the passwords don't match.
      *
      * @private
      */
-    private emitPossibleMismatch(): void {
+    private handlePossibleMismatch(): void {
         if (!this.signupCredentials.isPasswordMatch()) {
             this.log.warn('Passwords do not match during signup')
-            this.emitAuthPopup(AuthPopup.PASSWORDS_DONT_MATCH)
+            this.confirmPasswordErrorMessage = AuthPopup.PASSWORDS_DONT_MATCH
         } else {
-            this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue())
+            this.handleTypingIssue()
         }
+    }
+
+    private clearAllErrorMessages(): void {
+        this.emailErrorMessage = null
+        this.confirmPasswordErrorMessage = null
+        this.passwordErrorMessage = null
+        this.agreedTermsErrorMessage = null
     }
 
     /** Updates the confirm password input.
@@ -96,7 +125,7 @@ export class AuthConsoleSignupSectionComponent implements OnInit {
      */
     protected updateConfirmPassword(confirmPassword: string): void {
         this.signupCredentials.confirmPassword = confirmPassword
-        this.emitPossibleMismatch()
+        this.handlePossibleMismatch()
     }
     /** Emits all signup credentials to the parent component.
      *
