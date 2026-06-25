@@ -5,7 +5,6 @@ import org.cryptotrader.security.library.service.entity.BannedIpAddressEntitySer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
-import java.time.LocalDateTime
 
 class SecurityEventLogger(
     private val ipAddressEntityService: BannedIpAddressEntityService,
@@ -15,9 +14,7 @@ class SecurityEventLogger(
     @EventListener
     fun recordIpEvent(ipAddress: String) {
         try {
-            val record = BannedIpAddress()
-            record.ipAddress = ipAddress
-            record.occurredAt = LocalDateTime.now()
+            val record = BannedIpAddress(ipAddress)
             this.ipAddressEntityService.save(record)
         } catch (ex: Exception) {
             this.log.warn("Failed to persist security event: {}", ex.toString())
