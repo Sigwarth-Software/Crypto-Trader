@@ -64,10 +64,8 @@ open class TradeService(
         portfolioAsset.updateValues()
         userPortfolio.addAsset(portfolioAsset)
         portfolioAsset.vendor = SupportedVendors.from(tradeRequest.vendor)
-//        this.portfolioService.savePortfolioAsset(portfolioAsset)
         this.portfolioAssetEntityService.save(portfolioAsset)
         userPortfolio.updateValues()
-//        this.portfolioService.savePortfolio(userPortfolio)
         this.portfolioEntityService.save(userPortfolio)
         return true
     }
