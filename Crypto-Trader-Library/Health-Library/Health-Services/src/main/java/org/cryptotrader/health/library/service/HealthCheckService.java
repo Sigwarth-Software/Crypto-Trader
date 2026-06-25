@@ -67,7 +67,6 @@ public class HealthCheckService {
             .checkedAt(LocalDateTime.now(ZoneId.of("America/Chicago")))
             .build();
 
-//        this.healthStatusRepository.save(entity);
         this.healthStatusEntityService.save(entity);
         log.info("Health check for {}: {} (HTTP {})", service, status, httpCode);
     }
@@ -93,7 +92,6 @@ public class HealthCheckService {
             .checkedAt(LocalDateTime.now(ZoneId.of("America/Chicago")))
             .build();
 
-//        this.healthStatusRepository.save(entity);
         this.healthStatusEntityService.save(entity);
         log.info("Health check for {}: {}", CryptoTraderService.DATABASE, status);
     }
