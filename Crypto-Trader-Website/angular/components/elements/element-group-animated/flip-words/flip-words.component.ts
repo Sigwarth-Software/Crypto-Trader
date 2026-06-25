@@ -39,9 +39,10 @@ export class FlipWordsComponent implements OnInit, OnDestroy {
 
     // TODO: Move to utils or service file.
     private schedule(): void {
+        const ANIMATION_DELAY_MS: number = 350
         this.flipOutTimeout = setTimeout((): void => {
             this.swap = true
-        }, this.periodMs - 350)
+        }, this.periodMs - ANIMATION_DELAY_MS)
         this.nextWordTimeout = setTimeout((): void => {
             this.current = (this.current + 1) % this.words.length
             this.swap = false
