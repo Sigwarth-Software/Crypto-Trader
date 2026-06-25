@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class PortfolioTradeExecutionService {
@@ -48,6 +50,14 @@ public class PortfolioTradeExecutionService {
         updateTraders(trader, assetTrader);
         if (hasAssetChanged(previousAsset, traderAsset)) {
             this.saveAssetChanges(trader, traderAsset, tradeOccurred);
+        }
+    }
+
+    public void triggerAllTraders(List<Trader> traders) {
+        for (Trader trader : traders) {
+            for (TradingEngine assetTrader : trader.getAssetTraders()) {
+                this.executeTrader(trader, assetTrader);
+            }
         }
     }
 
