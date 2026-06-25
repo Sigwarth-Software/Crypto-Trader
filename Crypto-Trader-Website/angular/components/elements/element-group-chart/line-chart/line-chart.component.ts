@@ -39,12 +39,15 @@ export class LineChartComponent extends BaseChartComponent {
      *  delegating to the base pipeline.
      */
     protected override render(): void {
-        let widthVw = 40
+        const MIN_WIDTH_VW: number = 40
+        const MAX_WIDTH_VW = 80
+        const HEIGHT_VW: number = 19
+        let widthVw: number = MIN_WIDTH_VW
         if (window.innerWidth < 1100) {
-            widthVw = 80
+            widthVw = MAX_WIDTH_VW
         }
         this.config.dimensions.width = this.pixelCalculator.getByViewport(widthVw, 0);
-        this.config.dimensions.height = this.pixelCalculator.getByViewport(0, 19);
+        this.config.dimensions.height = this.pixelCalculator.getByViewport(0, HEIGHT_VW);
         super.render();
     }
 
