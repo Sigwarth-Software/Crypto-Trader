@@ -16,7 +16,6 @@ class TradeEventService(
     val portfolioService: PortfolioService
 ) {
     fun saveTradeEvent(tradeEvent: TradeEvent): TradeEvent {
-//        return this.tradeEventRepository.save(tradeEvent)
         return this.tradeEventEntityService.save(tradeEvent)
     }
 
