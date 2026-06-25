@@ -66,13 +66,17 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
             sb.append('\n').append(color("Headers:", AnsiColor.BRIGHT_BLACK)).append('\n');
             for (Map.Entry<String, Object> objectEntry : message.getHeaders().entrySet()) {
                 String value = this.logRedactor.redactHeader(objectEntry.getKey(), String.valueOf(objectEntry.getValue()));
-                sb.append("  ").append(color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK)).append(color(value, AnsiColor.WHITE)).append('\n');
+                String formattedKey = color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK);
+                String formattedValue = color(value, AnsiColor.WHITE);
+                sb.append("  ").append(formattedKey).append(formattedValue).append('\n');
             }
         }
         if (props.isIncludePayload() && payload != null) {
             String text = asText(payload, props.getMaxPayloadLength());
             if (!text.isEmpty()) {
-                sb.append('\n').append(color("Payload:", AnsiColor.BRIGHT_BLACK)).append(' ').append(color(this.logRedactor.redactText(text), AnsiColor.WHITE));
+                String formattedKey = color("Payload:", AnsiColor.BRIGHT_BLACK);
+                String formattedValue = color(this.logRedactor.redactText(text), AnsiColor.WHITE);
+                sb.append('\n').append(formattedKey).append(' ').append(formattedValue);
             }
         }
 
