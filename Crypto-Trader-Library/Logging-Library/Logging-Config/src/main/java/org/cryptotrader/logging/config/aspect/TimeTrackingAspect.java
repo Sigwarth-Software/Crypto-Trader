@@ -8,6 +8,7 @@ import org.cryptotrader.universal.library.model.Ansi;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.cryptotrader.logging.library.events.ExecutionSpeedLogEventPayload;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
@@ -36,8 +37,7 @@ public class TimeTrackingAspect {
             long expectedMillis = Math.max(1L, configuredExpectedMillis);
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             String declaringTypeName = signature.getDeclaringTypeName();
-            int lastDotIndex = declaringTypeName.lastIndexOf('.');
-            String className = lastDotIndex >= 0 ? declaringTypeName.substring(lastDotIndex + 1) : declaringTypeName;
+            String className = parseClassName(declaringTypeName);
             String rawMethodName = signature.getName();
             String duration = getDurationString(elapsedMillis, expectedMillis);
             String fullMethodQualifiedName = declaringTypeName + "." + rawMethodName;
@@ -47,6 +47,12 @@ public class TimeTrackingAspect {
             String displayMethodName = getMethodName(className, rawMethodName);
             log.info("{} executed in {} {}(expected {}ms){}", displayMethodName, duration, Ansi.GRAY, expectedMillis, Ansi.RESET);
         }
+    }
+
+    private static @NotNull String parseClassName(String declaringTypeName) {
+        final int lastDotIndex = declaringTypeName.lastIndexOf('.');
+        String className = lastDotIndex >= 0 ? declaringTypeName.substring(lastDotIndex + 1) : declaringTypeName;
+        return className;
     }
 
     private void publishExecutionSpeedLog(long elapsedMillis,
