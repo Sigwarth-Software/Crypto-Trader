@@ -7,7 +7,6 @@ import org.cryptotrader.universal.library.events.RequestGatewayController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.messaging.Message
 import org.springframework.stereotype.Component
 
 @Component
@@ -15,9 +14,4 @@ class ConsoleRequestGateway @Autowired constructor(
     override val eventPublisher: EventPublisher
 ) : RequestGatewayController<ConsoleCommandRequest, ConsoleCommandResponse>() {
     private val log: Logger = LoggerFactory.getLogger(ConsoleRequestGateway::class.java)
-
-    fun handleConsoleResponse(message: Message<ConsoleCommandResponse>) {
-        log.info("Handling console response correlationId={}", message.headers["correlationId"])
-        this.handleResponse(message)
-    }
 }
