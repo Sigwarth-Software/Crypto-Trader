@@ -26,4 +26,9 @@ public class BannedIpAddress extends IpAddress {
     @Builder.Default
     @Column(nullable = false, name = "attempts")
     private int attempts = 1;
+
+    public BannedIpAddress(String ipAddress) {
+        super(ipAddress);
+        this.occurredAt = LocalDateTime.now();
+    }
 }
