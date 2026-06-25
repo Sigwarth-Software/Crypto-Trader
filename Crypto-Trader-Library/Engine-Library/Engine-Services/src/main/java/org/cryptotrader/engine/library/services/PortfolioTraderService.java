@@ -134,11 +134,7 @@ public class PortfolioTraderService {
 
     @TimeTracked(expectedMillis = 2000, shouldPersist = true)
     public void triggerAllTraders(List<Trader> traders) {
-        for (Trader trader : traders) {
-            for (TradingEngine assetTrader : trader.getAssetTraders()) {
-                this.portfolioTradeExecutionService.executeTrader(trader, assetTrader);
-            }
-        }
+        this.portfolioTradeExecutionService.triggerAllTraders(traders);
     }
 
     //----------------------Add-Portfolio-To-Traders--------------------------
