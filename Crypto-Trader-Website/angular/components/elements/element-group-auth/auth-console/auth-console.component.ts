@@ -161,30 +161,29 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
      *
      */
     public initializeWebSockets(): void {
-        console.log('[WS] Connecting signup socket…')
+        this.logger.info('[WS] Connecting signup socket…')
         this.signupWebSocket.connect()
         this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
             next: (authResponse: AuthResponse): void => {
-                console.log('[WS][signup] message:', authResponse)
+                this.logger.info(`[WS][signup] message: ${JSON.stringify(authResponse)}`)
                 if (!authResponse) {
                     return
                 }
                 if (authResponse.authorized) {
-                    console.log('[WS][signup] Authorized')
                     this.saveToken(authResponse)
                     void this.router.navigate(['/portfolio'])
                 } else {
-                    console.log('[WS][signup] Not authorized')
                     if (this.attempts !== 0) {
                         this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS)
                     }
                 }
             },
             error: (error): void => {
-                console.log('[WS][signup] error:', error)
+                const errorMessage: string = error instanceof Error ? error.message : String(error)
+                this.logger.info('[WS][signup] error:', errorMessage)
             },
             complete: (): void => {
-                console.log('[WS][signup] complete')
+                this.logger.info('[WS][signup] complete')
             },
         })
     }
