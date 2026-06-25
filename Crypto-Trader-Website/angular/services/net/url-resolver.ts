@@ -1,6 +1,4 @@
-// TODO: Move to an assets file.
-const HTTP_PROTOCOL_PATTERN = /^https?:\/\//i
-const WEBSOCKET_PROTOCOL_PATTERN = /^wss?:\/\//i
+import { HTTP_PROTOCOL_REGEX, WEBSOCKET_PROTOCOL_REGEX } from '@assets/regex.assets'
 
 function browserOrigin(): string {
     if (typeof window !== 'undefined' && typeof window.location?.origin === 'string') {
@@ -19,17 +17,17 @@ function browserWebSocketOrigin(): string {
 }
 
 export function resolveAbsoluteHttpUrl(url: string): string {
-    if (HTTP_PROTOCOL_PATTERN.test(url)) {
+    if (HTTP_PROTOCOL_REGEX.test(url)) {
         return url
     }
     return new URL(url, browserOrigin()).toString()
 }
 
 export function resolveWebSocketUrl(url: string): string {
-    if (WEBSOCKET_PROTOCOL_PATTERN.test(url)) {
+    if (WEBSOCKET_PROTOCOL_REGEX.test(url)) {
         return url
     }
-    if (HTTP_PROTOCOL_PATTERN.test(url)) {
+    if (HTTP_PROTOCOL_REGEX.test(url)) {
         const absoluteHttpUrl: URL = new URL(url)
         absoluteHttpUrl.protocol = absoluteHttpUrl.protocol === 'https:' ? 'wss:' : 'ws:'
         return absoluteHttpUrl.toString()
