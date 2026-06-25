@@ -27,9 +27,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 ])
 @EntityScan(basePackages = [
     "org.cryptotrader.console.library.entity",
-    "org.cryptotrader.data.library.model",
     "org.cryptotrader.data.library.entity",
-    "org.cryptotrader.api.library.model",
     "org.cryptotrader.api.library.entity"
 ])
 open class CryptoTraderConsoleApplication
