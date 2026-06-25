@@ -17,7 +17,7 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
     public CurrencyDataRetriever() {
         super(API_URL);
     }
-    @TimeTracked(expectedMillis = 3000, shouldPersist = true)
+    @TimeTracked(expectedMillis = 125, shouldPersist = true)
     public Map<String ,Currency> getUpdatedCurrencies() {
         Map<String, Double> currencyMap = this.getCurrencyMap();
         Map<String, Currency> updatedCurrencyMap = new HashMap<>();
