@@ -20,6 +20,7 @@ open module org.cryptotrader.logging.library.config {
     requires org.slf4j;
     requires com.fasterxml.jackson.databind;
     requires org.jetbrains.annotations;
+    requires org.cryptotrader.logging.library.scripts;
 
     exports org.cryptotrader.logging.config;
     exports org.cryptotrader.logging.http;
