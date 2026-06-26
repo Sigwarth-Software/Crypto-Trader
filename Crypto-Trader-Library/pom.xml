@@ -84,6 +84,7 @@
         <module>Logging-Library/Logging-Models</module>
         <module>Logging-Library/Logging-Communication</module>
         <module>Logging-Library/Logging-Repositories</module>
+        <module>Logging-Library/Logging-Scripts</module>
         <module>Logging-Library/Logging-Services</module>
         <module>Health-Library</module>
         <module>Health-Library/Health-Models</module>
