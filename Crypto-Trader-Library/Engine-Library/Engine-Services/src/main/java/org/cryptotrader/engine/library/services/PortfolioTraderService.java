@@ -91,7 +91,7 @@ public class PortfolioTraderService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 10_000)
+    @Scheduled(fixedRate = 30_000)
     public void tradeFreePortfolios() {
         this.fillPortfolioList();
         List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.FREE);
@@ -99,7 +99,7 @@ public class PortfolioTraderService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 10_000)
     public void tradeProPortfolios() {
         this.fillPortfolioList();
         List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.PRO);
@@ -107,7 +107,7 @@ public class PortfolioTraderService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 5000)
     public void tradeUltimatePortfolios() {
         this.fillPortfolioList();
         List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ULTIMATE);
