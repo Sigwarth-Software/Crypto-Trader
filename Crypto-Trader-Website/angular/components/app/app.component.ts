@@ -7,6 +7,7 @@ import { AuthGuard } from '@guards/auth.guard';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 import { NavBarComponent } from '../elements/element-group-nav/nav-bar/nav-bar.component';
+import { Meta } from '@models/html/types'
 
 /** The root component of the application.
  *
@@ -59,13 +60,6 @@ export class AppComponent implements OnInit {
                 mergeMap((route: ActivatedRoute): Observable<Data> => route.data),
             )
             .subscribe((data: Data): void => {
-                // TODO: Move to a models file.
-                type Meta = {
-                    title: string;
-                    description: string;
-                    roles: string[];
-                    showNavBar: boolean;
-                };
                 const metaInfo: Meta = (data['meta'] || {}) as Meta;
                 this.title = metaInfo['title'] || 'Crypto Trader';
                 this.showNavBar = metaInfo['showNavBar'] !== false;
