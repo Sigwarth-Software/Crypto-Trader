@@ -15,10 +15,12 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
-import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Map;
-import java.util.Objects;
+
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.asText;
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.humanSize;
+import static org.cryptotrader.logging.library.scripts.LoggingParsingScriptKt.sizeOf;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -92,34 +94,6 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         } else {
             log.trace(sb.toString());
         }
-    }
-
-    private int sizeOf(@Nullable Object payload) {
-        if (payload == null) return 0;
-        if (payload instanceof byte[] bytes) return bytes.length;
-        String s = payload.toString();
-        return s.getBytes(Charset.defaultCharset()).length;
-    }
-
-    // TODO: Move to script.
-    private String humanSize(int bytes) {
-        if (bytes < 1024) return bytes + "B";
-        int kb = bytes / 1024;
-        if (kb < 1024) return kb + "KB";
-        int mb = kb / 1024;
-        return mb + "MB";
-    }
-
-    private String asText(Object payload, int max) {
-        if (payload instanceof byte[] bytes) {
-            int len = Math.min(bytes.length, max);
-            String s = new String(bytes, 0, len, Charset.defaultCharset());
-            if (bytes.length > max) s += "…";
-            return s;
-        }
-        String s = Objects.toString(payload, "");
-        if (s.length() > max) return s.substring(0, max) + "…";
-        return s;
     }
 
     private String color(String text, AnsiColor color) {
