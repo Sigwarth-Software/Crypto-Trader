@@ -1,7 +1,7 @@
 // portfolio-statistics-section.component.ts
 import { Component } from '@angular/core';
 
-import { defaultSparklineConfig } from '@assets/chart.assets';
+import { createSparklineConfig } from '@assets/chart.assets'
 import { type ChartConfig } from '@models/chart/types';
 
 @Component({
@@ -11,7 +11,7 @@ import { type ChartConfig } from '@models/chart/types';
     standalone: false,
 })
 export class PortfolioStatisticsSectionComponent {
-    protected sparklineConfig: ChartConfig = { ...defaultSparklineConfig };
+    protected sparklineConfig: ChartConfig = createSparklineConfig()
 
     constructor() {}
 }
