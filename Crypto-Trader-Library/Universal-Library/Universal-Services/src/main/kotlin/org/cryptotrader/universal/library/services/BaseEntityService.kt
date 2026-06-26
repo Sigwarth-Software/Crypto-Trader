@@ -15,7 +15,8 @@ import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository : JpaRepository<Entity, Id>>(
-    val repository: Repository
+    val repository: Repository,
+    var isSilent: Boolean = System.getProperty("cryptotrader.entity.service.silent", "false").toBoolean()
 ) : EntityHandler<Entity, Id> {
 
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
@@ -26,7 +27,13 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
         if (!this.exists(entity)) {
             return this.save(entity)
         }
-        log.info("{} already exists, skipping save. {}", this.formatEntityName(entity), this.getEntityContent(entity))
+        if (!this.isSilent) {
+            log.info(
+                "{} already exists, skipping save. {}",
+                this.formatEntityName(entity),
+                this.getEntityContent(entity)
+            )
+        }
         return entity
     }
 
@@ -34,68 +41,98 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
         if (this.exists(entity)) {
             return this.delete(entity)
         }
-        log.warn("{} does not exist, cannot delete. {}", this.formatEntityName(entity), this.getEntityContent(entity))
+        if (!this.isSilent) {
+            log.warn(
+                "{} does not exist, cannot delete. {}",
+                this.formatEntityName(entity),
+                this.getEntityContent(entity)
+            )
+        }
         return false
     }
 
     override fun findById(id: Id): Optional<Entity> {
-        log.info("Finding {} with ID {}.", this.getEntityName(), id)
+        if (!this.isSilent) {
+            log.info("Finding {} with ID {}.", this.getEntityName(), id)
+        }
         return this.repository.findById(id)
     }
 
     override fun findByIds(ids: List<Id>): List<Entity> {
-        log.info("Finding {} {}.", ids.size, this.getEntityName())
+        if (!this.isSilent) {
+            log.info("Finding {} {}.", ids.size, this.getEntityName())
+        }
         return this.repository.findAllById(ids)
     }
 
     override fun findAll(): List<Entity> {
         val entities: List<Entity> = this.repository.findAll()
-        log.info("Finding all ({}) {} entities.", entities.size, this.getEntityName())
+        if (!this.isSilent) {
+            log.info("Finding all ({}) {} entities.", entities.size, this.getEntityName())
+        }
         return entities
     }
 
     override fun exists(entity: Entity): Boolean {
-        log.info("Checking existence of {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+        if (!this.isSilent) {
+            log.info("Checking existence of {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+        }
         return this.repository.existsById(entity.id)
     }
 
     override fun existsById(id: Id): Boolean {
-        log.info("Checking existence of {} with ID {}.", this.getEntityName(), id)
+        if (!this.isSilent) {
+            log.info("Checking existence of {} with ID {}.", this.getEntityName(), id)
+        }
         return this.repository.existsById(id)
     }
 
     override fun count(): Long {
-        log.info("Counting {} entities.", this.getEntityName())
+        if (!this.isSilent) {
+            log.info("Counting {} entities.", this.getEntityName())
+        }
         return this.repository.count()
     }
 
     override fun save(entity: Entity): Entity {
         return try {
-            log.info("Saving new {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            if (!this.isSilent) {
+                log.info("Saving new {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            }
             this.repository.save(entity)
         } catch (exception: IllegalArgumentException) {
-            log.warn("Failed to save {}. {}", this.formatEntityName(entity), this.getEntityContent(entity))
+            if (!this.isSilent) {
+                log.warn("Failed to save {}. {}", this.formatEntityName(entity), this.getEntityContent(entity))
+            }
             throw exception
         }
     }
 
     override fun saveAll(entities: List<Entity>): List<Entity> {
         return try {
-            log.info("Saving {} {} entities.", entities.size, this.getEntityName(entities.first()))
+            if (!this.isSilent) {
+                log.info("Saving {} {} entities.", entities.size, this.getEntityName(entities.first()))
+            }
             this.repository.saveAll(entities)
         } catch (exception: IllegalArgumentException) {
-            log.error("Failed to save {} {} entities.", entities.size, this.getEntityName(entities.first()), exception)
+            if (!this.isSilent) {
+                log.error("Failed to save {} {} entities.", entities.size, this.getEntityName(entities.first()), exception)
+            }
             throw exception
         }
     }
 
     override fun delete(entity: Entity): Boolean {
         return try {
-            log.info("Deleting {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            if (!this.isSilent) {
+                log.info("Deleting {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            }
             this.repository.delete(entity)
             true
         } catch (exception: IllegalArgumentException) {
-            log.error("Failed to delete {}.{}", this.formatEntityName(entity), this.getEntityContent(entity), exception)
+            if (!this.isSilent) {
+                log.error("Failed to delete {}.{}", this.formatEntityName(entity), this.getEntityContent(entity), exception)
+            }
             false
         }
     }
@@ -103,15 +140,21 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
     override fun deleteById(id: Id): Boolean {
         if (this.existsById(id)) {
             return try {
-                log.info("Deleting {} with ID {}.", this.getEntityName(), id)
+                if (!this.isSilent) {
+                    log.info("Deleting {} with ID {}.", this.getEntityName(), id)
+                }
                 this.repository.deleteById(id)
                 true
             } catch (exception: IllegalArgumentException) {
-                log.error("Failed to delete {} with ID {}.", this.getEntityName(), id, exception)
+                if (!this.isSilent) {
+                    log.error("Failed to delete {} with ID {}.", this.getEntityName(), id, exception)
+                }
                 false
             }
         }
-        log.warn("Entity with ID {} does not exist, cannot delete.", id)
+        if (!this.isSilent) {
+            log.warn("Entity with ID {} does not exist, cannot delete.", id)
+        }
         return false
     }
 
@@ -119,28 +162,38 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
         val allExist: Boolean = entities.all { this.exists(it) }
         if (allExist) {
             return try {
-                log.info(
-                    "Deleting {} {}.",
-                    entities.size,
-                    this.getEntityName(entities.first())
-                )
+                if (!this.isSilent) {
+                    log.info(
+                        "Deleting {} {}.",
+                        entities.size,
+                        this.getEntityName(entities.first())
+                    )
+                }
                 this.repository.deleteAll(entities)
                 true
             } catch (exception: IllegalArgumentException) {
-                log.error("Failed to delete {} {}.", entities.size, this.getEntityName(entities.first()), exception)
+                if (!this.isSilent) {
+                    log.error("Failed to delete {} {}.", entities.size, this.getEntityName(entities.first()), exception)
+                }
                 false
             }
         }
-        log.error("Failed to delete {} {}, not all entities exist.", entities.size, this.getEntityName(entities.first()))
+        if (!this.isSilent) {
+            log.error("Failed to delete {} {}, not all entities exist.", entities.size, this.getEntityName(entities.first()))
+        }
         return false
     }
 
     override fun update(entity: Entity): Entity {
         if (this.exists(entity)) {
-            log.info("Updating {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            if (!this.isSilent) {
+                log.info("Updating {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+            }
             return this.save(entity)
         }
-        log.error("Failed to update {} because it does not exist.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+        if (!this.isSilent) {
+            log.error("Failed to update {} because it does not exist.{}", this.formatEntityName(entity), this.getEntityContent(entity))
+        }
         throw EntityNotFoundException(entity)
     }
 
