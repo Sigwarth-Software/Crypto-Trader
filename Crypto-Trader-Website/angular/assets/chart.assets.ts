@@ -77,6 +77,10 @@ export const defaultSparklineConfig: ChartConfig = {
     theme: { ...SPARK_THEME },
 }
 
+export function createSparklineConfig(data: Partial<ChartConfig> = {}): ChartConfig {
+    return { ...defaultSparklineConfig, ...data }
+}
+
 /** @deprecated Use {@link defaultChartConfig} instead. */
 export const defaultChartProperties: ChartDisplayProperties = {
     data: [{ date: new Date(), value: 0 }],
