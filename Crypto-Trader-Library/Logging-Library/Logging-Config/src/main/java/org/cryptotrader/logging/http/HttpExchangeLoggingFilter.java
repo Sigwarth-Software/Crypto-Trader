@@ -26,6 +26,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.cryptotrader.logging.library.scripts.LoggingColorScriptKt.statusColor;
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.humanSize;
+import static org.cryptotrader.logging.library.scripts.LoggingParsingScriptKt.isJsonContentType;
+
 /**
  * Colorful, structured HTTP exchange logger for both HTTP and WebSocket handshakes.
  */
@@ -240,14 +244,6 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return upgrade != null && "websocket".equalsIgnoreCase(upgrade);
     }
 
-    private String humanSize(int bytes) {
-        if (bytes < 1024) return bytes + "B";
-        int kb = bytes / 1024;
-        if (kb < 1024) return kb + "KB";
-        int mb = kb / 1024;
-        return mb + "MB";
-    }
-
     private String getBody(byte[] buf, @Nullable String encoding, int max) {
         if (buf == null || buf.length == 0) return "";
         int len = Math.min(buf.length, max);
@@ -264,7 +260,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
             return payload;
         }
 
-        if (!this.isJsonContentType(contentType)) {
+        if (!isJsonContentType(contentType)) {
             return this.logRedactor.redactText(payload);
         }
 
@@ -275,27 +271,6 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         } catch (Exception ignored) {
             return this.logRedactor.redactText(payload);
         }
-    }
-
-    private boolean isJsonContentType(@Nullable String contentType) {
-        if (!StringUtils.hasText(contentType)) {
-            return false;
-        }
-
-        try {
-            MediaType mediaType = MediaType.parseMediaType(contentType);
-            String subtype = mediaType.getSubtype().toLowerCase();
-            return "json".equals(subtype) || subtype.endsWith("+json");
-        } catch (IllegalArgumentException ignored) {
-            return contentType.toLowerCase().contains("json");
-        }
-    }
-
-    private AnsiColor statusColor(int status) {
-        if (status >= 500) return AnsiColor.RED;
-        if (status >= 400) return AnsiColor.YELLOW;
-        if (status >= 300) return AnsiColor.CYAN;
-        return AnsiColor.GREEN;
     }
 
     private AnsiColor durationColor(long ms) {
