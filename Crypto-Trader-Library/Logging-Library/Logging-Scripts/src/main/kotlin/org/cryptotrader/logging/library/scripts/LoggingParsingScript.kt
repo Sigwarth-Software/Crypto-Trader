@@ -12,7 +12,7 @@ fun isJsonContentType(@Nullable contentType: String?): Boolean {
     }
 
     try {
-        val mediaType: MediaType = MediaType.parseMediaType(contentType)
+        val mediaType: MediaType = MediaType.parseMediaType(contentType!!)
         val subtype: String = mediaType.subtype.lowercase(Locale.getDefault())
         return "json" == subtype || subtype.endsWith("+json")
     } catch (ignored: IllegalArgumentException) {
