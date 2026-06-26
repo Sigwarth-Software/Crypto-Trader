@@ -119,7 +119,9 @@ export class TraderEventBubbleComponent {
         return this.tradeEvent.id
     }
 
-    getTradeIdString(): string {
+    getTradeDetails(): string {
+        // TODO: Further implement this. It would include data like fees,
+        //       vendor, more specific trade data, and IDs for support.
         return `Trade #${this.tradeEvent.id}. If you have any questions, please contact support with your trade ID.`
     }
 
