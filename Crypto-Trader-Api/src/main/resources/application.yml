@@ -164,7 +164,7 @@ management:
 security:
   jwt:
     secret: ${JWT_SECRET}
-    issuer: ${SECURITY_JWT_ISSUER:http://localhost:8080}
+    issuer: ${SECURITY_JWT_ISSUER:https://localhost:8080}
     expiration: 360000
   auth:
     dpop:
@@ -175,7 +175,7 @@ security:
   refresh:
     cookie-name: rt
     cookie-samesite: Strict
-    cookie-secure: ${SECURITY_REFRESH_COOKIE_SECURE:false}
+    cookie-secure: ${SECURITY_REFRESH_COOKIE_SECURE:true}
     allow-rebind-once: true
   crypto:
     tink:
@@ -188,5 +188,5 @@ cryptotrader:
     websocket:
       enabled: true
     cors:
-      allowed-origins: ${CRYPTO_TRADER_ALLOWED_ORIGINS:http://localhost:4200}
+      allowed-origins: ${CRYPTO_TRADER_ALLOWED_ORIGINS:https://localhost:4200}
       allowed-headers: ${CRYPTO_TRADER_ALLOWED_HEADERS:authorization,dpop,content-type,x-client-app}
