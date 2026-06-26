@@ -50,9 +50,9 @@ spring:
 
 security:
   jwt:
-    jwks-uri: http://localhost:8080/.well-known/jwks.json
-    issuers: http://localhost:8080,https://api.cryptotrader.com
-    issuer: https://api.cryptotrader.com
+    jwks-uri: ${SECURITY_JWT_JWKS_URI:https://localhost:8080/.well-known/jwks.json}
+    issuers: ${SECURITY_JWT_ISSUERS:https://localhost:8080,https://api.sscryptotrader.com}
+    issuer: ${SECURITY_JWT_ISSUER:https://api.sscryptotrader.com}
     audience: crypto-trader-api
   crypto:
     tink:
