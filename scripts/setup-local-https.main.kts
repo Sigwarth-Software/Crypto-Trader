@@ -92,6 +92,10 @@ fun printNextSteps() {
           ${'$'}env:SERVER_SSL_CERTIFICATE_PRIVATE_KEY='$keyUri'
           ${'$'}env:CT_ANALYSIS_BASE_URL='https://localhost:8000'
           mvn -pl Crypto-Trader-Data -am spring-boot:run
+
+        Run Engine with HTTPS health checks:
+          ${'$'}env:CT_HEALTH_CA_BUNDLE='$rootCaPath'
+          mvn -pl Crypto-Trader-Engine -am spring-boot:run
         
         Run Analysis with HTTPS-aware service URLs:
           ${'$'}env:CT_API_BASE_URL='https://localhost:8080'
