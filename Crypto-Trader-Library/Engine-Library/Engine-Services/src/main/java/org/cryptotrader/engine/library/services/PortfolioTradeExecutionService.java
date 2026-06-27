@@ -1,5 +1,6 @@
 package org.cryptotrader.engine.library.services;
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
@@ -12,6 +13,7 @@ import org.cryptotrader.api.library.model.trade.TradingEngine;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.TradeEventService;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +25,22 @@ import java.util.List;
 public class PortfolioTradeExecutionService {
     private final PortfolioService portfolioService;
     private final TradeEventService tradeEventService;
+    private final EntityManager entityManager;
 
     @Autowired
     public PortfolioTradeExecutionService(PortfolioService portfolioService,
-                                          TradeEventService tradeEventService) {
+                                          TradeEventService tradeEventService,
+                                          EntityManager entityManager) {
         this.portfolioService = portfolioService;
         this.tradeEventService = tradeEventService;
+        this.entityManager = entityManager;
     }
 
     @Transactional
     @TimeTracked(expectedMillis = 750, shouldPersist = true)
     public void executeTrader(Trader trader, TradingEngine assetTrader) {
         PortfolioAsset traderAsset = assetTrader.getAsset();
+        this.entityManager.unwrap(Session.class).setReadOnly(traderAsset.getCurrency(), true);
         PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
         boolean tradeOccurred = assetTrader.trade();
         if (tradeOccurred) {
