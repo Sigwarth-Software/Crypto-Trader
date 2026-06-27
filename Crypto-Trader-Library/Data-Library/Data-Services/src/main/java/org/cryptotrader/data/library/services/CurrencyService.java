@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -166,6 +167,20 @@ public class CurrencyService {
         this.currencyHistoryEntityService.save(new CurrencyHistory(currency, currency.getValue()));
     }
 
+    public void saveAllCurrencies(List<Currency> currencies) {
+        this.currencyEntityService.saveAll(currencies);
+        this.currencyHistoryEntityService.saveAll(currencies.stream()
+                .map(currency -> new CurrencyHistory(currency, currency.getValue()))
+                .collect(Collectors.toList()));
+    }
+
+    public void saveAllUniqueCurrencies(List<UniqueCurrency> uniqueCurrencies) {
+        this.uniqueCurrencyEntityService.saveAll(uniqueCurrencies);
+        this.uniqueCurrencyHistoryEntityService.saveAll(uniqueCurrencies.stream()
+                .map(uniqueCurrency -> new UniqueCurrencyHistory(uniqueCurrency.getAssociatedCurrency()))
+                .collect(Collectors.toList()));
+    }
+
     public void saveUniqueCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
         if (!this.existsInUniqueCurrencyTable(currency.getCurrencyCode())) {
             this.saveUniqueCurrency(currency);
@@ -174,6 +189,13 @@ public class CurrencyService {
         if (this.hasCurrencyChanged(previousCurrency, updatedCurrency)) {
             this.saveUniqueCurrency(currency);
         }
+    }
+
+    public boolean shouldSaveUniqueCurrency(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
+        if (!this.existsInUniqueCurrencyTable(currency.getCurrencyCode())) {
+            return true;
+        }
+        return this.hasCurrencyChanged(previousCurrency, updatedCurrency);
     }
 
     public void saveUniqueCurrency(Currency currency) {
