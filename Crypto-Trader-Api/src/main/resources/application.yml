@@ -182,6 +182,12 @@ security:
       keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
       generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 cryptotrader:
+  logging:
+    time-tracking:
+      exceeding-factor: ${TIME_TRACKING_EXCEEDING_FACTOR:0.8}
+      expected-factor: ${TIME_TRACKING_EXPECTED_FACTOR:1.4}
+      warning-factor: ${TIME_TRACKING_WARNING_FACTOR:1.8}
+      alert-factor: ${TIME_TRACKING_ALERT_FACTOR:2.0}
   api:
     jpa:
       enabled: true
