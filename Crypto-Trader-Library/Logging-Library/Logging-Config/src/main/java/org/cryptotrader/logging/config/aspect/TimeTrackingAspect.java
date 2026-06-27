@@ -8,6 +8,8 @@ import org.cryptotrader.universal.library.model.Ansi;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.cryptotrader.logging.library.events.ExecutionSpeedLogEventPayload;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
+import org.cryptotrader.logging.library.entity.ExecutionSpeedWarningLevel;
+import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +19,12 @@ import java.util.concurrent.TimeUnit;
 public class TimeTrackingAspect {
     private static final Logger log = LoggerFactory.getLogger(TimeTrackingAspect.class);
     private final LogEventsPublisher logEventsPublisher;
+    private final TimeTrackingProperties timeTrackingProperties;
 
-    public TimeTrackingAspect(LogEventsPublisher logEventsPublisher) {
+    public TimeTrackingAspect(LogEventsPublisher logEventsPublisher,
+                              TimeTrackingProperties timeTrackingProperties) {
         this.logEventsPublisher = logEventsPublisher;
+        this.timeTrackingProperties = timeTrackingProperties;
     }
 
     @Around("@annotation(timeTracked)")
@@ -28,30 +33,30 @@ public class TimeTrackingAspect {
             return joinPoint.proceed();
         }
 
-        long startNanos = System.nanoTime();
+        final long startNanos = System.nanoTime();
         try {
             return joinPoint.proceed();
         } finally {
-            long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
-            long configuredExpectedMillis = timeTracked.expectedMillis();
+            final long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
+            final long configuredExpectedMillis = timeTracked.expectedMillis();
             long expectedMillis = Math.max(1L, configuredExpectedMillis);
-            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-            String declaringTypeName = signature.getDeclaringTypeName();
-            String className = parseClassName(declaringTypeName);
-            String rawMethodName = signature.getName();
-            String duration = getDurationString(elapsedMillis, expectedMillis);
-            String fullMethodQualifiedName = declaringTypeName + "." + rawMethodName;
+            final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            final String declaringTypeName = signature.getDeclaringTypeName();
+            final String className = parseClassName(declaringTypeName);
+            final String rawMethodName = signature.getName();
+            final String duration = getDurationString(elapsedMillis, expectedMillis);
+            final String fullMethodQualifiedName = declaringTypeName + "." + rawMethodName;
             if (timeTracked.shouldPersist()) {
                 publishExecutionSpeedLog(elapsedMillis, configuredExpectedMillis, fullMethodQualifiedName, rawMethodName, className);
             }
-            String displayMethodName = getMethodName(className, rawMethodName);
+            final String displayMethodName = getMethodName(className, rawMethodName);
             log.info("{} executed in {} {}(expected {}ms){}", displayMethodName, duration, Ansi.GRAY, expectedMillis, Ansi.RESET);
         }
     }
 
     private static @NotNull String parseClassName(String declaringTypeName) {
         final int lastDotIndex = declaringTypeName.lastIndexOf('.');
-        String className = lastDotIndex >= 0 ? declaringTypeName.substring(lastDotIndex + 1) : declaringTypeName;
+        final String className = lastDotIndex >= 0 ? declaringTypeName.substring(lastDotIndex + 1) : declaringTypeName;
         return className;
     }
 
@@ -80,19 +85,22 @@ public class TimeTrackingAspect {
         }
     }
 
-    private static String getDurationString(long elapsedMillis, long expectedMillis) {
-        String durationColor;
-        if (elapsedMillis <= expectedMillis * 2) {
-            durationColor = Ansi.GREEN;
-        } else if (elapsedMillis <= expectedMillis * 3) {
-            durationColor = Ansi.YELLOW;
-        }
-        else if (elapsedMillis > expectedMillis * 3) {
-            durationColor = Ansi.RED;
-        } else {
-            durationColor = Ansi.WHITE;
-        }
-        String duration = "%s%dms%s".formatted(durationColor, elapsedMillis, Ansi.RESET);
+    private String getDurationString(long elapsedMillis, long expectedMillis) {
+        final ExecutionSpeedWarningLevel warningLevel = ExecutionSpeedWarningLevel.from(
+            elapsedMillis,
+            expectedMillis,
+            this.timeTrackingProperties.getExceedingFactor(),
+            this.timeTrackingProperties.getExpectedFactor(),
+            this.timeTrackingProperties.getWarningFactor(),
+            this.timeTrackingProperties.getAlertFactor()
+        );
+        final String durationColor = switch (warningLevel) {
+            case EXCEEDING -> Ansi.BLUE;
+            case EXPECTED -> Ansi.GREEN;
+            case WARNING -> Ansi.YELLOW;
+            case ALERT -> Ansi.RED;
+        };
+        final String duration = "%s%dms%s".formatted(durationColor, elapsedMillis, Ansi.RESET);
         return duration;
     }
 
