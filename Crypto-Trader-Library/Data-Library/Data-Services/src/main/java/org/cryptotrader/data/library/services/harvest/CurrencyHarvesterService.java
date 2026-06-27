@@ -72,36 +72,67 @@ public class CurrencyHarvesterService {
         this.self().saveCurrencies();
     }
 
+    // TODO: Temporary implementation. This needs to be cleaned up and locking
+    //       policy needs to be determined.
     @TimeTracked(expectedMillis = 5000, shouldPersist = true)
     public void saveCurrencies() {
         log.info("Updating currencies...");
+        Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
+        String saveType = System.getProperty("cryptotrader.currency.save.type", "default");
+        currencies.values().removeIf(Objects::isNull);
+        log.info("Retrieved {} currencies from data source.", currencies.size());
         try {
-            Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
-            currencies.values().removeIf(Objects::isNull);
-            log.info("Retrieved {} currencies from data source.", currencies.size());
-            List<Currency> currenciesToSave = new ArrayList<>();
-            List<UniqueCurrency> uniqueCurrenciesToSave = new ArrayList<>();
-            for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+            if (saveType.equalsIgnoreCase("batch")) {
                 try {
-                    Currency previousCurrency = Currency.from(currency);
-                    String currencyCode = currency.getCurrencyCode();
-                    Currency updatedCurrency = currencies.get(currencyCode);
-                    currency.setValue(updatedCurrency.getValue());
-                    currenciesToSave.add(currency);
-                    if (this.currencyService.shouldSaveUniqueCurrency(currency, previousCurrency, updatedCurrency)) {
-                        uniqueCurrenciesToSave.add(new UniqueCurrency(currency));
+
+                    List<Currency> currenciesToSave = new ArrayList<>();
+                    List<UniqueCurrency> uniqueCurrenciesToSave = new ArrayList<>();
+                    for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+                        try {
+                            Currency previousCurrency = Currency.from(currency);
+                            String currencyCode = currency.getCurrencyCode();
+                            Currency updatedCurrency = currencies.get(currencyCode);
+                            currency.setValue(updatedCurrency.getValue());
+                            currenciesToSave.add(currency);
+                            if (this.currencyService.shouldSaveUniqueCurrency(currency, previousCurrency, updatedCurrency)) {
+                                uniqueCurrenciesToSave.add(new UniqueCurrency(currency));
+                            }
+                        } catch (NullPointerException exception) {
+                            log.error("Problematic currency: {}", currency.getCurrencyCode());
+                            log.debug("Currency failure details: {}", exception.toString());
+                        }
                     }
+                    log.info("Successfully updated {} out of {} supported currencies.", currenciesToSave.size(), SupportedCurrencies.SUPPORTED_CURRENCIES.size());
+                    this.currencyService.saveAllCurrencies(currenciesToSave);
+                    this.currencyService.saveAllUniqueCurrencies(uniqueCurrenciesToSave);
+                    this.snapshotService.saveSnapshot(currencies);
                 } catch (NullPointerException exception) {
-                    log.error("Problematic currency: {}", currency.getCurrencyCode());
-                    log.debug("Currency failure details: {}", exception.toString());
+                    log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
+                } catch (RuntimeException dbEx) {
+                    log.warn("Database unavailable during currency update; skipping this cycle: {}", dbEx.getMessage());
                 }
+            } else {
+                int numSuccessfullyUpdated = 0;
+                for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+                    try {
+                        Currency previousCurrency = Currency.from(currency);
+                        String currencyCode = currency.getCurrencyCode();
+                        Currency updatedCurrency = currencies.get(currencyCode);
+                        currency.setValue(updatedCurrency.getValue());
+                        this.currencyService.saveCurrency(currency);
+                        this.currencyService.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+                        numSuccessfullyUpdated++;
+                    } catch (NullPointerException exception) {
+                        log.error("Problematic currency: {}", currency.getCurrencyCode());
+                        log.debug("Currency failure details: {}", exception.toString());
+                    }
+                }
+                log.info("Successfully updated {} out of {} supported currencies.", numSuccessfullyUpdated, SupportedCurrencies.SUPPORTED_CURRENCIES.size());
+                this.snapshotService.saveSnapshot(currencies);
             }
-            log.info("Successfully updated {} out of {} supported currencies.", currenciesToSave.size(), SupportedCurrencies.SUPPORTED_CURRENCIES.size());
-            this.currencyService.saveAllCurrencies(currenciesToSave);
-            this.currencyService.saveAllUniqueCurrencies(uniqueCurrenciesToSave);
-            this.snapshotService.saveSnapshot(currencies);
         } catch (NullPointerException exception) {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
+            this.currencyJsonGenerator.generateAndSave();
         } catch (RuntimeException dbEx) {
             log.warn("Database unavailable during currency update; skipping this cycle: {}", dbEx.getMessage());
         }
