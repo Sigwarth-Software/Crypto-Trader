@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.cryptotrader.logging.config.aspect.TimeTrackingAspect;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import org.cryptotrader.logging.properties.CryptoTraderLoggingProperties;
+import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.cryptotrader.universal.library.events.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 @ConditionalOnClass({Aspect.class, ProceedingJoinPoint.class, Logger.class})
-@EnableConfigurationProperties({CryptoTraderLoggingProperties.class})
+@EnableConfigurationProperties({CryptoTraderLoggingProperties.class, TimeTrackingProperties.class})
 public class CryptoTraderLoggingAutoConfig {
 
     @Bean
@@ -45,7 +46,8 @@ public class CryptoTraderLoggingAutoConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) LogEventsPublisher logEventsPublisher) {
-        return new TimeTrackingAspect(logEventsPublisher);
+    public TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) LogEventsPublisher logEventsPublisher,
+                                                 TimeTrackingProperties timeTrackingProperties) {
+        return new TimeTrackingAspect(logEventsPublisher, timeTrackingProperties);
     }
 }
