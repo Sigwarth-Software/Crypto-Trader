@@ -38,6 +38,7 @@ public class CryptoTraderDataApplication {
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
         enableCurrencyHarvesting();
+        System.setProperty("cryptotrader.entity.service.silent", "true");
         SpringApplication.run(CryptoTraderDataApplication.class, args);
     }
 
