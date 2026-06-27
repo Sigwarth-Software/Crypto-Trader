@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import org.cryptotrader.logging.config.aspect.TimeTrackingAspect;
+import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TimeTrackingAspectTest {
 
-    private final TimeTrackingAspect aspect = new TimeTrackingAspect(null);
+    private final TimeTrackingAspect aspect = new TimeTrackingAspect(null, new TimeTrackingProperties());
 
     @Test
     void logsExecutionTimeByDefault() {
