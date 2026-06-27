@@ -1,6 +1,7 @@
 open module org.cryptotrader.logging.library.config {
     requires org.cryptotrader.universal.library.models;
     requires org.cryptotrader.logging.library.events;
+    requires org.cryptotrader.logging.library.models;
     requires org.cryptotrader.universal.library.events;
     requires spring.boot.autoconfigure;
     requires spring.boot;
