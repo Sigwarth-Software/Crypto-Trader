@@ -72,6 +72,14 @@ logging:
   level:
     org.springframework: INFO
 
+cryptotrader:
+  logging:
+    time-tracking:
+      exceeding-factor: ${TIME_TRACKING_EXCEEDING_FACTOR:0.8}
+      expected-factor: ${TIME_TRACKING_EXPECTED_FACTOR:1.4}
+      warning-factor: ${TIME_TRACKING_WARNING_FACTOR:1.8}
+      alert-factor: ${TIME_TRACKING_ALERT_FACTOR:2.0}
+
 security:
   crypto:
     tink:
