@@ -2,6 +2,7 @@ package org.cryptotrader.logging.library.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.library.entity.ExecutionSpeedLog;
+import org.cryptotrader.logging.library.entity.ExecutionSpeedWarningLevel;
 import org.cryptotrader.logging.library.events.ExecutionSpeedLogEventPayload;
 import org.cryptotrader.logging.library.service.entity.ExecutionSpeedLogEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,16 @@ public class ExecutionSpeedLogService {
     }
 
     @Transactional
-    public void persist(ExecutionSpeedLogEventPayload entry) {
+    public void persist(ExecutionSpeedLogEventPayload entry,
+                        ExecutionSpeedWarningLevel warningLevel) {
         ExecutionSpeedLog entity = new ExecutionSpeedLog(
             entry.getExecutionSpeed(),
             entry.getExpectedExecutionSpeed(),
             entry.getFullMethodQualifiedName(),
             entry.getMethodName(),
             entry.getClassName(),
-            entry.getTimestamp()
+            entry.getTimestamp(),
+            warningLevel
         );
         this.executionSpeedLogEntityService.save(entity);
     }
