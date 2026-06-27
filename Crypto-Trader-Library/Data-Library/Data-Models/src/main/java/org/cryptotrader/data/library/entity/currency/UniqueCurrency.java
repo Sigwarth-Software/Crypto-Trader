@@ -1,9 +1,6 @@
 package org.cryptotrader.data.library.entity.currency;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,12 +34,16 @@ public class UniqueCurrency extends Identifiable<String> {
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
+    @Transient
+    private Currency associatedCurrency;
+
     public UniqueCurrency(Currency currency) {
         this.name = currency.getName();
         this.currency = currency.getCurrencyCode();
         this.urlPath = currency.getUrlPath();
         this.value = currency.getValue();
         this.lastUpdated = LocalDateTime.now();
+        this.associatedCurrency = currency;
     }
 
     @Override
