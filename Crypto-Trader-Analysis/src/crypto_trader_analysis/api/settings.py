@@ -114,6 +114,7 @@ CT_DATA_HOST = secret_or_env("CT_DATA_HOST", "localhost")
 CT_API_BASE_URL = secret_or_env("CT_API_BASE_URL", f"https://{CT_API_HOST}:8080")
 CT_DATA_BASE_URL = secret_or_env("CT_DATA_BASE_URL", f"https://{CT_DATA_HOST}:8085")
 CT_CA_BUNDLE = secret_or_env("CT_CA_BUNDLE", None)
+CT_DATA_CA_BUNDLE = secret_or_env("CT_HEALTH_CA_BUNDLE_DATA", None)
 CT_SERVICE_TIMEOUT_SECONDS = float(secret_or_env("CT_SERVICE_TIMEOUT_SECONDS", "15"))
 
 
