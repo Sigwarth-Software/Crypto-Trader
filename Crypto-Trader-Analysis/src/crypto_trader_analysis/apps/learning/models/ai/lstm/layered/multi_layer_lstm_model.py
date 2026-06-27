@@ -56,10 +56,10 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
     def combine_model(model_input):
         lstm = LSTM(150, return_sequences=True,
                     recurrent_activation="sigmoid", use_bias=True,
-                    unroll=False)(model_input)
+                    unroll=True)(model_input)
         lstm = Dropout(0.2)(lstm)
         lstm = LSTM(100, recurrent_activation="sigmoid", use_bias=True,
-                    unroll=False)(lstm)
+                    unroll=True)(lstm)
         lstm = Dense(50, activation="relu")(lstm)
         return lstm
 

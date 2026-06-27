@@ -56,7 +56,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         lstm = Bidirectional(LSTM(128,
                                         recurrent_activation="sigmoid",
                                         use_bias=True,
-                                        unroll=False))(lstm)
+                                        unroll=True))(lstm)
         lstm = Dropout(0.3)(lstm)
         return lstm
 
@@ -66,7 +66,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                                   return_sequences=return_sequences,
                                   recurrent_activation="sigmoid",
                                   use_bias=True,
-                                  unroll=False))(model_input)
+                                  unroll=True))(model_input)
         lstm = Dropout(0.3)(lstm)
         lstm = BatchNormalization()(lstm)
         return lstm

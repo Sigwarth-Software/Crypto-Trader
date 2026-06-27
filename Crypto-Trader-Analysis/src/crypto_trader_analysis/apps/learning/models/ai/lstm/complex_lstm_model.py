@@ -49,7 +49,7 @@ class ComplexLstmModel(BaseModel):
                                   return_sequences=return_sequences,
                                   recurrent_activation="sigmoid",
                                   use_bias=True,
-                                  unroll=False))
+                                  unroll=True))
 
     @override
     @staticmethod
