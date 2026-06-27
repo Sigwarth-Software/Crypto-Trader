@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -79,6 +80,15 @@ public class CryptoTraderEngineApplication {
     static class EngineStartupVerifier implements ApplicationRunner {
         private static final int MAX_RETRIES = 10;
         private static final long RETRY_DELAY_MS = 10_000;
+        private static final String DATA_CA_BUNDLE_ENV = "CT_HEALTH_CA_BUNDLE_DATA";
+        private static final String DATA_CA_BUNDLE_PROPERTY = "ct.health.caBundle.data";
+
+        EngineStartupVerifier(Environment environment) {
+            String dataCaBundle = environment.getProperty(DATA_CA_BUNDLE_ENV);
+            if (dataCaBundle != null && !dataCaBundle.isBlank()) {
+                System.setProperty(DATA_CA_BUNDLE_PROPERTY, dataCaBundle);
+            }
+        }
 
         @Override
         public void run(ApplicationArguments args) {
