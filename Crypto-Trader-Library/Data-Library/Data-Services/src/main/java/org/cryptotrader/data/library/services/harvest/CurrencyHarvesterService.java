@@ -6,6 +6,7 @@ import org.cryptotrader.data.library.component.CurrencyJsonGenerator;
 import org.cryptotrader.data.library.component.MarketSnapshotsBackfiller;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.data.library.entity.currency.UniqueCurrency;
 import org.cryptotrader.data.library.repository.CurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.CurrencyRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
@@ -19,7 +20,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -73,23 +77,28 @@ public class CurrencyHarvesterService {
         log.info("Updating currencies...");
         try {
             Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
+            currencies.values().removeIf(Objects::isNull);
             log.info("Retrieved {} currencies from data source.", currencies.size());
-            int numSuccessfullyUpdated = 0;
+            List<Currency> currenciesToSave = new ArrayList<>();
+            List<UniqueCurrency> uniqueCurrenciesToSave = new ArrayList<>();
             for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
                 try {
                     Currency previousCurrency = Currency.from(currency);
                     String currencyCode = currency.getCurrencyCode();
                     Currency updatedCurrency = currencies.get(currencyCode);
                     currency.setValue(updatedCurrency.getValue());
-                    this.currencyService.saveCurrency(currency);
-                    this.currencyService.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
-                    numSuccessfullyUpdated++;
+                    currenciesToSave.add(currency);
+                    if (this.currencyService.shouldSaveUniqueCurrency(currency, previousCurrency, updatedCurrency)) {
+                        uniqueCurrenciesToSave.add(new UniqueCurrency(currency));
+                    }
                 } catch (NullPointerException exception) {
                     log.error("Problematic currency: {}", currency.getCurrencyCode());
                     log.debug("Currency failure details: {}", exception.toString());
                 }
             }
-            log.info("Successfully updated {} out of {} supported currencies.", numSuccessfullyUpdated, SupportedCurrencies.SUPPORTED_CURRENCIES.size());
+            log.info("Successfully updated {} out of {} supported currencies.", currenciesToSave.size(), SupportedCurrencies.SUPPORTED_CURRENCIES.size());
+            this.currencyService.saveAllCurrencies(currenciesToSave);
+            this.currencyService.saveAllUniqueCurrencies(uniqueCurrenciesToSave);
             this.snapshotService.saveSnapshot(currencies);
         } catch (NullPointerException exception) {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
