@@ -22,6 +22,8 @@ private const val BASE_OVERRIDE_PROP = "ct.health.base"
 private const val BASE_OVERRIDE_ENV = "CT_HEALTH_BASE"
 private const val CA_BUNDLE_PROP = "ct.health.caBundle"
 private const val CA_BUNDLE_ENV = "CT_HEALTH_CA_BUNDLE"
+private const val DATA_CA_BUNDLE_PROP = "ct.health.caBundle.data"
+private const val DATA_CA_BUNDLE_ENV = "CT_HEALTH_CA_BUNDLE_DATA"
 private const val SHARED_CA_BUNDLE_ENV = "CT_CA_BUNDLE"
 
 private val log = LoggerFactory.getLogger("org.cryptotrader.health.ServiceStatus")
@@ -52,8 +54,9 @@ private fun getHttpRequest(url: String): HttpGet {
     return HttpGet(url)
 }
 
-private fun getHttpClient(): HttpClient {
-    val caBundle: String? = getCaBundle()
+private fun getHttpClient(service: CryptoTraderService): HttpClient {
+    val caBundle: String? = getCaBundle(service)
+    log.info("Found CA bundle: {}", caBundle ?: "none")
     if (caBundle.isNullOrBlank()) {
         return HttpClientBuilder.create().build()
     }
@@ -62,10 +65,26 @@ private fun getHttpClient(): HttpClient {
         .build()
 }
 
-private fun getCaBundle(): String? {
-    return System.getProperty(CA_BUNDLE_PROP)
+private fun getCaBundle(service: CryptoTraderService): String? {
+    val dataCaBundle = if (service === CryptoTraderService.DATA) {
+        System.getProperty(DATA_CA_BUNDLE_PROP)
+            ?: System.getenv(DATA_CA_BUNDLE_ENV)
+    } else {
+        null
+    }
+    return dataCaBundle
+        ?: System.getProperty(CA_BUNDLE_PROP)
         ?: System.getenv(CA_BUNDLE_ENV)
         ?: System.getenv(SHARED_CA_BUNDLE_ENV)
+        ?: findLocalCaBundle()
+}
+
+private fun findLocalCaBundle(): String? {
+    val workingDirectory = File(System.getProperty("user.dir")).absoluteFile
+    return generateSequence(workingDirectory) { directory: File -> directory.parentFile }
+        .map { directory: File -> File(directory, "certs/rootCA.pem") }
+        .firstOrNull(File::isFile)
+        ?.absolutePath
 }
 
 private fun getSslSocketFactory(caBundle: String): SSLConnectionSocketFactory {
@@ -93,7 +112,7 @@ fun isServiceAlive(service: CryptoTraderService): Boolean {
     log.info("Checking status of service: {}...", service)
     val validCode = 200
     try {
-        val client: HttpClient = getHttpClient()
+        val client: HttpClient = getHttpClient(service)
         val request: HttpGet = getHttpRequest(getUrl(service))
         val response: HttpResponse = client.execute(request) ?: return false
         val isAlive: Boolean = validCode == response.statusLine.statusCode
