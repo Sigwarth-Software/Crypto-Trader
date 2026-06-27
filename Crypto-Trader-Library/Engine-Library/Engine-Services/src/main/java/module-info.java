@@ -1,5 +1,6 @@
 open module org.cryptotrader.engine.library.services {
     requires jakarta.annotation;
+    requires jakarta.persistence;
     requires static lombok;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.services;
@@ -15,6 +16,7 @@ open module org.cryptotrader.engine.library.services {
     requires spring.data.jpa;
     requires spring.boot;
     requires org.slf4j;
+    requires org.hibernate.orm.core;
     requires spring.security.config;
     requires spring.security.crypto;
     requires spring.security.web;
