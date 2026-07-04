@@ -18,14 +18,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "org.cryptotrader.api.library.infrastructure",
         "org.cryptotrader.data.library.component",
         "org.cryptotrader.logging.config",
+        "org.cryptotrader.logging.library.service",
         "org.cryptotrader.desktop.library.component"})
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.api.library.repository",
-        "org.cryptotrader.data.library.repository"
+        "org.cryptotrader.data.library.repository",
+        "org.cryptotrader.logging.library.repository"
 })
 @EntityScan(basePackages = {
         "org.cryptotrader.api.library.entity",
-        "org.cryptotrader.data.library.entity"
+        "org.cryptotrader.data.library.entity",
+        "org.cryptotrader.logging.library.entity"
 })
 public class SpringBootConfig {
 
