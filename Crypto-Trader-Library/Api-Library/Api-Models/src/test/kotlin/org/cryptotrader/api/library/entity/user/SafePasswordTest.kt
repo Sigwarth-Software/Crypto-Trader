@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.entity.user
 
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -17,8 +17,7 @@ class SafePasswordTest : CryptoTraderTest() {
 
     private lateinit var safePassword: SafePassword
     private val testUnencodedPassword = "unencoded-password"
-    
-    
+
     @BeforeEach
     fun setUp() {
         this.safePassword = SafePassword()
@@ -35,7 +34,7 @@ class SafePasswordTest : CryptoTraderTest() {
             assertNotNull { safePassword }
             assertNotNull { safePassword.encodedPassword }
             assertNotNull { safePassword.encoder }
-            
+
         }
 
         @Test

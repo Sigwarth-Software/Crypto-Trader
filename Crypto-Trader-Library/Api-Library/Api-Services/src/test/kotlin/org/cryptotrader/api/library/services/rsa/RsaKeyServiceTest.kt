@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.services.rsa
 
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -48,9 +48,9 @@ class RsaKeyServiceTest : CryptoTraderTest() {
             val publicPem: String? = Base64.getEncoder().encodeToString(publicEncoded)
             val privatePem: String? = Base64.getEncoder().encodeToString(privateEncoded)
             val configuredKid = "configured-kid"
-            
+
             rsaKeyService = RsaKeyService(publicPem, privatePem, configuredKid)
-            
+
             assertNotNull(rsaKeyService.publicKey, "publicKey should be loaded from config")
             assertNotNull(rsaKeyService.privateKey, "privateKey should be loaded from config")
             assertEquals("configured-kid", rsaKeyService.kid, "kid should use configuredKid when provided")
@@ -62,9 +62,9 @@ class RsaKeyServiceTest : CryptoTraderTest() {
             val publicPem: String? = null
             val privatePem: String? = null
             val configuredKid: String? = null
-            
+
             rsaKeyService = RsaKeyService(publicPem, privatePem, configuredKid)
-            
+
             assertNotNull(rsaKeyService.publicKey, "publicKey should be generated")
             assertNotNull(rsaKeyService.privateKey, "privateKey should be generated")
             assertNotNull(rsaKeyService.kid, "kid should be computed from public key when not configured")
