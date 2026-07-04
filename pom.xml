@@ -1012,6 +1012,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>testing-infrastructure</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>testing-scripts</artifactId>
                 <version>0.0.1</version>
             </dependency>
