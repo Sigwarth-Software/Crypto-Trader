@@ -25,6 +25,7 @@ public class UniqueCurrency extends Identifiable<String> {
     @Column(name = "currency_name")
     private String name;
 
+    @Transient
     private String urlPath;
 
     @Loggable
