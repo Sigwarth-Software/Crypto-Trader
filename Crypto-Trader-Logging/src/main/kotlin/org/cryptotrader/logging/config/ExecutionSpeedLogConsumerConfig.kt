@@ -21,7 +21,7 @@ open class ExecutionSpeedLogConsumerConfig(
     open fun executionSpeedLogsConsumer(): Consumer<Message<ExecutionSpeedLogEventPayload>> {
         return Consumer { message ->
             val entry: ExecutionSpeedLogEventPayload = message.payload
-            log.debug("Received execution speed log for {}", entry.fullMethodQualifiedName)
+            log.debug("Received execution speed log for {}()", entry.fullMethodQualifiedName)
             val warningLevel = ExecutionSpeedWarningLevel.from(
                 entry.executionSpeed,
                 entry.expectedExecutionSpeed,
