@@ -87,9 +87,7 @@ public class CurrencyService {
     }
 
     public DisplayCurrencyListResponse getCurrencyValuesResponse() {
-//        List<Currency> currencies = this.getTopTenCurrencies();
         List<Currency> currencies = this.getTopTenNonEncapsulatedCurrencies();
-        // sort by price desc
         currencies.sort((currencyOne, currencyTwo) -> {
             return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
         });
@@ -141,7 +139,6 @@ public class CurrencyService {
     }
 
     public List<Currency> getAllCurrencies() {
-//        return this.currencyRepository.findAll();
         return this.currencyEntityService.findAll();
     }
 
@@ -201,9 +198,6 @@ public class CurrencyService {
     public void saveUniqueCurrency(Currency currency) {
         UniqueCurrency uniqueCurrency = new UniqueCurrency(currency);
         UniqueCurrencyHistory uniqueCurrencyHistory = new UniqueCurrencyHistory(currency);
-//        this.uniqueCurrencyRepository.save(uniqueCurrency);
-//        this.uniqueCurrencyHistoryRepository.save(uniqueCurrencyHistory);
-
         this.uniqueCurrencyEntityService.save(uniqueCurrency);
         this.uniqueCurrencyHistoryEntityService.save(uniqueCurrencyHistory);
 
@@ -218,14 +212,12 @@ public class CurrencyService {
         return this.currencyRepository.getCurrencyByCurrencyCode(currencyCode);
     }
     public boolean existsInCurrencyTable(String currencyCode) {
-//        return this.currencyRepository.existsByCurrencyCode(currencyCode);
         return this.currencyEntityService.existsById(currencyCode);
     }
     public boolean existsInCurrencyHistoryTable(String currencyCode) {
         return this.currencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
     }
     public boolean existsInUniqueCurrencyTable(String currencyCode) {
-//        return this.uniqueCurrencyRepository.existsByCurrency(currencyCode);
         return this.uniqueCurrencyEntityService.existsById(currencyCode);
     }
     public boolean existsInUniqueCurrencyHistoryTable(String currencyCode) {
