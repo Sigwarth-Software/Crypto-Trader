@@ -45,7 +45,7 @@ class CurrencyCommandService @Autowired constructor(
             return ConsoleCommandResponse(exception.message ?: "Invalid command format.", null)
         }
 
-        val currencyNames: List<String> = this.getTopCurrenciesByPerformance(topCount)
+        val currencyNames: List<String> = this.currencyService.getTopCurrenciesByPerformance(topCount)
         val namesResponse = CurrencyNamesResponse(currencyNames)
         val consoleString = currencyNames.joinToString(separator = "\n") { it }
         return ConsoleCommandResponse(consoleString, namesResponse)
@@ -76,44 +76,5 @@ class CurrencyCommandService @Autowired constructor(
             throw IllegalArgumentException("Invalid command format.")
         }
         return topCount
-    }
-
-    private fun getTopCurrenciesByPerformance(topCount: Int): List<String> {
-        return this.currencyService.allCurrencies
-            .filterNotNull()
-            .sortedWith(
-                compareByDescending<Currency> { this.getCurrencyPerformanceScore(it) }
-                    .thenBy { it.currencyCode }
-            )
-            .take(topCount)
-            .map { currency ->
-                val currencyPerformanceScore: Double? =
-                    this.getCurrencyPerformanceScore(currency)
-                if (currencyPerformanceScore == null) {
-                    return@map this.currencyService.getCurrencyName(
-                        true,
-                        currency
-                    ) + " [N/A]"
-                }
-                val isPositive: Boolean = currencyPerformanceScore >= 0
-                val isNoChange: Boolean = currencyPerformanceScore == 0.0
-                val currencyPerformanceScoreString = if (isNoChange) {
-                    ""
-                } else if (isPositive) {
-                    "+$currencyPerformanceScore"
-                } else {
-                    "-$currencyPerformanceScore"
-                }
-                this.currencyService.getCurrencyName(
-                    true,
-                    currency
-                ) + " [${currencyPerformanceScoreString}%]"
-            }
-    }
-
-    private fun getCurrencyPerformanceScore(currency: Currency): Double? {
-        return this.currencyService.getPercentageDayPerformance(currency.currencyCode)
-            .removeSuffix("%")
-            .toDoubleOrNull()
     }
 }
