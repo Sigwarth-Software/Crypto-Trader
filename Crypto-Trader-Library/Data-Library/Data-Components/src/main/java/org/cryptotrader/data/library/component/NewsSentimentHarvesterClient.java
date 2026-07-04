@@ -38,7 +38,7 @@ public class NewsSentimentHarvesterClient {
         this.httpPost = httpPost;
         this.initHeaders();
         this.analysisBaseUrl = normalizeBaseUrl(analysisBaseUrl);
-        this.httpPost.setURI(URI.create(this.analysisUrl(DAILY_HARVEST_PATH)));
+        this.httpPost.setURI(URI.create(this.getAnalysisUrl(DAILY_HARVEST_PATH)));
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
     }
@@ -52,7 +52,7 @@ public class NewsSentimentHarvesterClient {
     public void triggerHarvest() {
         this.triggerHarvest(DEFAULT_REQUEST);
     }
-    
+
     public <T> String requestToJson(T request) {
         try {
             return this.objectMapper.writeValueAsString(request);
@@ -61,9 +61,9 @@ public class NewsSentimentHarvesterClient {
             return null;
         }
     }
-    
+
     public void triggerHarvest(NewsSentimentHarvestRequest request) {
-        this.httpPost.setURI(URI.create(this.analysisUrl(DAILY_HARVEST_PATH)));
+        this.httpPost.setURI(URI.create(this.getAnalysisUrl(DAILY_HARVEST_PATH)));
         log.info("Sending harvest request...");
         String json = this.requestToJson(request);
         try {
@@ -74,9 +74,9 @@ public class NewsSentimentHarvesterClient {
             log.error("Failed to set request entity.", exception);
         }
     }
-    
+
     public void triggerHarvest(NewsSentimentTargetedHarvestRequest request) {
-        this.httpPost.setURI(URI.create(this.analysisUrl(TARGETED_HARVEST_PATH)));
+        this.httpPost.setURI(URI.create(this.getAnalysisUrl(TARGETED_HARVEST_PATH)));
         log.info("Sending targeted harvest request...");
         String json = this.requestToJson(request);
         try {
@@ -87,7 +87,7 @@ public class NewsSentimentHarvesterClient {
             log.error("Failed to set request entity.", exception);
         }
     }
-    
+
     public static NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(LocalDate startDate,
                                                                                 LocalDate endDate) {
         return new NewsSentimentTargetedHarvestRequest(100, startDate, endDate, true);
@@ -97,7 +97,7 @@ public class NewsSentimentHarvesterClient {
         NewsSentimentTargetedHarvestRequest request = getTargetedHarvestRequest(startDate, endDate);
         this.triggerHarvest(request);
     }
-    
+
     public void backFillMonthly() {
         LocalDate today = LocalDate.now();
         LocalDate startMonth = today;
@@ -108,7 +108,7 @@ public class NewsSentimentHarvesterClient {
             endMonth = endMonth.minusMonths(1);
         }
     }
-    
+
     public void backFillWeekly() {
         LocalDate today = LocalDate.now();
         LocalDate startWeek = today;
@@ -119,7 +119,7 @@ public class NewsSentimentHarvesterClient {
             endWeek = endWeek.minusWeeks(1);
         }
     }
-    
+
     public void backFillDaily() {
         LocalDate today = LocalDate.now();
         LocalDate startDay = today;
@@ -131,7 +131,7 @@ public class NewsSentimentHarvesterClient {
         }
     }
 
-    private String analysisUrl(String path) {
+    private String getAnalysisUrl(String path) {
         return this.analysisBaseUrl + path;
     }
 
