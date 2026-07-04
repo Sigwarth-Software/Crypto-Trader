@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -287,5 +288,63 @@ public class CurrencyService {
                     return new TimeValueResponse(isoTime, valueAtTime);
                 })
                 .toList();
+    }
+
+    public List<String> getTopCurrenciesByPerformance(int topCount) {
+        return this.getAllCurrencies()
+            .stream()
+            .filter(Objects::nonNull)
+            .sorted(
+                Comparator
+                    .comparing(
+                        this::getCurrencyPerformanceScore,
+                        Comparator.nullsLast(Comparator.reverseOrder())
+                    )
+                    .thenComparing(Currency::getCurrencyCode)
+            )
+            .limit(topCount)
+            .map(currency -> {
+                Double currencyPerformanceScore =
+                    this.getCurrencyPerformanceScore(currency);
+
+                if (currencyPerformanceScore == null) {
+                    return this.getCurrencyName(
+                        true,
+                        currency
+                    ) + " [N/A]";
+                }
+
+                boolean isPositive = currencyPerformanceScore >= 0;
+                boolean isNoChange = currencyPerformanceScore == 0.0;
+
+                String currencyPerformanceScoreString;
+
+                if (isNoChange) {
+                    currencyPerformanceScoreString = "";
+                } else if (isPositive) {
+                    currencyPerformanceScoreString = "+" + currencyPerformanceScore;
+                } else {
+                    currencyPerformanceScoreString = "-" + currencyPerformanceScore;
+                }
+
+                return this.getCurrencyName(
+                    true,
+                    currency
+                ) + " [" + currencyPerformanceScoreString + "%]";
+            })
+            .toList();
+    }
+
+    public Double getCurrencyPerformanceScore(Currency currency) {
+        String percentageDayPerformance =
+            this.getPercentageDayPerformance(currency.getCurrencyCode());
+
+        try {
+            return Double.parseDouble(
+                percentageDayPerformance.replaceFirst("%$", "")
+            );
+        } catch (NumberFormatException exception) {
+            return null;
+        }
     }
 }
