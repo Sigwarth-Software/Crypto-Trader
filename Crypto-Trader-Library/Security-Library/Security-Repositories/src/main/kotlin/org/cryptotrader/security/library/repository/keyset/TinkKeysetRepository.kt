@@ -14,7 +14,7 @@ interface TinkKeysetRepository : JpaRepository<TinkKeyset, String> {
     @Query(
         value = """
             insert into tink_keysets (id, keyset_json, created_at, updated_at)
-            values (:id, :keysetJson, current_timestamp, current_timestamp)
+            values (:id, cast(:keysetJson as jsonb), current_timestamp, current_timestamp)
         """,
         nativeQuery = true
     )
