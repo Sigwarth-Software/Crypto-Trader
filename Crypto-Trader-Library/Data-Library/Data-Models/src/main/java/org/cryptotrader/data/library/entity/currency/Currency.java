@@ -31,6 +31,7 @@ public class Currency extends Identifiable<String> {
     @Column(name = "currency_code")
     @Loggable
     private String currencyCode;
+    @Transient
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     @Loggable
