@@ -20,6 +20,7 @@ import org.cryptotrader.api.library.repository.PortfolioAssetRepository;
 import org.cryptotrader.api.library.repository.PortfolioHistoryRepository;
 import org.cryptotrader.api.library.repository.PortfolioRepository;
 import org.cryptotrader.data.library.services.CurrencyService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,25 +141,21 @@ public class PortfolioService {
     }
     //---------------------Save-Portfolio-Asset-History-----------------------
     public void savePortfolioAssetHistory(PortfolioAssetHistory portfolioAssetHistory) {
-//        this.portfolioAssetHistoryRepository.save(portfolioAssetHistory);
         this.portfolioAssetHistoryEntityService.save(portfolioAssetHistory);
     }
     //----------------------Save-Portfolio-History----------------------------
     public void savePortfolioHistory(PortfolioHistory portfolioHistory) {
-//        this.portfolioHistoryRepository.save(portfolioHistory);
         this.portfolioHistoryEntityService.save(portfolioHistory);
     }
 
     //---------------------------Save-Portfolio-------------------------------
     @Transactional
     public void savePortfolio(Portfolio portfolio) {
-//        this.portfolioRepository.save(portfolio);
         this.portfolioEntityService.save(portfolio);
     }
     //------------------------Save-Portfolio-Asset----------------------------
     @Transactional
     public void savePortfolioAsset(PortfolioAsset portfolioAsset) {
-//        this.portfolioAssetRepository.save(portfolioAsset);
         this.portfolioAssetEntityService.save(portfolioAsset);
     }
     //----------------------Get-Portfolio-By-User-Id--------------------------
@@ -168,7 +165,6 @@ public class PortfolioService {
     }
     //-------------------------Get-All-Portfolios-----------------------------
     public List<Portfolio> getAllPortfolios() {
-//        return this.portfolioRepository.findAll();
         return this.portfolioEntityService.findAll();
     }
     //-----------------------Add-Asset-To-Portfolio---------------------------
@@ -176,9 +172,6 @@ public class PortfolioService {
     public void addAssetToPortfolio(Portfolio portfolio, PortfolioAssetRequest portfolioAssetRequest) {
         Currency requestCurrency = this.currencyService.getCurrencyByName(portfolioAssetRequest.getCurrencyName());
         PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
-//        this.savePortfolio(portfolio);
-//        this.savePortfolioAsset(portfolioAsset);
-
         this.portfolioEntityService.save(portfolio);
         this.portfolioAssetEntityService.save(portfolioAsset);
     }
@@ -219,11 +212,22 @@ public class PortfolioService {
 
     public Optional<PortfolioAsset> getPortfolioAssetByHistory(PortfolioAssetHistory portfolioAssetHistory) {
         Long portfolioAssetId = portfolioAssetHistory.getPortfolioAsset().getId();
-//        return this.portfolioAssetRepository.findById(portfolioAssetId);
         return this.portfolioAssetEntityService.findById(portfolioAssetId);
     }
 
     public ProductUser getProductUserByAsset(PortfolioAsset portfolioAsset) {
         return portfolioAsset.getPortfolio().getUser();
+    }
+
+    public Portfolio getInitializedPortfolio(Long userId) {
+        Portfolio portfolio = this.getPortfolioByUserId(userId);
+
+        if (portfolio == null) {
+            return new Portfolio();
+        }
+
+        Hibernate.initialize(portfolio.getAssets());
+
+        return portfolio;
     }
 }
