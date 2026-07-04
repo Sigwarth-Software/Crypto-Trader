@@ -6,7 +6,7 @@ import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.*
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`

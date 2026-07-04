@@ -2,7 +2,7 @@ package org.cryptotrader.security.library.service
 
 import inet.ipaddr.IPAddressString
 import org.cryptotrader.security.library.model.BanType
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

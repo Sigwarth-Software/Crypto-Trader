@@ -1,7 +1,7 @@
 package org.cryptotrader.data.library.entity.currency.builder
 
 import org.cryptotrader.data.library.entity.currency.builder.CurrencyBuilder
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

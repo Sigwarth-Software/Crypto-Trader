@@ -7,7 +7,7 @@ import org.apache.http.message.BasicHeader
 import org.apache.http.message.BasicStatusLine
 import org.apache.http.ProtocolVersion
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

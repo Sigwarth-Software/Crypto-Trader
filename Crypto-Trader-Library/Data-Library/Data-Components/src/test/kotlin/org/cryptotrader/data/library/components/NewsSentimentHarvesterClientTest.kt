@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.CloseableHttpClient
 import org.cryptotrader.data.library.component.NewsSentimentHarvesterClient
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -30,7 +30,12 @@ class NewsSentimentHarvesterClientTest : CryptoTraderTest() {
 
     @BeforeEach
     fun setUp() {
-        client = NewsSentimentHarvesterClient(httpPost, objectMapper, httpClient, "https://localhost:8000")
+        this.client = NewsSentimentHarvesterClient(
+            this.httpPost,
+            this.objectMapper,
+            this.httpClient,
+            "https://localhost:8000"
+        )
     }
 
     @Nested

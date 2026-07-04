@@ -2,7 +2,7 @@ package org.cryptotrader.data.library.components
 
 import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.data.library.component.CurrencyDataRetriever
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
