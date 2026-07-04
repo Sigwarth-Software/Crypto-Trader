@@ -18,4 +18,6 @@ open module org.cryptotrader.simulator {
     requires spring.web;
     requires jakarta.xml.bind;
     requires spring.cloud.stream;
+
+    exports org.cryptotrader.simulator;
 }
