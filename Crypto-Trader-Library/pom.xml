@@ -108,6 +108,7 @@
         <module>Simulator-Library/Simulator-Config</module>
         <module>Simulator-Library/Simulator-Communication</module>
         <module>Testing-Library</module>
+        <module>Testing-Library/Testing-Infrastructure</module>
         <module>Testing-Library/Testing-Scripts</module>
     </modules>
 
