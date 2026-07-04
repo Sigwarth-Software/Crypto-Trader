@@ -13,7 +13,7 @@ import { DpopProofService } from '@auth/dpop/dpop-proof.service';
 import { RefreshCoordinatorService } from '@auth/refresh/refresh-coordinator.service';
 import { TokenStorageService } from '@auth/token-storage.service';
 import { AuthResponse } from '@models/auth/types';
-import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver';
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script';
 
 @Injectable({
     providedIn: 'root',

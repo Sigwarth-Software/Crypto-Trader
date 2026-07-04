@@ -6,7 +6,7 @@ import { HttpClientService } from '@theoliverlear/angular-suite'
 import { ConsoleCommandRequest, ConsoleCommandResponse } from '@models/console/types'
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
 import { LoggerContext } from '@models/logging/LoggerContext'
-import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver'
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script'
 
 /** A service for executing console commands by sending HTTP requests.
  *

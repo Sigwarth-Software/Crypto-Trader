@@ -11,7 +11,7 @@ import { DpopProofService } from '@auth/dpop/dpop-proof.service'
 import { TokenStorageService } from '@auth/token-storage.service'
 import { type PossibleToken } from '@models/auth/types'
 import { type PossibleString } from '@models/types'
-import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver'
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script'
 
 import { type PossibleStringObservable } from './types'
 

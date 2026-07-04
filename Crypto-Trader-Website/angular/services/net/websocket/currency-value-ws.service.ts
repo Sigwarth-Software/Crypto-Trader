@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 
 import { WebSocketService } from '@theoliverlear/angular-suite'
 import { environment } from '@environments/environment'
-import { resolveWebSocketUrl } from '@services/net/url-resolver'
+import { resolveWebSocketUrl } from '@app/scripts/url-resolver.script'
 
 @Injectable({
     providedIn: 'root',

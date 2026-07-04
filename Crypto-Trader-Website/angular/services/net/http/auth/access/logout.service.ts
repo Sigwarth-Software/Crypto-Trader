@@ -8,7 +8,7 @@ import { DpopKeyService } from '@auth/dpop/dpop-key.service';
 import { DpopProofService } from '@auth/dpop/dpop-proof.service';
 import { TokenStorageService } from '@auth/token-storage.service';
 import { AuthResponse, PossibleToken } from '@models/auth/types';
-import { resolveAbsoluteHttpUrl } from '@services/net/url-resolver';
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script';
 
 import { LoggedInService } from '../status/logged-in.service';
 
