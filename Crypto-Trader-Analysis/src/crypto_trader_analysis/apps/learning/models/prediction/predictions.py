@@ -12,7 +12,7 @@ from src.crypto_trader_analysis.apps.learning.models.training.train_model import
     setup_logging, configure_concurrency, setup_tensorflow_env
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_type import TrainingType
-from src.crypto_trader_analysis.core.service_client import post_json
+from src.crypto_trader_analysis.core.http_client import post_json
 
 
 from src.crypto_trader_analysis.apps.learning.models.currency_json_generator import get_all_currency_codes

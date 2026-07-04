@@ -29,7 +29,7 @@ from src.crypto_trader_analysis.apps.learning.models.prediction.predictions impo
 from src.crypto_trader_analysis.apps.learning.models.training.multi_layer_training_model import \
     MultiLayerTrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
-from src.crypto_trader_analysis.core.service_client import post_json
+from src.crypto_trader_analysis.core.http_client import post_json
 
 
 @define

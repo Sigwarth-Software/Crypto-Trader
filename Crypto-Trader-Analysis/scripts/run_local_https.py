@@ -20,7 +20,7 @@ def env_path(name: str, default: Path) -> Path:
     return Path(os.getenv(name, str(default))).expanduser().resolve()
 
 
-host = os.getenv("CT_ANALYSIS_HOST", "0.0.0.0")
+host = os.getenv("CT_ANALYSIS_HOST", "localhost")
 port = int(os.getenv("CT_ANALYSIS_PORT", "8000"))
 cert_file = env_path("CT_ANALYSIS_CERT_FILE", repo_root / "certs" / "localhost.pem")
 key_file = env_path("CT_ANALYSIS_KEY_FILE", repo_root / "certs" / "localhost-key.pem")
