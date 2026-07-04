@@ -1,6 +1,6 @@
 package org.cryptotrader.version.script
 
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.cryptotrader.version.library.model.element.PomElement
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertThrows

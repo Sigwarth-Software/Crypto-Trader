@@ -13,7 +13,7 @@ import org.cryptotrader.api.library.services.entity.portfolio.PortfolioAssetHist
 import org.cryptotrader.api.library.services.entity.portfolio.PortfolioEntityService
 import org.cryptotrader.api.library.services.entity.portfolio.PortfolioHistoryEntityService
 import org.cryptotrader.data.library.services.CurrencyService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -231,7 +231,7 @@ class PortfolioServiceTest : CryptoTraderTest() {
             assertEquals(0.0, current.sharesChange, 1e-9)
         }
     }
-    
+
     private fun getDummyAsset(id: Long): PortfolioAsset {
         val currency = Currency().apply {
             currencyCode = "DUMMY"
