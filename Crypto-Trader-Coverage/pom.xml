@@ -91,6 +91,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>testing-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-version</artifactId>
         </dependency>
 

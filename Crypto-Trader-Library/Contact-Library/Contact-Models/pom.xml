@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
