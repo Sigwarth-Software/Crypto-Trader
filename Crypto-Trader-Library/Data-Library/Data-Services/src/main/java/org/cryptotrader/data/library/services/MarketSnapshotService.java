@@ -47,7 +47,7 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     //=============================-Methods-==================================
 
     //---------------------------Save-Snapshot--------------------------------
-    @TimeTracked(expectedMillis = 1000, shouldPersist = true)
+    @TimeTracked(expectedMillis = 5, shouldPersist = true)
     @Transactional
     public void saveSnapshot(Map<String, Currency> currencies) {
         if (!isValidCurrencyMap(currencies)) {
