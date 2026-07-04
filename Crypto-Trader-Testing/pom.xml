@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.cryptotrader</groupId>
@@ -11,178 +11,227 @@
     </parent>
 
     <artifactId>crypto-trader-testing</artifactId>
-    <name>Crypto-Trader-Testing</name>
     <version>0.0.5</version>
-    <description>
-        Test utilities and fixtures — JUnit 5 base classes, Testcontainers helpers, and Spring Boot testing support.
-    </description>
+    <name>Crypto-Trader-Testing</name>
+    <description>Aggregate JUnit suite for Crypto Trader Maven application tests.</description>
 
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <argLine/>
-        <java.release>23</java.release>
+        <aggregate.tests.skip>true</aggregate.tests.skip>
         <kotlin.jvm.target>23</kotlin.jvm.target>
     </properties>
 
-
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>testing-infrastructure</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>logging-services</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Application artifacts and their attached test JARs. -->
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-admin</artifactId>
+            <version>0.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-admin</artifactId>
+            <version>0.0.5</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-api</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-api</artifactId>
+            <version>0.1.0</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-contact</artifactId>
+            <version>0.0.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-contact</artifactId>
+            <version>0.0.3</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-data</artifactId>
+            <version>0.0.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-data</artifactId>
+            <version>0.0.4</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-engine</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-engine</artifactId>
+            <version>0.1.0</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-health</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-health</artifactId>
+            <version>0.1.0</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-logging</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-logging</artifactId>
+            <version>0.1.0</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-version</artifactId>
+            <version>0.1.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-version</artifactId>
+            <version>0.1.2</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
                 <executions>
-                    <execution>
-                        <id>kotlin-compile</id>
-                        <phase>process-sources</phase>
-                        <goals><goal>compile</goal></goals>
-                        <configuration>
-                            <jvmTarget>${kotlin.jvm.target}</jvmTarget>
-                            <args>
-                                <arg>-Xjdk-release=${kotlin.jvm.target}</arg>
-                            </args>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>kotlin-test-compile</id>
                         <phase>process-test-sources</phase>
                         <goals><goal>test-compile</goal></goals>
                         <configuration>
                             <jvmTarget>${kotlin.jvm.target}</jvmTarget>
-                            <args>
-                                <arg>-Xjdk-release=${kotlin.jvm.target}</arg>
-                            </args>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>${java.release}</release>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>ban-junit4-and-vintage</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <bannedDependencies>
-                                    <excludes>
-                                        <exclude>junit:junit</exclude>
-                                        <exclude>org.junit.vintage:junit-vintage-engine</exclude>
-                                    </excludes>
-                                    <searchTransitive>true</searchTransitive>
-                                </bannedDependencies>
-                            </rules>
-                            <fail>true</fail>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                            </sourceDirs>
                         </configuration>
                     </execution>
                 </executions>
@@ -190,31 +239,48 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                    <skipTests>${aggregate.tests.skip}</skipTests>
+                    <useModulePath>false</useModulePath>
+                    <argLine>@{argLine} -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring-framework.version}/spring-instrument-${spring-framework.version}.jar</argLine>
                     <systemPropertyVariables>
-                        <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
+                        <cryptotrader.global-tests.safe>true</cryptotrader.global-tests.safe>
+                        <spring.profiles.active>test</spring.profiles.active>
+                        <spring.datasource.url>jdbc:h2:mem:crypto_trader_global_tests;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</spring.datasource.url>
+                        <spring.datasource.username>sa</spring.datasource.username>
+                        <spring.datasource.password></spring.datasource.password>
+                        <spring.datasource.driver-class-name>org.h2.Driver</spring.datasource.driver-class-name>
+                        <spring.jpa.database-platform>org.hibernate.dialect.H2Dialect</spring.jpa.database-platform>
+<!--                        TODO: Remove if not necessary.-->
+                        <spring.jpa.hibernate.ddl-auto>create-drop</spring.jpa.hibernate.ddl-auto>
+                        <spring.flyway.enabled>false</spring.flyway.enabled>
+                        <spring.liquibase.enabled>false</spring.liquibase.enabled>
+                        <spring.cloud.aws.secretsmanager.enabled>false</spring.cloud.aws.secretsmanager.enabled>
                     </systemPropertyVariables>
+                    <environmentVariables>
+                        <PSQL_DB_URL>jdbc:h2:mem:crypto_trader_global_tests;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</PSQL_DB_URL>
+                        <PSQL_HOST>localhost</PSQL_HOST>
+                        <PSQL_USER>sa</PSQL_USER>
+                        <PSQL_PW></PSQL_PW>
+                        <SPRING_DATASOURCE_URL>jdbc:h2:mem:crypto_trader_global_tests;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</SPRING_DATASOURCE_URL>
+                        <SPRING_DATASOURCE_USERNAME>sa</SPRING_DATASOURCE_USERNAME>
+                        <SPRING_DATASOURCE_PASSWORD></SPRING_DATASOURCE_PASSWORD>
+                        <SPRING_DATASOURCE_DRIVER_CLASS_NAME>org.h2.Driver</SPRING_DATASOURCE_DRIVER_CLASS_NAME>
+                    </environmentVariables>
+                    <includes>
+                        <include>**/CryptoTraderTestSuite.*</include>
+                    </includes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <configuration>
-                    <skip>${dokka.skip}</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>dokka-html</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>dokka</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>aggregate-tests</id>
+            <properties>
+                <aggregate.tests.skip>false</aggregate.tests.skip>
+            </properties>
+        </profile>
+    </profiles>
 </project>
