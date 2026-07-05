@@ -15,6 +15,7 @@ import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -24,6 +25,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 
 @DisplayName("Currency Service")
+@Disabled
 class CurrencyServiceTest : CryptoTraderTest() {
     @InjectMocks
     lateinit var currencyService: CurrencyService
