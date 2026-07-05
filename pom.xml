@@ -1186,6 +1186,7 @@
                         <TESTCONTAINERS_CHECKS_DISABLE>true</TESTCONTAINERS_CHECKS_DISABLE>
                     </environmentVariables>
                     <systemPropertyVariables>
+                        <server.ssl.enabled>false</server.ssl.enabled>
                         <junit.platform.excludeTags>${junit.platform.excludeTags}</junit.platform.excludeTags>
                     </systemPropertyVariables>
                 </configuration>
@@ -1201,6 +1202,7 @@
                         <TESTCONTAINERS_CHECKS_DISABLE>true</TESTCONTAINERS_CHECKS_DISABLE>
                     </environmentVariables>
                     <systemPropertyVariables>
+                        <server.ssl.enabled>false</server.ssl.enabled>
                         <junit.platform.excludeTags>${junit.platform.excludeTags}</junit.platform.excludeTags>
                     </systemPropertyVariables>
                 </configuration>
