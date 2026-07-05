@@ -31,3 +31,8 @@ spring:
 cryptotrader:
   load:
     currency: false
+
+security:
+  crypto:
+    tink:
+      store: memory
