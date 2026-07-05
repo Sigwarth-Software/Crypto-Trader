@@ -103,6 +103,7 @@
 | Logging-Infrastructure     | v.v.v   |
 | Logging-Models             | v.v.v   |
 | Logging-Repositories       | v.v.v   |
+| Logging-Scripts        | v.v.v   |
 | Logging-Services           | v.v.v   |
 | Security-Library           | v.v.v   |
 | Security-Config            | v.v.v   |
@@ -111,11 +112,17 @@
 | Security-Models            | v.v.v   |
 | Security-Repositories      | v.v.v   |
 | Security-Services          | v.v.v   |
+| Testing-Library            | v.v.v   |
+| Testing-Infrastructure     | v.v.v   |
+| Testing-Scripts            | v.v.v   |
 | Universal-Library          | v.v.v   |
+| Universal-Communication    | v.v.v   |
 | Universal-Components       | v.v.v   |
 | Universal-Config           | v.v.v   |
+| Universal-Events           | v.v.v   |
 | Universal-Extensions       | v.v.v   |
 | Universal-Models           | v.v.v   |
+| Universal-Services         | v.v.v   |
 | Version-Library            | v.v.v   |
 | Version-Models             | v.v.v   |
 
