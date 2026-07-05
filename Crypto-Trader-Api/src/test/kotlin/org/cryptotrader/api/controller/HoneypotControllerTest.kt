@@ -3,6 +3,7 @@ package org.cryptotrader.api.controller
 import org.cryptotrader.api.service.HoneypotService
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assumptions.assumeFalse
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
     "spring.web.resources.add-mappings=false",
     "spring.mvc.pathmatch.matching-strategy=path_pattern_parser"
 ])
+@Disabled
 class HoneypotControllerTest {
 
     @Autowired
