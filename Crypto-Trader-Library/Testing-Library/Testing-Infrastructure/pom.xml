@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>testing-infrastructure</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>Testing-Infrastructure</name>
     <description>Reusable JUnit 5 infrastructure shared by Crypto Trader module tests.</description>
 

@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-docs</artifactId>
     <name>Crypto-Trader-Docs</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Documentation tooling — generates OpenAPI specs from running services and bundles the project docs site.
     </description>

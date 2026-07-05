@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-services</artifactId>
     <name>Data-Services</name>
-    <version>0.0.2</version>
+    <version>0.1.0</version>
     <description>
         Data management services — core services for data processing, validation, and market data aggregation.
     </description>

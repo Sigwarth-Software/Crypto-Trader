@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-library</artifactId>
-    <version>0.1.1</version>
+    <version>0.2.0</version>
     <name>Data-Library</name>
     <description>
         Parent library for data-related modules — core data access, persistence, and storage components.

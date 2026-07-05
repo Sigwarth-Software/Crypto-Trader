@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>universal-library</artifactId>
     <name>Universal-Library</name>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <description>
         Parent library for universal modules — provides shared components and configurations for module environments.
     </description>

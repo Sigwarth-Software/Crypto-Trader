@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
     </parent>
 
     <name>Crypto-Trader-Transactions</name>
     <artifactId>crypto-trader-transactions</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Transaction management service for Crypto Trader — handles order execution, historical records, and financial auditing.
     </description>

@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>agent-components</artifactId>
     <name>Agent-Components</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Agent functional components — reusable building blocks for automated analysis and project management tasks.
     </description>

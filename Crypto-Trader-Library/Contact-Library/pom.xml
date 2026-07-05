@@ -6,10 +6,10 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
     </parent>
 
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <artifactId>contact-library</artifactId>
     <name>Contact-Library</name>
     <description>

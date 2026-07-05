@@ -6,10 +6,10 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
     </parent>
 
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <artifactId>crypto-trader-console</artifactId>
     <name>Crypto-Trader-Console</name>
     <description>

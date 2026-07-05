@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-testing</artifactId>
-    <version>0.0.5</version>
+    <version>0.1.0</version>
     <name>Crypto-Trader-Testing</name>
     <description>Aggregate JUnit suite for Crypto Trader Maven application tests.</description>
 
@@ -106,13 +106,13 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-admin</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-admin</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -120,13 +120,13 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-api</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-api</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -134,26 +134,12 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-contact</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-contact</artifactId>
-            <version>0.0.3</version>
-            <type>test-jar</type>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-data</artifactId>
-            <version>0.0.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-data</artifactId>
             <version>0.0.4</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
@@ -161,14 +147,28 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-engine</artifactId>
+            <artifactId>crypto-trader-data</artifactId>
             <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-engine</artifactId>
+            <artifactId>crypto-trader-data</artifactId>
             <version>0.1.0</version>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-engine</artifactId>
+            <version>0.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-engine</artifactId>
+            <version>0.1.1</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -176,13 +176,13 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-health</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-health</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -190,13 +190,13 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -204,13 +204,13 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-version</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-version</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
             <type>test-jar</type>
             <classifier>tests</classifier>
             <scope>test</scope>

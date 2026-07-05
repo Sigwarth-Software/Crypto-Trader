@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-communication</artifactId>
     <name>Api-Communication</name>
     <description>API communication contracts (DTOs) and supporting utilities for Crypto Trader.</description>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <packaging>jar</packaging>
 
     <properties>

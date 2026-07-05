@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>universal-config</artifactId>
     <name>Universal-Config</name>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <description>
         Universal configuration module — manages shared settings and environment-agnostic parameters.
     </description>

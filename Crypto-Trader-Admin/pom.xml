@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-admin</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>Crypto-Trader-Admin</name>
     <description>
         JavaFX-based operations console for Crypto Trader — manage users, jobs, configurations, and runtime diagnostics.
