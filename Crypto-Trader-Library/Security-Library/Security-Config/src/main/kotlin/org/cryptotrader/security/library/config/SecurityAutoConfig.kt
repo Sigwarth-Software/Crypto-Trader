@@ -9,6 +9,7 @@ import org.cryptotrader.security.library.repository.keyset.TinkKeysetRepository
 import org.cryptotrader.security.library.service.EncryptionService
 import org.cryptotrader.security.library.service.InMemoryIpBanService
 import org.cryptotrader.security.library.service.model.TinkKeysetStore
+import org.cryptotrader.security.library.service.model.InMemoryTinkKeysetStore
 import org.cryptotrader.security.library.service.model.IpBanManager
 import org.cryptotrader.security.library.service.IpPermaBanService
 import org.cryptotrader.security.library.service.IpBanService
@@ -19,6 +20,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
@@ -47,6 +49,12 @@ open class SecurityAutoConfig {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass(TinkKeysetRepository::class, TinkKeyset::class)
     @ConditionalOnBean(DataSource::class)
+    @ConditionalOnProperty(
+        prefix = "security.crypto.tink",
+        name = ["store"],
+        havingValue = "database",
+        matchIfMissing = true
+    )
     @EnableJpaRepositories(basePackageClasses = [TinkKeysetRepository::class])
     @EntityScan(basePackageClasses = [TinkKeyset::class])
     open class SecurityKeysetJpaConfig {
@@ -56,6 +64,19 @@ open class SecurityAutoConfig {
         open fun tinkKeysetStore(repository: TinkKeysetRepository): TinkKeysetStore {
             return TinkKeysetEntityService(repository)
         }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnProperty(
+        prefix = "security.crypto.tink",
+        name = ["store"],
+        havingValue = "memory"
+    )
+    open class InMemoryKeysetConfig {
+
+        @Bean
+        @ConditionalOnMissingBean(TinkKeysetStore::class)
+        open fun tinkKeysetStore(): TinkKeysetStore = InMemoryTinkKeysetStore()
     }
 
     @Bean
