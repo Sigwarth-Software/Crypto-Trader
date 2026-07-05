@@ -425,7 +425,6 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
                 <configuration>
                     <skip>${dokka.skip}</skip>
                 </configuration>
