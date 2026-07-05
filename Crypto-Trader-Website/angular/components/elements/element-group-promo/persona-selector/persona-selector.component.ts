@@ -6,7 +6,7 @@ import {
     personaEqualizerIcon,
     personaBuilderIcon,
     personaTycoonIcon
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 import { Persona } from './models/Persona';
 
 @Component({

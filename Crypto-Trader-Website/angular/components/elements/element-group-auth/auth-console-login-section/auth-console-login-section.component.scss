@@ -1,8 +1,8 @@
 // auth-console-login-section-style.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-mixins' as mixins;
 
 auth-console-login-section {
-    @include flex(flex-start, stretch, column);
+    @include mixins.flex(flex-start, stretch, column);
     width: 100%;
     gap: 0;
     background: transparent;

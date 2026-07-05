@@ -15,6 +15,7 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { TradeEvent, TradeEventList } from '@models/trader/types';
 
 import { listStagger } from '../../animations/animations';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 @Component({
     selector: 'trader',
@@ -43,18 +44,16 @@ export class TraderComponent implements OnInit, OnChanges {
         private readonly log: CryptoTraderLoggerService,
     ) {}
     ngOnInit(): void {
-        this.log.setContext('Trader');
-        this.log.info('Trader component initialized');
-
-        this.log.debug('Checking if trade events exist...');
+        this.log.setContext(LoggerContext.Trader)
+        this.log.debug('Checking if trade events exist...')
         this.hasTradeEventsService
             .hasTradeEvents()
             .subscribe({
-                next: (hasTradeEvents: boolean) => {
+                next: (hasTradeEvents: boolean): void => {
                     this.log.info(`Trade events exist: ${hasTradeEvents}`);
                     this.hasTradeEvents = hasTradeEvents;
                 },
-                error: (error) => {
+                error: (error): void => {
                     this.log.error('Failed to check for trade events', error);
                 },
             });
@@ -63,11 +62,11 @@ export class TraderComponent implements OnInit, OnChanges {
     }
 
     @HostListener('window:scroll', [])
-    onScroll() {
+    onScroll(): void {
         if (this.scrollTimer) {
             clearTimeout(this.scrollTimer);
         }
-        this.scrollTimer = setTimeout(() => {
+        this.scrollTimer = setTimeout((): void => {
             this.scrollTimer = null;
             if (this.loadingNewItems || this.isFetching || !this.hasMore) {
                 return;
@@ -83,7 +82,7 @@ export class TraderComponent implements OnInit, OnChanges {
     listenForTradeEvents(): void {
         this.batchedTradeEventsService
             .getBatchedTradeEvents(0, this.pageSize)
-            .subscribe((data: TradeEventList) => {
+            .subscribe((data: TradeEventList): void => {
                 this.tradeEvents = data;
             });
     }
@@ -94,7 +93,7 @@ export class TraderComponent implements OnInit, OnChanges {
         this.batchedTradeEventsService
             .getBatchedTradeEvents(offset, this.pageSize)
             .subscribe({
-                next: (data: TradeEventList) => {
+                next: (data: TradeEventList): void => {
                     this.log.info(`Fetched ${data?.events?.length || 0} trade events`);
                     this.tradeEvents.events = [
                         ...(this.tradeEvents.events || []),
@@ -110,7 +109,7 @@ export class TraderComponent implements OnInit, OnChanges {
                     this.isLoaded = true;
                     this.isFetching = false;
                 },
-                error: (error) => {
+                error: (error): void => {
                     this.log.error('Failed to load trade events', error);
                     this.isFetching = false;
                 },

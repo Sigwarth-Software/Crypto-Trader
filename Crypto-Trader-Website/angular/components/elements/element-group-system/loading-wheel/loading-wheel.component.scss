@@ -1,41 +1,43 @@
 // loading-wheel.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 loading-wheel {
-    @include flex(center, center, column);
-    @include square-size($six-percent);
+    @include mixins.flex(center, center, column);
+    @include mixins.square-size(vars.$six-percent);
     position: relative;
-    margin: $one-percent 0;
+    margin: vars.$one-percent 0;
 
     &.small {
-        @include square-size($three-percent);
+        @include mixins.square-size(vars.$three-percent);
 
         .loader-dot {
-            @include square-size($two-percent);
+            @include mixins.square-size(vars.$two-percent);
         }
     }
 
     &.medium {
-        @include square-size($six-percent);
+        @include mixins.square-size(vars.$six-percent);
 
         .loader-dot {
-            @include square-size($four-percent);
+            @include mixins.square-size(vars.$four-percent);
         }
     }
 
     &.large {
-        @include square-size($ten-percent);
+        @include mixins.square-size(vars.$ten-percent);
 
         .loader-dot {
-            @include square-size($seven-percent);
+            @include mixins.square-size(vars.$seven-percent);
         }
     }
 
     &.very-large {
-        @include square-size($fifteen-percent);
+        @include mixins.square-size(vars.$fifteen-percent);
 
         .loader-dot {
-            @include square-size($ten-percent);
+            @include mixins.square-size(vars.$ten-percent);
         }
     }
 
@@ -44,19 +46,19 @@ loading-wheel {
             background: conic-gradient(
                 from 0deg,
                 lightblue,
-                $mint-green,
-                $air-blue,
-                $pure-white
+                vars.$mint-green,
+                vars.$air-blue,
+                vars.$pure-white
             );
-            border: $thin-border solid $alabaster-stone;
+            border: vars.$thin-border solid vars.$alabaster-stone;
             box-shadow:
-                0 0 $eighth-percent $sea-blue,
-                0 0 $quarter-percent $turquoise-blue;
+                0 0 vars.$eighth-percent vars.$sea-blue,
+                0 0 vars.$quarter-percent vars.$turquoise-blue;
         }
 
         .loader-dot {
-            background-color: $pure-white;
-            box-shadow: 0 0 $half-percent $turquoise-blue;
+            background-color: vars.$pure-white;
+            box-shadow: 0 0 vars.$half-percent vars.$turquoise-blue;
         }
     }
 
@@ -64,20 +66,20 @@ loading-wheel {
         .loader-ring {
             background: conic-gradient(
                 from 0deg,
-                $sunbeam-yellow,
-                $red-orange,
-                $bitcoin-color,
-                $pure-white
+                vars.$sunbeam-yellow,
+                vars.$red-orange,
+                vars.$bitcoin-color,
+                vars.$pure-white
             );
-            border: $thin-border solid $alabaster-stone;
+            border: vars.$thin-border solid vars.$alabaster-stone;
             box-shadow:
-                0 0 $eighth-percent $red-orange,
-                0 0 $quarter-percent $bitcoin-color;
+                0 0 vars.$eighth-percent vars.$red-orange,
+                0 0 vars.$quarter-percent vars.$bitcoin-color;
         }
 
         .loader-dot {
-            background-color: $sunbeam-yellow;
-            box-shadow: 0 0 $half-percent $red-orange;
+            background-color: vars.$sunbeam-yellow;
+            box-shadow: 0 0 vars.$half-percent vars.$red-orange;
         }
     }
 
@@ -85,20 +87,20 @@ loading-wheel {
         .loader-ring {
             background: conic-gradient(
                 from 0deg,
-                $sunbeam-yellow,
-                $bitcoin-color,
-                $ivory-white,
-                $pure-white
+                vars.$sunbeam-yellow,
+                vars.$bitcoin-color,
+                vars.$ivory-white,
+                vars.$pure-white
             );
-            border: $thin-border solid $alabaster-stone;
+            border: vars.$thin-border solid vars.$alabaster-stone;
             box-shadow:
-                0 0 $eighth-percent $bitcoin-color,
-                0 0 $quarter-percent $sunbeam-yellow;
+                0 0 vars.$eighth-percent vars.$bitcoin-color,
+                0 0 vars.$quarter-percent vars.$sunbeam-yellow;
         }
 
         .loader-dot {
-            background-color: $pure-white;
-            box-shadow: 0 0 $half-percent $bitcoin-color;
+            background-color: vars.$pure-white;
+            box-shadow: 0 0 vars.$half-percent vars.$bitcoin-color;
         }
     }
 
@@ -106,20 +108,20 @@ loading-wheel {
         .loader-ring {
             background: conic-gradient(
                 from 0deg,
-                $green-lemon,
-                $teal-green,
-                $sage-green,
-                $pure-white
+                vars.$green-lemon,
+                vars.$teal-green,
+                vars.$sage-green,
+                vars.$pure-white
             );
-            border: $thin-border solid $alabaster-stone;
+            border: vars.$thin-border solid vars.$alabaster-stone;
             box-shadow:
-                0 0 $eighth-percent $jungle-green,
-                0 0 $quarter-percent $mint-green;
+                0 0 vars.$eighth-percent vars.$jungle-green,
+                0 0 vars.$quarter-percent vars.$mint-green;
         }
 
         .loader-dot {
-            background-color: $pale-mint;
-            box-shadow: 0 0 $half-percent $teal-green;
+            background-color: vars.$pale-mint;
+            box-shadow: 0 0 vars.$half-percent vars.$teal-green;
         }
     }
 
@@ -127,20 +129,20 @@ loading-wheel {
         .loader-ring {
             background: conic-gradient(
                 from 0deg,
-                $pure-white,
-                $air-blue,
-                $morning-frost-blue,
-                $soft-grey
+                vars.$pure-white,
+                vars.$air-blue,
+                vars.$morning-frost-blue,
+                vars.$soft-grey
             );
-            border: $thin-border solid $alabaster-stone;
+            border: vars.$thin-border solid vars.$alabaster-stone;
             box-shadow:
-                0 0 $eighth-percent $muted-blue,
-                0 0 $quarter-percent $morning-frost-blue;
+                0 0 vars.$eighth-percent vars.$muted-blue,
+                0 0 vars.$quarter-percent vars.$morning-frost-blue;
         }
 
         .loader-dot {
-            background-color: $pure-white;
-            box-shadow: 0 0 $half-percent $morning-frost-blue;
+            background-color: vars.$pure-white;
+            box-shadow: 0 0 vars.$half-percent vars.$morning-frost-blue;
         }
     }
 
@@ -158,7 +160,7 @@ loading-wheel {
         left: 50%;
         transform: translate(-50%, -50%);
 
-        @include square-size($four-percent);
+        @include mixins.square-size(vars.$four-percent);
         border-radius: 50%;
         animation: jumping 2s cubic-bezier(0.2, 0.57, 0.36, 0.98) infinite;
     }
@@ -176,14 +178,14 @@ loading-wheel {
     @keyframes glowing {
         0% {
             opacity: 0.6;
-            box-shadow: 0 0 $quarter-percent $deep-ocean;
+            box-shadow: 0 0 vars.$quarter-percent vars.$deep-ocean;
         }
 
         100% {
             opacity: 1;
             box-shadow:
-                0 0 $six-percent $mint-green,
-                0 0 $quarter-percent $muted-blue;
+                0 0 vars.$six-percent vars.$mint-green,
+                0 0 vars.$quarter-percent vars.$muted-blue;
         }
     }
 

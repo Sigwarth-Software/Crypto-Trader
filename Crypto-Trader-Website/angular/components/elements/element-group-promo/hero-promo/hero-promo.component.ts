@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
 import { ElementSize, TagType } from '@theoliverlear/angular-suite';
-import { getStartedElementLink } from '@assets/elementLinkAssets';
+import { getStartedElementLink } from '@assets/element-link.assets';
 import {
     transparentLogo,
     stockIcon,
     circleCheckmarkIcon,
     bookIcon,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 
 @Component({
     selector: 'hero-promo',

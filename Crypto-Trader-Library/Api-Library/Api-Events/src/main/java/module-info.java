@@ -7,6 +7,7 @@ open module org.cryptotrader.api.library.events {
     requires org.cryptotrader.api.library.components;
     requires org.slf4j;
     requires org.cryptotrader.universal.library.components;
+    requires org.cryptotrader.universal.library.events;
 
     exports org.cryptotrader.api.library.events;
     exports org.cryptotrader.api.library.events.publisher;

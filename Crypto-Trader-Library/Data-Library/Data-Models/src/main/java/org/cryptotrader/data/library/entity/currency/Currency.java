@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import org.cryptotrader.data.library.model.http.ApiDataRetriever;
 import org.cryptotrader.data.library.entity.currency.builder.CurrencyBuilder;
+import org.cryptotrader.universal.library.entity.Identifiable;
+import org.cryptotrader.universal.library.model.annotation.Loggable;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -20,15 +22,19 @@ import java.util.Set;
 @Entity
 @Table(name = "currencies")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
-public class Currency {
+public class Currency extends Identifiable<String> {
     //============================-Variables-=================================
     @Column(name = "currency_name")
+    @Loggable
     private String name;
     @Id
     @Column(name = "currency_code")
+    @Loggable
     private String currencyCode;
+    @Transient
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
+    @Loggable
     private double value;
     @JsonIgnore
     @Transient
@@ -122,7 +128,7 @@ public class Currency {
     }
     //-------------------------Get-Updated-Value------------------------------
     public double getUpdatedValue() {
-        if (this.urlPath == null) {
+        if (this.urlPath == null || this.urlPath.isEmpty()) {
             this.urlPath = this.getCoinbaseUrl();
         }
         if (this.urlPath.equals(TESTING_URL)) {
@@ -135,15 +141,24 @@ public class Currency {
     public static Currency fromExisting(String currencyCode) {
         Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
         return currencies.stream()
-                .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
+            .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
+    }
+
+    public static Currency fromHistory(CurrencyHistory currencyHistory) {
+        return Currency.builder()
+            .name(currencyHistory.getName())
+            .currencyCode(currencyHistory.getCurrency().getCurrencyCode())
+            .urlPath(currencyHistory.getCurrency().getUrlPath())
+            .value(currencyHistory.getValue())
+            .build();
     }
 
     public static Currency from(Currency currency) {
         Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
-                currency.getUrlPath(), currency.getValue(),
-                currency.getLastUpdated());
+            currency.getUrlPath(), currency.getValue(),
+            currency.getLastUpdated());
         return newCurrency;
     }
     //============================-Overrides-=================================
@@ -170,8 +185,8 @@ public class Currency {
     @Override
     public String toString() {
         String currencyString = """
-                %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
-                decimalFormat.format(this.value));
+                %18s --- %5s - %16s""".formatted(this.name, this.currencyCode,
+            "$" + decimalFormat.format(this.value));
         return currencyString;
     }
     public static CurrencyBuilder builder() {
@@ -185,5 +200,15 @@ public class Currency {
     public void setValue(double value) {
         this.value = value;
         this.lastUpdated = LocalDateTime.now();
+    }
+
+    @Override
+    public String getId() {
+        return this.currencyCode;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.currencyCode = id;
     }
 }

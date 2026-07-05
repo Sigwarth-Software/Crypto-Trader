@@ -15,6 +15,9 @@ spring:
     username: ${PSQL_USER}
     password: ${PSQL_PW}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   cloud:
@@ -27,16 +30,16 @@ spring:
         # Outbound (publisher example)
         exampleEvent-out-0:
           destination: ct.example.v1
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
         # Inbound (subscriber example)
         exampleEvent-in-0:
           destination: ct.example.v1
           group: ${spring.application.name}
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
         bindings:
           exampleEvent-in-0:
             consumer:
@@ -46,5 +49,10 @@ logging:
   level:
     org:
       springframework: INFO
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 management:
   endpoints.web.exposure.include: health,info

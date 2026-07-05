@@ -1,7 +1,8 @@
 package org.cryptotrader.security.library.service
 
 import inet.ipaddr.IPAddressString
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.security.library.model.BanType
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -49,8 +50,16 @@ class InMemoryIpBanServiceTest : CryptoTraderTest() {
         @DisplayName("Should ban IPs")
         fun ban_BansIPs() {
             val testIp = "0.0.0.0"
-            ipBanService.ban(testIp)
+            ipBanService.ban(testIp, BanType.TEMP)
             assertTrue(ipBanService.isBanned(testIp))
+        }
+
+        @Test
+        @DisplayName("Should ignore permanent bans")
+        fun ban_IgnoresPermanentBans() {
+            val testIp = "0.0.0.0"
+            ipBanService.ban(testIp, BanType.PERMA)
+            assertFalse(ipBanService.isBanned(testIp))
         }
     }
 
@@ -61,9 +70,9 @@ class InMemoryIpBanServiceTest : CryptoTraderTest() {
         @DisplayName("Should unban IPs that are banned")
         fun unban_UnbansIps_WhenBanned() {
             val testIp = "0.0.0.0"
-            ipBanService.ban(testIp)
+            ipBanService.ban(testIp, BanType.TEMP)
             assertTrue(ipBanService.isBanned(testIp))
-            ipBanService.unban(testIp)
+            ipBanService.unban(testIp, BanType.TEMP)
             assertFalse(ipBanService.isBanned(testIp))
         }
     }

@@ -9,7 +9,7 @@ import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.services.jwt.JwtTokenService;
-import org.cryptotrader.test.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

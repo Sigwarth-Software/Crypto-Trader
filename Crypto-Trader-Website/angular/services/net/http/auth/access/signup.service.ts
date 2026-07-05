@@ -11,6 +11,7 @@ import { environment } from '@environments/environment';
 import { DpopKeyService } from '@auth/dpop/dpop-key.service';
 import { DpopProofService } from '@auth/dpop/dpop-proof.service';
 import { AuthResponse, SignupRequest } from '@models/auth/types';
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script';
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +35,7 @@ export class SignupService extends HttpClientService<
                 await this.keys.ensureKeys();
                 const dpop: string = await this.proofs.buildProof(
                     'POST',
-                    SignupService.URL,
+                    resolveAbsoluteHttpUrl(SignupService.URL),
                 );
                 const headers: any = {
                     DPoP: dpop,

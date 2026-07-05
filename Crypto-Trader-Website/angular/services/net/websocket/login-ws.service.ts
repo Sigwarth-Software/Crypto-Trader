@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { WebSocketService } from '@theoliverlear/angular-suite';
 import { environment } from '@environments/environment';
 import { AuthResponse, LoginRequest } from '@models/auth/types';
+import { resolveWebSocketUrl } from '@app/scripts/url-resolver.script';
 
 /**
  * WebSocket client for the legacy login channel.
@@ -20,7 +21,9 @@ export class LoginWsService extends WebSocketService<
     LoginRequest,
     AuthResponse
 > {
-    private static readonly URL: string = `${environment.websocketUrl}/login`;
+    private static readonly URL: string = resolveWebSocketUrl(
+        `${environment.websocketUrl}/login`,
+    );
     constructor() {
         super(LoginWsService.URL);
     }

@@ -1,28 +1,31 @@
 // portfolio-overview.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/backgrounds/global_background_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/backgrounds/global-background-placeholders' as background-placeholders;
 
 portfolio-overview {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
 
     @extend %softer-border-radius;
-    background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
-    padding: $one-percent;
-    min-width: $sixty-percent;
+    background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.85, vars.$pure-white);
+    padding: vars.$one-percent;
+    min-width: vars.$sixty-percent;
 
     .portfolio-title {
         @extend %signature-brand-gradient-text-small-reflection;
     }
 
     .portfolio-field {
-        @include flex(space-between, center, row);
+        @include mixins.flex(space-between, center, row);
         width: 100%;
 
         ss-title:nth-child(1) {
             flex: 1;
 
-            @include flex(flex-start, center, row);
+            @include mixins.flex(flex-start, center, row);
         }
 
         &.total-worth-field {
@@ -33,40 +36,40 @@ portfolio-overview {
         }
 
         &.last-trade-field {
-            margin: calc($quarter-percent / 2) 0 0;
+            margin: calc(#{vars.$quarter-percent} / 2) 0 0;
         }
     }
 
     hr {
-        border: $very-thin-border $charcoal solid;
+        border: vars.$very-thin-border vars.$charcoal solid;
         width: 95%;
     }
 
     .currency-images {
-        @include flex(space-around, center, row);
+        @include mixins.flex(space-around, center, row);
         max-width: 80vw;
         overflow-x: auto;
         width: 100%;
-        margin: $half-percent 0;
-        padding: $half-percent 0;
+        margin: vars.$half-percent 0;
+        padding: vars.$half-percent 0;
 
         // background-image: linear-gradient(to right, $pure-white  50%, $alabaster-stone);
-        background-color: add-alpha-opaque($alabaster-stone, 0.5, $pure-white);
-        border: $very-thin-border $absolute-black solid;
-        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+        background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.5, vars.$pure-white);
+        border: vars.$very-thin-border vars.$absolute-black solid;
+        box-shadow: vars.$quarter-percent vars.$quarter-percent 0 vars.$absolute-black;
 
         @extend %blue-center-reflection;
         @extend %softer-border-radius;
 
         ss-img {
-            @include square-size($four-percent);
+            @include mixins.square-size(vars.$four-percent);
             border-radius: 50%;
-            padding: $quarter-percent;
-            background-color: $air-blue;
+            padding: vars.$quarter-percent;
+            background-color: vars.$air-blue;
         }
 
         .portfolio-asset-value-image {
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
         }
     }
 }

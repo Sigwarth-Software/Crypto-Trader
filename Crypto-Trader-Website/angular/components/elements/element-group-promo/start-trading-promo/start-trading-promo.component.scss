@@ -1,21 +1,24 @@
 @use 'sass:color';
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 start-trading-promo {
     width: 100%;
-    margin: $two-percent 0;
+    margin: vars.$two-percent 0;
     .cta-section {
         width: 100%;
         background: linear-gradient(
             180deg,
-            $ivory-white 0%,
-            $pure-white 50%,
-            add-alpha($pale-mint, 0.15) 100%
+            vars.$ivory-white 0%,
+            vars.$pure-white 50%,
+            funcs.add-alpha(vars.$pale-mint, 0.15) 100%
         );
-        padding: $three-percent 0;
+        padding: vars.$three-percent 0;
 
         &.no-gradient {
             background: none;
@@ -23,31 +26,31 @@ start-trading-promo {
     }
 
     .section-content {
-        width: $eighty-percent;
+        width: vars.$eighty-percent;
         margin: 0 auto;
     }
 
     .cta-content {
-        @include flex(center, center, column);
+        @include mixins.flex(center, center, column);
         text-align: center;
 
         eyebrow-label {
-            color: $teal-green;
+            color: vars.$teal-green;
         }
 
         ss-title h2 {
-            @include gradient-text($regular-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
         }
 
         subtitle {
-            color: $blue-gray;
-            margin-bottom: $one-percent;
+            color: vars.$blue-gray;
+            margin-bottom: vars.$one-percent;
         }
     }
 
     .cta-row {
-        @include flex(center, center, row);
-        gap: $one-percent;
-        margin-top: $one-percent;
+        @include mixins.flex(center, center, row);
+        gap: vars.$one-percent;
+        margin-top: vars.$one-percent;
     }
 }

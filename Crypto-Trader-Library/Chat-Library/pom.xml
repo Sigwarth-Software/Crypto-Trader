@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
     </parent>
 
     <artifactId>chat-library</artifactId>
     <name>Chat-Library</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Parent library for chat functionality — core models and components for AI-driven chat interfaces.
     </description>

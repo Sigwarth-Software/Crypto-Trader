@@ -1,3 +1,4 @@
+// TODO: Delete this file.
 package org.cryptotrader.contact.controller
 
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -15,6 +16,7 @@ val log = KotlinLogging.logger {  }
 
 @RestController
 @RequestMapping("/contact/email")
+@Deprecated(level = DeprecationLevel.WARNING, message = "This is an event-based API. A controller is not suitable here.")
 class EmailController(
     private val emailService: EmailService
 ) {

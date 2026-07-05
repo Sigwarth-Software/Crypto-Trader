@@ -8,6 +8,10 @@ open module org.cryptotrader.health.library.services {
     requires java.net.http;
     requires static lombok;
     requires org.slf4j;
+    requires kotlin.stdlib;
+    requires org.cryptotrader.universal.library.services;
+    requires spring.aop;
+    requires spring.core;
 
     exports org.cryptotrader.health.library.service;
 }

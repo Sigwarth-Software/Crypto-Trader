@@ -8,8 +8,12 @@ import org.cryptotrader.api.library.repository.PortfolioAssetHistoryRepository
 import org.cryptotrader.api.library.repository.PortfolioAssetRepository
 import org.cryptotrader.api.library.repository.PortfolioHistoryRepository
 import org.cryptotrader.api.library.repository.PortfolioRepository
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioAssetEntityService
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioAssetHistoryEntityService
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioEntityService
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioHistoryEntityService
 import org.cryptotrader.data.library.services.CurrencyService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -32,6 +36,10 @@ class PortfolioServiceTest : CryptoTraderTest() {
     private lateinit var portfolioHistoryRepository: PortfolioHistoryRepository
     private lateinit var portfolioAssetHistoryRepository: PortfolioAssetHistoryRepository
     private lateinit var currencyService: CurrencyService
+    private lateinit var portfolioEntityService: PortfolioEntityService
+    private lateinit var portfolioAssetEntityService: PortfolioAssetEntityService
+    private lateinit var portfolioHistoryEntityService: PortfolioHistoryEntityService
+    private lateinit var portfolioAssetHistoryEntityService: PortfolioAssetHistoryEntityService
 
     private lateinit var portfolioService: PortfolioService
 
@@ -42,13 +50,21 @@ class PortfolioServiceTest : CryptoTraderTest() {
         this.portfolioHistoryRepository = mock()
         this.portfolioAssetHistoryRepository = mock()
         this.currencyService = mock()
+        this.portfolioEntityService = mock()
+        this.portfolioAssetEntityService = mock()
+        this.portfolioHistoryEntityService = mock()
+        this.portfolioAssetHistoryEntityService = mock()
 
         this.portfolioService = PortfolioService(
             this.portfolioRepository,
             this.portfolioAssetRepository,
             this.portfolioHistoryRepository,
             this.portfolioAssetHistoryRepository,
-            this.currencyService
+            this.currencyService,
+            this.portfolioEntityService,
+            this.portfolioAssetEntityService,
+            this.portfolioHistoryEntityService,
+            this.portfolioAssetHistoryEntityService
         )
     }
 
@@ -215,7 +231,7 @@ class PortfolioServiceTest : CryptoTraderTest() {
             assertEquals(0.0, current.sharesChange, 1e-9)
         }
     }
-    
+
     private fun getDummyAsset(id: Long): PortfolioAsset {
         val currency = Currency().apply {
             currencyCode = "DUMMY"

@@ -1,7 +1,7 @@
 package org.cryptotrader.agent.library.component
 
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

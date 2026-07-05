@@ -14,6 +14,17 @@ from os import getenv
 from pathlib import Path
 from crypto_trader_analysis.core.aws_secrets import SecretsManagerService
 
+
+def csv_setting(value: str, default: list[str] | None = None) -> list[str]:
+    if value is None:
+        return default or []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def secret_or_env(name: str, default=None):
+    return crypto_trader_secrets.get(name, getenv(name, default))
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,7 +46,7 @@ SECRET_KEY = crypto_trader_secrets.get("DJANGO_SECRET_KEY", os.getenv("DJANGO_SE
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = csv_setting(secret_or_env("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1"))
 
 
 # Application definition
@@ -97,9 +108,14 @@ DATABASES = {
 OPENAI_KEY = crypto_trader_secrets.get("OPENAI_KEY")
 GITHUB_TOKEN = crypto_trader_secrets.get("GITHUB_TOKEN")
 JWT_SECRET = crypto_trader_secrets.get("JWT_SECRET")
-WORLDNEWS_API_KEY = crypto_trader_secrets.get("WORLDNEWS_API_KEY", getenv("WORLDNEWS_API_KEY"))
-CT_API_HOST = crypto_trader_secrets.get("CT_API_HOST", getenv("CT_API_HOST", "localhost"))
-CT_DATA_HOST = crypto_trader_secrets.get("CT_DATA_HOST", getenv("CT_DATA_HOST", "localhost"))
+WORLDNEWS_API_KEY = secret_or_env("WORLDNEWS_API_KEY")
+CT_API_HOST = secret_or_env("CT_API_HOST", "localhost")
+CT_DATA_HOST = secret_or_env("CT_DATA_HOST", "localhost")
+CT_API_BASE_URL = secret_or_env("CT_API_BASE_URL", f"https://{CT_API_HOST}:8080")
+CT_DATA_BASE_URL = secret_or_env("CT_DATA_BASE_URL", f"https://{CT_DATA_HOST}:8085")
+CT_CA_BUNDLE = secret_or_env("CT_CA_BUNDLE", None)
+CT_DATA_CA_BUNDLE = secret_or_env("CT_HEALTH_CA_BUNDLE_DATA", None)
+CT_SERVICE_TIMEOUT_SECONDS = float(secret_or_env("CT_SERVICE_TIMEOUT_SECONDS", "15"))
 
 
 # Password validation
@@ -120,17 +136,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8080',
-    'http://127.0.0.1:8080',
-    'http://localhost:8081',
-    'http://127.0.0.1:8081'
-]
+CSRF_TRUSTED_ORIGINS = csv_setting(
+    secret_or_env(
+        "DJANGO_CSRF_TRUSTED_ORIGINS",
+        "https://localhost:8080,https://127.0.0.1:8080,https://localhost:8085,https://127.0.0.1:8085",
+    )
+)
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8081",
-    "http://localhost:8080"
-]
+CORS_ALLOWED_ORIGINS = csv_setting(
+    secret_or_env("DJANGO_CORS_ALLOWED_ORIGINS", "https://localhost:8085,https://localhost:8080")
+)
+
+SECURE_SSL_REDIRECT = secret_or_env("DJANGO_SECURE_SSL_REDIRECT", "False") == "True"
+SESSION_COOKIE_SECURE = secret_or_env("DJANGO_SESSION_COOKIE_SECURE", "False") == "True"
+CSRF_COOKIE_SECURE = secret_or_env("DJANGO_CSRF_COOKIE_SECURE", "False") == "True"
+SECURE_HSTS_SECONDS = int(secret_or_env("DJANGO_SECURE_HSTS_SECONDS", "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = secret_or_env("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", "False") == "True"
+SECURE_HSTS_PRELOAD = secret_or_env("DJANGO_SECURE_HSTS_PRELOAD", "False") == "True"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

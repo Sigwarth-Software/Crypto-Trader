@@ -1,21 +1,24 @@
 // hero-promo.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
 
 hero-promo {
     display: block;
     width: 100%;
     .intro-stripe {
-        @include flex(flex-start, center, row);
+        @include mixins.flex(flex-start, center, row);
         position: relative;
         overflow: hidden;
         background-color: transparent;
         background-image:
-            radial-gradient(ellipse at 80% 50%, add-alpha($teal-green, 0.10), transparent 55%),
-            linear-gradient(135deg, add-alpha($midnight-navy, 0.75) 0%, add-alpha($blue-gray, 0.65) 50%, add-alpha($muted-blue, 0.55) 100%);
-        padding: $five-percent $three-percent;
+            radial-gradient(ellipse at 80% 50%, funcs.add-alpha(vars.$teal-green, 0.10), transparent 55%),
+            linear-gradient(135deg, funcs.add-alpha(vars.$midnight-navy, 0.75) 0%, funcs.add-alpha(vars.$blue-gray, 0.65) 50%, funcs.add-alpha(vars.$muted-blue, 0.55) 100%);
+        padding: vars.$five-percent vars.$three-percent;
         mask-image: linear-gradient(
             to bottom,
             transparent 0%,
@@ -48,32 +51,32 @@ hero-promo {
         }
 
         .hero-copy-col {
-            @include flex(flex-start, flex-start, column);
-            gap: $half-percent;
+            @include mixins.flex(flex-start, flex-start, column);
+            gap: vars.$half-percent;
             flex: 1 1 100%;
             position: relative;
             z-index: 1;
 
             ss-title#crypto-trader-name-title {
-                @include gradient-text($regular-logo);
-                text-shadow: add-alpha(black, 0.1) $quarter-percent
-                $quarter-percent;
+                @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
+                text-shadow: funcs.add-alpha(black, 0.1) vars.$quarter-percent
+                vars.$quarter-percent;
 
                 h1 {
-                    font-size: calc($h1-font-size * 1.5);
+                    font-size: calc(#{vars.$h1-font-size} * 1.5);
                 }
             }
 
             subtitle {
-                color: $alabaster-stone;
+                color: vars.$alabaster-stone;
                 opacity: 0.85;
             }
 
             .value-props {
-                @include flex(flex-start, flex-start, column);
-                gap: $quarter-percent;
-                margin-top: $one-percent;
-                color: $alabaster-stone;
+                @include mixins.flex(flex-start, flex-start, column);
+                gap: vars.$quarter-percent;
+                margin-top: vars.$one-percent;
+                color: vars.$alabaster-stone;
 
                 icon-text-item .item-icon {
                     filter: brightness(0) invert(1);
@@ -82,14 +85,14 @@ hero-promo {
             }
 
             .hero-cta-row {
-                @include flex(flex-start, center, row);
-                gap: $one-percent;
-                margin-top: $one-percent;
+                @include mixins.flex(flex-start, center, row);
+                gap: vars.$one-percent;
+                margin-top: vars.$one-percent;
             }
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         opacity: 1;
         transform: none;
         transition: none;
@@ -102,10 +105,10 @@ hero-promo {
         }
     }
 
-    @include mobile-breakpoint {
+    @include mixins.mobile-breakpoint {
         .intro-stripe {
-            @include flex(center, center, column);
-            padding: $three-percent $one-half-percent;
+            @include mixins.flex(center, center, column);
+            padding: vars.$three-percent vars.$one-half-percent;
 
             ss-img.hero-logo-bg {
                 right: 50%;

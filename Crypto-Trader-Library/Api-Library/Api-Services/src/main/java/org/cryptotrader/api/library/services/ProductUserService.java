@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.User;
 import org.cryptotrader.api.library.repository.ProductUserRepository;
+import org.cryptotrader.api.library.services.entity.user.ProductUserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,13 @@ import org.springframework.stereotype.Service;
 public class ProductUserService {
     //============================-Variables-=================================
     private final ProductUserRepository productUserRepository;
+    private final ProductUserEntityService productUserEntityService;
     //===========================-Constructors-===============================
     @Autowired
-    public ProductUserService(ProductUserRepository productUserRepository) {
+    public ProductUserService(ProductUserRepository productUserRepository,
+                              ProductUserEntityService productUserEntityService) {
         this.productUserRepository = productUserRepository;
+        this.productUserEntityService = productUserEntityService;
     }
     //============================-Methods-===================================
 
@@ -36,7 +40,7 @@ public class ProductUserService {
     public boolean userExistsByUsername(String username) {
         return this.productUserRepository.existsByUsername(username);
     }
-    
+
     /**
      * Find a ProductUser by email.
      * @param email email address
@@ -45,7 +49,7 @@ public class ProductUserService {
     public ProductUser getUserByEmail(String email) {
         return this.productUserRepository.getUserByEmail(email);
     }
-    
+
     /**
      * Check whether a user exists with the given email.
      * @param email email address to test
@@ -81,7 +85,8 @@ public class ProductUserService {
      */
     public void saveUser(ProductUser user) {
         log.info("Saving user: {}", user.getUsername());
-        this.productUserRepository.save(user);
+//        this.productUserRepository.save(user);
+        this.productUserEntityService.save(user);
     }
     //---------------------------Get-User-By-Id-------------------------------
     /**
@@ -90,6 +95,7 @@ public class ProductUserService {
      * @return ProductUser or null if none
      */
     public ProductUser getUserById(Long id) {
-        return this.productUserRepository.getUserById(id);
+//        return this.productUserRepository.getUserById(id);
+        return this.productUserEntityService.findById(id).orElse(null);
     }
 }

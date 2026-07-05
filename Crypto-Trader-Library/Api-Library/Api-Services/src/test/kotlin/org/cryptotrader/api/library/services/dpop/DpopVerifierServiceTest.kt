@@ -3,7 +3,7 @@ package org.cryptotrader.api.library.services.dpop
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +28,7 @@ class DpopVerifierServiceTest : CryptoTraderTest() {
 
     private lateinit var dpopVerifierService: DpopVerifierService
     private lateinit var token: String
-    
+
     private val allowedAlgorithms = "ES256"
 
     @BeforeEach

@@ -10,6 +10,9 @@ open module org.cryptotrader.health {
     requires spring.data.jpa;
     requires java.net.http;
     requires org.slf4j;
+    requires org.yaml.snakeyaml;
+    requires spring.aop;
+    requires spring.core;
 
     exports org.cryptotrader.health;
 }

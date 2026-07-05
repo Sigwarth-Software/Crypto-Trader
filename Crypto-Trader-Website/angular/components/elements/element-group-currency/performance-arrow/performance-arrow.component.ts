@@ -2,7 +2,7 @@
 import { Component, HostBinding, Input } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { ImageAsset, upArrowIcon } from '@assets/imageAssets';
+import { ImageAsset, upArrowIcon } from '@assets/image.assets';
 import { PerformanceRating } from '@models/currency/types';
 
 /** A component that displays an up/down arrow indicating the performance of

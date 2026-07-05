@@ -2,9 +2,9 @@
  *
  */
 export enum AuthInputType {
-    USERNAME = 'Username',
-    PASSWORD = 'Password',
-    CONFIRM_PASSWORD = 'Confirm Password',
-    EMAIL = 'Email',
-    AGREED_TERMS = 'By signing up, I agree to the terms of service.',
+    Username = 'Username',
+    Password = 'Password',
+    ConfirmPassword = 'Confirm Password',
+    Email = 'Email',
+    AgreeTerms = 'By signing up, I agree to the terms of service.',
 }

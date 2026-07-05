@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface CurrencyRepository extends JpaRepository<Currency, Long> {
+public interface CurrencyRepository extends JpaRepository<Currency, String> {
     //============================-Methods-===================================
 
     //-------------------Get-Currency-By-Currency-Code------------------------
@@ -20,7 +20,7 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     @Query("SELECT c.currencyCode FROM Currency c ORDER BY c.currencyCode ASC")
     List<String> findAllCurrencyCodes();
-    
+
     List<Currency> findTop10ByOrderByValueDesc();
     @Query("SELECT c FROM Currency c" +
             " WHERE c.name NOT LIKE '%Wrapped%' " +

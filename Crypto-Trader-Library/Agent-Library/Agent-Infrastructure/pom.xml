@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>agent-infrastructure</artifactId>
     <name>Agent-Infrastructure</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Agent infrastructure support — provides core runtime services and utility classes for the agent ecosystem.
     </description>

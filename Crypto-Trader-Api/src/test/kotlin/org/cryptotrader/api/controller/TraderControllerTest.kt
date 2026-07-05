@@ -3,7 +3,7 @@ package org.cryptotrader.api.controller
 import org.cryptotrader.api.library.services.AuthContextService
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.api.library.services.TraderService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -20,7 +20,7 @@ class TraderControllerTest : CryptoTraderTest() {
     private lateinit var controller: TraderController
     private lateinit var traderService: TraderService
     private lateinit var authContextService: AuthContextService
-    
+
     @BeforeEach
     fun setUp() {
         this.traderService = mock()

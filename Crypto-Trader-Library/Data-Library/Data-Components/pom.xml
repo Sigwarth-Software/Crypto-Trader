@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-components</artifactId>
     <name>Data-Components</name>
-    <version>0.0.2</version>
+    <version>0.1.0</version>
     <description>
         Data infrastructure components — reusable data handling utilities and storage adapters.
     </description>
@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -100,6 +100,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>data-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

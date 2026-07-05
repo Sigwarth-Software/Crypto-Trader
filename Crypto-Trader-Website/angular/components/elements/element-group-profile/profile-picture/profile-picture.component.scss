@@ -1,8 +1,9 @@
 // profile-picture.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 profile-picture {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
 
     @extend %circle-border-radius;
 

@@ -1,8 +1,12 @@
 // module-interface-selector.component.scss
 @use 'sass:color';
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
+
 // TODO: Replace pixels with variables.
 module-interface-selector {
     display: block;
@@ -12,36 +16,36 @@ module-interface-selector {
     }
 
     .interface-tabs {
-        @include flex(flex-start, stretch, row);
-        gap: $half-percent;
-        margin-bottom: $one-percent;
+        @include mixins.flex(flex-start, stretch, row);
+        gap: vars.$half-percent;
+        margin-bottom: vars.$one-percent;
     }
 
     .interface-tab {
-        @include flex(center, center, column);
-        gap: $quarter-percent;
+        @include mixins.flex(center, center, column);
+        gap: vars.$quarter-percent;
         flex: 1 1 0;
-        padding: $half-percent $one-percent;
-        background: add-alpha($pure-white, 0.06);
-        border: 2px solid add-alpha($mint-green, 0.15);
-        border-radius: $half-percent;
+        padding: vars.$half-percent vars.$one-percent;
+        background: funcs.add-alpha(vars.$pure-white, 0.06);
+        border: 2px solid funcs.add-alpha(vars.$mint-green, 0.15);
+        border-radius: vars.$half-percent;
         cursor: pointer;
         transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
-        color: $pale-mint;
+        color: vars.$pale-mint;
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px add-alpha($teal-green, 0.15);
+            box-shadow: 0 4px 16px funcs.add-alpha(vars.$teal-green, 0.15);
         }
 
         &.active {
-            border-color: $teal-green;
-            box-shadow: 0 4px 16px add-alpha($teal-green, 0.2);
+            border-color: vars.$teal-green;
+            box-shadow: 0 4px 16px funcs.add-alpha(vars.$teal-green, 0.2);
             transform: translateY(-3px);
-            background: add-alpha($teal-green, 0.08);
+            background: funcs.add-alpha(vars.$teal-green, 0.08);
 
             .tab-name {
-                color: $mint-green;
+                color: vars.$mint-green;
                 font-weight: 700;
             }
         }
@@ -58,16 +62,16 @@ module-interface-selector {
     .tab-name {
         font-size: 0.8rem;
         font-weight: 600;
-        color: $pale-mint;
+        color: vars.$pale-mint;
         transition: color 200ms ease;
     }
 
     .interface-detail {
-        padding: $one-half-percent;
-        background: add-alpha($pure-white, 0.05);
+        padding: vars.$one-half-percent;
+        background: funcs.add-alpha(vars.$pure-white, 0.05);
         backdrop-filter: blur(16px);
-        border: 1px solid add-alpha($mint-green, 0.2);
-        border-radius: $half-percent;
+        border: 1px solid funcs.add-alpha(vars.$mint-green, 0.2);
+        border-radius: vars.$half-percent;
         position: relative;
 
         &::before {
@@ -80,64 +84,64 @@ module-interface-selector {
             background: linear-gradient(
                 90deg,
                 transparent,
-                add-alpha($mint-green, 0.4),
+                funcs.add-alpha(vars.$mint-green, 0.4),
                 transparent
             );
         }
     }
 
     .detail-name {
-        @include gradient-text($light-logo);
+        @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
         font-size: 1.3rem;
         font-weight: 700;
-        margin: 0 0 $quarter-percent;
+        margin: 0 0 vars.$quarter-percent;
     }
 
     .detail-tagline {
         font-size: 0.85rem;
         font-weight: 600;
-        color: $mint-green;
+        color: vars.$mint-green;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         display: block;
-        margin-bottom: $half-percent;
+        margin-bottom: vars.$half-percent;
     }
 
     .detail-desc {
         font-size: 0.9rem;
         line-height: 1.6;
-        color: $alabaster-stone;
+        color: vars.$alabaster-stone;
         opacity: 0.85;
-        margin-bottom: $half-percent;
+        margin-bottom: vars.$half-percent;
     }
 
     .detail-features {
         list-style: none;
         padding: 0;
-        margin: 0 0 $half-percent;
+        margin: 0 0 vars.$half-percent;
 
         li {
             position: relative;
             padding-left: 1.2em;
             font-size: 0.82rem;
             line-height: 1.8;
-            color: add-alpha($pale-mint, 0.9);
+            color: funcs.add-alpha(vars.$pale-mint, 0.9);
 
             &::before {
                 content: '▸';
                 position: absolute;
                 left: 0;
-                color: $mint-green;
+                color: vars.$mint-green;
             }
         }
     }
 
     .tech-badges {
-        @include flex(flex-start, center, row);
+        @include mixins.flex(flex-start, center, row);
         flex-wrap: wrap;
-        gap: $quarter-percent;
+        gap: vars.$quarter-percent;
         margin-top: auto;
-        padding-top: $half-percent;
+        padding-top: vars.$half-percent;
     }
 
     .tech-badge {
@@ -148,7 +152,7 @@ module-interface-selector {
         letter-spacing: 0.03em;
         border-radius: 999px;
         white-space: nowrap;
-        background: add-alpha($mint-green, 0.15);
-        color: $pale-mint;
+        background: funcs.add-alpha(vars.$mint-green, 0.15);
+        color: vars.$pale-mint;
     }
 }

@@ -42,6 +42,7 @@ open module org.cryptotrader.version {
     requires javafx.base;
     requires jakarta.annotation;
     requires org.scenicview.scenicview;
+    requires org.cryptotrader.security.library.config;
     requires spring.data.jpa;
 
     exports org.cryptotrader.version;

@@ -1,10 +1,10 @@
 package org.cryptotrader.api.library.config
 
+import jakarta.annotation.security.PermitAll
 import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.api.library.infrastructure.dpop.BindingEnforcementFilter
 import org.cryptotrader.api.library.infrastructure.dpop.DpopValidationFilter
-import org.cryptotrader.security.library.service.InMemoryIpBanService
-import org.cryptotrader.security.library.service.IpBanService
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 
 /**
  * Application Security configuration.
@@ -36,10 +37,19 @@ open class SecurityConfig {
     @Primary
     open fun apiSecurityFilterChain(
         http: HttpSecurity,
+        @Qualifier("requestMappingHandlerMapping") handlerMapping: RequestMappingHandlerMapping,
         dpopValidationFilter: DpopValidationFilter,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
         bindingEnforcementFilter: BindingEnforcementFilter
     ): SecurityFilterChain {
+        val permitAllPaths = handlerMapping.handlerMethods
+            .filter { (_, handlerMethod) ->
+                handlerMethod.hasMethodAnnotation(PermitAll::class.java) ||
+                        handlerMethod.beanType.isAnnotationPresent(PermitAll::class.java)
+            }
+            .flatMap { (mappingInfo, _) -> mappingInfo.patternValues }
+            .toTypedArray()
+
         return http
             .csrf { it.disable() }
             .cors { }
@@ -54,18 +64,16 @@ open class SecurityConfig {
             .sessionManagement { it.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
+                if (permitAllPaths.isNotEmpty()) {
+                    it.requestMatchers(*permitAllPaths).permitAll()
+                }
                 it.requestMatchers(
                     "/ws/signup",
                     "/ws/login",
                     "/ws/currency/value",
-                    "/api/auth/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
-                    "/actuator/**",
-                    "/.well-known/jwks.json",
-                    "/api/currency/**",
-                    "/api/console/**",
-                    "/api/logs/**"
+                    "/actuator/**"
                 ).permitAll()
                 it.anyRequest().authenticated()
             }
@@ -78,12 +86,8 @@ open class SecurityConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(IpBanService::class)
-    open fun ipBanService(): IpBanService = InMemoryIpBanService()
-
-    @Bean
     @ConditionalOnMissingBean(CorsConfigurationSource::class)
-    open fun corsConfigurationSource(@Value("\${cryptotrader.cors.allowed-origins:https://sscryptotrader.com}") origins: String): CorsConfigurationSource {
+    open fun corsConfigurationSource(@Value("\${cryptotrader.api.cors.allowed-origins:https://sscryptotrader.com}") origins: String): CorsConfigurationSource {
         val allowedOrigins: List<String> = origins.split(",").map {
             it.trim()
         }.filter { it.isNotBlank() }
@@ -91,7 +95,7 @@ open class SecurityConfig {
         val base = CorsConfiguration()
         base.allowedOrigins = allowedOrigins
         base.allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-        base.allowedHeaders = listOf("Authorization", "Content-Type", "DPoP")
+        base.allowedHeaders = listOf("Authorization", "Content-Type", "DPoP", "x-client-app")
         base.allowCredentials = true
 
         val auth = CorsConfiguration()

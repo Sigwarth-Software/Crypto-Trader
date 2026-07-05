@@ -5,7 +5,7 @@ import {
     securityModuleIcon,
     contactModuleIcon,
     chatModuleIcon,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 import { ModuleInfo } from '@models/module/ModuleInfo';
 @Component({
     selector: 'services-promo',

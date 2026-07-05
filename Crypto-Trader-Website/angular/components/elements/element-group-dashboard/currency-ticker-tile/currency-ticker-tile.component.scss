@@ -1,17 +1,21 @@
 // currency-ticker-tile.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/backgrounds/global_background_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/backgrounds/global-background-placeholders' as background-placeholders;
+
 // TODO: Replace pixels with variables.
 currency-ticker-tile {
     .currency-tile {
-        @include flex(flex-start, center, row);
-        gap: $half-percent;
-        padding: $half-percent $one-percent;
+        @include mixins.flex(flex-start, center, row);
+        gap: vars.$half-percent;
+        padding: vars.$half-percent vars.$one-percent;
         cursor: pointer;
 
-        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
-        border: $very-thin-border $charcoal solid;
-        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+        background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.85, vars.$pure-white);
+        border: vars.$very-thin-border vars.$charcoal solid;
+        box-shadow: vars.$quarter-percent vars.$quarter-percent 0 vars.$absolute-black;
 
         @extend %softer-border-radius;
 
@@ -19,7 +23,7 @@ currency-ticker-tile {
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: $half-percent $half-percent 0 $absolute-black;
+            box-shadow: vars.$half-percent vars.$half-percent 0 vars.$absolute-black;
         }
 
         .currency-logo {
@@ -30,28 +34,28 @@ currency-ticker-tile {
         }
 
         .currency-info {
-            @include flex(center, flex-start, column);
+            @include mixins.flex(center, flex-start, column);
             flex: 1;
 
             .currency-code {
                 font-size: 0.9rem;
                 font-weight: 700;
-                color: $blue-gray;
+                color: vars.$blue-gray;
             }
 
             .currency-name {
                 font-size: 0.75rem;
-                color: $charcoal;
+                color: vars.$charcoal;
                 opacity: 0.7;
             }
         }
 
         .currency-performance {
-            @include flex(center, center, row);
+            @include mixins.flex(center, center, row);
 
             performance-arrow {
                 ss-img {
-                    @include square-size(20px);
+                    @include mixins.square-size(20px);
                 }
 
                 ss-title {

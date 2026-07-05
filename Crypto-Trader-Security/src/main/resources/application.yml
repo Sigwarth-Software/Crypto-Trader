@@ -3,9 +3,19 @@ server:
 spring:
   application:
     name: crypto-trader-security
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
   config:
     import: aws-secretsmanager:/cryptotrader/dev
   cloud:
     aws:
       region:
         static: us-east-1
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}

@@ -1,12 +1,14 @@
 // asset-kill-switch.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 asset-kill-switch {
-    @include flex(center, center, row);
-    background-color: $mint-green;
+    @include mixins.flex(center, center, row);
+    background-color: vars.$mint-green;
 
-    @include square-size($two-percent);
-    padding: $quarter-percent;
+    @include mixins.square-size(vars.$two-percent);
+    padding: vars.$quarter-percent;
 
     @extend %softer-border-radius;
     @extend %light-box-shadow;
@@ -19,7 +21,7 @@ asset-kill-switch {
     }
 
     &.is-killed {
-        background-color: $red-orange;
+        background-color: vars.$red-orange;
     }
 
     &:hover {

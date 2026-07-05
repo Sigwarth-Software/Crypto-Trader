@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-services</artifactId>
     <name>Api-Services</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>
         The core business logic of Crypto Trader APIs and microservices.
     </description>
@@ -143,7 +143,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -166,7 +166,6 @@
             <artifactId>jjwt-jackson</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- Simpler, readable JWT builder/verifier -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
@@ -179,6 +178,10 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-services</artifactId>
         </dependency>
     </dependencies>
     <build>

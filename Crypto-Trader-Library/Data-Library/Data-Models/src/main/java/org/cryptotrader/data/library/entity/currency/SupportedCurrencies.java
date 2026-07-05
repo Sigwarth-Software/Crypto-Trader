@@ -15,6 +15,7 @@ public class SupportedCurrencies {
     private static final Map<String, Currency> CURRENCY_MAP = new HashMap<>();
     private static final String JSON_FILE_PATH = "src/main/resources/static/currencies.json";
     public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
+    // TODO: This should be a config property, not hardcoded.
     private static final int MAX_CURRENCIES = 500;
     //==========================-Static-Actions-==============================
     static {

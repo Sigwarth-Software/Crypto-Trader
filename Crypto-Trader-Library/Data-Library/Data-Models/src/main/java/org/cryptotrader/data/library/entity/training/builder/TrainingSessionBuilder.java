@@ -36,8 +36,8 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     private Integer mediumSequenceLength;
     private Integer longSequenceLength;
 
-    
-    private PricePredictionLookup pricePredictionLookup;
+
+    private final PricePredictionLookup pricePredictionLookup;
 
     public TrainingSessionBuilder(PricePredictionLookup pricePredictionLookup) {
         this.currency = null;

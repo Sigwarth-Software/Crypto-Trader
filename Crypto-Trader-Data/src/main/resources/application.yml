@@ -1,5 +1,13 @@
 server:
-  port: 8085
+  port: ${SERVER_PORT:8085}
+  ssl:
+    enabled: ${SERVER_SSL_ENABLED:false}
+    key-store: ${SERVER_SSL_KEY_STORE:}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE:PKCS12}
+    key-alias: ${SERVER_SSL_KEY_ALIAS:}
+    certificate: ${SERVER_SSL_CERTIFICATE_DATA:${SERVER_SSL_CERTIFICATE:}}
+    certificate-private-key: ${SERVER_SSL_CERTIFICATE_PRIVATE_KEY_DATA:${SERVER_SSL_CERTIFICATE_PRIVATE_KEY:}}
 
 spring:
   config:
@@ -8,6 +16,16 @@ spring:
     aws:
       region:
         static: us-east-1
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        executionSpeedLogs-out-0:
+          destination: ct.logging.execution-speed.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   jpa:
     open-in-view: false
     hibernate:
@@ -25,42 +43,28 @@ spring:
       hibernate.jdbc.use_streams_for_binary: false
   datasource:
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 4
+      maximum-pool-size: 30
+      minimum-idle: 10
       connection-timeout: 5000
       connection-init-sql: "set synchronous_commit = off"
       leak-detection-threshold: 0  # set 0 to disable
       auto-commit: false
+      idle-timeout: 30000
+      max-lifetime: 1800000
   task:
     scheduling:
       pool:
         size: 4
-#  cloud:
-#    stream:
-#      function:
-#        sanitizing:
-#          enabled: false
-#      defaultBinder: kafka
-#      bindings: # Outbound (publisher example)
-#              exampleEvent-out-0:
-#                destination: ct.example.v1
-#                contentType: application/json
-#
-#              # Inbound (subscriber example)
-#              exampleEvent-in-0:
-#                destination: ct.example.v1
-#                group: ${spring.application.name}
-#                contentType: application/json
-#      kafka:
-#        binder:
-#          brokers: localhost:9092
-#        bindings:
-#          exampleEvent-in-0:
-#            consumer:
-#              enableDlq: true
-#              dlqName: ct.example.v1.DLT
   application:
     name: crypto-trader-data
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
+cryptotrader:
+  analysis:
+    base-url: ${CT_ANALYSIS_BASE_URL:https://localhost:8000}
 management:
   endpoints.web.exposure.include: health,info
 #logging:

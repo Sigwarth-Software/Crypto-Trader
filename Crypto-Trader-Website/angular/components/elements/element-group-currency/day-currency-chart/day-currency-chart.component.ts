@@ -1,7 +1,7 @@
 // day-currency-chart.component.ts
 import { Component, Input } from '@angular/core';
 
-import { ChartDisplayProperties } from '@models/chart/types';
+import { type ChartConfig } from '@models/chart/types';
 
 /** A chart displaying the daily price of a currency.
  *
@@ -13,7 +13,7 @@ import { ChartDisplayProperties } from '@models/chart/types';
     standalone: false,
 })
 export class DayCurrencyChartComponent {
-    @Input() public properties: ChartDisplayProperties;
+    @Input() public config: ChartConfig;
 
     constructor() {}
 }

@@ -1,26 +1,28 @@
 // nav-bar-profile-picture.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 nav-bar-profile-picture {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
     position: relative;
 
     // padding: $half-percent;
     // background-color: $ocean-blue;
-    background-color: $light-charcoal;
+    background-color: vars.$light-charcoal;
 
     // @extend %light-logo-gradient;
     // padding: calc($half-percent * 1.2);
-    padding: $quarter-percent;
+    padding: vars.$quarter-percent;
 
     // padding: simple-calc(0.15, 0.05);
     // border-radius: simple-calc(1, 1);
-    border-radius: $quarter-percent;
+    border-radius: vars.$quarter-percent;
 
-    @include square-size($two-half-percent);
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
-        simplest-calc(0.001);
+    @include mixins.square-size(vars.$two-half-percent);
+    box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.5) 0 0 vars.$quarter-percent
+        funcs.simplest-calc(0.001);
 
     profile-picture {
         // @include square-size(80%);
@@ -30,9 +32,9 @@ nav-bar-profile-picture {
 
     &:hover {
         // background-color: $almost-white;
-        $box-shadow-size: simplest-calc(0.25);
-        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent
-            simplest-calc(0.005);
+        $box-shadow-size: funcs.simplest-calc(0.25);
+        box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.25) 0 0 vars.$half-percent
+            funcs.simplest-calc(0.005);
         cursor: pointer;
     }
 

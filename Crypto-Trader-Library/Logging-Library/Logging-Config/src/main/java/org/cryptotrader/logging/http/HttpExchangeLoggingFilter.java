@@ -1,6 +1,9 @@
 package org.cryptotrader.logging.http;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -21,12 +24,18 @@ import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static org.cryptotrader.logging.library.scripts.LoggingColorScriptKt.statusColor;
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.humanSize;
+import static org.cryptotrader.logging.library.scripts.LoggingParsingScriptKt.isJsonContentType;
 
 /**
  * Colorful, structured HTTP exchange logger for both HTTP and WebSocket handshakes.
  */
 @Slf4j
 public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
+    private static final ObjectMapper JSON_PRETTY_PRINTER = new ObjectMapper();
 
     private final boolean includeQueryString;
     private final boolean includeRequestPayload;
@@ -35,6 +44,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     private final boolean includeResponsePayload;
     private final int maxResponsePayloadLength;
     private final boolean colorEnabled;
+    private final LogRedactor logRedactor;
 
     public HttpExchangeLoggingFilter(boolean includeQueryString,
                                      boolean includeRequestPayload,
@@ -42,7 +52,8 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                                      boolean includeHeaders,
                                      boolean includeResponsePayload,
                                      int maxResponsePayloadLength,
-                                     boolean colorEnabled) {
+                                     boolean colorEnabled,
+                                     LogRedactor logRedactor) {
         this.includeQueryString = includeQueryString;
         this.includeRequestPayload = includeRequestPayload;
         this.maxRequestPayloadLength = maxRequestPayloadLength;
@@ -50,6 +61,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         this.includeResponsePayload = includeResponsePayload;
         this.maxResponsePayloadLength = maxResponsePayloadLength;
         this.colorEnabled = colorEnabled;
+        this.logRedactor = logRedactor;
     }
 
     @Override
@@ -68,26 +80,28 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         Exception ex = null;
         try {
             filterChain.doFilter(req, res);
-        } catch (Exception e) {
-            ex = e;
-            throw e;
+        } catch (Exception exception) {
+            ex = exception;
+            throw exception;
         } finally {
             long tookMs = System.currentTimeMillis() - start;
             try {
-                logExchange(req, res, tookMs, ex);
+                this.logExchange(req, res, tookMs, ex);
             } catch (Exception loggingEx) {
                 log.warn("Failed to log HTTP exchange", loggingEx);
             }
-            // Important: copy cached body back to response
+            // Copy cached body back to response
             try {
                 res.copyBodyToResponse();
-            } catch (IOException ignore) {
+            } catch (IOException _) {
                 // ignore
             }
         }
     }
 
-    private void interceptStreamingLog(HttpServletResponse response, FilterChain filterChain, ContentCachingRequestWrapper req) throws IOException, ServletException {
+    private void interceptStreamingLog(HttpServletResponse response,
+                                       FilterChain filterChain,
+                                       ContentCachingRequestWrapper req) throws IOException, ServletException {
         long start = System.currentTimeMillis();
         Exception exception = null;
         try {
@@ -129,8 +143,8 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         sb.append(color(method, AnsiColor.BLUE, AnsiStyle.BOLD)).append(' ');
         // Path
         sb.append(color(uri, AnsiColor.WHITE));
-        if (includeQueryString && StringUtils.hasText(query)) {
-            sb.append(color("?" + query, AnsiColor.BRIGHT_BLACK));
+        if (this.includeQueryString && StringUtils.hasText(query)) {
+            sb.append(color("?" + this.logRedactor.redactQueryString(query), AnsiColor.BRIGHT_BLACK));
         }
         // Protocol
         sb.append(' ').append(color(protocol, AnsiColor.BRIGHT_BLACK));
@@ -159,21 +173,27 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         // Scheme
         sb.append(' ').append(color("over " + scheme, AnsiColor.BRIGHT_BLACK));
 
-        if (includeHeaders) {
+        if (this.includeHeaders) {
             sb.append('\n');
             appendHeaders(sb, "Request-Headers", req);
             appendHeaders(sb, "Response-Headers", response);
         }
 
-        if (includeRequestPayload) {
-            String payload = getBody(req.getContentAsByteArray(), req.getCharacterEncoding(), maxRequestPayloadLength);
+        if (this.includeRequestPayload) {
+            String payload = this.formatPayloadForLog(
+                    getBody(req.getContentAsByteArray(), req.getCharacterEncoding(), this.maxRequestPayloadLength),
+                    req.getContentType()
+            );
             if (StringUtils.hasText(payload)) {
                 sb.append('\n').append(color("Request-Payload:", AnsiColor.BRIGHT_BLACK)).append(' ')
                   .append(color(payload, AnsiColor.WHITE));
             }
         }
-        if (includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
-            String payload = getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), maxResponsePayloadLength);
+        if (this.includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
+            String payload = this.formatPayloadForLog(
+                    getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), this.maxResponsePayloadLength),
+                    response.getContentType()
+            );
             if (StringUtils.hasText(payload)) {
                 sb.append('\n').append(color("Response-Payload:", AnsiColor.BRIGHT_BLACK)).append(' ')
                   .append(color(payload, AnsiColor.WHITE));
@@ -194,14 +214,20 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         for (Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
             String name = names.nextElement();
             List<String> values = java.util.Collections.list(req.getHeaders(name));
-            sb.append("  ").append(color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.join(", ", values), AnsiColor.WHITE)).append('\n');
+            String redactedValues = values.stream()
+                    .map(value -> this.logRedactor.redactHeader(name, value))
+                    .collect(Collectors.joining(", "));
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
     private void appendHeaders(StringBuilder sb, String title, HttpServletResponse res) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
         for (String name : res.getHeaderNames()) {
-            sb.append("  ").append(color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.join(", ", res.getHeaders(name)), AnsiColor.WHITE)).append('\n');
+            String redactedValues = res.getHeaders(name).stream()
+                    .map(value -> this.logRedactor.redactHeader(name, value))
+                    .collect(Collectors.joining(", "));
+            sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
@@ -218,14 +244,6 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return upgrade != null && "websocket".equalsIgnoreCase(upgrade);
     }
 
-    private String humanSize(int bytes) {
-        if (bytes < 1024) return bytes + "B";
-        int kb = bytes / 1024;
-        if (kb < 1024) return kb + "KB";
-        int mb = kb / 1024;
-        return mb + "MB";
-    }
-
     private String getBody(byte[] buf, @Nullable String encoding, int max) {
         if (buf == null || buf.length == 0) return "";
         int len = Math.min(buf.length, max);
@@ -237,11 +255,22 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private AnsiColor statusColor(int status) {
-        if (status >= 500) return AnsiColor.RED;
-        if (status >= 400) return AnsiColor.YELLOW;
-        if (status >= 300) return AnsiColor.CYAN;
-        return AnsiColor.GREEN;
+    private String formatPayloadForLog(String payload, @Nullable String contentType) {
+        if (!StringUtils.hasText(payload)) {
+            return payload;
+        }
+
+        if (!isJsonContentType(contentType)) {
+            return this.logRedactor.redactText(payload);
+        }
+
+        try {
+            JsonNode tree = JSON_PRETTY_PRINTER.readTree(payload);
+            JsonNode redactedTree = this.logRedactor.redact(tree);
+            return JSON_PRETTY_PRINTER.writerWithDefaultPrettyPrinter().writeValueAsString(redactedTree);
+        } catch (Exception ignored) {
+            return this.logRedactor.redactText(payload);
+        }
     }
 
     private AnsiColor durationColor(long ms) {
@@ -251,11 +280,11 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     }
 
     private String color(String text, AnsiColor color) {
-        return color(text, color, null);
+        return this.color(text, color, null);
     }
 
     private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
-        if (!colorEnabled) return text;
+        if (!this.colorEnabled) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);
         }

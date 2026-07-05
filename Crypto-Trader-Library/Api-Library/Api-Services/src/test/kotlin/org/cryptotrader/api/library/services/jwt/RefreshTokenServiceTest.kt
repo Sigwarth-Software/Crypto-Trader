@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.services.jwt
 
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

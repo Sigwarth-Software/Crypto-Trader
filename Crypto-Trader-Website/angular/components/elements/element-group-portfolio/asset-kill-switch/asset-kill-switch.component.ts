@@ -1,7 +1,7 @@
 // asset-kill-switch.component.ts
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
 
-import { electricPlugIcon, ImageAsset } from '@assets/imageAssets';
+import { electricPlugIcon, ImageAsset } from '@assets/image.assets';
 
 /** A component that toggles the kill switch for an asset.
  *

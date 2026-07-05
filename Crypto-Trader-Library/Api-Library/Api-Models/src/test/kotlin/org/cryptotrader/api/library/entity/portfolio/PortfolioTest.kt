@@ -3,7 +3,7 @@ package org.cryptotrader.api.library.entity.portfolio
 import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.api.library.entity.user.ProductUser
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

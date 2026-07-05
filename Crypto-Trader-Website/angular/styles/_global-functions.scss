@@ -1,4 +1,5 @@
 @use 'sass:color';
+@forward '@theoliverlear/styles-suite/sigwarth-functions';
 
 @function add-alpha-opaque($color, $alpha, $background: #ffffff) {
     @return color.mix($background, $color, $alpha * 100%);

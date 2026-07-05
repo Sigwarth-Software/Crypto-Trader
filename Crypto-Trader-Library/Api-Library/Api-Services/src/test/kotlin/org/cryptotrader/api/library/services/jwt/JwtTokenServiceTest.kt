@@ -2,7 +2,7 @@ package org.cryptotrader.api.library.services.jwt
 
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertNotNull
 

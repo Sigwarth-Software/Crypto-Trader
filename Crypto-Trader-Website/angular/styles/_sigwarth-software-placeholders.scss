@@ -1,11 +1,13 @@
-@use 'globals' as *;
-@use 'global-fonts' as *;
+@use 'global-variables' as vars;
+@use 'global-mixins' as mixins;
+@use 'global-fonts' as fonts;
+@use 'global-functions' as funcs;
 
 // TODO: Replace pixels with variables.
 
 %sigwarth-software-app {
     ss-anchor {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
 
         &.link-button {
             @extend ss-button;
@@ -26,15 +28,15 @@
     }
 
     ss-button {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         position: relative;
-        background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
-        border: $very-thin-border solid add-alpha($mint-green, 0.2);
-        border-radius: $quarter-percent;
-        padding: $half-percent;
-        flex-basis: $ten-percent;
-        box-shadow: 0 0 12px add-alpha($mint-green, 0.04),
-                    0 2px 8px add-alpha($absolute-black, 0.3);
+        background: linear-gradient(135deg, vars.$midnight-navy 0%, vars.$deep-ocean 100%);
+        border: vars.$very-thin-border solid funcs.add-alpha(vars.$mint-green, 0.2);
+        border-radius: vars.$quarter-percent;
+        padding: vars.$half-percent;
+        flex-basis: vars.$ten-percent;
+        box-shadow: 0 0 12px funcs.add-alpha(vars.$mint-green, 0.04),
+                    0 2px 8px funcs.add-alpha(vars.$absolute-black, 0.3);
         transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 
         h1,
@@ -45,22 +47,22 @@
         h6 {
             min-width: 11ch;
             max-height: 2ch;
-            color: $pure-white;
+            color: vars.$pure-white;
             font-weight: 600;
             letter-spacing: 0.03em;
         }
 
         &:hover {
             transform: translateY(-2px);
-            border-color: add-alpha($mint-green, 0.45);
-            box-shadow: 0 0 20px add-alpha($mint-green, 0.1),
-                        0 4px 16px add-alpha($absolute-black, 0.4);
+            border-color: funcs.add-alpha(vars.$mint-green, 0.45);
+            box-shadow: 0 0 20px funcs.add-alpha(vars.$mint-green, 0.1),
+                        0 4px 16px funcs.add-alpha(vars.$absolute-black, 0.4);
             cursor: pointer;
         }
 
         &:active {
             transform: translateY(0);
-            box-shadow: 0 0 8px add-alpha($mint-green, 0.02);
+            box-shadow: 0 0 8px funcs.add-alpha(vars.$mint-green, 0.02);
         }
     }
 
@@ -69,110 +71,110 @@
         margin-top: auto;
         background-image: linear-gradient(
             to bottom,
-            $deep-ocean 60%,
-            $midnight-navy
+            vars.$deep-ocean 60%,
+            vars.$midnight-navy
         );
-        border-top: $very-thin-border solid add-alpha($mint-green, 0.2);
-        padding: $quarter-percent $zero;
+        border-top: vars.$very-thin-border solid funcs.add-alpha(vars.$mint-green, 0.2);
+        padding: vars.$quarter-percent vars.$zero;
         box-sizing: border-box;
 
         footer {
-            @include flex(center, center, row);
+            @include mixins.flex(center, center, row);
             width: 100%;
-            color: $sage-green;
-            padding: $eighth-percent 0;
+            color: vars.$sage-green;
+            padding: vars.$eighth-percent 0;
 
             .footer-item {
-                @include flex(center, center, row);
-                @include size(100%, 100%);
+                @include mixins.flex(center, center, row);
+                @include mixins.size(100%, 100%);
                 flex: 1;
 
                 h6 {
-                    font-size: calc($h6-font-size * 0.85);
+                    font-size: calc(vars.$h6-font-size * 0.85);
                 }
 
                 .footer-item-text {
-                    color: $pale-mint;
+                    color: vars.$pale-mint;
                 }
 
                 &:last-child {
-                    border-left: $thin-border solid add-alpha($pure-white, 0.15);
+                    border-left: vars.$thin-border solid funcs.add-alpha(vars.$pure-white, 0.15);
                 }
             }
         }
     }
 
     ss-img {
-        @include flex(row, center, center);
+        @include mixins.flex(row, center, center);
         border-radius: inherit;
 
         img {
             border-radius: inherit;
 
-            @include size(100%, 100%);
+            @include mixins.size(100%, 100%);
         }
     }
 
     ss-input {
         input {
-            font-family: $fira-sans-font;
-            padding: simplest-calc(0.25);
-            border-radius: simplest-calc(0.25);
-            border: 1px solid add-alpha($mint-green, 0.25);
-            background: add-alpha($midnight-navy, 0.6);
-            color: $pure-white;
-            box-shadow: 0 0 12px add-alpha($mint-green, 0.04);
+            font-family: fonts.$fira-sans-font;
+            padding: funcs.simplest-calc(0.25);
+            border-radius: funcs.simplest-calc(0.25);
+            border: 1px solid funcs.add-alpha(vars.$mint-green, 0.25);
+            background: funcs.add-alpha(vars.$midnight-navy, 0.6);
+            color: vars.$pure-white;
+            box-shadow: 0 0 12px funcs.add-alpha(vars.$mint-green, 0.04);
             transition: border-color 0.15s ease, box-shadow 0.15s ease;
-            font-size: calc($h6-font-size * 1.25);
+            font-size: calc(vars.$h6-font-size * 1.25);
 
             &::placeholder {
-                color: add-alpha($pure-white, 0.4);
+                color: funcs.add-alpha(vars.$pure-white, 0.4);
             }
 
             &:hover {
-                border-color: add-alpha($mint-green, 0.45);
-                box-shadow: 0 0 20px add-alpha($mint-green, 0.1);
+                border-color: funcs.add-alpha(vars.$mint-green, 0.45);
+                box-shadow: 0 0 20px funcs.add-alpha(vars.$mint-green, 0.1);
                 cursor: text;
             }
 
             &:focus {
                 outline: none;
-                border-color: $mint-green;
-                box-shadow: 0 0 0 3px add-alpha($mint-green, 0.15);
+                border-color: vars.$mint-green;
+                box-shadow: 0 0 0 3px funcs.add-alpha(vars.$mint-green, 0.15);
             }
         }
 
         .checkbox-container {
-            @include flex(flex-end, center, row);
+            @include mixins.flex(flex-end, center, row);
 
             input[type='checkbox'] {
-                @include square-size($two-percent);
-                color: $charcoal;
+                @include mixins.square-size(vars.$two-percent);
+                color: vars.$charcoal;
 
                 &:hover {
-                    box-shadow: 0 0 12px add-alpha($mint-green, 0.1);
+                    box-shadow: 0 0 12px funcs.add-alpha(vars.$mint-green, 0.1);
                 }
             }
         }
     }
 
     ss-paragraph {
-        @include flex(center, center, column);
-        @include glass-panel;
-        color: $absolute-black;
-        padding: $half-percent $one-percent;
-        border-radius: $quarter-percent;
+        @include mixins.flex(center, center, column);
+        @include mixins.glass-panel;
+        color: vars.$absolute-black;
+        padding: vars.$half-percent vars.$one-percent;
+        border-radius: vars.$quarter-percent;
     }
 
     ss-title {
-        @include flex(center, center, row);
-        color: $absolute-black;
+        @include mixins.flex(center, center, row);
+        color: vars.$absolute-black;
         text-align: center;
     }
 
     subtitle {
-        @include flex(center, center, row);
-        color: $absolute-black;
+        @include mixins.flex(center, center, row);
+        color: vars.$absolute-black;
         font-style: italic;
         text-align: center;
     }

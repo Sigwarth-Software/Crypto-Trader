@@ -40,6 +40,9 @@ tink/
 /Crypto-Trader-Website/dist/**
 /Crypto-Trader-Website/docs/**
 /Crypto-Trader-Website/node_modules/**
+/Crypto-Trader-Website/certs/**
+/certs/**
+!/certs/.gitkeep
 
 /.aiassistant/**
 /.junie/**

@@ -1,23 +1,25 @@
 // badge-grid.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 badge-grid {
     display: block;
 
     .badge-grid {
         display: grid;
-        gap: $half-percent;
+        gap: vars.$half-percent;
     }
 
     .badge {
         display: flex;
         align-items: center;
-        gap: $quarter-percent;
-        padding: $quarter-percent $half-percent;
-        border-radius: $quarter-percent;
-        background: add-alpha($blue-gray, 0.45);
-        color: $alabaster-stone;
-        max-width: $twelve-percent;
+        gap: vars.$quarter-percent;
+        padding: vars.$quarter-percent vars.$half-percent;
+        border-radius: vars.$quarter-percent;
+        background: funcs.add-alpha(vars.$blue-gray, 0.45);
+        color: vars.$alabaster-stone;
+        max-width: vars.$twelve-percent;
         transition:
             box-shadow 200ms ease,
             background 200ms ease,
@@ -41,8 +43,8 @@ badge-grid {
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: add-alpha(black, 0.3) 0 4px 12px;
-            background: add-alpha($blue-gray, 0.65);
+            box-shadow: funcs.add-alpha(black, 0.3) 0 4px 12px;
+            background: funcs.add-alpha(vars.$blue-gray, 0.65);
             cursor: default;
         }
 
@@ -53,10 +55,10 @@ badge-grid {
             flex-shrink: 0;
             background: linear-gradient(
                 135deg,
-                $sunbeam-yellow,
-                $muted-blue
+                vars.$sunbeam-yellow,
+                vars.$muted-blue
             );
-            box-shadow: add-alpha(black, 0.25) 0 0 0.15rem;
+            box-shadow: funcs.add-alpha(black, 0.25) 0 0 0.15rem;
         }
 
         .label {
@@ -66,15 +68,15 @@ badge-grid {
         }
     }
 
-    @include mobile-breakpoint {
+    @include mixins.mobile-breakpoint {
         .badge-grid {
             grid-template-columns: 1fr !important;
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .badge.stagger {
-            @include reduced-motion-reset;
+            @include mixins.reduced-motion-reset;
         }
     }
 }

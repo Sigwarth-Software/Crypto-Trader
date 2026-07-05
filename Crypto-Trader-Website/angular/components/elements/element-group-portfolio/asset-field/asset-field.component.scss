@@ -1,9 +1,11 @@
 // asset-field.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 asset-field {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
     width: 100%;
 
     &.highlighted-field {
@@ -13,12 +15,12 @@ asset-field {
     }
 
     .field-type-with-icon {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         width: 90%;
     }
 
     ss-title {
-        @include flex(flex-start, center, row);
+        @include mixins.flex(flex-start, center, row);
         flex: 1;
         width: 100%;
 

@@ -4,7 +4,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.AuthContextService
 import org.cryptotrader.api.library.services.PortfolioService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled

@@ -19,8 +19,8 @@ import {
     consoleIcon,
     profileIcon,
     type ImageAsset,
-} from '@assets/imageAssets';
-import { defaultPortfolio } from '@assets/portfolioAssets';
+} from '@assets/image.assets';
+import { defaultPortfolio } from '@assets/portfolio.assets';
 import { PortfolioService } from '@http/portfolio/portfolio.service';
 import { DisplayCurrenciesService } from '@http/currency/display-currencies.service';
 import { CurrencyDayPerformanceService } from '@http/currency/currency-day-performance.service';
@@ -32,6 +32,7 @@ import { TimeFormatterService } from '@ui/time-formatter.service';
 import { Portfolio, PortfolioAsset } from '@models/portfolio/types';
 import { DisplayCurrency, PerformanceRating } from '@models/currency/types';
 import { TradeEvent } from '@models/trader/types';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 export interface DashboardCard {
     label: string;
@@ -47,18 +48,18 @@ export interface DashboardCard {
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-    protected portfolio: Portfolio = defaultPortfolio;
-    protected isFetching: boolean = true;
-    protected currencies: DisplayCurrency[] = [];
-    protected isFetchingCurrencies: boolean = true;
-    protected currencyPerformanceMap: Map<string, PerformanceRating> = new Map();
-    protected recentTrades: TradeEvent[] = [];
-    protected isFetchingTrades: boolean = true;
+    protected portfolio: Portfolio = defaultPortfolio
+    protected isFetching: boolean = true
+    protected currencies: DisplayCurrency[] = []
+    protected isFetchingCurrencies: boolean = true
+    protected currencyPerformanceMap: Map<string, PerformanceRating> = new Map()
+    protected recentTrades: TradeEvent[] = []
+    protected isFetchingTrades: boolean = true
 
     protected allocationChartData: ChartData<'doughnut'> = {
         labels: [],
         datasets: [{ data: [], backgroundColor: [] }],
-    };
+    }
 
     // TODO: Move partial to assets. Load partial with factory.
     protected allocationChartOptions: ChartOptions<'doughnut'> = {
@@ -87,18 +88,18 @@ export class DashboardComponent implements OnInit {
                 padding: 10,
                 callbacks: {
                     label: (ctx): string => {
-                        const val = ctx.parsed;
-                        return ` ${ctx.label}: $${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                        const val = ctx.parsed
+                        return ` ${ctx.label}: $${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                     },
                 },
             },
         },
-    };
+    }
 
     protected assetBarChartData: ChartData<'bar'> = {
         labels: [],
         datasets: [{ data: [], backgroundColor: [] }],
-    };
+    }
     // TODO: Move to assets.
     protected assetBarChartOptions: ChartOptions<'bar'> = {
         responsive: true,
@@ -116,8 +117,8 @@ export class DashboardComponent implements OnInit {
                 padding: 10,
                 callbacks: {
                     label: (ctx): string => {
-                        const val = ctx.parsed.x ?? 0;
-                        return ` $${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                        const val = ctx.parsed.x ?? 0
+                        return ` $${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                     },
                 },
             },
@@ -142,7 +143,7 @@ export class DashboardComponent implements OnInit {
                 border: { display: false },
             },
         },
-    };
+    }
 
     // TODO: Move to assets.
     private readonly chartPalette: string[] = [
@@ -158,7 +159,7 @@ export class DashboardComponent implements OnInit {
         '#073d44',
         '#ffe17b',
         '#a4dbc2',
-    ];
+    ]
     // TODO: Move to assets.
     protected readonly cards: DashboardCard[] = [
         {
@@ -203,7 +204,7 @@ export class DashboardComponent implements OnInit {
             route: '/account',
             icon: profileIcon,
         },
-    ];
+    ]
 
     constructor(
         private readonly portfolioService: PortfolioService,
@@ -218,62 +219,61 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        this.log.setContext('Dashboard');
-        this.log.info('Dashboard component initialized');
+        this.log.setContext(LoggerContext.Dashboard)
 
-        this.log.debug('Fetching portfolio...');
+        this.log.debug('Fetching portfolio...')
         this.portfolioService.getPortfolio().subscribe({
             next: (portfolio: Portfolio): void => {
-                this.log.info('Portfolio fetched successfully');
-                this.portfolio = portfolio;
-                this.isFetching = false;
-                this.buildCharts();
+                this.log.info('Portfolio fetched successfully')
+                this.portfolio = portfolio
+                this.isFetching = false
+                this.buildCharts()
             },
             error: (error): void => {
-                this.log.error('Failed to fetch portfolio', error);
-                this.isFetching = false;
+                this.log.error('Failed to fetch portfolio', error)
+                this.isFetching = false
             },
-        });
+        })
 
-        this.log.debug('Fetching display currencies...');
+        this.log.debug('Fetching display currencies...')
         this.displayCurrenciesService.getAllCurrencies().subscribe({
             next: (response): void => {
-                this.log.info(`Fetched ${response.currencies.length} currencies`);
-                this.currencies = response.currencies.slice(0, 8);
-                this.fetchPerformanceForCurrencies();
+                this.log.info(`Fetched ${response.currencies.length} currencies`)
+                this.currencies = response.currencies.slice(0, 8)
+                this.fetchPerformanceForCurrencies()
             },
             error: (error): void => {
-                this.log.error('Failed to fetch display currencies', error);
-                this.isFetchingCurrencies = false;
+                this.log.error('Failed to fetch display currencies', error)
+                this.isFetchingCurrencies = false
             },
-        });
+        })
 
-        this.log.debug('Fetching all trade events...');
+        this.log.debug('Fetching all trade events...')
         this.allTradeEventsService.getAllTradeEvents().subscribe({
             next: (response): void => {
-                this.log.info(`Fetched ${response.events.length} trade events`);
-                this.recentTrades = response.events.slice(0, 5);
-                this.isFetchingTrades = false;
+                this.log.info(`Fetched ${response.events.length} trade events`)
+                this.recentTrades = response.events.slice(0, 5)
+                this.isFetchingTrades = false
             },
             error: (error): void => {
-                this.log.error('Failed to fetch trade events', error);
-                this.isFetchingTrades = false;
+                this.log.error('Failed to fetch trade events', error)
+                this.isFetchingTrades = false
             },
-        });
+        })
     }
 
     private buildCharts(): void {
-        const assets: PortfolioAsset[] = this.portfolio.assets;
+        const assets: PortfolioAsset[] = this.portfolio.assets
         if (assets.length === 0) {
-            return;
+            return
         }
 
-        const labels: string[] = assets.map((a: PortfolioAsset): string => a.currencyName);
-        const values: number[] = assets.map((a: PortfolioAsset): number => a.totalValueInDollars);
+        const labels: string[] = assets.map((a: PortfolioAsset): string => a.currencyName)
+        const values: number[] = assets.map((a: PortfolioAsset): number => a.totalValueInDollars)
         const colors: string[] = assets.map(
             (_: PortfolioAsset, i: number): string =>
                 this.chartPalette[i % this.chartPalette.length],
-        );
+        )
 
         this.allocationChartData = {
             labels,
@@ -287,7 +287,7 @@ export class DashboardComponent implements OnInit {
                     hoverOffset: 8,
                 },
             ],
-        };
+        }
 
         this.assetBarChartData = {
             labels,
@@ -300,79 +300,79 @@ export class DashboardComponent implements OnInit {
                     borderSkipped: false,
                 },
             ],
-        };
+        }
     }
 
     protected navigateTo(route: string): void {
-        void this.router.navigate([route]);
+        void this.router.navigate([route])
     }
 
     protected getTotalWorth(): string {
-        return this.currencyFormatter.formatCurrency(this.portfolio.totalWorth);
+        return this.currencyFormatter.formatCurrency(this.portfolio.totalWorth)
     }
 
     protected getDollarBalance(): string {
-        return this.currencyFormatter.formatCurrency(this.portfolio.dollarBalance);
+        return this.currencyFormatter.formatCurrency(this.portfolio.dollarBalance)
     }
 
     protected getShareBalance(): string {
-        return this.sharesFormatter.formatShares(this.portfolio.shareBalance, '');
+        return this.currencyFormatter.formatCurrency(this.portfolio.shareBalance)
     }
 
     protected getLastUpdated(): string {
-        return this.timeFormatter.formatTime(this.portfolio.lastUpdated);
+        return this.timeFormatter.formatTime(this.portfolio.lastUpdated)
     }
 
     protected getAssetCount(): string {
-        return this.portfolio.assets.length.toString();
+        return this.portfolio.assets.length.toString()
     }
 
     protected getCashAllocationPercent(): string {
         if (this.portfolio.totalWorth === 0) {
-            return '0';
+            return '0'
         }
-        return ((this.portfolio.dollarBalance / this.portfolio.totalWorth) * 100).toFixed(1);
+        return ((this.portfolio.dollarBalance / this.portfolio.totalWorth) * 100).toFixed(1)
     }
 
     protected getCryptoAllocationPercent(): string {
         if (this.portfolio.totalWorth === 0) {
-            return '0';
+            return '0'
         }
-        const cryptoValue: number = this.portfolio.totalWorth - this.portfolio.dollarBalance;
-        return ((cryptoValue / this.portfolio.totalWorth) * 100).toFixed(1);
+        const cryptoValue: number = this.portfolio.totalWorth - this.portfolio.dollarBalance
+        return ((cryptoValue / this.portfolio.totalWorth) * 100).toFixed(1)
     }
 
     protected hasAssets(): boolean {
-        return this.portfolio.assets.length > 0;
+        return this.portfolio.assets.length > 0
     }
 
     private fetchPerformanceForCurrencies(): void {
-        let completed: number = 0;
-        const total: number = this.currencies.length;
+        let completed: number = 0
+        const total: number = this.currencies.length
         if (total === 0) {
-            this.isFetchingCurrencies = false;
-            return;
+            this.isFetchingCurrencies = false
+            return
         }
         for (const currency of this.currencies) {
             this.currencyDayPerformanceService
                 .getCurrencyDayPerformance(currency.currencyCode)
                 .subscribe({
                     next: (performance: PerformanceRating): void => {
-                        this.currencyPerformanceMap.set(currency.currencyCode, performance);
-                        completed++;
+                        this.currencyPerformanceMap.set(currency.currencyCode, performance)
+                        completed++
                         if (completed === total) {
-                            this.sortCurrenciesByPerformance();
-                            this.isFetchingCurrencies = false;
+                            this.sortCurrenciesByPerformance()
+                            this.isFetchingCurrencies = false
                         }
                     },
                     error: (): void => {
-                        completed++;
+                        completed++
                         if (completed === total) {
-                            this.sortCurrenciesByPerformance();
-                            this.isFetchingCurrencies = false;
+                            this.sortCurrenciesByPerformance()
+                            this.isFetchingCurrencies = false
                         }
                     },
-                });
+                })
         }
     }
 
@@ -380,23 +380,23 @@ export class DashboardComponent implements OnInit {
         this.currencies.sort((a: DisplayCurrency, b: DisplayCurrency): number => {
             const perfA: PerformanceRating | undefined = this.currencyPerformanceMap.get(
                 a.currencyCode,
-            );
+            )
             const perfB: PerformanceRating | undefined = this.currencyPerformanceMap.get(
                 b.currencyCode,
-            );
-            const valA: number = this.parseChangePercent(perfA);
-            const valB: number = this.parseChangePercent(perfB);
-            return valB - valA;
-        });
+            )
+            const valA: number = this.parseChangePercent(perfA)
+            const valB: number = this.parseChangePercent(perfB)
+            return valB - valA
+        })
     }
 
     private parseChangePercent(perf: PerformanceRating | undefined): number {
         if (!perf) {
-            return 0;
+            return 0
         }
-        const cleaned: string = perf.changePercent.replace('%', '').replace('+', '');
-        const parsed: number = parseFloat(cleaned);
-        return isNaN(parsed) ? 0 : parsed;
+        const cleaned: string = perf.changePercent.replace('%', '').replace('+', '')
+        const parsed: number = parseFloat(cleaned)
+        return isNaN(parsed) ? 0 : parsed
     }
 
     protected getPerformance(currencyCode: string): PerformanceRating {
@@ -405,8 +405,8 @@ export class DashboardComponent implements OnInit {
                 rating: 'neutral',
                 changePercent: '0%',
             }
-        );
+        )
     }
 
-    protected readonly TagType: typeof TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }

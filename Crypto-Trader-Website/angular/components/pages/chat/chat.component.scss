@@ -1,42 +1,45 @@
 // chat.component.scss
-@use '../../../styles/globals' as *;
-// TODO: Replace pixels with variables.
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-functions' as funcs;
+@use '../../../styles/global-placeholders' as placeholders;
+
 chat {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
     @extend %fill-container;
     height: 100%;
     flex: 1;
     background: linear-gradient(
         180deg,
-        darken($charcoal, 3%) 0%,
-        $charcoal 100%
+        darken(vars.$charcoal, 3%) 0%,
+        vars.$charcoal 100%
     );
-    padding: $half-percent;
+    padding: vars.$half-percent;
     box-sizing: border-box;
 
     .chat-layout {
-        @include flex(stretch, stretch, row);
+        @include mixins.flex(stretch, stretch, row);
         @extend %fill-container;
-        border-radius: $half-percent;
-        border: 1px solid add-alpha($pure-white, 0.08);
+        border-radius: vars.$half-percent;
+        border: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
         box-shadow:
-            inset 0 1px 0 add-alpha($pure-white, 0.04),
-            0 4px 24px add-alpha(black, 0.4);
+            inset 0 1px 0 funcs.add-alpha(vars.$pure-white, 0.04),
+            0 4px 24px funcs.add-alpha(black, 0.4);
         overflow: hidden;
     }
 
     .chat-history {
-        @include flex(stretch, stretch, column);
+        @include mixins.flex(stretch, stretch, column);
         width: 18rem;
         min-width: 18rem;
-        background-color: darken($charcoal, 2%);
-        border-right: 1px solid add-alpha($pure-white, 0.08);
+        background-color: darken(vars.$charcoal, 2%);
+        border-right: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
 
         .chat-history-header {
-            @include flex(center, flex-start, row);
-            gap: $half-percent;
-            padding: $three-quarter-percent $one-percent;
-            border-bottom: 1px solid add-alpha($pure-white, 0.08);
+            @include mixins.flex(center, flex-start, row);
+            gap: vars.$half-percent;
+            padding: vars.$three-quarter-percent vars.$one-percent;
+            border-bottom: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
 
             .chat-history-icon {
                 width: 1.25rem;
@@ -45,12 +48,12 @@ chat {
         }
 
         .chat-new-button {
-            @include flex(center, center, row);
+            @include mixins.flex(center, center, row);
             gap: 0.5rem;
-            margin: $three-quarter-percent;
-            padding: 0.6rem $one-percent;
-            background-color: $sunbeam-yellow;
-            color: $midnight-navy;
+            margin: vars.$three-quarter-percent;
+            padding: 0.6rem vars.$one-percent;
+            background-color: vars.$sunbeam-yellow;
+            color: vars.$midnight-navy;
             border: none;
             border-radius: 0.375rem;
             font-size: 0.875rem;
@@ -59,15 +62,15 @@ chat {
             transition: box-shadow 200ms ease;
 
             &:hover {
-                box-shadow: add-alpha($sunbeam-yellow, 0.3) 0 0 12px;
+                box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.3) 0 0 12px;
             }
         }
 
         .chat-history-list {
-            @include flex(flex-start, stretch, column);
+            @include mixins.flex(flex-start, stretch, column);
             flex: 1;
             overflow-y: auto;
-            padding: 0 $three-quarter-percent $three-quarter-percent;
+            padding: 0 vars.$three-quarter-percent vars.$three-quarter-percent;
             gap: 0.25rem;
 
             &::-webkit-scrollbar {
@@ -79,33 +82,33 @@ chat {
             }
 
             &::-webkit-scrollbar-thumb {
-                background: add-alpha($pure-white, 0.15);
+                background: funcs.add-alpha(vars.$pure-white, 0.15);
                 border-radius: 2px;
 
                 &:hover {
-                    background: add-alpha($pure-white, 0.25);
+                    background: funcs.add-alpha(vars.$pure-white, 0.25);
                 }
             }
         }
 
         .chat-history-item {
-            @include flex(center, flex-start, row);
+            @include mixins.flex(center, flex-start, row);
             gap: 0.5rem;
             padding: 0.5rem 0.75rem;
             border-radius: 0.375rem;
-            color: add-alpha($pure-white, 0.6);
+            color: funcs.add-alpha(vars.$pure-white, 0.6);
             font-size: 0.8125rem;
             cursor: pointer;
             transition: background-color 150ms ease;
 
             &:hover {
-                background-color: add-alpha($pure-white, 0.06);
-                color: $pure-white;
+                background-color: funcs.add-alpha(vars.$pure-white, 0.06);
+                color: vars.$pure-white;
             }
 
             &.active {
-                background-color: add-alpha($pure-white, 0.1);
-                color: $pure-white;
+                background-color: funcs.add-alpha(vars.$pure-white, 0.1);
+                color: vars.$pure-white;
             }
 
             .chat-history-title {
@@ -118,7 +121,7 @@ chat {
             .chat-history-delete {
                 background: transparent;
                 border: none;
-                color: add-alpha($pure-white, 0.3);
+                color: funcs.add-alpha(vars.$pure-white, 0.3);
                 cursor: pointer;
                 font-size: 0.75rem;
                 padding: 0.25rem;
@@ -126,7 +129,7 @@ chat {
                 transition: opacity 150ms ease;
 
                 &:hover {
-                    color: $pure-white;
+                    color: vars.$pure-white;
                 }
             }
 
@@ -136,30 +139,30 @@ chat {
         }
 
         .chat-history-empty {
-            color: add-alpha($pure-white, 0.35);
+            color: funcs.add-alpha(vars.$pure-white, 0.35);
             font-size: 0.8125rem;
             text-align: center;
-            padding: $one-percent;
+            padding: vars.$one-percent;
         }
     }
 
     .chat-window {
-        @include flex(stretch, stretch, column);
+        @include mixins.flex(stretch, stretch, column);
         flex: 1;
-        background-color: $charcoal;
+        background-color: vars.$charcoal;
 
         .chat-window-header {
-            @include flex(center, flex-start, row);
-            padding: $three-quarter-percent $one-percent;
-            border-bottom: 1px solid add-alpha($pure-white, 0.08);
+            @include mixins.flex(center, flex-start, row);
+            padding: vars.$three-quarter-percent vars.$one-percent;
+            border-bottom: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
         }
 
         .chat-window-messages {
-            @include flex(flex-start, flex-start, column);
+            @include mixins.flex(flex-start, flex-start, column);
             flex: 1;
             overflow-y: auto;
-            padding: $one-percent;
-            gap: $half-percent;
+            padding: vars.$one-percent;
+            gap: vars.$half-percent;
 
             &::-webkit-scrollbar {
                 width: 6px;
@@ -170,24 +173,24 @@ chat {
             }
 
             &::-webkit-scrollbar-thumb {
-                background: add-alpha($pure-white, 0.15);
+                background: funcs.add-alpha(vars.$pure-white, 0.15);
                 border-radius: 3px;
 
                 &:hover {
-                    background: add-alpha($pure-white, 0.25);
+                    background: funcs.add-alpha(vars.$pure-white, 0.25);
                 }
             }
         }
 
         chat-input {
-            border-top: 1px solid add-alpha($pure-white, 0.08);
+            border-top: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
         }
 
         .chat-window-empty {
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
             flex: 1;
-            gap: $one-percent;
-            color: add-alpha($pure-white, 0.4);
+            gap: vars.$one-percent;
+            color: funcs.add-alpha(vars.$pure-white, 0.4);
             text-align: center;
 
             .chat-empty-icon {
@@ -197,7 +200,7 @@ chat {
             }
 
             h2 {
-                color: add-alpha($pure-white, 0.7);
+                color: funcs.add-alpha(vars.$pure-white, 0.7);
                 font-size: 1.5rem;
                 font-weight: 600;
                 margin: 0;
@@ -211,12 +214,12 @@ chat {
             }
 
             .chat-start-button {
-                @include flex(center, center, row);
+                @include mixins.flex(center, center, row);
                 gap: 0.5rem;
-                margin-top: $half-percent;
+                margin-top: vars.$half-percent;
                 padding: 0.6rem 1.5rem;
-                background-color: $sunbeam-yellow;
-                color: $midnight-navy;
+                background-color: vars.$sunbeam-yellow;
+                color: vars.$midnight-navy;
                 border: none;
                 border-radius: 0.375rem;
                 font-size: 0.9rem;
@@ -225,13 +228,13 @@ chat {
                 transition: box-shadow 200ms ease;
 
                 &:hover {
-                    box-shadow: add-alpha($sunbeam-yellow, 0.3) 0 0 12px;
+                    box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.3) 0 0 12px;
                 }
             }
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .chat-new-button,
         .chat-start-button,
         .chat-history-item,

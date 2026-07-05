@@ -1,12 +1,14 @@
 // trade-currency.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 trade-currency {
     height: 100%;
 
     .trade-currency-details-div {
-        @include flex(center, center, column);
-        padding: $half-percent;
+        @include mixins.flex(center, center, column);
+        padding: vars.$half-percent;
         height: 100%;
 
         @extend %softer-border-radius;
@@ -42,15 +44,15 @@ trade-currency {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'%3E%3Cg stroke='%23FFF' stroke-width='0' stroke-opacity='0.56'%3E%3Cpath fill='%232D0199' d='M165 10-5 -70-5 -85 165 -5z'/%3E%3Cpath fill='%2376008e' d='M165 25-5 -55-5 -70 165 10z'/%3E%3Cpath fill='%23a10081' d='M165 40-5 -40-5 -55 165 25z'/%3E%3Cpath fill='%23c00074' d='M165 55-5 -25-5 -40 165 40z'/%3E%3Cpath fill='%23d72969' d='M165 70-5 -10-5 -25 165 55z'/%3E%3Cpath fill='%23e74f61' d='M165 85-5 5-5 -10 165 70z'/%3E%3Cpath fill='%23f1705e' d='M165 100-5 20-5 5 165 85z'/%3E%3Cpath fill='%23f79062' d='M165 115-5 35-5 20 165 100z'/%3E%3Cpath fill='%23faae6d' d='M165 130-5 50-5 35 165 115z'/%3E%3Cpath fill='%23fcca81' d='M165 145-5 65-5 50 165 130z'/%3E%3Cpath fill='%23fde59b' d='M165 160-5 80-5 65 165 145z'/%3E%3Cpath fill='%23FFB' d='M165 175-5 95-5 80 165 160z'/%3E%3Cg fill-opacity='0.56'%3E%3Cpath fill='%235367FF' d='M165 -70-5 10-5 -5 165 -85z'/%3E%3Cpath fill='%23007aff' d='M165 -55-5 25-5 10 165 -70z'/%3E%3Cpath fill='%23008bff' d='M165 -40-5 40-5 25 165 -55z'/%3E%3Cpath fill='%23009aff' d='M165 -25-5 55-5 40 165 -40z'/%3E%3Cpath fill='%2300a8ff' d='M165 -10-5 70-5 55 165 -25z'/%3E%3Cpath fill='%2300b4ff' d='M165 5-5 85-5 70 165 -10z'/%3E%3Cpath fill='%2300c1ff' d='M165 20-5 100-5 85 165 5z'/%3E%3Cpath fill='%2300ccff' d='M165 35-5 115-5 100 165 20z'/%3E%3Cpath fill='%2300d7ff' d='M165 50-5 130-5 115 165 35z'/%3E%3Cpath fill='%2300e1ff' d='M165 65-5 145-5 130 165 50z'/%3E%3Cpath fill='%2300ebff' d='M165 80-5 160-5 145 165 65z'/%3E%3Cpath fill='%2347F4FF' d='M165 95-5 175-5 160 165 80z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         background-attachment: fixed;
         background-size: cover;
-        margin: $half-percent;
-        border: $thinnest-border solid $light-charcoal;
-        box-shadow: $light-charcoal $quarter-percent $quarter-percent 0 0;
-        min-width: calc($fourteen-percent * 1.25);
-        min-height: calc($fifteen-percent);
-        max-width: $twenty-five-percent;
+        margin: vars.$half-percent;
+        border: vars.$thinnest-border solid vars.$light-charcoal;
+        box-shadow: vars.$light-charcoal vars.$quarter-percent vars.$quarter-percent 0 0;
+        min-width: calc(#{vars.$fourteen-percent} * 1.25);
+        min-height: calc(#{vars.$fifteen-percent});
+        max-width: vars.$twenty-five-percent;
 
         ss-title {
-            color: $charcoal;
+            color: vars.$charcoal;
         }
 
         subtitle {
@@ -59,9 +61,9 @@ trade-currency {
         }
 
         ss-img {
-            @include square-size($six-percent);
-            padding: $half-percent;
-            background-color: $alabaster-stone;
+            @include mixins.square-size(vars.$six-percent);
+            padding: vars.$half-percent;
+            background-color: vars.$alabaster-stone;
 
             @extend %circle-border-radius;
         }

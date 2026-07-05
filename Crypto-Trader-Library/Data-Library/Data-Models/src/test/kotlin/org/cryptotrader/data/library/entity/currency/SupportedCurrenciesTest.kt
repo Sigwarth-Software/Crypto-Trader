@@ -1,7 +1,7 @@
 package org.cryptotrader.data.library.entity.currency
 
 import org.antlr.v4.runtime.misc.Utils.writeFile
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -55,7 +55,7 @@ class SupportedCurrenciesTest : CryptoTraderTest() {
             }
         }
     }
-    
+
     @Nested
     @Tag("staticLoad")
     @DisplayName("Static Load")

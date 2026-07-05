@@ -118,8 +118,8 @@ class AuthContextService(
         // 4) Cookies (Authorization, authToken, jwt, token)
         val cookies: Array<out Cookie?>? = request.cookies
         if (cookies != null) {
-            val names = setOf("Authorization", "authToken", "jwt", "token")
-            for (cookie in cookies) {
+            val names: Set<String> = setOf("Authorization", "authToken", "jwt", "token")
+            for (cookie: Cookie? in cookies) {
                 if (names.contains(cookie?.name)) {
                     val cookieValue = cookie?.value?.trim()
                     if (!cookieValue.isNullOrBlank()) {

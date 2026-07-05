@@ -2,7 +2,11 @@
 <ng-container>
     @if (shouldDisplay()) {
         @if (popupMessage) {
-            <ss-title [tagType]="TagType.H3" [text]="popupMessage.toString()"/>
+            <div class="popup-container">
+                <div class="popup-content">
+                    <ss-title [tagType]="TagType.H5" [text]="popupMessage.toString()"/>
+                </div>
+            </div>
         }
     }
 </ng-container>

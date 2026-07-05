@@ -19,6 +19,7 @@ open module org.cryptotrader.console.library.components {
     requires org.cryptotrader.universal.library.extensions;
     requires org.cryptotrader.universal.library.models;
     requires org.cryptotrader.console.library.communication;
+    requires transitive org.cryptotrader.universal.library.events;
     requires org.cryptotrader.api.library.services;
 
     requires java.sql;

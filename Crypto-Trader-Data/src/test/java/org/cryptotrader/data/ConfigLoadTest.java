@@ -1,7 +1,7 @@
 package org.cryptotrader.data;
 
 import org.cryptotrader.data.library.component.CurrencyDataRetriever;
-import org.cryptotrader.test.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
         webEnvironment = SpringBootTest.WebEnvironment.NONE,
         properties = {
                 "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration",
-                "docs.autoconfigure.enabled=false"
+                "docs.autoconfigure.enabled=false",
+                "spring.application.name=crypto-trader-data",
+                "server.port=8085"
         }
 )
 class ConfigLoadTest extends CryptoTraderTest {

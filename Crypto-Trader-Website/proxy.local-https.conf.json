@@ -1,0 +1,17 @@
+{
+    "/api": {
+        "target": "https://localhost:8080",
+        "secure": false,
+        "changeOrigin": false,
+        "xfwd": true,
+        "logLevel": "info"
+    },
+    "/ws": {
+        "target": "https://localhost:8080",
+        "secure": false,
+        "changeOrigin": false,
+        "xfwd": true,
+        "ws": true,
+        "logLevel": "info"
+    }
+}

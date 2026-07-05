@@ -3,7 +3,7 @@ package org.cryptotrader.api.controller
 import org.cryptotrader.api.library.services.ProductUserService
 import org.cryptotrader.api.library.services.SessionService
 import org.cryptotrader.api.library.services.models.ProfilePictureOperations
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

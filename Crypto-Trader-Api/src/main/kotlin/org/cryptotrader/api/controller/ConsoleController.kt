@@ -3,6 +3,7 @@ package org.cryptotrader.api.controller
 import jakarta.annotation.security.PermitAll
 import org.cryptotrader.console.library.communication.request.ConsoleCommandRequest
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
+import org.cryptotrader.console.library.component.ConsoleEventBinding
 import org.cryptotrader.console.library.component.ConsoleRequestGateway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -24,7 +25,7 @@ class ConsoleController @Autowired constructor(
     companion object {
         private val log: Logger = LoggerFactory.getLogger(ConsoleController::class.java)
     }
-    
+
     @PermitAll
     @PostMapping("/execute")
     fun executeCommand(
@@ -34,6 +35,7 @@ class ConsoleController @Autowired constructor(
         log.info("Received console command: {}", commandRequest.commandText)
         try {
             val result: ConsoleCommandResponse = this.consoleRequestGateway.execute(
+                ConsoleEventBinding.CONSOLE_REQUESTS,
                 commandRequest,
                 Duration.ofSeconds(15),
                 authorizationHeader

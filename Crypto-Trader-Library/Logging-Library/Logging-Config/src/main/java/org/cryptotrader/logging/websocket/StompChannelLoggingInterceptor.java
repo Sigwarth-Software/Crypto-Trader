@@ -3,6 +3,7 @@ package org.cryptotrader.logging.websocket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.properties.CryptoTraderWebSocketLoggingProperties;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -14,16 +15,19 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
-import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Map;
-import java.util.Objects;
+
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.asText;
+import static org.cryptotrader.logging.library.scripts.LoggingFormatterScriptKt.humanSize;
+import static org.cryptotrader.logging.library.scripts.LoggingParsingScriptKt.sizeOf;
 
 @Slf4j
 @RequiredArgsConstructor
 public class StompChannelLoggingInterceptor implements ChannelInterceptor {
 
     private final CryptoTraderWebSocketLoggingProperties props;
+    private final LogRedactor logRedactor;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -62,14 +66,19 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
 
         if (props.isIncludeHeaders()) {
             sb.append('\n').append(color("Headers:", AnsiColor.BRIGHT_BLACK)).append('\n');
-            for (Map.Entry<String, Object> e : message.getHeaders().entrySet()) {
-                sb.append("  ").append(color(e.getKey() + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.valueOf(e.getValue()), AnsiColor.WHITE)).append('\n');
+            for (Map.Entry<String, Object> objectEntry : message.getHeaders().entrySet()) {
+                String value = this.logRedactor.redactHeader(objectEntry.getKey(), String.valueOf(objectEntry.getValue()));
+                String formattedKey = color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK);
+                String formattedValue = color(value, AnsiColor.WHITE);
+                sb.append("  ").append(formattedKey).append(formattedValue).append('\n');
             }
         }
         if (props.isIncludePayload() && payload != null) {
             String text = asText(payload, props.getMaxPayloadLength());
             if (!text.isEmpty()) {
-                sb.append('\n').append(color("Payload:", AnsiColor.BRIGHT_BLACK)).append(' ').append(color(text, AnsiColor.WHITE));
+                String formattedKey = color("Payload:", AnsiColor.BRIGHT_BLACK);
+                String formattedValue = color(this.logRedactor.redactText(text), AnsiColor.WHITE);
+                sb.append('\n').append(formattedKey).append(' ').append(formattedValue);
             }
         }
 
@@ -87,39 +96,12 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         }
     }
 
-    private int sizeOf(@Nullable Object payload) {
-        if (payload == null) return 0;
-        if (payload instanceof byte[] bytes) return bytes.length;
-        String s = payload.toString();
-        return s.getBytes(Charset.defaultCharset()).length;
-    }
-
-    private String humanSize(int bytes) {
-        if (bytes < 1024) return bytes + "B";
-        int kb = bytes / 1024;
-        if (kb < 1024) return kb + "KB";
-        int mb = kb / 1024;
-        return mb + "MB";
-    }
-
-    private String asText(Object payload, int max) {
-        if (payload instanceof byte[] bytes) {
-            int len = Math.min(bytes.length, max);
-            String s = new String(bytes, 0, len, Charset.defaultCharset());
-            if (bytes.length > max) s += "…";
-            return s;
-        }
-        String s = Objects.toString(payload, "");
-        if (s.length() > max) return s.substring(0, max) + "…";
-        return s;
-    }
-
     private String color(String text, AnsiColor color) {
         return color(text, color, null);
     }
 
     private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
-        if (!props.isColorEnabled()) return text;
+        if (!this.props.isColorEnabled()) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);
         }

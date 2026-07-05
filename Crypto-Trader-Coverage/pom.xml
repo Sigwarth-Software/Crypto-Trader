@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <artifactId>crypto-trader-coverage</artifactId>
     <name>Crypto-Trader-Coverage</name>
     <packaging>pom</packaging>
@@ -88,6 +88,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>testing-infrastructure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -346,6 +350,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
                 <!-- Version, skip flag, etc., inherited from parent -->
                 <executions>
                     <execution>

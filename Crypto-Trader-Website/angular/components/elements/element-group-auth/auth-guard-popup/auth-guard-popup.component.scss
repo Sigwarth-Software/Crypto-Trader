@@ -1,5 +1,6 @@
 // auth-guard-popup.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 // Keyframes for slide/float from top, slight grow, longer pause, then reverse up
 @keyframes authGuardFloatDownUp {
@@ -27,12 +28,13 @@
 }
 
 auth-guard-popup {
-    @include flex(center, center, column);
-    background-color: red;
+    @include mixins.flex(center, center, column);
+    background-color: vars.$pure-white;
+    border: 1px solid rgba(90, 120, 170, 0.18);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+    border-radius: 24px;
 
-    @extend %simple-box-shadow;
-    @extend %softer-border-radius;
-    padding: $half-percent;
+    padding: vars.$one-percent;
     position: fixed;
     left: 50%;
     top: 0;
@@ -41,11 +43,18 @@ auth-guard-popup {
     pointer-events: none;
     will-change: transform, opacity;
     backface-visibility: hidden;
-    animation: authGuardFloatDownUp 4s cubic-bezier(0.22, 0.61, 0.36, 1)
+    animation: authGuardFloatDownUp 4s cubic-bezier(0.22, 1, 0.36, 1)
         forwards;
 
+    .auth-popup-content {
+        @include mixins.flex(center, center, row);
+        gap: 12px;
+    }
+
     ss-title {
-        color: $pure-white;
+        color: #0f172a;
         white-space: nowrap;
+        font-family: 'Inter', system-ui, 'Segoe UI', sans-serif;
+        font-weight: 600;
     }
 }

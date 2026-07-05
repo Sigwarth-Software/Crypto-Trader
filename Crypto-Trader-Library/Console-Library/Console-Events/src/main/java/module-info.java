@@ -8,6 +8,7 @@ open module org.cryptotrader.console.library.events {
     requires org.cryptotrader.universal.library.components;
     requires org.cryptotrader.console.library.components;
     requires org.cryptotrader.console.library.services;
-    
+    requires org.cryptotrader.universal.library.events;
+
     exports org.cryptotrader.console.library.events;
 }

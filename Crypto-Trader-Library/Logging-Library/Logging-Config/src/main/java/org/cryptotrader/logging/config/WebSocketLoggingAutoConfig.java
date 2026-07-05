@@ -1,6 +1,7 @@
 package org.cryptotrader.logging.config;
 
 import org.cryptotrader.logging.properties.CryptoTraderWebSocketLoggingProperties;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.cryptotrader.logging.websocket.StompChannelLoggingInterceptor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,9 @@ public class WebSocketLoggingAutoConfig implements WebSocketMessageBrokerConfigu
 
     @Bean
     @ConditionalOnMissingBean(StompChannelLoggingInterceptor.class)
-    public StompChannelLoggingInterceptor stompChannelLoggingInterceptor(CryptoTraderWebSocketLoggingProperties props) {
-        return new StompChannelLoggingInterceptor(props);
+    public StompChannelLoggingInterceptor stompChannelLoggingInterceptor(CryptoTraderWebSocketLoggingProperties props,
+                                                                         LogRedactor logRedactor) {
+        return new StompChannelLoggingInterceptor(props, logRedactor);
     }
 
     @Override

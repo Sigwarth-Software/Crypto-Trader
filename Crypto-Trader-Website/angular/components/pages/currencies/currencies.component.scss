@@ -1,11 +1,13 @@
 // currencies.component.scss
-@use '../../../styles/globals' as *;
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-placeholders' as placeholders;
 
 currencies {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
 
     .currency-list {
-        @include flex(center, center, column);
+        @include mixins.flex(center, center, column);
 
         @extend %fill-container;
     }

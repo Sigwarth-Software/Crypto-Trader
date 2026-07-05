@@ -1,0 +1,1 @@
+package org.cryptotrader.console.library.infrastructure.annotation;

@@ -1,18 +1,20 @@
 // home-anchor.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 home-anchor {
-    left: $one-percent;
+    left: vars.$one-percent;
     position: absolute;
 
-    @include square-size(calc($three-half-percent + $quarter-percent));
+    @include mixins.square-size(calc(#{vars.$three-half-percent} + #{vars.$quarter-percent}));
     box-shadow: none;
     transition: scale, 0.3s;
 
     @extend %soft-border-radius;
 
     // background-color: add-alpha($alabaster-stone, 0.7);
-    padding: $quarter-percent;
+    padding: vars.$quarter-percent;
 
     &:hover {
         cursor: pointer;

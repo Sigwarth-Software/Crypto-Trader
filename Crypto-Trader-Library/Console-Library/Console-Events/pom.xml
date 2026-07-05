@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>console-events</artifactId>
     <name>Console-Events</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Console event handling — manages user input events and terminal interaction triggers.
     </description>
@@ -196,6 +196,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>console-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

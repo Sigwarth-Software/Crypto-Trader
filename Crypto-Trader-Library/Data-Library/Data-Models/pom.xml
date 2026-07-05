@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-models</artifactId>
     <name>Data-Models</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Data entity models — defines database entities and data structures for market data.
     </description>
@@ -141,7 +141,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

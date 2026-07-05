@@ -1,7 +1,7 @@
 package org.cryptotrader.api.library.events.publisher
 
 import org.cryptotrader.api.library.events.ApiEventBinding
-import org.cryptotrader.universal.library.component.EventPublisher
+import org.cryptotrader.universal.library.events.EventPublisher
 import org.cryptotrader.api.library.events.UserRegisteredEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>security-events</artifactId>
     <name>Security-Events</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>
         Security-related event contracts — authentication events, anomaly alerts, and audit messages.
     </description>
@@ -249,7 +249,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -279,15 +279,15 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>security-repositories</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>security-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-services</artifactId>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,7 @@ package org.cryptotrader.api.library.services
 
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -62,7 +62,7 @@ class AuthContextServiceTest : CryptoTraderTest() {
         @Test
         @DisplayName("Should return true when auth context is populated")
         fun isAuthenticated_ReturnsTrue_WhenPopulated() {
-            val authentication = UsernamePasswordAuthenticationToken(testEmail, 
+            val authentication = UsernamePasswordAuthenticationToken(testEmail,
                 testToken,
                 listOf(SimpleGrantedAuthority(testUser)))
             SecurityContextHolder.getContext().authentication = authentication

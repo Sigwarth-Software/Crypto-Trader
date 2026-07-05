@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import {
     ActivatedRouteSnapshot,
     CanActivate,
@@ -6,48 +6,61 @@ import {
     MaybeAsync,
     Router,
     RouterStateSnapshot,
-} from '@angular/router';
-import { catchError, map, Observable, Subject } from 'rxjs';
+} from '@angular/router'
+import { catchError, map, Observable, Subject, Subscriber } from 'rxjs'
 
-import { LoggedInService } from '../net/http/auth/status/logged-in.service';
+import { LoggedInService } from '@http/auth/status/logged-in.service'
+import { AuthResponse } from '@models/auth/types'
 
+/**
+ * Watches for account redirects.
+ */
 @Injectable({
     providedIn: 'root',
 })
 export class AccountGuard implements CanActivate {
-    accountRedirect$: Subject<undefined> = new Subject<undefined>();
+    private readonly accountRedirect$: Subject<undefined> = new Subject<undefined>()
 
     constructor(
-        private loggedInService: LoggedInService,
-        private router: Router,
+        private readonly loggedInService: LoggedInService,
+        private readonly router: Router,
     ) {}
 
+    /**
+     * Gets the account redirect subject.
+     * @returns The account redirect subject.
+     */
     public getAccountRedirect(): Subject<undefined> {
-        return this.accountRedirect$;
+        return this.accountRedirect$
     }
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot,
+    /**
+     * Checks if the user is authorized to access the account page.
+     *
+     * @param _route
+     * @param _state
+     * @returns The authorization result.
+     */
+    public canActivate(
+        _route: ActivatedRouteSnapshot,
+        _state: RouterStateSnapshot,
     ): MaybeAsync<GuardResult> {
         return this.loggedInService.isLoggedIn().pipe(
-            map((authResponse) => {
+            map((authResponse: AuthResponse): boolean => {
                 if (authResponse.authorized) {
-                    this.accountRedirect$.next(undefined);
-                    this.router.navigate(['/account']);
-                    return false;
+                    this.accountRedirect$.next(undefined)
+                    void this.router.navigate(['/account'])
+                    return false
                 } else {
-                    return true;
+                    return true
                 }
             }),
-            catchError(() => {
-                void this.router
-                    .navigate(['/authorize'])
-                    .then((navigated) => {});
-                return new Observable<boolean>((observer) => {
-                    observer.next(false);
-                });
+            catchError((): Observable<boolean> => {
+                void this.router.navigate(['/authorize']).then((_navigated: boolean): void => {})
+                return new Observable<boolean>((observer: Subscriber<boolean>): void => {
+                    observer.next(false)
+                })
             }),
-        );
+        )
     }
 }

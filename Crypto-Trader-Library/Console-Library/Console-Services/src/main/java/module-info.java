@@ -21,14 +21,20 @@ open module org.cryptotrader.console.library.services {
     requires org.cryptotrader.console.library.communication;
     requires org.cryptotrader.api.library.communication;
     requires org.cryptotrader.console.library.models;
+    requires org.cryptotrader.console.library.scripts;
     requires org.cryptotrader.data.library.services;
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.console.library.components;
+    requires org.cryptotrader.console.library.infrastructure;
+    requires org.cryptotrader.console.library.repositories;
     requires org.cryptotrader.universal.library.models;
-    
+    requires org.cryptotrader.universal.library.services;
+    requires org.hibernate.orm.core;
+
     exports org.cryptotrader.console.library.services;
     exports org.cryptotrader.console.library.services.models;
+    exports org.cryptotrader.console.library.services.entity;
 }

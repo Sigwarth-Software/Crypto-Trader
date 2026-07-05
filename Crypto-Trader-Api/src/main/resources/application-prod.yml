@@ -1,5 +1,14 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+  ssl:
+    enabled: ${SERVER_SSL_ENABLED:false}
+    key-store: ${SERVER_SSL_KEY_STORE:}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE:PKCS12}
+    key-alias: ${SERVER_SSL_KEY_ALIAS:}
+    certificate: ${SERVER_SSL_CERTIFICATE:}
+    certificate-private-key: ${SERVER_SSL_CERTIFICATE_PRIVATE_KEY:}
 
 spring:
   application:
@@ -7,8 +16,8 @@ spring:
 
 security:
   jwt:
-    issuer: "https://sscryptotrader.com"
-    audience: "crypto-trader-api"
+    issuer: ${SECURITY_JWT_ISSUER:https://sscryptotrader.com}
+    audience: ${SECURITY_JWT_AUDIENCE:crypto-trader-api}
   auth:
     dpop:
       allowed-algs: "ES256"
@@ -16,10 +25,10 @@ security:
   refresh:
     cookie-name: __Host-rt
     cookie-samesite: Strict
-    cookie-secure: true
+    cookie-secure: ${SECURITY_REFRESH_COOKIE_SECURE:true}
 
 cryptotrader:
   api:
     cors:
-      allowed-origins: "https://sscryptotrader.com"
-      allowed-headers: "authorization,dpop,content-type"
+      allowed-origins: ${CRYPTO_TRADER_ALLOWED_ORIGINS:https://sscryptotrader.com}
+      allowed-headers: ${CRYPTO_TRADER_ALLOWED_HEADERS:authorization,dpop,content-type,x-client-app}

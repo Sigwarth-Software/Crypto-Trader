@@ -1,8 +1,8 @@
 // nav-console.component.ts
 import { Component } from '@angular/core';
 
-import { consoleElementLink } from '@assets/elementLinkAssets';
-import { consoleIcon } from '@assets/imageAssets';
+import { consoleElementLink } from '@assets/element-link.assets';
+import { consoleIcon } from '@assets/image.assets';
 
 @Component({
     selector: 'nav-console',

@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <artifactId>security-repositories</artifactId>
     <name>Security-Repositories</name>
     <description>
@@ -229,7 +229,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -256,10 +256,6 @@
         <dependency>
             <groupId>com.google.crypto.tink</groupId>
             <artifactId>tink</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>security-infrastructure</artifactId>
         </dependency>
     </dependencies>
 

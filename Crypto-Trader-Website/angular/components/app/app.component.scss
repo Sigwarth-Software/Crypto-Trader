@@ -1,6 +1,9 @@
 // app.component.scss
-@use '../../styles/globals' as *;
-@use '../../styles/sigwarth-software-placeholders' as *;
+@use '../../styles/global-variables' as vars;
+@use '../../styles/global-mixins' as mixins;
+@use '../../styles/global-functions' as funcs;
+@use '../../styles/global-placeholders' as placeholders;
+@use '../../styles/sigwarth-software-placeholders' as sig-placeholders;
 @use '@angular/material' as mat;
 
 html {
@@ -10,67 +13,67 @@ html {
                 primary: mat.$azure-palette,
                 tertiary: mat.$blue-palette,
             ),
-            typography: $jetbrains-mono-font,
+            typography: vars.$jetbrains-mono-font,
             density: 2,
         )
     );
 }
 
 h1 {
-    font-size: $h1-font-size;
+    font-size: vars.$h1-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 h2 {
-    font-size: $h2-font-size;
+    font-size: vars.$h2-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 h3 {
-    font-size: $h3-font-size;
+    font-size: vars.$h3-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 h4 {
-    font-size: $h4-font-size;
+    font-size: vars.$h4-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 h5 {
-    font-size: $h5-font-size;
+    font-size: vars.$h5-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 h6 {
-    font-size: $h6-font-size;
+    font-size: vars.$h6-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 p {
-    font-size: $p-font-size;
+    font-size: vars.$p-font-size;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 body {
-    @include flex(center, center, column);
-    @include square-size(100%);
-    @include basic-margin-padding(0, 0);
+    @include mixins.flex(center, center, column);
+    @include mixins.square-size(100%);
+    @include mixins.basic-margin-padding(0, 0);
     min-height: 100vh;
 
     @extend %sigwarth-software-app;
 
     app {
-        font-family: $jetbrains-mono-font;
+        font-family: vars.$jetbrains-mono-font;
         width: 100%;
-        @include flex(center, center, column);
-        @include basic-margin-padding(0, 0);
+        @include mixins.flex(center, center, column);
+        @include mixins.basic-margin-padding(0, 0);
         min-height: 100vh;
         // background-color: #FFFFFF;
         // background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3CradialGradient id='a' gradientUnits='objectBoundingBox'%3E%3Cstop offset='0' stop-color='%23A6BDD9'/%3E%3Cstop offset='1' stop-color='%23FFFFFF'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='0' y1='750' x2='1550' y2='750'%3E%3Cstop offset='0' stop-color='%23d3deec'/%3E%3Cstop offset='1' stop-color='%23FFFFFF'/%3E%3C/linearGradient%3E%3Cpath id='s' fill='url(%23b)' d='M1549.2 51.6c-5.4 99.1-20.2 197.6-44.2 293.6c-24.1 96-57.4 189.4-99.3 278.6c-41.9 89.2-92.4 174.1-150.3 253.3c-58 79.2-123.4 152.6-195.1 219c-71.7 66.4-149.6 125.8-232.2 177.2c-82.7 51.4-170.1 94.7-260.7 129.1c-90.6 34.4-184.4 60-279.5 76.3C192.6 1495 96.1 1502 0 1500c96.1-2.1 191.8-13.3 285.4-33.6c93.6-20.2 185-49.5 272.5-87.2c87.6-37.7 171.3-83.8 249.6-137.3c78.4-53.5 151.5-114.5 217.9-181.7c66.5-67.2 126.4-140.7 178.6-218.9c52.3-78.3 96.9-161.4 133-247.9c36.1-86.5 63.8-176.2 82.6-267.6c18.8-91.4 28.6-184.4 29.6-277.4c0.3-27.6 23.2-48.7 50.8-48.4s49.5 21.8 49.2 49.5c0 0.7 0 1.3-0.1 2L1549.2 51.6z'/%3E%3Cg id='g'%3E%3Cuse href='%23s' transform='scale(0.12) rotate(60)'/%3E%3Cuse href='%23s' transform='scale(0.2) rotate(10)'/%3E%3Cuse href='%23s' transform='scale(0.25) rotate(40)'/%3E%3Cuse href='%23s' transform='scale(0.3) rotate(-20)'/%3E%3Cuse href='%23s' transform='scale(0.4) rotate(-30)'/%3E%3Cuse href='%23s' transform='scale(0.5) rotate(20)'/%3E%3Cuse href='%23s' transform='scale(0.6) rotate(60)'/%3E%3Cuse href='%23s' transform='scale(0.7) rotate(10)'/%3E%3Cuse href='%23s' transform='scale(0.835) rotate(-40)'/%3E%3Cuse href='%23s' transform='scale(0.9) rotate(40)'/%3E%3Cuse href='%23s' transform='scale(1.05) rotate(25)'/%3E%3Cuse href='%23s' transform='scale(1.2) rotate(8)'/%3E%3Cuse href='%23s' transform='scale(1.333) rotate(-60)'/%3E%3Cuse href='%23s' transform='scale(1.45) rotate(-30)'/%3E%3Cuse href='%23s' transform='scale(1.6) rotate(10)'/%3E%3C/g%3E%3C/defs%3E%3Cg %3E%3Cg transform=''%3E%3Ccircle fill='url(%23a)' r='3000'/%3E%3Cg opacity='0.5'%3E%3Ccircle fill='url(%23a)' r='2000'/%3E%3Ccircle fill='url(%23a)' r='1800'/%3E%3Ccircle fill='url(%23a)' r='1700'/%3E%3Ccircle fill='url(%23a)' r='1651'/%3E%3Ccircle fill='url(%23a)' r='1450'/%3E%3Ccircle fill='url(%23a)' r='1250'/%3E%3Ccircle fill='url(%23a)' r='1175'/%3E%3Ccircle fill='url(%23a)' r='900'/%3E%3Ccircle fill='url(%23a)' r='750'/%3E%3Ccircle fill='url(%23a)' r='500'/%3E%3Ccircle fill='url(%23a)' r='380'/%3E%3Ccircle fill='url(%23a)' r='250'/%3E%3C/g%3E%3Cg transform=''%3E%3Cuse href='%23g' transform='rotate(10)'/%3E%3Cuse href='%23g' transform='rotate(120)'/%3E%3Cuse href='%23g' transform='rotate(240)'/%3E%3C/g%3E%3Ccircle fill-opacity='0.64' fill='url(%23a)' r='3000'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -112,11 +115,11 @@ body {
             width: 100%;
             flex: 1;
 
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
         }
 
         .scroll-container {
-            @include flex(flex-start, stretch, column);
+            @include mixins.flex(flex-start, stretch, column);
 
             // @extend %nav-bar-padding-top;
             width: 100%;
@@ -134,7 +137,7 @@ body {
         terms-of-service,
         trade,
         trader {
-            @include flex(flex-start, center, column);
+            @include mixins.flex(flex-start, center, column);
             width: 100%;
             box-sizing: border-box;
             flex: 1;
@@ -148,17 +151,17 @@ body {
 }
 
 .general-dropdown-list {
-    width: simple-calc(15, 1);
+    width: funcs.simple-calc(15, 1);
 
-    @include flex(space-around, center, column);
-    border-radius: simplest-calc(0.5);
+    @include mixins.flex(space-around, center, column);
+    border-radius: funcs.simplest-calc(0.5);
 
-    $box-shadow-size: simplest-calc(0.25);
-    box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
+    $box-shadow-size: funcs.simplest-calc(0.25);
+    box-shadow: vars.$blue-gray $box-shadow-size $box-shadow-size 0 0;
 }
 
 .dropdown-selection {
-    $border-radius-bottom: simplest-calc(0.5);
+    $border-radius-bottom: funcs.simplest-calc(0.5);
     border-radius: 0 0 $border-radius-bottom $border-radius-bottom;
     width: 100%;
 
@@ -167,22 +170,22 @@ body {
     /* border-right: var(--muted-blue) calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid; */
 
     /* border-bottom: var(--muted-blue) calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid; */
-    background-color: $sunbeam-yellow;
+    background-color: vars.$sunbeam-yellow;
 }
 
 .dropdown-item {
-    background-color: $sunbeam-yellow;
-    padding: simple-calc(0.5, 0.25);
-    border-radius: simplest-calc(0.5);
+    background-color: vars.$sunbeam-yellow;
+    padding: funcs.simple-calc(0.5, 0.25);
+    border-radius: funcs.simplest-calc(0.5);
 }
 
 .dropdown-option {
-    @include flex(space-between, center, row);
-    padding: simple-calc(0.5, 0.25);
+    @include mixins.flex(space-between, center, row);
+    padding: funcs.simple-calc(0.5, 0.25);
     transition: background-color, box-shadow, 0.3s;
 
     &:hover img {
-        box-shadow: $blue-gray 0 0 simplest-calc(0.25);
+        box-shadow: vars.$blue-gray 0 0 funcs.simplest-calc(0.25);
     }
 
     img {
@@ -192,24 +195,24 @@ body {
 }
 
 .dropdown-option-text {
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 .dropdown-with-caret {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
 }
 
 .dropdown-caret {
-    background-color: $sunbeam-yellow;
+    background-color: vars.$sunbeam-yellow;
 
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 .dropdown-caret img {
-    $dropdown-caret-size: simple-calc(2, 0.5);
+    $dropdown-caret-size: funcs.simple-calc(2, 0.5);
 
-    @include size($dropdown-caret-size, $dropdown-caret-size);
-    @include basic-margin-padding(0, 0);
+    @include mixins.size($dropdown-caret-size, $dropdown-caret-size);
+    @include mixins.basic-margin-padding(0, 0);
 }
 
 .subtitle-text {
@@ -226,27 +229,27 @@ body {
 }
 
 .round-bottom {
-    $border-bottom-radius: simplest-calc(0.5);
+    $border-bottom-radius: funcs.simplest-calc(0.5);
     border-radius: 0 0 $border-bottom-radius $border-bottom-radius;
 }
 
 .square-bottom {
-    $border-radius-top: simplest-calc(0.5);
+    $border-radius-top: funcs.simplest-calc(0.5);
     border-radius: $border-radius-top $border-radius-top 0 0;
 }
 
 .terms-agree-checkbox {
-    margin: 0 simplest-calc(0.5) 0 0;
+    margin: 0 funcs.simplest-calc(0.5) 0 0;
 }
 
 .agree-terms-div {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
 }
 
 .terms-agree-text {
     text-decoration: underline;
-    margin: simplest-calc(0.55) simplest-calc(1) 0 0;
-    height: simple-calc(2, 0.7);
+    margin: funcs.simplest-calc(0.55) funcs.simplest-calc(1) 0 0;
+    height: funcs.simple-calc(2, 0.7);
 }
 
 .popup-text {
@@ -258,12 +261,12 @@ body {
 }
 
 .thin-text {
-    @include basic-margin-padding(0, 0);
+    @include mixins.basic-margin-padding(0, 0);
     font-weight: 300;
 }
 
 .simple-space-inline-div {
-    @include flex(space-around, center, row);
+    @include mixins.flex(space-around, center, row);
 }
 
 .hidden {

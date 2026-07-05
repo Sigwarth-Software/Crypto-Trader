@@ -9,11 +9,11 @@
         orders, and platform operations.
     </description>
     <artifactId>crypto-trader-api</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
@@ -111,6 +111,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>api-events</artifactId>
         </dependency>
         <dependency>
@@ -133,6 +137,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-communication</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -228,7 +236,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -289,6 +297,23 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -306,6 +331,7 @@
                             <args>
                                 <!-- Bind to JDK 23 APIs while producing stable bytecode -->
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -317,6 +343,7 @@
                             <jvmTarget>23</jvmTarget>
                             <args>
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -366,7 +393,31 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.cryptotrader.api.CryptoTraderApiApplication</mainClass>
+                    <jvmArguments>-javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring-framework.version}/spring-instrument-${spring-framework.version}.jar</jvmArguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-spring-instrument</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.springframework</groupId>
+                                    <artifactId>spring-instrument</artifactId>
+                                    <outputDirectory>${project.build.directory}/agents</outputDirectory>
+                                    <destFileName>spring-instrument.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -400,8 +451,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                    <useModulePath>false</useModulePath>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading -javaagent:${project.build.directory}/agents/spring-instrument.jar</argLine>
                 </configuration>
             </plugin>
             <plugin>

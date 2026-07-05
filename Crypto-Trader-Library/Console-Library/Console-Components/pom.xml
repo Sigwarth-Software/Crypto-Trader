@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>console-components</artifactId>
     <name>Console-Components</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         Console components — provides reusable CLI interface elements and terminal logic.
     </description>
@@ -129,7 +129,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -168,6 +168,11 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
     </dependencies>
     <build>

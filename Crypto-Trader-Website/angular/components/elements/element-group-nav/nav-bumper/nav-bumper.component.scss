@@ -1,10 +1,11 @@
 // nav-bumper.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
 
 nav-bumper {
-    @include flex(flex-end, center, row);
+    @include mixins.flex(flex-end, center, row);
     position: absolute;
-    top: $one-percent;
-    right: $one-percent;
-    gap: $one-percent;
+    top: vars.$one-percent;
+    right: vars.$one-percent;
+    gap: vars.$one-percent;
 }

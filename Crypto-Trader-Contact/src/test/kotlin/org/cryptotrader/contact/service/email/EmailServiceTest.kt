@@ -5,9 +5,9 @@ import com.icegreen.greenmail.util.ServerSetup
 import org.assertj.core.api.Assertions.*
 import org.cryptotrader.contact.comm.email.request.EmailRequest
 import org.cryptotrader.contact.natives.normalized
-import org.cryptotrader.contact.service.email.template.Template
+import org.cryptotrader.contact.service.email.template.EmailTemplate
 import org.cryptotrader.contact.service.email.template.getExpectedWelcomeHtml
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -61,7 +61,7 @@ class EmailServiceTest @Autowired constructor(
                 "test@local",
                 "Testing Crypto Trader",
                 "Hello from Spring Boot in Kotlin",
-                Template.WELCOME
+                EmailTemplate.WELCOME
             )
             emailService.send(request)
             val messages = greenMail.receivedMessages

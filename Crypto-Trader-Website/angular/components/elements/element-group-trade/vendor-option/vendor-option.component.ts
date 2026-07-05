@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { starIcon } from '@assets/imageAssets';
+import { starIcon } from '@assets/image.assets';
 import { VendorOption } from '@models/vendor/VendorOption';
 
 @Component({

@@ -10,7 +10,7 @@ import org.cryptotrader.api.library.communication.request.LoginRequest;
 import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
-import org.cryptotrader.test.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

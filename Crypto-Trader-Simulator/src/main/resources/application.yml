@@ -1,0 +1,67 @@
+server:
+    port: 8096
+spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  application:
+    name: crypto-trader-simulator
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_USER}
+    password: ${PSQL_PW}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+    function:
+      definition: simulatorConsumer;detailedSimulatorConsumer
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+            max.request.size: 524288000
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
+            fetch.max.bytes: 524288000
+            max.partition.fetch.bytes: 524288000
+        bindings:
+          simulatorConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: simulator-service-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+      defaultBinder: kafka
+      bindings:
+        simulatorConsumer-in-0:
+          destination: ct.simulator.requests
+          group: crypto-trader-simulator-group
+          contentType: application/vnd.cryptotrader.encrypted+json
+        portfolioSimulationResponses-out-0:
+          destination: ct.simulator.responses
+          contentType: application/vnd.cryptotrader.encrypted+json
+        detailedSimulatorConsumer-in-0:
+          destination: ct.simulator.detailed.requests
+          group: crypto-trader-simulator-detailed-group
+          contentType: application/vnd.cryptotrader.encrypted+json
+        detailedPortfolioSimulationResponses-out-0:
+          destination: ct.simulator.detailed.responses
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}

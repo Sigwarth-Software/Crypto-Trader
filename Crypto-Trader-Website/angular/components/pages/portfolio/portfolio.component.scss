@@ -1,22 +1,24 @@
 // portfolio.component.scss
-@use '../../../styles/globals' as *;
-@use '../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 portfolio {
     .portfolio-section-container {
-        @include flex(space-around, center, row);
+        @include mixins.flex(space-around, center, row);
 
         @extend %fill-container;
 
         .portfolio-section-div {
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
 
             @extend %fill-container;
         }
     }
 
     hr {
-        border: $very-thin-border $charcoal solid;
+        border: vars.$very-thin-border vars.$charcoal solid;
         width: 95%;
     }
 }

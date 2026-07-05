@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-data</artifactId>
     <name>Crypto-Trader-Data</name>
-    <version>0.0.4</version>
+    <version>0.1.0</version>
     <description>
         Data ingestion and management service — connectors, ETL pipelines, and storage for market and account data.
     </description>
@@ -122,12 +122,20 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>logging-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>logging-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -147,8 +155,21 @@
             <artifactId>api-config</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
@@ -158,7 +179,31 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.cryptotrader.data.CryptoTraderDataApplication</mainClass>
+                    <jvmArguments>-javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring-framework.version}/spring-instrument-${spring-framework.version}.jar</jvmArguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-spring-instrument</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.springframework</groupId>
+                                    <artifactId>spring-instrument</artifactId>
+                                    <outputDirectory>${project.build.directory}/agents</outputDirectory>
+                                    <destFileName>spring-instrument.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -191,8 +236,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                    <useModulePath>false</useModulePath>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading -javaagent:${project.build.directory}/agents/spring-instrument.jar</argLine>
                 </configuration>
             </plugin>
             <plugin>

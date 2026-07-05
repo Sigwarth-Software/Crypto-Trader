@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -50,25 +50,32 @@
         <module>Data-Library/Data-Communication</module>
         <module>Data-Library/Data-Components</module>
         <module>Universal-Library</module>
+        <module>Universal-Library/Universal-Communication</module>
         <module>Universal-Library/Universal-Config</module>
         <module>Universal-Library/Universal-Models</module>
         <module>Universal-Library/Universal-Extensions</module>
         <module>Universal-Library/Universal-Components</module>
+        <module>Universal-Library/Universal-Events</module>
+        <module>Universal-Library/Universal-Services</module>
         <module>Console-Library</module>
         <module>Console-Library/Console-Models</module>
         <module>Console-Library/Console-Communication</module>
         <module>Console-Library/Console-Services</module>
         <module>Console-Library/Console-Components</module>
         <module>Console-Library/Console-Events</module>
-        <module>Agent-Library</module>
+        <module>Console-Library/Console-Infrastructure</module>
+        <module>Console-Library/Console-Repositories</module>
+        <module>Console-Library/Console-Scripts</module>
         <module>Chat-Library</module>
         <module>Chat-Library/Chat-Config</module>
+        <module>Agent-Library</module>
         <module>Agent-Library/Agent-Config</module>
         <module>Agent-Library/Agent-Communication</module>
         <module>Agent-Library/Agent-Components</module>
         <module>Agent-Library/Agent-Models</module>
         <module>Agent-Library/Agent-Infrastructure</module>
         <module>Engine-Library</module>
+        <module>Engine-Library/Engine-Models</module>
         <module>Engine-Library/Engine-Services</module>
         <module>Logging-Library</module>
         <module>Logging-Library/Logging-Config</module>
@@ -77,6 +84,7 @@
         <module>Logging-Library/Logging-Models</module>
         <module>Logging-Library/Logging-Communication</module>
         <module>Logging-Library/Logging-Repositories</module>
+        <module>Logging-Library/Logging-Scripts</module>
         <module>Logging-Library/Logging-Services</module>
         <module>Health-Library</module>
         <module>Health-Library/Health-Models</module>
@@ -91,6 +99,17 @@
         <module>Chat-Library/Chat-Components</module>
         <module>Chat-Library/Chat-Models</module>
         <module>Chat-Library/Chat-Repositories</module>
+        <module>Simulator-Library</module>
+        <module>Simulator-Library/Simulator-Models</module>
+        <module>Simulator-Library/Simulator-Scripts</module>
+        <module>Simulator-Library/Simulator-Services</module>
+        <module>Simulator-Library/Simulator-Repositories</module>
+        <module>Simulator-Library/Simulator-Events</module>
+        <module>Simulator-Library/Simulator-Config</module>
+        <module>Simulator-Library/Simulator-Communication</module>
+        <module>Testing-Library</module>
+        <module>Testing-Library/Testing-Infrastructure</module>
+        <module>Testing-Library/Testing-Scripts</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
@@ -98,7 +117,7 @@
     <description>
         Shared libraries for Crypto Trader, including models, components, communication, and repositories.
     </description>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

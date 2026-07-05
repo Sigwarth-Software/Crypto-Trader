@@ -1,0 +1,46 @@
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
+@use '../global-variables' as vars;
+@use '../global-mixins' as mixins;
+@use '../global-functions' as funcs;
+
+%light-logo-gradient {
+    background-image: gradient-vars.$light-logo;
+}
+
+%light-logo-gradient-text {
+    background: gradient-vars.$light-logo-webkit;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px funcs.add-alpha(black, 0.1);
+}
+
+%regular-logo-gradient {
+    background-image: gradient-vars.$regular-logo;
+}
+
+%regular-logo-gradient-text {
+    background: gradient-vars.$regular-logo-webkit;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px funcs.add-alpha(black, 0.1);
+}
+
+%signature-brand-gradient-text {
+    @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
+    text-shadow: funcs.add-alpha(black, 0.1) vars.$quarter-percent vars.$quarter-percent;
+}
+
+%signature-brand-gradient-text-small-reflection {
+    @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
+
+    $shadow-offset: calc(#{vars.$quarter-percent} / 2);
+    text-shadow: funcs.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
+}
+
+%signature-brand-gradient-text-smallest-reflection {
+    @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
+
+    $shadow-offset: calc(#{vars.$quarter-percent} / 4);
+    text-shadow: funcs.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
+}

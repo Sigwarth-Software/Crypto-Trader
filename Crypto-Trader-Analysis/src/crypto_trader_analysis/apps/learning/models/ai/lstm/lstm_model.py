@@ -24,10 +24,10 @@ class LstmModel(BaseModel):
         self.model = Sequential([
             Input(shape=(self.sequence_length, self.dimension)),
             LSTM(150, return_sequences=True, recurrent_activation="sigmoid",
-                 use_bias=True, unroll=False),
+                 use_bias=True, unroll=True),
             Dropout(0.2),
             LSTM(100, recurrent_activation="sigmoid", use_bias=True,
-                 unroll=False),
+                 unroll=True),
             Dense(50, activation="relu"),
             Dense(1)
         ])

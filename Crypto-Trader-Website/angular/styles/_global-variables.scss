@@ -1,10 +1,11 @@
-@use 'global-functions' as *;
-@use '@theoliverlear/styles-suite/sigwarth-variables' as *;
+@use 'global-functions' as funcs;
+@use '@theoliverlear/styles-suite/sigwarth-variables' as ss-vars;
+@forward '@theoliverlear/styles-suite/sigwarth-variables';
 
 $pure-white: #fff;
 $air-blue: #d6e6f3;
 $ivory-white: #f4f0e0;
-$off-white: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
+$off-white: funcs.add-alpha-opaque(ss-vars.$alabaster-stone, 0.85, $pure-white);
 $soft-grey: hsl(180deg 10% 74%);
 $muted-blue: rgb(64 116 168 / 100%);
 $muted-blue-half-opacity: rgb(64 116 168 / 50%);

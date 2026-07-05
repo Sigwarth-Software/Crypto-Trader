@@ -3,12 +3,14 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AngularSuiteModule } from '@theoliverlear/angular-suite';
 import { BaseChartDirective } from 'ng2-charts';
 
-import { ChartComponent } from '@components/elements/element-group-chart/chart/chart.component';
+import { LineChartComponent } from '@components/elements/element-group-chart/line-chart/line-chart.component';
 import { LiveChartComponent } from '@components/elements/element-group-chart/live-chart/live-chart.component';
+import { SparklineComponent } from '@components/elements/element-group-chart/sparkline-chart/sparkline-chart.component';
 
 const chartComponents = [
-    ChartComponent,
+    LineChartComponent,
     LiveChartComponent,
+    SparklineComponent,
 ];
 
 @NgModule({

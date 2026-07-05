@@ -5,16 +5,18 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory
 import org.cryptotrader.api.library.entity.trade.TradeEvent
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.repository.TradeEventRepository
+import org.cryptotrader.api.library.services.entity.trade.TradeEventEntityService
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
 class TradeEventService(
     val tradeEventRepository: TradeEventRepository,
+    val tradeEventEntityService: TradeEventEntityService,
     val portfolioService: PortfolioService
 ) {
     fun saveTradeEvent(tradeEvent: TradeEvent): TradeEvent {
-        return this.tradeEventRepository.save(tradeEvent)
+        return this.tradeEventEntityService.save(tradeEvent)
     }
 
     fun getAssetByTradeEvent(tradeEvent: TradeEvent): PortfolioAsset {

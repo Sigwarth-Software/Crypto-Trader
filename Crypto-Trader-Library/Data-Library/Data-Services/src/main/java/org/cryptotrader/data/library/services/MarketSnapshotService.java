@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -34,18 +35,19 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     public void initKnownColumns() {
         try {
             final String sql = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE UPPER(table_name) = 'MARKET_SNAPSHOTS'";
-            final List<String> existing = jdbcTemplate.queryForList(sql, String.class);
+            final List<String> existing = this.jdbcTemplate.queryForList(sql, String.class);
             if (existing != null) {
                 this.knownColumns.addAll(existing);
             }
-        } catch (DataAccessException e) {
-            log.warn("Could not load known columns (table may not exist yet): {}", e.getMessage());
+        } catch (DataAccessException exception) {
+            log.warn("Could not load known columns (table may not exist yet): {}", exception.getMessage());
         }
     }
 
     //=============================-Methods-==================================
 
     //---------------------------Save-Snapshot--------------------------------
+    @TimeTracked(expectedMillis = 5, shouldPersist = true)
     @Transactional
     public void saveSnapshot(Map<String, Currency> currencies) {
         if (!isValidCurrencyMap(currencies)) {

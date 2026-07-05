@@ -8,6 +8,7 @@ import { DpopKeyService } from '@auth/dpop/dpop-key.service';
 import { DpopProofService } from '@auth/dpop/dpop-proof.service';
 import { TokenStorageService } from '@auth/token-storage.service';
 import { AuthResponse, PossibleToken } from '@models/auth/types';
+import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script';
 
 import { LoggedInService } from '../status/logged-in.service';
 
@@ -34,7 +35,7 @@ export class LogoutService extends HttpClientService<any, AuthResponse> {
                 const current: PossibleToken = this.tokenStore.getToken();
                 const dpop: string = await this.proofs.buildProof(
                     'POST',
-                    LogoutService.URL,
+                    resolveAbsoluteHttpUrl(LogoutService.URL),
                 );
                 let headers: HttpHeaders = new HttpHeaders({
                     DPoP: dpop,

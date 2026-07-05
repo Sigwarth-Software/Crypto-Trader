@@ -42,6 +42,7 @@ open module org.cryptotrader.console {
 
     requires spring.webmvc;
     requires org.cryptotrader.universal.library.components;
+    requires org.cryptotrader.universal.library.events;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
 
@@ -49,16 +50,18 @@ open module org.cryptotrader.console {
     requires com.auth0.jwt;
     requires org.cryptotrader.universal.library.models;
     requires spring.data.commons;
-    
+
 
     requires org.cryptotrader.console.library.communication;
     requires org.cryptotrader.console.library.components;
     requires org.cryptotrader.console.library.models;
     requires org.cryptotrader.console.library.services;
     requires org.cryptotrader.console.library.events;
-    
+    requires org.cryptotrader.console.library.repositories;
+
     requires org.cryptotrader.data.library.services;
     requires org.cryptotrader.data.library.components;
-    
+    requires org.cryptotrader.security.library.config;
+
     exports org.cryptotrader.console;
 }

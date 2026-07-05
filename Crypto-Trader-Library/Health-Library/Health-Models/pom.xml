@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -15,7 +15,7 @@
     <description>
         Domain models and entities for Crypto Trader health monitoring.
     </description>
-    <version>0.0.2</version>
+    <version>0.1.0</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -56,6 +56,10 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
         </dependency>
     </dependencies>
 

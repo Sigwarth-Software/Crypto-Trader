@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-extensions</artifactId>
     <name>Api-Extensions</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         API extension modules — provides additional functionality and integrations for the core Crypto Trader API.
     </description>

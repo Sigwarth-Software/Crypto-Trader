@@ -1,4 +1,4 @@
-import { ImageAsset } from '@assets/imageAssets';
+import { ImageAsset } from '@assets/image.assets';
 
 export interface ModuleInfo {
     name: string;

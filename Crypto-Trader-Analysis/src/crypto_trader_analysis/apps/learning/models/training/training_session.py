@@ -29,6 +29,7 @@ from src.crypto_trader_analysis.apps.learning.models.prediction.predictions impo
 from src.crypto_trader_analysis.apps.learning.models.training.multi_layer_training_model import \
     MultiLayerTrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
+from src.crypto_trader_analysis.core.http_client import post_json
 
 
 @define
@@ -394,9 +395,11 @@ class TrainingSession:
         payload: dict = self.to_json()
         logging.info("Sending training session to server...")
         try:
-            import requests
-            host: str = settings.CT_DATA_HOST
-            response = requests.post(f"http://{host}:8085/data/training-session/add", json=payload, verify=False)
+            response = post_json(
+                settings.CT_DATA_BASE_URL,
+                "/data/training-session/add",
+                payload,
+            )
             if response.status_code != 200:
                 logging.error(f"Failed to send training session to server. Status code: {response.status_code}")
                 return

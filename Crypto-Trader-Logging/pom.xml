@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-logging</artifactId>
     <name>Crypto-Trader-Logging</name>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <description>
         Centralized logging and observability — structured logs, error tracking, and operational dashboards.
     </description>
@@ -79,6 +79,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-loader-tools</artifactId>
             <scope>runtime</scope>
@@ -115,7 +119,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -1,6 +1,6 @@
 {
     "name": "@Sigwarth-Software/crypto-trader-website",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "The web interface for Crypto Trader.",
     "type": "module",
     "main": "index.js",
@@ -20,6 +20,7 @@
         "prestart": "node scripts/generate-env.mjs",
         "pretest": "node scripts/generate-env.mjs",
         "start": "ng serve",
+        "start:https": "ng serve --configuration development --ssl true --ssl-cert ../certs/localhost.pem --ssl-key ../certs/localhost-key.pem --proxy-config proxy.local-https.conf.json",
         "serve": "ng serve",
         "build": "ng build --configuration production",
         "build:dev": "ng build --configuration development",

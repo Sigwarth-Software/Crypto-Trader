@@ -1,5 +1,7 @@
 server:
   port: 18082
+  ssl:
+    enabled: false
 
 spring:
   datasource:

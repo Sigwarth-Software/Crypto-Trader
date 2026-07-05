@@ -5,7 +5,7 @@ import {
     adminModuleIcon,
     consoleModuleIcon,
     mobileModuleIcon,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 import { ModuleInfo } from '@models/module/ModuleInfo';
 @Component({
     selector: 'interface-promo',

@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-communication</artifactId>
     <name>Api-Communication</name>
     <description>API communication contracts (DTOs) and supporting utilities for Crypto Trader.</description>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -151,60 +151,4 @@
             </plugin>
         </plugins>
     </build>
-
-<!--    TODO: This is temporary. Use desugaring instead. -->
-    <profiles>
-        <profile>
-            <id>mobile</id>
-            <properties>
-                <java.release>21</java.release>
-                <kotlin.jvm.target>21</kotlin.jvm.target>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-plugin</artifactId>
-                        <version>2.2.0</version>
-                        <executions>
-                            <execution>
-                                <id>compile</id>
-                                <configuration>
-                                    <jvmTarget>21</jvmTarget>
-                                    <args>
-                                        <arg>-Xjdk-release=21</arg>
-                                    </args>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>test-compile</id>
-                                <configuration>
-                                    <jvmTarget>21</jvmTarget>
-                                    <args>
-                                        <arg>-Xjdk-release=21</arg>
-                                    </args>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <jvmTarget>21</jvmTarget>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>mobile-jar</id>
-                                <goals><goal>jar</goal></goals>
-                                <configuration>
-                                    <classifier>mobile</classifier>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

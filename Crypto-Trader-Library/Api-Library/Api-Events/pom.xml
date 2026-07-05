@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>api-events</artifactId>
     <name>Api-Events</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>
         Event contracts and payloads for inter-service messaging (Kafka) across Crypto Trader APIs.
     </description>
@@ -208,6 +208,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
     </dependencies>
 

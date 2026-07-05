@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import jakarta.annotation.security.PermitAll;
 import org.cryptotrader.api.library.services.rsa.RsaKeyService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ import java.util.Map;
  * - e: exponent (base64url)
  */
 @RestController
+@PermitAll
 public class JwksController {
     private final RsaKeyService rsaKeyService;
 

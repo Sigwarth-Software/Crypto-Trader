@@ -1,16 +1,16 @@
 package org.cryptotrader.engine.services
 
+import jakarta.persistence.EntityManager
 import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory
-import org.cryptotrader.api.library.model.trade.CryptoTrader
 import org.cryptotrader.api.library.model.trade.Trader
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.api.library.services.TradeEventService
 import org.cryptotrader.data.library.entity.currency.Currency
-import org.cryptotrader.engine.library.services.PortfolioTraderService
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.engine.library.services.PortfolioTradeExecutionService
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
-import org.springframework.transaction.PlatformTransactionManager
 import java.lang.reflect.Method
 import java.time.LocalDateTime
 
@@ -31,22 +30,18 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
 
     private lateinit var portfolioService: PortfolioService
     private lateinit var tradeEventService: TradeEventService
-    private lateinit var cryptoTrader: CryptoTrader
-    private lateinit var transactionManager: PlatformTransactionManager
-
-    private lateinit var service: PortfolioTraderService
+    private lateinit var entityManager: EntityManager
+    private lateinit var service: PortfolioTradeExecutionService
 
     @BeforeEach
     fun setup() {
         this.portfolioService = mock(PortfolioService::class.java)
         this.tradeEventService = mock(TradeEventService::class.java)
-        this.cryptoTrader = mock(CryptoTrader::class.java)
-        this.transactionManager = mock(PlatformTransactionManager::class.java)
-        this.service = PortfolioTraderService(
-            portfolioService,
-            tradeEventService,
-            cryptoTrader,
-            transactionManager
+        this.entityManager = mock(EntityManager::class.java)
+        this.service = PortfolioTradeExecutionService(
+            this.portfolioService,
+            this.tradeEventService,
+            this.entityManager
         )
     }
 
@@ -149,7 +144,7 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
     }
 
     private fun invokeSaveAssetChanges(trader: Trader, asset: PortfolioAsset, tradeOccurred: Boolean) {
-        val method: Method = PortfolioTraderService::class.java.getDeclaredMethod(
+        val method: Method = PortfolioTradeExecutionService::class.java.getDeclaredMethod(
             "saveAssetChanges",
             Trader::class.java,
             PortfolioAsset::class.java,

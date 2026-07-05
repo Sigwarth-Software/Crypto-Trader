@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>admin-models</artifactId>
     <name>Admin-Models</name>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>
         Domain models for the admin console — users, roles, jobs, configuration, and audit entities.
     </description>
@@ -173,6 +173,10 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>

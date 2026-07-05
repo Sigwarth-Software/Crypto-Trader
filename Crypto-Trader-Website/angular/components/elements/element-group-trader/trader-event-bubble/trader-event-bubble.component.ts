@@ -6,8 +6,8 @@ import {
     defaultCurrencyIcon,
     ImageAsset,
     paperIcon,
-} from '@assets/imageAssets';
-import { defaultTradeEvent } from '@assets/tradeEventAssets';
+} from '@assets/image.assets';
+import { defaultTradeEvent } from '@assets/trade-event.assets';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { TimeFormatterService } from '@ui/time-formatter.service';
 import { TradeEvent } from '@models/trader/types';
@@ -113,6 +113,16 @@ export class TraderEventBubbleComponent {
 
     getNoChangeText(): string {
         return 'No Change';
+    }
+
+    getTradeId(): number {
+        return this.tradeEvent.id
+    }
+
+    getTradeDetails(): string {
+        // TODO: Further implement this. It would include data like fees,
+        //       vendor, more specific trade data, and IDs for support.
+        return `Trade #${this.tradeEvent.id}. If you have any questions, please contact support with your trade ID.`
     }
 
     getSharesChange(): string {

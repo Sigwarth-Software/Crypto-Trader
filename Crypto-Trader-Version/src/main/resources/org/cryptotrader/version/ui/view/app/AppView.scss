@@ -1,7 +1,7 @@
 // AppView.scss
-@use "../../../styles/globals" as *;
+@use "../../../styles/global-variables" as vars;
 
 BorderPane {
-    -fx-font-family: $source-code-font;
+    -fx-font-family: vars.$source-code-font;
     -fx-font-size: 18px;
 }

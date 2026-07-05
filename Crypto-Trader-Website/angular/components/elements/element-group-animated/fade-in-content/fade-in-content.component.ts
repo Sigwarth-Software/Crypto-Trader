@@ -1,5 +1,5 @@
 // fade-in-content.component.ts
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
 /** Content that fades in when it is loaded.
  *

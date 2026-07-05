@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cryptotrader.api.library.entity.user.ProductUser;
 
 @Getter
 @Setter
@@ -16,6 +17,6 @@ import lombok.Setter;
 public class UserIpAddress extends IpAddress {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_ip_address_set_id", nullable = false)
-    private UserIpAddressSet userIpAddressSet;
+    @JoinColumn(name = "user_id", nullable = false)
+    private ProductUser user;
 }

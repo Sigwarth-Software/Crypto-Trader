@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { upgradeElementLink } from '@assets/elementLinkAssets';
+import { upgradeElementLink } from '@assets/element-link.assets';
 
 @Component({
     selector: 'nav-upgrade',

@@ -6,6 +6,8 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.entity.vendor.SupportedVendors
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioAssetEntityService
+import org.cryptotrader.api.library.services.entity.portfolio.PortfolioEntityService
 import org.cryptotrader.data.library.services.CurrencyService
 import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
@@ -16,7 +18,9 @@ open class TradeService(
     private val authContextService: AuthContextService,
     private val portfolioService: PortfolioService,
     private val currencyService: CurrencyService,
-    private val productUserService: ProductUserService
+    private val productUserService: ProductUserService,
+    private val portfolioEntityService: PortfolioEntityService,
+    private val portfolioAssetEntityService: PortfolioAssetEntityService,
 ) {
     @Transactional
     open fun checkout(tradeRequest: TradeRequest): Boolean {
@@ -45,11 +49,11 @@ open class TradeService(
     private fun sharesCheckout(tradeRequest: TradeRequest, productUser: ProductUser): Boolean {
         return this.sharesCheckout(tradeRequest, productUser, tradeRequest.numShares)
     }
-    
+
     private fun sharesCheckout(tradeRequest: TradeRequest, productUser: ProductUser, numShares: Double): Boolean {
         val currencyToBuy: Currency = this.currencyService.getCurrencyByCurrencyCode(tradeRequest.currencyCode) ?: return false
         val userPortfolio: Portfolio = productUser.portfolio ?: Portfolio(productUser)
-        
+
         Hibernate.initialize(userPortfolio.assets)
 
         val portfolioAsset: PortfolioAsset = PortfolioAsset.builder()
@@ -60,9 +64,9 @@ open class TradeService(
         portfolioAsset.updateValues()
         userPortfolio.addAsset(portfolioAsset)
         portfolioAsset.vendor = SupportedVendors.from(tradeRequest.vendor)
-        this.portfolioService.savePortfolioAsset(portfolioAsset)
+        this.portfolioAssetEntityService.save(portfolioAsset)
         userPortfolio.updateValues()
-        this.portfolioService.savePortfolio(userPortfolio)
+        this.portfolioEntityService.save(userPortfolio)
         return true
     }
 

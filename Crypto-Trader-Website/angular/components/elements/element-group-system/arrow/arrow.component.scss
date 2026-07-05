@@ -1,18 +1,20 @@
 // arrow.component.scss
-@use 'angular/styles/globals' as *;
+@use 'angular/styles/global-variables' as vars;
+@use 'angular/styles/global-mixins' as mixins;
+@use 'angular/styles/global-placeholders' as placeholders;
 
 arrow {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
 
     @extend %soft-border-radius;
-    padding: $quarter-percent;
-    margin: 0 $one-percent;
+    padding: vars.$quarter-percent;
+    margin: 0 vars.$one-percent;
 
-    @include square-size($three-percent);
+    @include mixins.square-size(vars.$three-percent);
 
     mat-icon {
-        margin: $quarter-percent 0;
-        font-size: $five-percent;
+        margin: vars.$quarter-percent 0;
+        font-size: vars.$five-percent;
         transform: translateX(5px);
     }
 

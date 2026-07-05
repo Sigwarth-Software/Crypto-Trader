@@ -1,34 +1,36 @@
 // dashboard.component.scss
 @use 'sass:color';
-@use '../../../styles/globals' as *;
-@use '../../../styles/gradients/global_gradient_placeholders' as *;
-@use '../../../styles/backgrounds/global_background_placeholders' as *;
+@use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
+@use '../../../styles/global-functions' as funcs;
+@use '../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
+@use 'angular/styles/backgrounds/global-background-placeholders' as background-placeholders;
 
 dashboard {
-    @include flex(flex-start, center, column);
+    @include mixins.flex(flex-start, center, column);
     width: 100%;
-    padding-bottom: $two-percent;
+    padding-bottom: vars.$two-percent;
 
-    // ── Snapshot Strip ──────────────────────────────────────────────────────
     .snapshot-strip {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: $half-percent;
+        gap: vars.$half-percent;
         width: 100%;
-        max-width: $eighty-percent;
-        margin: $one-percent auto;
+        max-width: vars.$eighty-percent;
+        margin: vars.$one-percent auto;
 
         .snapshot-card {
-            @include flex(center, center, column);
+            @include mixins.flex(center, center, column);
             gap: 4px;
-            padding: $one-percent $half-percent;
+            padding: vars.$one-percent vars.$half-percent;
             position: relative;
             overflow: hidden;
 
-            background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
-            border: $very-thin-border rgba($mint-green, 0.2) solid;
-            box-shadow: 0 0 12px rgba($mint-green, 0.04),
-                        0 2px 8px rgba($absolute-black, 0.3);
+            background: linear-gradient(135deg, vars.$midnight-navy 0%, vars.$deep-ocean 100%);
+            border: vars.$very-thin-border rgba(vars.$mint-green, 0.2) solid;
+            box-shadow: 0 0 12px rgba(vars.$mint-green, 0.04),
+                        0 2px 8px rgba(vars.$absolute-black, 0.3);
 
             @extend %softer-border-radius;
 
@@ -36,9 +38,9 @@ dashboard {
 
             &:hover {
                 transform: translateY(-2px);
-                border-color: rgba($mint-green, 0.4);
-                box-shadow: 0 0 20px rgba($mint-green, 0.1),
-                            0 4px 16px rgba($absolute-black, 0.4);
+                border-color: rgba(vars.$mint-green, 0.4);
+                box-shadow: 0 0 20px rgba(vars.$mint-green, 0.1),
+                            0 4px 16px rgba(vars.$absolute-black, 0.4);
             }
 
             .snapshot-icon {
@@ -49,7 +51,7 @@ dashboard {
             .snapshot-label {
                 font-size: 0.7rem;
                 font-weight: 600;
-                color: $sage-green;
+                color: vars.$sage-green;
                 text-transform: uppercase;
                 letter-spacing: 0.8px;
             }
@@ -61,34 +63,32 @@ dashboard {
         }
     }
 
-    // ── Allocation Badges ───────────────────────────────────────────────────
     .allocation-badges {
-        @include flex(center, center, row);
-        gap: $one-percent;
-        max-width: $eighty-percent;
+        @include mixins.flex(center, center, row);
+        gap: vars.$one-percent;
+        max-width: vars.$eighty-percent;
         width: 100%;
-        margin: $half-percent auto;
+        margin: vars.$half-percent auto;
     }
 
-    // ── Charts Row ──────────────────────────────────────────────────────────
     .charts-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: $one-percent;
+        gap: vars.$one-percent;
         width: 100%;
-        max-width: $eighty-percent;
-        margin: $one-percent auto;
+        max-width: vars.$eighty-percent;
+        margin: vars.$one-percent auto;
     }
 
     .chart-panel {
-        @include flex(flex-start, stretch, column);
-        padding: $one-percent;
+        @include mixins.flex(flex-start, stretch, column);
+        padding: vars.$one-percent;
         cursor: pointer;
 
-        background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
-        border: $very-thin-border rgba($mint-green, 0.25) solid;
-        box-shadow: 0 0 20px rgba($mint-green, 0.06),
-                    0 4px 16px rgba($absolute-black, 0.4);
+        background: linear-gradient(135deg, vars.$midnight-navy 0%, vars.$deep-ocean 100%);
+        border: vars.$very-thin-border rgba(vars.$mint-green, 0.25) solid;
+        box-shadow: 0 0 20px rgba(vars.$mint-green, 0.06),
+                    0 4px 16px rgba(vars.$absolute-black, 0.4);
 
         @extend %softer-border-radius;
 
@@ -96,14 +96,14 @@ dashboard {
 
         &:hover {
             transform: translateY(-2px);
-            border-color: rgba($mint-green, 0.45);
-            box-shadow: 0 0 30px rgba($mint-green, 0.12),
-                        0 6px 24px rgba($absolute-black, 0.5);
+            border-color: rgba(vars.$mint-green, 0.45);
+            box-shadow: 0 0 30px rgba(vars.$mint-green, 0.12),
+                        0 6px 24px rgba(vars.$absolute-black, 0.5);
         }
 
         .panel-title {
             @extend %signature-brand-gradient-text-small-reflection;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
         }
 
         .chart-container {
@@ -133,12 +133,12 @@ dashboard {
                     display: block;
                     font-size: 1.3rem;
                     font-weight: 700;
-                    color: $pale-mint;
+                    color: vars.$pale-mint;
                 }
 
                 .center-caption {
                     font-size: 0.7rem;
-                    color: $sage-green;
+                    color: vars.$sage-green;
                     text-transform: uppercase;
                     letter-spacing: 1px;
                 }
@@ -150,12 +150,11 @@ dashboard {
         }
     }
 
-    // ── Section Headers ─────────────────────────────────────────────────────
     .section-header {
-        @include flex(space-between, center, row);
+        @include mixins.flex(space-between, center, row);
         width: 100%;
-        max-width: $eighty-percent;
-        margin: $one-percent auto $half-percent;
+        max-width: vars.$eighty-percent;
+        margin: vars.$one-percent auto vars.$half-percent;
         cursor: pointer;
 
         .section-title {
@@ -165,35 +164,33 @@ dashboard {
         .see-all {
             font-size: 0.85rem;
             font-weight: 600;
-            color: $ocean-blue;
+            color: vars.$ocean-blue;
             transition: color 0.15s ease;
 
             &:hover {
-                color: color.adjust($ocean-blue, $lightness: -10%);
+                color: color.adjust(vars.$ocean-blue, $lightness: -10%);
             }
         }
     }
 
-    // ── Currency Ticker ─────────────────────────────────────────────────────
     .currency-ticker {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: $half-percent;
+        gap: vars.$half-percent;
         width: 100%;
-        max-width: $eighty-percent;
+        max-width: vars.$eighty-percent;
         margin: 0 auto;
     }
 
-    // ── Trades Table ────────────────────────────────────────────────────────
     .trades-table-wrapper {
         width: 100%;
-        max-width: $eighty-percent;
+        max-width: vars.$eighty-percent;
         margin: 0 auto;
         overflow-x: auto;
 
-        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
-        border: $very-thin-border $charcoal solid;
-        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+        background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.85, vars.$pure-white);
+        border: vars.$very-thin-border vars.$charcoal solid;
+        box-shadow: vars.$quarter-percent vars.$quarter-percent 0 vars.$absolute-black;
 
         @extend %softer-border-radius;
     }
@@ -204,52 +201,50 @@ dashboard {
         font-size: 0.85rem;
 
         th {
-            padding: $half-percent $one-percent;
+            padding: vars.$half-percent vars.$one-percent;
             text-align: left;
             font-weight: 700;
-            color: $blue-gray;
-            border-bottom: 2px solid rgba($charcoal, 0.15);
+            color: vars.$blue-gray;
+            border-bottom: 2px solid rgba(vars.$charcoal, 0.15);
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         td {
-            padding: $half-percent $one-percent;
-            color: $blue-gray;
-            border-bottom: 1px solid rgba($charcoal, 0.06);
+            padding: vars.$half-percent vars.$one-percent;
+            color: vars.$blue-gray;
+            border-bottom: 1px solid rgba(vars.$charcoal, 0.06);
         }
     }
 
-    // ── Empty State ─────────────────────────────────────────────────────────
     .empty-state {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         width: 100%;
-        max-width: $eighty-percent;
+        max-width: vars.$eighty-percent;
         margin: 0 auto;
-        padding: $two-percent;
+        padding: vars.$two-percent;
         cursor: pointer;
 
-        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
-        border: $very-thin-border $charcoal dashed;
+        background-color: funcs.add-alpha-opaque(vars.$alabaster-stone, 0.85, vars.$pure-white);
+        border: vars.$very-thin-border vars.$charcoal dashed;
 
         @extend %softer-border-radius;
 
         .empty-text {
-            color: $charcoal;
+            color: vars.$charcoal;
             opacity: 0.6;
             text-align: center;
         }
     }
 
-    // ── Card Grid ───────────────────────────────────────────────────────────
     .dashboard-card-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: $half-percent;
+        gap: vars.$half-percent;
         width: 100%;
-        max-width: $eighty-percent;
-        margin: $half-percent auto;
+        max-width: vars.$eighty-percent;
+        margin: vars.$half-percent auto;
         padding: 0;
     }
 }

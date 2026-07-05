@@ -2,7 +2,7 @@ package org.cryptotrader.admin
 
 import javafx.application.Platform
 import javafx.stage.Stage
-import org.cryptotrader.test.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested

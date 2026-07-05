@@ -1,10 +1,10 @@
 package org.cryptotrader.logging.library.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.logging.library.service.entity.FrontendLogEntityService;
 import org.cryptotrader.logging.library.entity.FrontendLog;
 import org.cryptotrader.logging.library.events.FrontendLogEvent;
-import org.cryptotrader.logging.library.repository.FrontendLogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +17,16 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class FrontendLogService {
 
-    private final FrontendLogRepository frontendLogRepository;
     private final ObjectMapper objectMapper;
+    private final FrontendLogEntityService frontendLogEntityService;
+
+    @Autowired
+    public FrontendLogService(ObjectMapper objectMapper, FrontendLogEntityService frontendLogEntityService) {
+        this.objectMapper = objectMapper;
+        this.frontendLogEntityService = frontendLogEntityService;
+    }
 
     @Transactional
     public void persist(List<FrontendLogEvent> entries, LocalDateTime receivedAt) {
@@ -44,7 +49,15 @@ public class FrontendLogService {
                         .build())
                 .toList();
 
-        frontendLogRepository.saveAll(entities);
+        if (entities.isEmpty()) {
+            return;
+        }
+
+        if (entities.size() == 1) {
+            this.frontendLogEntityService.save(entities.getFirst());
+            return;
+        }
+        this.frontendLogEntityService.saveAll(entities);
         log.info("Persisted {} frontend log entries", entities.size());
     }
 

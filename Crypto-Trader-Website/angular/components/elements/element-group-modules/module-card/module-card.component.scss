@@ -1,19 +1,23 @@
 // module-card.component.scss
 @use 'sass:color';
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_variables' as *;
-@use '../../../../styles/gradients/global_gradient_mixins' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-variables' as gradient-vars;
+@use 'angular/styles/gradients/global-gradient-mixins' as gradient-mixins;
+
 // TODO: Replace pixels with variables.
 module-card {
     display: block;
 
     // ─── Shared tech badge styles ───
     .tech-badges {
-        @include flex(flex-start, center, row);
+        @include mixins.flex(flex-start, center, row);
         flex-wrap: wrap;
-        gap: $quarter-percent;
+        gap: vars.$quarter-percent;
         margin-top: auto;
-        padding-top: $half-percent;
+        padding-top: vars.$half-percent;
     }
 
     .tech-badge {
@@ -30,12 +34,12 @@ module-card {
     // DARK theme (glass panel — used for pipeline cards)
     // ═══════════════════════════════════════════════════════════════
     .module-card.dark {
-        @include flex(flex-start, flex-start, column);
-        padding: $one-half-percent;
-        background: add-alpha($pure-white, 0.05);
+        @include mixins.flex(flex-start, flex-start, column);
+        padding: vars.$one-half-percent;
+        background: funcs.add-alpha(vars.$pure-white, 0.05);
         backdrop-filter: blur(16px);
-        border: 1px solid add-alpha($mint-green, 0.2);
-        border-radius: $half-percent;
+        border: 1px solid funcs.add-alpha(vars.$mint-green, 0.2);
+        border-radius: vars.$half-percent;
         position: relative;
         overflow: hidden;
         transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -50,20 +54,20 @@ module-card {
             background: linear-gradient(
                 90deg,
                 transparent,
-                add-alpha($mint-green, 0.4),
+                funcs.add-alpha(vars.$mint-green, 0.4),
                 transparent
             );
         }
 
         &:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 32px add-alpha($mint-green, 0.12);
+            box-shadow: 0 8px 32px funcs.add-alpha(vars.$mint-green, 0.12);
         }
 
         .module-card-icon {
             width: 48px;
             height: 48px;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
 
             img {
                 width: 100%;
@@ -75,53 +79,53 @@ module-card {
         }
 
         .module-card-name {
-            @include gradient-text($light-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$light-logo);
             font-size: 1.4rem;
             font-weight: 700;
-            margin: 0 0 $quarter-percent;
+            margin: 0 0 vars.$quarter-percent;
         }
 
         .module-card-tagline {
             font-size: 0.85rem;
             font-weight: 600;
-            color: $mint-green;
+            color: vars.$mint-green;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
         }
 
         .module-card-desc {
             font-size: 0.9rem;
             line-height: 1.6;
-            color: $alabaster-stone;
+            color: vars.$alabaster-stone;
             opacity: 0.85;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
         }
 
         .module-card-features {
             list-style: none;
             padding: 0;
-            margin: 0 0 $half-percent;
+            margin: 0 0 vars.$half-percent;
 
             li {
                 position: relative;
                 padding-left: 1.2em;
                 font-size: 0.82rem;
                 line-height: 1.8;
-                color: add-alpha($pale-mint, 0.9);
+                color: funcs.add-alpha(vars.$pale-mint, 0.9);
 
                 &::before {
                     content: '▸';
                     position: absolute;
                     left: 0;
-                    color: $mint-green;
+                    color: vars.$mint-green;
                 }
             }
         }
 
         .tech-badge {
-            background: add-alpha($mint-green, 0.15);
-            color: $pale-mint;
+            background: funcs.add-alpha(vars.$mint-green, 0.15);
+            color: vars.$pale-mint;
         }
     }
 
@@ -129,39 +133,39 @@ module-card {
     // LIGHT theme (elevated card — used for service cards)
     // ═══════════════════════════════════════════════════════════════
     .module-card.light {
-        @include flex(flex-start, flex-start, column);
-        padding: $one-half-percent;
-        background: $pure-white;
-        border-radius: $half-percent;
-        border-top: 3px solid $ocean-blue;
-        box-shadow: 0 2px 12px add-alpha($absolute-black, 0.06);
+        @include mixins.flex(flex-start, flex-start, column);
+        padding: vars.$one-half-percent;
+        background: vars.$pure-white;
+        border-radius: vars.$half-percent;
+        border-top: 3px solid vars.$ocean-blue;
+        box-shadow: 0 2px 12px funcs.add-alpha(vars.$absolute-black, 0.06);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
 
         &:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 24px add-alpha($absolute-black, 0.1);
+            box-shadow: 0 8px 24px funcs.add-alpha(vars.$absolute-black, 0.1);
         }
 
         &[data-accent='teal-green'] {
-            border-top-color: $teal-green;
+            border-top-color: vars.$teal-green;
         }
 
         &[data-accent='sunbeam-yellow'] {
-            border-top-color: $sunbeam-yellow;
+            border-top-color: vars.$sunbeam-yellow;
         }
 
         &[data-accent='mint-green'] {
-            border-top-color: $mint-green;
+            border-top-color: vars.$mint-green;
         }
 
         &[data-accent='ocean-blue'] {
-            border-top-color: $ocean-blue;
+            border-top-color: vars.$ocean-blue;
         }
 
         .module-card-icon {
             width: 40px;
             height: 40px;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
 
             img {
                 width: 100%;
@@ -171,54 +175,54 @@ module-card {
         }
 
         .module-card-name {
-            @include gradient-text($regular-logo);
+            @include gradient-mixins.gradient-text(gradient-vars.$regular-logo);
             font-size: 1.2rem;
             font-weight: 700;
-            margin: 0 0 $quarter-percent;
+            margin: 0 0 vars.$quarter-percent;
         }
 
         .module-card-tagline {
             font-size: 0.8rem;
             font-weight: 600;
-            color: $ocean-blue;
+            color: vars.$ocean-blue;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
         }
 
         .module-card-desc {
             font-size: 0.85rem;
             line-height: 1.6;
-            color: $charcoal;
+            color: vars.$charcoal;
             opacity: 0.85;
-            margin-bottom: $half-percent;
+            margin-bottom: vars.$half-percent;
         }
 
         .module-card-features {
             list-style: none;
             padding: 0;
-            margin: 0 0 $half-percent;
+            margin: 0 0 vars.$half-percent;
 
             li {
                 position: relative;
                 padding-left: 1.2em;
                 font-size: 0.8rem;
                 line-height: 1.8;
-                color: $blue-gray;
+                color: vars.$blue-gray;
 
                 &::before {
                     content: '✓';
                     position: absolute;
                     left: 0;
-                    color: $teal-green;
+                    color: vars.$teal-green;
                     font-weight: 700;
                 }
             }
         }
 
         .tech-badge {
-            background: add-alpha($teal-green, 0.1);
-            color: $teal-green;
+            background: funcs.add-alpha(vars.$teal-green, 0.1);
+            color: vars.$teal-green;
         }
     }
 }

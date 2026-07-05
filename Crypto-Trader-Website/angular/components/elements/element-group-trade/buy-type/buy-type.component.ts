@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import { ElementSize } from '@theoliverlear/angular-suite';
-import { coinIcon, dollarIcon, ImageAsset } from '@assets/imageAssets';
+import { coinIcon, dollarIcon, ImageAsset } from '@assets/image.assets';
 
 import { BuyType } from './models/BuyType';
 

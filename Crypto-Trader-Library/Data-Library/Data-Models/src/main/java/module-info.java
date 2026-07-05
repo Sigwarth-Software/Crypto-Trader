@@ -11,7 +11,7 @@ open module org.cryptotrader.data.library.models {
     requires spring.security.crypto;
     requires spring.web;
     requires org.hibernate.orm.core;
-    requires org.cryptotrader.universal.library.models;
+    requires transitive org.cryptotrader.universal.library.models;
 
     exports org.cryptotrader.data.library.entity.currency;
     exports org.cryptotrader.data.library.entity.currency.builder;

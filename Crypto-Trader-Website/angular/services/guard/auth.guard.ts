@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    Router,
-    RouterStateSnapshot,
-} from '@angular/router';
-import { catchError, map, Observable, Subject } from 'rxjs';
+import { Injectable } from '@angular/core'
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router'
+import { catchError, map, Observable, Subject, Subscriber } from 'rxjs'
 
-import { LoggedInService } from '@http/auth/status/logged-in.service';
+import { LoggedInService } from '@http/auth/status/logged-in.service'
+import { AuthResponse } from '@models/auth/types'
 
+/**
+ * Guards routes against unauthorized access.
+ */
 @Injectable({
     providedIn: 'root',
 })
@@ -21,36 +20,47 @@ import { LoggedInService } from '@http/auth/status/logged-in.service';
  * - It does not attach Authorization/DPoP itself; the endpoint is designed to be public and reflect state.
  */
 export class AuthGuard implements CanActivate {
-    authBlocked$: Subject<void> = new Subject<void>();
+    private readonly authBlocked$: Subject<void> = new Subject<void>()
     constructor(
-        private router: Router,
-        private loggedInService: LoggedInService,
+        private readonly router: Router,
+        private readonly loggedInService: LoggedInService,
     ) {}
 
-    getAuthBlocked(): Observable<void> {
-        return this.authBlocked$.asObservable();
+    /**
+     * Gets the auth-blocked subject.
+     * @returns The auth blocked subject.
+     */
+    public getAuthBlocked(): Observable<void> {
+        return this.authBlocked$.asObservable()
     }
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot,
+    /**
+     * Allows route when authenticated.
+     * @param _route
+     * @param _state
+     *
+     * @returns True if the route can be activated, false otherwise.
+     */
+    public canActivate(
+        _route: ActivatedRouteSnapshot,
+        _state: RouterStateSnapshot,
     ): Observable<boolean> {
         return this.loggedInService.isLoggedIn().pipe(
-            map((authResponse) => {
+            map((authResponse: AuthResponse): boolean => {
                 if (authResponse.authorized) {
-                    return true;
+                    return true
                 } else {
-                    this.authBlocked$.next(undefined);
-                    this.router.navigate(['/authorize']);
-                    return false;
+                    this.authBlocked$.next(undefined)
+                    void this.router.navigate(['/authorize'])
+                    return false
                 }
             }),
-            catchError(() => {
-                this.router.navigate(['/authorize']).then((navigated) => {});
-                return new Observable<boolean>((observer) => {
-                    observer.next(false);
-                });
+            catchError((): Observable<boolean> => {
+                void this.router.navigate(['/authorize']).then((_navigated: boolean): void => {})
+                return new Observable<boolean>((observer: Subscriber<boolean>): void => {
+                    observer.next(false)
+                })
             }),
-        );
+        )
     }
 }

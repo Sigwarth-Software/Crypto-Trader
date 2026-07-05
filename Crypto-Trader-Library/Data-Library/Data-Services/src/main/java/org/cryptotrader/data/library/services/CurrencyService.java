@@ -1,14 +1,10 @@
 package org.cryptotrader.data.library.services;
 //=================================-Imports-==================================
-
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse;
-import org.cryptotrader.api.library.communication.response.TimeValueResponse;
-import org.cryptotrader.data.library.component.CurrencyDataRetriever;
-import org.cryptotrader.data.library.component.CurrencyJsonGenerator;
-import org.cryptotrader.data.library.component.MarketSnapshotsBackfiller;
+import org.cryptotrader.universal.library.communication.response.TimeValueResponse;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.CurrencyHistory;
 import org.cryptotrader.data.library.entity.currency.UniqueCurrency;
@@ -18,16 +14,25 @@ import org.cryptotrader.data.library.repository.CurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.CurrencyRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
-import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.data.library.services.entity.CurrencyEntityService;
+import org.cryptotrader.data.library.services.entity.CurrencyHistoryEntityService;
+import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService;
+import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -37,10 +42,11 @@ public class CurrencyService {
     private final CurrencyHistoryRepository currencyHistoryRepository;
     private final UniqueCurrencyRepository uniqueCurrencyRepository;
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
-    private final CurrencyDataRetriever currencyDataRetriever;
-    private final MarketSnapshotsBackfiller backfiller;
-    private final MarketSnapshotOperations snapshotService;
-    private final CurrencyJsonGenerator currencyJsonGenerator;
+
+    private final CurrencyEntityService currencyEntityService;
+    private final CurrencyHistoryEntityService currencyHistoryEntityService;
+    private final UniqueCurrencyEntityService uniqueCurrencyEntityService;
+    private final UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService;
 
     //===========================-Constructors-===============================
     @Autowired
@@ -48,18 +54,18 @@ public class CurrencyService {
                            CurrencyHistoryRepository currencyHistoryRepository,
                            UniqueCurrencyRepository uniqueCurrencyRepository,
                            UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
-                           CurrencyDataRetriever currencyDataRetriever,
-                           MarketSnapshotsBackfiller backfiller,
-                           MarketSnapshotOperations snapshotService,
-                           CurrencyJsonGenerator currencyJsonGenerator) {
+                           CurrencyEntityService currencyEntityService,
+                           CurrencyHistoryEntityService currencyHistoryEntityService,
+                           UniqueCurrencyEntityService uniqueCurrencyEntityService,
+                           UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
         this.uniqueCurrencyRepository = uniqueCurrencyRepository;
         this.uniqueCurrencyHistoryRepository = uniqueCurrencyHistoryRepository;
-        this.currencyDataRetriever = currencyDataRetriever;
-        this.backfiller = backfiller;
-        this.snapshotService = snapshotService;
-        this.currencyJsonGenerator = currencyJsonGenerator;
+        this.currencyEntityService = currencyEntityService;
+        this.currencyHistoryEntityService = currencyHistoryEntityService;
+        this.uniqueCurrencyEntityService = uniqueCurrencyEntityService;
+        this.uniqueCurrencyHistoryEntityService = uniqueCurrencyHistoryEntityService;
     }
 
 
@@ -82,9 +88,7 @@ public class CurrencyService {
     }
 
     public DisplayCurrencyListResponse getCurrencyValuesResponse() {
-//        List<Currency> currencies = this.getTopTenCurrencies();
         List<Currency> currencies = this.getTopTenNonEncapsulatedCurrencies();
-        // sort by price desc
         currencies.sort((currencyOne, currencyTwo) -> {
             return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
         });
@@ -136,7 +140,7 @@ public class CurrencyService {
     }
 
     public List<Currency> getAllCurrencies() {
-        return this.currencyRepository.findAll();
+        return this.currencyEntityService.findAll();
     }
 
     public List<String> getAllCurrencyCodes() {
@@ -157,8 +161,22 @@ public class CurrencyService {
     }
 
     public void saveCurrency(Currency currency) {
-        this.currencyRepository.save(currency);
-        this.currencyHistoryRepository.save(new CurrencyHistory(currency, currency.getValue()));
+        this.currencyEntityService.save(currency);
+        this.currencyHistoryEntityService.save(new CurrencyHistory(currency, currency.getValue()));
+    }
+
+    public void saveAllCurrencies(List<Currency> currencies) {
+        this.currencyEntityService.saveAll(currencies);
+        this.currencyHistoryEntityService.saveAll(currencies.stream()
+                .map(currency -> new CurrencyHistory(currency, currency.getValue()))
+                .collect(Collectors.toList()));
+    }
+
+    public void saveAllUniqueCurrencies(List<UniqueCurrency> uniqueCurrencies) {
+        this.uniqueCurrencyEntityService.saveAll(uniqueCurrencies);
+        this.uniqueCurrencyHistoryEntityService.saveAll(uniqueCurrencies.stream()
+                .map(uniqueCurrency -> new UniqueCurrencyHistory(uniqueCurrency.getAssociatedCurrency()))
+                .collect(Collectors.toList()));
     }
 
     public void saveUniqueCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
@@ -171,11 +189,18 @@ public class CurrencyService {
         }
     }
 
+    public boolean shouldSaveUniqueCurrency(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
+        if (!this.existsInUniqueCurrencyTable(currency.getCurrencyCode())) {
+            return true;
+        }
+        return this.hasCurrencyChanged(previousCurrency, updatedCurrency);
+    }
+
     public void saveUniqueCurrency(Currency currency) {
         UniqueCurrency uniqueCurrency = new UniqueCurrency(currency);
         UniqueCurrencyHistory uniqueCurrencyHistory = new UniqueCurrencyHistory(currency);
-        this.uniqueCurrencyRepository.save(uniqueCurrency);
-        this.uniqueCurrencyHistoryRepository.save(uniqueCurrencyHistory);
+        this.uniqueCurrencyEntityService.save(uniqueCurrency);
+        this.uniqueCurrencyHistoryEntityService.save(uniqueCurrencyHistory);
 
     }
 
@@ -188,13 +213,13 @@ public class CurrencyService {
         return this.currencyRepository.getCurrencyByCurrencyCode(currencyCode);
     }
     public boolean existsInCurrencyTable(String currencyCode) {
-        return this.currencyRepository.existsByCurrencyCode(currencyCode);
+        return this.currencyEntityService.existsById(currencyCode);
     }
     public boolean existsInCurrencyHistoryTable(String currencyCode) {
         return this.currencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
     }
     public boolean existsInUniqueCurrencyTable(String currencyCode) {
-        return this.uniqueCurrencyRepository.existsByCurrency(currencyCode);
+        return this.uniqueCurrencyEntityService.existsById(currencyCode);
     }
     public boolean existsInUniqueCurrencyHistoryTable(String currencyCode) {
         return this.uniqueCurrencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
@@ -245,17 +270,81 @@ public class CurrencyService {
         return rows.stream()
                 .map(record -> {
                     Object time = record[0];
-                    String isoTime;
+                    LocalDateTime localDateTime = null;
                     if (time instanceof Timestamp timestamp) {
-                        isoTime = timestamp.toLocalDateTime().toString();
+                        localDateTime = timestamp.toLocalDateTime();
                     } else if (time instanceof LocalDateTime dateTime) {
-                        isoTime = dateTime.toString();
-                    } else {
-                        isoTime = String.valueOf(time);
+                        localDateTime = dateTime;
+                    } else if (time instanceof Instant instant) {
+                        localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                    } else if (time instanceof OffsetDateTime offsetDateTime) {
+                        localDateTime = offsetDateTime.toLocalDateTime();
+                    } else if (time instanceof ZonedDateTime zonedDateTime) {
+                        localDateTime = zonedDateTime.toLocalDateTime();
                     }
+
+                    String isoTime = localDateTime != null ? localDateTime.toString() : String.valueOf(time);
                     double valueAtTime = ((Number) record[1]).doubleValue();
                     return new TimeValueResponse(isoTime, valueAtTime);
                 })
                 .toList();
+    }
+
+    public List<String> getTopCurrenciesByPerformance(int topCount) {
+        return this.getAllCurrencies()
+            .stream()
+            .filter(Objects::nonNull)
+            .sorted(
+                Comparator
+                    .comparing(
+                        this::getCurrencyPerformanceScore,
+                        Comparator.nullsLast(Comparator.reverseOrder())
+                    )
+                    .thenComparing(Currency::getCurrencyCode)
+            )
+            .limit(topCount)
+            .map(currency -> {
+                Double currencyPerformanceScore =
+                    this.getCurrencyPerformanceScore(currency);
+
+                if (currencyPerformanceScore == null) {
+                    return this.getCurrencyName(
+                        true,
+                        currency
+                    ) + " [N/A]";
+                }
+
+                boolean isPositive = currencyPerformanceScore >= 0;
+                boolean isNoChange = currencyPerformanceScore == 0.0;
+
+                String currencyPerformanceScoreString;
+
+                if (isNoChange) {
+                    currencyPerformanceScoreString = "";
+                } else if (isPositive) {
+                    currencyPerformanceScoreString = "+" + currencyPerformanceScore;
+                } else {
+                    currencyPerformanceScoreString = "-" + currencyPerformanceScore;
+                }
+
+                return this.getCurrencyName(
+                    true,
+                    currency
+                ) + " [" + currencyPerformanceScoreString + "%]";
+            })
+            .toList();
+    }
+
+    public Double getCurrencyPerformanceScore(Currency currency) {
+        String percentageDayPerformance =
+            this.getPercentageDayPerformance(currency.getCurrencyCode());
+
+        try {
+            return Double.parseDouble(
+                percentageDayPerformance.replaceFirst("%$", "")
+            );
+        } catch (NumberFormatException exception) {
+            return null;
+        }
     }
 }

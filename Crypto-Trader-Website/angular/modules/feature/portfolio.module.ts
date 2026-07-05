@@ -19,7 +19,7 @@ import { PortfolioAssetListComponent } from 'angular/components/elements/element
 import { PortfolioAssetSearchBarComponent } from 'angular/components/elements/element-group-portfolio/portfolio-asset-search-bar/portfolio-asset-search-bar.component';
 import { PortfolioAssetComponent } from 'angular/components/elements/element-group-portfolio/portfolio-asset/portfolio-asset.component';
 import { PortfolioAssetsReportComponent } from 'angular/components/elements/element-group-portfolio/portfolio-assets-report/portfolio-assets-report.component';
-import { PortfolioChartComponent } from 'angular/components/elements/element-group-portfolio/portfolio-chart/portfolio-chart.component';
+import { ChartModule } from '../shared/chart.module';
 import { PortfolioInputComponent } from 'angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component';
 import { PortfolioKillSwitchComponent } from 'angular/components/elements/element-group-portfolio/portfolio-kill-switch/portfolio-kill-switch.component';
 import { PortfolioOverviewComponent } from 'angular/components/elements/element-group-portfolio/portfolio-overview/portfolio-overview.component';
@@ -46,7 +46,6 @@ const portfolioComponents = [
     PortfolioAssetListComponent,
     PortfolioAssetSearchBarComponent,
     PortfolioAssetsReportComponent,
-    PortfolioChartComponent,
     PortfolioInputComponent,
     PortfolioKillSwitchComponent,
     PortfolioOverviewComponent,
@@ -69,6 +68,7 @@ const portfolioComponents = [
         MatSlideToggleModule,
         AngularSuiteModule,
         UniversalModule,
+        ChartModule,
     ],
     exports: [...portfolioComponents],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

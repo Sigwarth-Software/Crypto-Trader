@@ -1,12 +1,12 @@
 // asset-field-list.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-mixins' as mixins;
 
 asset-field-list {
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
     width: 100%;
 
     .field-list {
-        @include flex(center, center, row);
+        @include mixins.flex(center, center, row);
         width: 100%;
 
         asset-field {

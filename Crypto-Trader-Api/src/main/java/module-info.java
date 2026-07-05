@@ -48,7 +48,6 @@ open module org.cryptotrader.api {
 
     requires org.hibernate.orm.core;
 
-
     requires static lombok;
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
@@ -62,7 +61,19 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.api.library.infrastructure;
     requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.config;
+    requires org.cryptotrader.security.library.config;
+    requires org.cryptotrader.security.library.repositories;
     requires org.cryptotrader.universal.library.components;
+    requires org.cryptotrader.universal.library.events;
+    requires org.cryptotrader.console.library.components;
+    requires org.cryptotrader.console.library.communication;
+    requires org.cryptotrader.simulator.library.events;
+    requires org.cryptotrader.simulator.library.communication;
+    requires org.cryptotrader.universal.library.communication;
+    requires org.cryptotrader.logging.library.communication;
+    requires org.cryptotrader.logging.library.events;
+    requires org.cryptotrader.logging.library.config;
+    requires org.cryptotrader.security.library.models;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
 
@@ -76,13 +87,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.universal.library.models;
     requires spring.data.commons;
-
-    requires org.cryptotrader.console.library.communication;
-    requires org.cryptotrader.console.library.components;
-
-    requires org.cryptotrader.logging.library.communication;
-    requires org.cryptotrader.logging.library.events;
-    requires org.cryptotrader.logging.library.config;
+    requires spring.aspects;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;

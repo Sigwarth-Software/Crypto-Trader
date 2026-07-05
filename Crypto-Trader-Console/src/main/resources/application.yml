@@ -22,20 +22,39 @@ spring:
         consoleRequestsConsumer-in-0:
           destination: ct.console.requests
           group: crypto-trader-console
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
 
-        consoleReplies-out-0:
-          destination: ct.console.replies
-          contentType: application/json
+        consoleResponses-out-0:
+          destination: ct.console.responses
+          contentType: application/vnd.cryptotrader.encrypted+json
 
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
+        bindings:
+          consoleRequestsConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: console-service-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
 
 security:
   jwt:
-    jwks-uri: http://localhost:8080/.well-known/jwks.json
-    issuers: http://localhost:8080,https://api.cryptotrader.com
-    issuer: https://api.cryptotrader.com
+    jwks-uri: ${SECURITY_JWT_JWKS_URI:https://localhost:8080/.well-known/jwks.json}
+    issuers: ${SECURITY_JWT_ISSUERS:https://localhost:8080,https://api.sscryptotrader.com}
+    issuer: ${SECURITY_JWT_ISSUER:https://api.sscryptotrader.com}
     audience: crypto-trader-api
-
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}

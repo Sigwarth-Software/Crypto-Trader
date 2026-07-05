@@ -1,7 +1,7 @@
 // portfolio-asset.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-mixins' as mixins;
 
 portfolio-asset {
-    @include flex(center, center, column);
+    @include mixins.flex(center, center, column);
     width: 100%;
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ElementSize } from '@theoliverlear/angular-suite';
-import { getStartedElementLink } from '@assets/elementLinkAssets';
+import { getStartedElementLink } from '@assets/element-link.assets';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 @Component({
     selector: 'home',
@@ -14,8 +15,7 @@ export class HomeComponent implements OnInit {
     constructor(private readonly log: CryptoTraderLoggerService) {}
 
     public ngOnInit(): void {
-        this.log.setContext('Home');
-        this.log.info('Home component initialized');
+        this.log.setContext(LoggerContext.Home);
     }
 
     protected readonly ElementSize = ElementSize;

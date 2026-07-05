@@ -22,14 +22,22 @@ open module org.cryptotrader.data.library.services {
     requires jakarta.persistence;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.data.library.communication;
+    requires org.cryptotrader.universal.library.communication;
     requires org.cryptotrader.data.library.repositories;
     requires spring.data.commons;
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.api.library.communication;
     requires spring.jdbc;
     requires jakarta.annotation;
+    requires org.cryptotrader.universal.library.services;
+    requires org.cryptotrader.universal.library.models;
+    requires org.cryptotrader.logging.library.config;
+    requires org.cryptotrader.logging.library.events;
+    requires org.cryptotrader.universal.library.events;
+    requires spring.cloud.stream;
 
     exports org.cryptotrader.data.library.services;
+    exports org.cryptotrader.data.library.services.entity;
     exports org.cryptotrader.data.library.services.harvest;
     exports org.cryptotrader.data.library.services.models;
     exports org.cryptotrader.data.library.services.adapter;

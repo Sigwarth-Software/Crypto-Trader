@@ -1,53 +1,56 @@
 // tier-promo-stripe.component.scss
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-placeholders' as placeholders;
 
 tier-promo-stripe {
     display: block;
     background: linear-gradient(
         180deg,
-        $ivory-white 0%,
-        $pure-white 40%,
-        add-alpha($sunbeam-yellow, 0.12) 100%
+        vars.$ivory-white 0%,
+        vars.$pure-white 40%,
+        funcs.add-alpha(vars.$sunbeam-yellow, 0.12) 100%
     );
-    border-top: 3px solid add-alpha($sunbeam-yellow, 0.6);
+    border-top: 3px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.6);
     width: 100%;
-    padding: $four-percent 0;
-    margin: $one-half-percent 0;
+    padding: vars.$four-percent 0;
+    margin: vars.$one-half-percent 0;
     max-width: 100%;
     overflow-x: hidden;
     box-sizing: border-box;
     .tier-header {
-        @include section-header-centered;
+        @include mixins.section-header-centered;
 
         eyebrow-label {
             .eyebrow {
-                color: $teal-green;
+                color: vars.$teal-green;
             }
         }
 
         ss-title {
             h2 {
-                color: $midnight-navy;
+                color: vars.$midnight-navy;
             }
         }
 
         subtitle {
             h5 {
-                color: $blue-gray;
+                color: vars.$blue-gray;
             }
         }
     }
 
     .tier-promos {
-        @include flex(center, stretch, row);
-        gap: $one-percent;
+        @include mixins.flex(center, stretch, row);
+        gap: vars.$one-percent;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     .tier-promos > tier-promo {
         flex: 1 1 30%;
-        @include scroll-reveal-entrance;
+        @include mixins.scroll-reveal-entrance;
     }
 
     scroll-reveal.in-view {
@@ -55,15 +58,15 @@ tier-promo-stripe {
             @extend %scroll-reveal-visible;
         }
 
-        @include stagger-children('.tier-promos > tier-promo', 3);
+        @include mixins.stagger-children('.tier-promos > tier-promo', 3);
     }
 
-    @include mobile-breakpoint {
-        padding: $one-percent;
+    @include mixins.mobile-breakpoint {
+        padding: vars.$one-percent;
 
         .tier-promos {
-            @include flex(center, stretch, column);
-            gap: $one-percent;
+            @include mixins.flex(center, stretch, column);
+            gap: vars.$one-percent;
         }
 
         .tier-promos > tier-promo {
@@ -72,9 +75,9 @@ tier-promo-stripe {
         }
     }
 
-    @include reduced-motion {
+    @include mixins.reduced-motion {
         .tier-promos > tier-promo {
-            @include reduced-motion-reset;
+            @include mixins.reduced-motion-reset;
         }
     }
 }

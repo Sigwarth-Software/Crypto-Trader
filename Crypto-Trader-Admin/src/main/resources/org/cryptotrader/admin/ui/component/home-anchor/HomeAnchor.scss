@@ -1,5 +1,5 @@
 // HomeAnchor.scss
-@use "../../../styles/globals" as *;
+@use "../../../styles/global-placeholders" as *;
 
 HomeAnchor {
     @extend %hover-box-shadow;

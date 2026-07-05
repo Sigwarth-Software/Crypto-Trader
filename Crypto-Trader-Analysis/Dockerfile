@@ -23,5 +23,5 @@ RUN useradd -m analysisuser
 USER analysisuser
 
 EXPOSE 8000
-# Default entrypoint using gunicorn for production, or manage.py for development
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
+# Set ANALYSIS_TLS_CERT_FILE and ANALYSIS_TLS_KEY_FILE to serve HTTPS directly.
+ENTRYPOINT ["sh", "-c", "gunicorn --pythonpath /app/src --bind ${ANALYSIS_HOST:-0.0.0.0}:${ANALYSIS_PORT:-8000} ${ANALYSIS_TLS_CERT_FILE:+--certfile $ANALYSIS_TLS_CERT_FILE} ${ANALYSIS_TLS_KEY_FILE:+--keyfile $ANALYSIS_TLS_KEY_FILE} crypto_trader_analysis.api.wsgi:application"]

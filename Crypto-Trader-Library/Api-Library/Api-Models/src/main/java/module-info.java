@@ -12,7 +12,7 @@ open module org.cryptotrader.api.library.models {
     requires spring.web;
     requires org.hibernate.orm.core;
     requires org.cryptotrader.data.library.models;
-    requires org.cryptotrader.universal.library.models;
+    requires transitive org.cryptotrader.universal.library.models;
     requires spring.security.core;
 
     exports org.cryptotrader.api.library.entity.portfolio;
@@ -28,4 +28,5 @@ open module org.cryptotrader.api.library.models {
     exports org.cryptotrader.api.library.model.trade;
     exports org.cryptotrader.api.library.model.dpop;
     exports org.cryptotrader.api.library.model.jwt;
+    exports org.cryptotrader.api.library.model.portfolio;
 }

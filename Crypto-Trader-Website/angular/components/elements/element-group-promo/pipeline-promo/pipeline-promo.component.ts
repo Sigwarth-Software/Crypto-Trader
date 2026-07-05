@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { TagType } from '@theoliverlear/angular-suite';
-import { analysisCodeSnippet, analysisCodeWindow } from '@assets/codeWindowAssets';
+import { analysisCodeSnippet, analysisCodeWindow } from '@assets/code-window.assets';
 import {
     engineModuleIcon,
     analysisModuleIcon,
     dataModuleIcon,
-} from '@assets/imageAssets';
+} from '@assets/image.assets';
 import { ModuleInfo } from '@models/module/ModuleInfo';
 @Component({
     selector: 'pipeline-promo',

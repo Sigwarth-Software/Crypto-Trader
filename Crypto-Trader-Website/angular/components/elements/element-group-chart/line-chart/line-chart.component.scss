@@ -1,0 +1,12 @@
+// chart.component.scss
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use '../../../../styles/global-functions' as funcs;
+
+line-chart {
+    @extend %soft-border-radius;
+    border: vars.$thinnest-border solid vars.$pure-white;
+
+    // background-color: lightblue;
+    background-color: funcs.add-alpha-opaque(vars.$mint-green, 0.5, vars.$alabaster-stone);
+}

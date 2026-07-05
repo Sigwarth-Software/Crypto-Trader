@@ -6,6 +6,7 @@ open module org.cryptotrader.health.library.models {
     requires org.apache.httpcomponents.httpcore;
     requires org.slf4j;
     requires org.hibernate.orm.core;
+    requires transitive org.cryptotrader.universal.library.models;
 
     exports org.cryptotrader.health.library.entity;
     exports org.cryptotrader.health.library.model;

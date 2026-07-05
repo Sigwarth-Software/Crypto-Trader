@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.builder.ProductUserBuilder;
+import org.cryptotrader.universal.library.model.annotation.Loggable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,6 +23,7 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ProductUser extends User implements UserDetails {
     //============================-Variables-=================================
+    @Loggable
     @Column(name = "email")
     private String email;
     @JsonManagedReference
@@ -31,6 +33,7 @@ public class ProductUser extends User implements UserDetails {
     @OneToOne
     @JoinColumn(name = "profile_picture_id")
     private ProfilePicture profilePicture;
+    @Loggable
     @Enumerated(EnumType.STRING)
     @Column(name = "subscription_tier", nullable = false, columnDefinition = "varchar(255) default 'FREE'")
     private SubscriptionTier subscriptionTier = SubscriptionTier.FREE;

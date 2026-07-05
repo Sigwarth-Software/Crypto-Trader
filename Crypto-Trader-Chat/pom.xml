@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
     </parent>
 
     <name>Crypto-Trader-Chat</name>
     <artifactId>crypto-trader-chat</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         AI-based chat interface for Crypto Trader — interactive assistant powered by OpenAI and Spring AI for trading insights.
     </description>
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>universal-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- Spring AI Starters -->
         <dependency>

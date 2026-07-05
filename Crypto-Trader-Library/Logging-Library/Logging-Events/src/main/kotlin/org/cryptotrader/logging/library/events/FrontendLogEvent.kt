@@ -1,5 +1,6 @@
 package org.cryptotrader.logging.library.events
 
+import org.cryptotrader.api.library.entity.user.ProductUser
 import java.time.LocalDateTime
 
 class FrontendLogEvent(
@@ -15,5 +16,21 @@ class FrontendLogEvent(
     clientApp: String?,
     userAgent: String?,
     ipAddress: String?,
-    remoteAddress: String?
-) : LogEvent(timestamp, level, logger, context, message, metadata, errorName, errorMessage, errorStack, clientApp, userAgent, ipAddress, remoteAddress)
+    remoteAddress: String?,
+    user: ProductUser?
+) : FrontEndLogEventPayload(
+    timestamp,
+    level,
+    logger,
+    context,
+    message,
+    metadata,
+    errorName,
+    errorMessage,
+    errorStack,
+    clientApp,
+    userAgent,
+    ipAddress,
+    remoteAddress,
+    user
+)

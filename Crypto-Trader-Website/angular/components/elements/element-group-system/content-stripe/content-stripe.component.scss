@@ -1,17 +1,19 @@
 // content-stripe.component.scss
 
-@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-functions' as funcs;
 
 content-stripe {
     width: 100%;
 
-    @include flex(center, center, row);
+    @include mixins.flex(center, center, row);
 
     // background-image: linear-gradient(to right, $light-charcoal, $muted-blue);
     background-image: linear-gradient(
         to right,
-        add-alpha($muted-blue, 0.8),
-        $muted-blue
+        funcs.add-alpha(vars.$muted-blue, 0.8),
+        vars.$muted-blue
     );
-    margin: $half-percent 0;
+    margin: vars.$half-percent 0;
 }

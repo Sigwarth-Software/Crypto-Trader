@@ -1,5 +1,7 @@
 open module org.cryptotrader.security {
     requires jakarta.persistence;
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires spring.context;
@@ -10,6 +12,7 @@ open module org.cryptotrader.security {
     requires spring.security.config;
     requires spring.security.core;
     requires spring.data.jpa;
+    requires org.cryptotrader.security.library.config;
     requires static lombok;
     requires com.google.crypto.tink;
     requires inet.ipaddr;

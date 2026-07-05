@@ -32,6 +32,7 @@ open module org.cryptotrader.api.library.config {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
 
+    requires org.yaml.snakeyaml;
 
     requires spring.jdbc;
 

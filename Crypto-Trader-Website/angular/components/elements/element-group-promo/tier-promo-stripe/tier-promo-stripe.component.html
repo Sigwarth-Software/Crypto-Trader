@@ -11,7 +11,7 @@
         </div>
         <div class="tier-promos">
             @for (tier of SubscriptionTier.values(); track tier) {
-                <tier-promo [tier]="tier" />
+                <tier-promo [tier]="tier" [prices]="subscriptionTierPrices"/>
             }
         </div>
     </scroll-reveal>

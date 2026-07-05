@@ -15,6 +15,7 @@ enum class CryptoTraderService(val port: Int) {
     LOGGING(8093),
     HEALTH(8094),
     SECURITY(8095),
+    SIMULATOR(8096),
     ADMIN(9000),
     VERSION(9001),
     DOCS(443);

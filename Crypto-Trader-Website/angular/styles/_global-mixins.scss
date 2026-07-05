@@ -1,8 +1,10 @@
 //=================================-Imports-==================================
-@use 'global-variables' as *;
-@use 'global-functions' as *;
-@use '@theoliverlear/styles-suite/sigwarth-variables' as *;
-@use '@theoliverlear/styles-suite/sigwarth-mixins' as *;
+@use 'global-variables' as vars;
+@use 'global-functions' as funcs;
+@use '@theoliverlear/styles-suite/sigwarth-variables' as ss-vars;
+@use '@theoliverlear/styles-suite/sigwarth-mixins' as ss-mixins;
+@use '@theoliverlear/styles-suite/sigwarth-functions' as ss-funcs;
+@forward '@theoliverlear/styles-suite/sigwarth-mixins';
 
 //=================================-Mixins-===================================
 
@@ -15,25 +17,25 @@
     }
 }
 
-@mixin two-column-layout($copy-flex: 55%, $visual-flex: 40%, $gap: $two-percent) {
-    @include flex(space-between, stretch, row);
+@mixin two-column-layout($copy-flex: 55%, $visual-flex: 40%, $gap: vars.$two-percent) {
+    @include ss-mixins.flex(space-between, stretch, row);
     gap: $gap;
 
     .copy-col {
-        @include flex(flex-start, flex-start, column);
-        gap: $half-percent;
+        @include ss-mixins.flex(flex-start, flex-start, column);
+        gap: vars.$half-percent;
         flex: 1 1 $copy-flex;
     }
 
     .visual-col,
     .modules-col {
         flex: 1 1 $visual-flex;
-        @include flex(center, stretch, column);
+        @include ss-mixins.flex(center, stretch, column);
     }
 }
 
 @mixin two-column-responsive($display: flex, $direction: column, $align: center, $justify: stretch) {
-    @include flex($justify, $align, $direction);
+    @include ss-mixins.flex($justify, $align, $direction);
 
     .copy-col,
     .visual-col,
@@ -43,32 +45,32 @@
     }
 }
 
-@mixin elevated-card($border-color: $muted-blue, $radius: $half-percent) {
-    background: $pure-white;
+@mixin elevated-card($border-color: vars.$muted-blue, $radius: vars.$half-percent) {
+    background: vars.$pure-white;
     border-radius: $radius;
-    box-shadow: add-alpha(black, 0.08) 0 4px 20px;
+    box-shadow: ss-funcs.add-alpha(black, 0.08) 0 4px 20px;
     border-top: 4px solid $border-color;
     transition: transform 250ms ease, box-shadow 250ms ease;
 
     &:hover {
         transform: translateY(-4px);
-        box-shadow: add-alpha(black, 0.15) 0 8px 30px;
+        box-shadow: ss-funcs.add-alpha(black, 0.15) 0 8px 30px;
     }
 }
 
 @mixin glass-panel($bg-alpha: 0.06, $border-alpha: 0.12, $blur: 16px) {
     position: relative;
-    background: add-alpha($pure-white, $bg-alpha);
+    background: ss-funcs.add-alpha(vars.$pure-white, $bg-alpha);
     backdrop-filter: blur($blur) saturate(1.4);
     -webkit-backdrop-filter: blur($blur) saturate(1.4);
-    border: 1px solid add-alpha($pure-white, $border-alpha);
-    border-radius: $half-percent;
+    border: 1px solid ss-funcs.add-alpha(vars.$pure-white, $border-alpha);
+    border-radius: vars.$half-percent;
     box-shadow:
-        inset 0 1px 0 add-alpha($pure-white, 0.1),
-        0 8px 32px add-alpha(black, 0.3);
+        inset 0 1px 0 ss-funcs.add-alpha(vars.$pure-white, 0.1),
+        0 8px 32px ss-funcs.add-alpha(black, 0.3);
 }
 
-@mixin glass-reflection-line($left: 10%, $right: 10%, $height: 1px, $color: $pure-white, $opacity: 0.4) {
+@mixin glass-reflection-line($left: 10%, $right: 10%, $height: 1px, $color: vars.$pure-white, $opacity: 0.4) {
     content: '';
     position: absolute;
     top: 0;
@@ -78,32 +80,32 @@
     background: linear-gradient(
         90deg,
         transparent,
-        add-alpha($color, $opacity),
+        ss-funcs.add-alpha($color, $opacity),
         transparent
     );
 }
 
-@mixin icon-text-row($icon-size: 1.4rem, $gap: $half-percent) {
-    @include flex(flex-start, center, row);
+@mixin icon-text-row($icon-size: 1.4rem, $gap: vars.$half-percent) {
+    @include ss-mixins.flex(flex-start, center, row);
     gap: $gap;
     font-size: 1rem;
     line-height: 1.5;
 
     .prop-icon,
     .trust-icon {
-        @include square-size($icon-size);
+        @include ss-mixins.square-size($icon-size);
         flex-shrink: 0;
     }
 }
 
-@mixin promo-section-block($margin: $two-percent) {
+@mixin promo-section-block($margin: vars.$two-percent) {
     display: block;
     margin: $margin 0;
 }
 
-@mixin section-header-centered($title-color: $midnight-navy, $subtitle-opacity: 0.85) {
+@mixin section-header-centered($title-color: vars.$midnight-navy, $subtitle-opacity: 0.85) {
     text-align: center;
-    margin-bottom: $two-percent;
+    margin-bottom: vars.$two-percent;
 
     subtitle {
         opacity: $subtitle-opacity;
@@ -130,7 +132,7 @@
     transition: $transition;
 }
 
-@mixin dark-section-backdrop($radius: $half-percent, $position: relative, $overflow: hidden) {
+@mixin dark-section-backdrop($radius: vars.$half-percent, $position: relative, $overflow: hidden) {
     position: $position;
     border-radius: $radius;
     overflow: $overflow;
@@ -143,7 +145,7 @@
     pointer-events: none;
 }
 
-@mixin shimmer-overlay($duration: 8s, $width: 50%, $color: $pure-white, $opacity-low: 0.03, $opacity-high: 0.06) {
+@mixin shimmer-overlay($duration: 8s, $width: 50%, $color: vars.$pure-white, $opacity-low: 0.03, $opacity-high: 0.06) {
     content: '';
     position: absolute;
     top: 0;
@@ -152,10 +154,10 @@
     height: 100%;
     background: linear-gradient(
         105deg,
-        transparent 40%,
-        add-alpha($color, $opacity-low) 45%,
-        add-alpha($color, $opacity-high) 50%,
-        add-alpha($color, $opacity-low) 55%,
+        transparent,
+        ss-funcs.add-alpha($color, $opacity-low) 45%,
+        ss-funcs.add-alpha($color, $opacity-high) 50%,
+        ss-funcs.add-alpha($color, $opacity-low) 55%,
         transparent 60%
     );
     animation: shimmer $duration ease-in-out infinite;

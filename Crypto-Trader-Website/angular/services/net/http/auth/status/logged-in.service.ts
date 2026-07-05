@@ -1,20 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Injectable } from '@angular/core'
+import { BehaviorSubject, map, Observable } from 'rxjs'
 
+import { HttpClientService } from '@theoliverlear/angular-suite'
+import { environment } from '@environments/environment'
+import { TokenStorageService } from '@auth/token-storage.service'
+import { AuthResponse, PossibleToken } from '@models/auth/types'
 
-
-import { HttpClientService } from '@theoliverlear/angular-suite';
-import { environment } from '@environments/environment';
-import { TokenStorageService } from '@auth/token-storage.service';
-import { AuthResponse, PossibleToken } from '@models/auth/types';
-
-
-
-
-
-@Injectable({
-    providedIn: 'root',
-})
 /**
  * Lightweight auth status client for the UI.
  *
@@ -23,13 +14,15 @@ import { AuthResponse, PossibleToken } from '@models/auth/types';
  * - If the server returns authorized=true but no token (which is normal), we enrich the response with the
  *   current in-memory token so components that need it don’t have to query storage separately.
  */
+@Injectable({
+    providedIn: 'root',
+})
 export class LoggedInService extends HttpClientService<never, AuthResponse> {
-    private static readonly URL: string = `${environment.apiUrl}/auth/logged-in`;
-    private readonly authState$: BehaviorSubject<boolean> =
-        new BehaviorSubject<boolean>(false);
+    private static readonly URL: string = `${environment.apiUrl}/auth/logged-in`
+    private readonly authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
-    constructor(private tokenStorage: TokenStorageService) {
-        super(LoggedInService.URL);
+    constructor(private readonly tokenStorage: TokenStorageService) {
+        super(LoggedInService.URL)
     }
 
     /**
@@ -39,17 +32,24 @@ export class LoggedInService extends HttpClientService<never, AuthResponse> {
     public isLoggedIn(): Observable<AuthResponse> {
         return this.get().pipe(
             map((response: AuthResponse): AuthResponse => {
-                if (response?.authorized && !response.token) {
-                    this.authState$.next(response?.authorized || false);
-                    const token: PossibleToken = this.tokenStorage.getToken();
-                    return token ? { ...response, token } : response;
+                const isAuthorized: boolean = response?.authorized || false
+                this.authState$.next(isAuthorized)
+                if (isAuthorized) {
+                    if (response.token) {
+                        return { ...response, token: response.token }
+                    }
+                    const token: PossibleToken = this.tokenStorage.getToken()
+                    return token ? { ...response, token } : response
                 }
-                return response;
+                return response
             }),
-        );
+        )
     }
 
+    /**
+     * Retrieves the recent authentication state.
+     */
     public getAuthState(): Observable<boolean> {
-        return this.authState$.asObservable();
+        return this.authState$.asObservable()
     }
 }

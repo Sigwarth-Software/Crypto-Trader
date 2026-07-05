@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.LoginRequest;
@@ -30,15 +31,15 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 /**
- * Authentication API endpoints implementing DPoP-bound access tokens and rotating refresh tokens.
- *
+ * Authentication API endpoints implementing DPoP-bound access tokens and
+ * rotating refresh tokens.
  */
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
+@PermitAll
 public class AuthController {
     private final AuthService authService;
-    private final UserEventsPublisher userEventsPublisher;
     private final ProductUserService productUserService;
     private final AuthContextService authContextService;
     private final JwtTokenService jwtTokenService;
@@ -49,7 +50,6 @@ public class AuthController {
 
     @Autowired
     public AuthController(AuthService authService,
-                          UserEventsPublisher userEventsPublisher,
                           ProductUserService productUserService,
                           AuthContextService authContextService,
                           JwtTokenService jwtTokenService,
@@ -58,7 +58,6 @@ public class AuthController {
                           DpopVerifierService dpopVerifier,
                           SecurityProperties securityProperties) {
         this.authService = authService;
-        this.userEventsPublisher = userEventsPublisher;
         this.productUserService = productUserService;
         this.authContextService = authContextService;
         this.jwtTokenService = jwtTokenService;
@@ -97,9 +96,6 @@ public class AuthController {
                                                                              issue.getExpiresAt(),
                                                                              this.securityProperties.cookieSecure(),
                                                                              this.securityProperties.cookieSamesite());
-            // Publish event
-            UserRegisteredEvent registerEvent = new UserRegisteredEvent(possibleUser, LocalDateTime.now());
-            this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
             return ResponseEntity.status(signupResponse.getStatus())
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(signupResponse.getPayload());
@@ -212,14 +208,13 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(payload);
     }
 
-/**
+    /**
      * Quick status check used by the UI.
      * Returns authorized=true if the current request is authenticated.
      */
     @GetMapping("/logged-in")
     public ResponseEntity<AuthResponse> isLoggedIn() {
         boolean authenticated = this.authContextService.isAuthenticated();
-        log.info("User logged in: {}", authenticated);
         AuthResponse authResponse = new AuthResponse(authenticated);
         return ResponseEntity.ok(authResponse);
     }

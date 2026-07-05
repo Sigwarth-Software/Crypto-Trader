@@ -5,8 +5,6 @@ from datetime import datetime
 from typing import Optional
 from django.conf import settings
 
-import requests
-
 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
 from src.crypto_trader_analysis.apps.learning.models.database.query_type import QueryType
 from src.crypto_trader_analysis.apps.learning.models.prediction.prediction import Prediction
@@ -14,6 +12,7 @@ from src.crypto_trader_analysis.apps.learning.models.training.train_model import
     setup_logging, configure_concurrency, setup_tensorflow_env
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_type import TrainingType
+from src.crypto_trader_analysis.core.http_client import post_json
 
 
 from src.crypto_trader_analysis.apps.learning.models.currency_json_generator import get_all_currency_codes
@@ -55,8 +54,11 @@ def get_fuzzy_price_at_start_time(start_time: datetime, target_currency: str) ->
         "dateTime": start_time.isoformat()
     }
     try:
-        host: str = settings.CT_API_HOST
-        response = requests.post(f"http://{host}:8080/api/currency/history/fuzzy/{target_currency.upper()}", verify=False, json=payload)
+        response = post_json(
+            settings.CT_API_BASE_URL,
+            f"/api/currency/history/fuzzy/{target_currency.upper()}",
+            payload,
+        )
         if response.status_code != 200:
             logging.error(f"Failed to get fuzzy price for {target_currency} at {start_time}. Status code: {response.status_code}, Response: {response.text}")
             return None
@@ -138,8 +140,11 @@ def predict_and_send(target_currency: str = 'BTC',
 
 def send_prediction_to_server(prediction: Prediction) -> Optional[int]:
     try:
-        host: str = settings.CT_DATA_HOST
-        response = requests.post(f"http://{host}:8085/data/predictions/add", json=prediction.to_json(), verify=False)
+        response = post_json(
+            settings.CT_DATA_BASE_URL,
+            "/data/predictions/add",
+            prediction.to_json(),
+        )
         logging.info(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
         payload: dict = response.json()
         prediction_id = payload.get("predictionId")

@@ -24,11 +24,11 @@ const ENV = {
     API_URL:
         process.env.WEBSITE_API_URL ||
         process.env.API_URL ||
-        'http://localhost:8080/api',
+        '/api',
     WEBSOCKET_URL:
         process.env.WEBSITE_WEBSOCKET_URL ||
         process.env.WEBSOCKET_URL ||
-        'ws://localhost:8080/ws',
+        '/ws',
     ENABLE_DEBUG: boolFromEnv(
         process.env.WEBSITE_ENABLE_DEBUG ?? process.env.ENABLE_DEBUG,
         true,
@@ -39,7 +39,7 @@ const ENV = {
     ),
     LOG_LEVEL: parseInt(process.env.WEBSITE_LOG_LEVEL || process.env.LOG_LEVEL || '1'),
     SERVER_LOG_LEVEL: parseInt(process.env.WEBSITE_SERVER_LOG_LEVEL || process.env.SERVER_LOG_LEVEL || '5'),
-    SERVER_LOGGING_URL: process.env.WEBSITE_SERVER_LOGGING_URL || process.env.SERVER_LOGGING_URL || 'https://localhost/api/logs',
+    SERVER_LOGGING_URL: process.env.WEBSITE_SERVER_LOGGING_URL || process.env.SERVER_LOGGING_URL || '/api/logs/website',
     ENABLE_SOURCE_MAPS: boolFromEnv(process.env.WEBSITE_ENABLE_SOURCE_MAPS || process.env.ENABLE_SOURCE_MAPS, true),
     ENABLE_DARK_THEME: boolFromEnv(process.env.WEBSITE_ENABLE_DARK_THEME || process.env.ENABLE_DARK_THEME, true),
     COLOR_SCHEME: (process.env.WEBSITE_COLOR_SCHEME || process.env.COLOR_SCHEME || 'purple,teal,gray,gray,orange,red,darkred').split(','),
@@ -132,14 +132,11 @@ const files = [
             apiUrl:
                 process.env.WEBSITE_API_URL_PROD ||
                 process.env.API_URL_PROD ||
-                ENV.API_URL.replace('http://', 'https://').replace(':8080', ''),
+                ENV.API_URL,
             websocketUrl:
+                process.env.WEBSITE_WEBSOCKET_URL_PROD ||
                 process.env.WEBSOCKET_URL_PROD ||
-                process.env.WEBSOCKET_URL_PROD ||
-                ENV.WEBSOCKET_URL.replace('http://', 'https://').replace(
-                    ':8080',
-                    '',
-                ),
+                ENV.WEBSOCKET_URL,
             enableDebug: boolFromEnv(
                 process.env.WEBSITE_ENABLE_DEBUG_PROD ??
                     process.env.ENABLE_DEBUG_PROD,

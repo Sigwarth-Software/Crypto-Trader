@@ -24,7 +24,7 @@ spring:
       region:
         static: us-east-1
     function:
-      definition: frontendLogsConsumer
+      definition: frontendLogsConsumer;executionSpeedLogsConsumer
     stream:
       enabled: true
       defaultBinder: kafka
@@ -32,16 +32,56 @@ spring:
         frontendLogsConsumer-in-0:
           destination: ct.logging.frontend.v1
           group: crypto-trader-logging
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
+        executionSpeedLogsConsumer-in-0:
+          destination: ct.logging.execution-speed.v1
+          group: crypto-trader-logging
+          contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
         bindings:
           frontendLogsConsumer-in-0:
             consumer:
               enableDlq: true
               dlqName: ct.logging.frontend.v1.DLT
+              configuration:
+                group.instance.id: logging-service-frontend-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          executionSpeedLogsConsumer-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.logging.execution-speed.v1.DLT
+              configuration:
+                group.instance.id: logging-service-execution-speed-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
 
 logging:
   level:
     org.springframework: INFO
+
+cryptotrader:
+  logging:
+    time-tracking:
+      exceeding-factor: ${TIME_TRACKING_EXCEEDING_FACTOR:0.8}
+      expected-factor: ${TIME_TRACKING_EXPECTED_FACTOR:1.4}
+      warning-factor: ${TIME_TRACKING_WARNING_FACTOR:1.8}
+      alert-factor: ${TIME_TRACKING_ALERT_FACTOR:2.0}
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}

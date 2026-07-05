@@ -41,10 +41,12 @@ spring:
         userRegistered-in-0:
           destination: ct.user.registered.v1
           group: ${spring.application.name}
-          contentType: application/json
+          contentType: application/vnd.cryptotrader.encrypted+json
+          consumer:
+            maxAttempts: 1
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
         bindings:
           userRegistered-in-0:
             consumer:
@@ -59,3 +61,9 @@ management:
     web:
       exposure:
         include: health,info
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}

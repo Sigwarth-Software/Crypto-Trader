@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Logger as TsLogger } from 'tslog';
-import { LogLayer } from 'loglayer';
+import { LogLayer, type LogLayerPlugin } from 'loglayer';
 import { TsLogTransport } from '@loglayer/transport-tslog';
 import { HttpTransport } from '@loglayer/transport-http';
 import { redactionPlugin } from '@loglayer/plugin-redaction';
 import { serializeError } from 'serialize-error';
 import { environment } from '@environments/environment';
+import {LoggerContext} from "@models/logging/LoggerContext";
 
 // TODO: Move to utils.
 function formatTimestamp(date: Date): string {
@@ -104,16 +105,17 @@ export class CryptoTraderLoggerService {
             plugins: [
                 redactionPlugin({
                     paths: ['password', 'token', 'authorization', 'cookie'],
-                }),
+                }) as LogLayerPlugin,
             ],
         });
     }
 
+    // TODO: Make an enum.
     /** Sets the context of the logger.
      *
      * @param context
      */
-    public setContext(context: string): void {
+    public setContext(context: LoggerContext): void {
         this.context = context;
         prettyLogger.settings.name = context;
     }

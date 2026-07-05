@@ -28,6 +28,16 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE*"
+            excludes += "/META-INF/NOTICE*"
+            excludes += "/META-INF/*.txt"
+            excludes += "/META-INF/spring.*"
+            excludes += "/META-INF/web-fragment.xml"
+            excludes += "/META-INF/services/javax.servlet.ServletContainerInitializer"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "**/spring-configuration-metadata.json"
+            excludes += "**/additional-spring-configuration-metadata.json"
         }
     }
 
@@ -55,9 +65,9 @@ val vicoVersion = "2.0.0"
 //noinspection GradleDependency
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
-    // Shared library modules (mobile-classified JARs compiled to Java 21)
-    implementation("org.cryptotrader:api-communication:0.0.6:mobile") { isTransitive = false }
-    testImplementation("org.cryptotrader:crypto-trader-testing:0.0.5:mobile") { isTransitive = false }
+    // Shared library modules
+    implementation("org.cryptotrader:api-communication:0.0.6")
+    testImplementation("org.cryptotrader:testing-infrastructure:0.0.1")
     // Compose BOM and core UI
     implementation(platform("androidx.compose:compose-bom:2024.09.01"))
     implementation("androidx.activity:activity-compose:1.9.2")
@@ -105,7 +115,7 @@ dependencies {
     // Baseline Profile Installer
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
 
-    // Testing – JUnit 5 + Crypto-Trader-Testing (imported via mobile-classified JAR above)
+    // Testing – JUnit 5 + Testing-Infrastructure
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.0")

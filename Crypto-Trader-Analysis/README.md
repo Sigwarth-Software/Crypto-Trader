@@ -151,7 +151,7 @@ target_currency: BTC           # Focus on one currency for testing
 - TensorFlow + Keras
 - NumPy, Pandas, scikit‑learn
 - SQLAlchemy (COPY to CSV optimization)
-- Requests (HTTP)
+- Requests (HTTPS service clients)
 - `attrs` / `typing_extensions`
 
 ## ❓ Questions or help

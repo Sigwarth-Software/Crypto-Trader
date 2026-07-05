@@ -4,10 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Index;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +16,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class BannedIpAddress extends IpAddress {
 
+    @Builder.Default
     @Column(nullable = false, name = "occurred_at")
     private LocalDateTime occurredAt = LocalDateTime.now();
+
+    @Builder.Default
+    @Column(nullable = false, name = "attempts")
+    private int attempts = 1;
+
+    public BannedIpAddress(String ipAddress) {
+        super(ipAddress);
+        this.occurredAt = LocalDateTime.now();
+    }
 }

@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-admin</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>Crypto-Trader-Admin</name>
     <description>
         JavaFX-based operations console for Crypto Trader — manage users, jobs, configurations, and runtime diagnostics.
@@ -34,6 +34,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>data-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-communication</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -61,7 +65,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
+            <artifactId>testing-infrastructure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -264,6 +268,18 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>logging-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>logging-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-models</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -409,7 +425,6 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
-                <version>1.9.20</version>
                 <configuration>
                     <skip>${dokka.skip}</skip>
                 </configuration>

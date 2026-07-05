@@ -1,32 +1,34 @@
 // trader-event-bubble.component.scss
-@use '../../../../styles/globals' as *;
-@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+@use 'angular/styles/gradients/global-gradient-placeholders' as gradient-placeholders;
 
 trader-event-bubble {
-    @include flex(center, center, column);
-    padding: $one-percent $one-half-percent;
+    @include mixins.flex(center, center, column);
+    padding: vars.$one-percent vars.$one-half-percent;
 
     @extend %soft-border-radius;
-    background-color: $air-blue;
-    margin: $half-percent 0;
-    min-width: $twenty-five-percent;
+    background-color: vars.$air-blue;
+    margin: vars.$half-percent 0;
+    min-width: vars.$twenty-five-percent;
 
     ss-title {
         // width: 100%;
     }
 
     .trade-title-details {
-        @include flex(space-around, center, row);
+        @include mixins.flex(space-around, center, row);
 
         @extend %softer-border-radius;
-        background-color: $muted-blue;
-        padding: $half-percent;
+        background-color: vars.$muted-blue;
+        padding: vars.$half-percent;
 
         ss-img {
             background-color: transparent;
             box-shadow: none;
 
-            @include square-size($two-percent);
+            @include mixins.square-size(vars.$two-percent);
 
             // margin-right: $half-percent;
             img {
@@ -35,8 +37,8 @@ trader-event-bubble {
         }
 
         .trade-title-details-text {
-            @include flex(center, center, column);
-            margin-right: $half-percent;
+            @include mixins.flex(center, center, column);
+            margin-right: vars.$half-percent;
 
             ss-title h6 {
                 color: white;
@@ -46,12 +48,12 @@ trader-event-bubble {
 
     .value-change-div {
         width: 100%;
-        margin: $half-percent 0;
+        margin: vars.$half-percent 0;
 
-        @include flex(flex-end, center, row);
+        @include mixins.flex(flex-end, center, row);
 
         .trade-value {
-            @include flex(flex-end, center, row);
+            @include mixins.flex(flex-end, center, row);
             width: 100%;
 
             h4 {
@@ -67,16 +69,16 @@ trader-event-bubble {
     .trade-title {
         width: 100%;
 
-        @include flex(space-between, center, row);
+        @include mixins.flex(space-between, center, row);
 
         .currency-name-div {
-            @include flex(flex-start, center, row);
+            @include mixins.flex(flex-start, center, row);
 
             // margin-right: $five-percent;
             @extend %softer-border-radius;
-            background-color: $pure-white;
-            padding: calc($half-percent * 0.75) $one-half-percent
-                calc($half-percent * 0.75) $one-percent;
+            background-color: vars.$pure-white;
+            padding: calc(#{vars.$half-percent} * 0.75) vars.$one-half-percent
+                calc(#{vars.$half-percent} * 0.75) vars.$one-percent;
 
             ss-title h4 {
                 color: gray;
@@ -85,11 +87,11 @@ trader-event-bubble {
             }
 
             ss-img {
-                padding: calc($quarter-percent * 1.25)
-                    calc($quarter-percent * 1.65);
-                margin-right: $half-percent;
+                padding: calc(#{vars.$quarter-percent} * 1.25)
+                    calc(#{vars.$quarter-percent} * 1.65);
+                margin-right: vars.$half-percent;
 
-                @include square-size($two-percent);
+                @include mixins.square-size(vars.$two-percent);
 
                 img {
                     filter: invert(0.5);
@@ -101,7 +103,7 @@ trader-event-bubble {
     .trade-time-div {
         width: 100%;
 
-        @include flex(space-between, center, row);
+        @include mixins.flex(space-between, center, row);
     }
 
     accordion {

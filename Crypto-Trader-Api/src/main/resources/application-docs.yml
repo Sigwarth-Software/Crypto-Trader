@@ -1,5 +1,7 @@
 server:
   port: 18080
+  ssl:
+    enabled: false
 
 spring:
   datasource:
@@ -29,3 +31,8 @@ spring:
 cryptotrader:
   load:
     currency: false
+
+security:
+  crypto:
+    tink:
+      store: memory

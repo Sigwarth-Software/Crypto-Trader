@@ -4,6 +4,7 @@ import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.*;
+import org.cryptotrader.universal.library.communication.response.TimeValueResponse;
 import org.cryptotrader.data.library.model.currency.PerformanceRating;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class CurrencyController {
                                         HttpStatus.OK);
         }
     }
- 
+
     @PermitAll
     @GetMapping("/list")
     public ResponseEntity<CurrencyNamesResponse> getList(@RequestParam(value = "withCode", defaultValue = "false") boolean withCode) {
