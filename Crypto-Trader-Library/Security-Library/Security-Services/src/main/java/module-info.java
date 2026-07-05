@@ -5,6 +5,7 @@ open module org.cryptotrader.security.library.services {
     requires inet.ipaddr;
     requires org.apache.tomcat.embed.core;
     requires spring.context;
+    requires spring.boot.autoconfigure;
     requires org.cryptotrader.security.library.repositories;
     requires org.cryptotrader.security.library.models;
     requires spring.beans;
