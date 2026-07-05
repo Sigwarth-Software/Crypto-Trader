@@ -5,10 +5,17 @@ import org.cryptotrader.security.library.repository.keyset.TinkKeysetRepository
 import org.cryptotrader.security.library.service.model.TinkKeysetStore
 import org.cryptotrader.universal.library.services.BaseEntityService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 
 @Service
+@ConditionalOnProperty(
+    prefix = "security.crypto.tink",
+    name = ["store"],
+    havingValue = "database",
+    matchIfMissing = true
+)
 class TinkKeysetEntityService @Autowired constructor(
     repository: TinkKeysetRepository
 ) : BaseEntityService<TinkKeyset, String, TinkKeysetRepository>(repository),
