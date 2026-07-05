@@ -2,5 +2,11 @@ package org.cryptotrader.security.library.model.properties
 
 data class Tink(
     val keysetName: String = "default-aead",
-    val generateIfMissing: Boolean = true
+    val generateIfMissing: Boolean = true,
+    val store: TinkKeysetStoreType = TinkKeysetStoreType.DATABASE
 )
+
+enum class TinkKeysetStoreType {
+    DATABASE,
+    MEMORY
+}
