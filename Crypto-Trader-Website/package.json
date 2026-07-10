@@ -21,6 +21,7 @@
         "pretest": "node scripts/generate-env.mjs",
         "start": "ng serve",
         "start:https": "ng serve --configuration development --ssl true --ssl-cert ../certs/localhost.pem --ssl-key ../certs/localhost-key.pem --proxy-config proxy.local-https.conf.json",
+        "start:https:hmr": "ng serve --configuration hmr --ssl true --ssl-cert ../certs/localhost.pem --ssl-key ../certs/localhost-key.pem --proxy-config proxy.local-https.conf.json",
         "serve": "ng serve",
         "build": "ng build --configuration production",
         "build:dev": "ng build --configuration development",
