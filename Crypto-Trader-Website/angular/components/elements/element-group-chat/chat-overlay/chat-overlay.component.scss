@@ -6,36 +6,41 @@
 // TODO: Replace pixels with variables.
 chat-overlay {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    bottom: 1.25rem;
+    right: 1.25rem;
     z-index: 9999;
 
     .chat-fab {
         @include mixins.flex(center, center, row);
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 3rem;
+        height: 3rem;
         border-radius: 50%;
         background-color: vars.$sunbeam-yellow;
         cursor: pointer;
-        box-shadow: 0 4px 16px funcs.add-alpha(black, 0.35);
+        border: 1px solid funcs.add-alpha(vars.$absolute-black, 0.25);
+        box-shadow:
+            inset 0 1px 0 funcs.add-alpha(vars.$pure-white, 0.35),
+            0 4px 12px funcs.add-alpha(vars.$absolute-black, 0.42);
         transition:
             box-shadow 200ms ease,
             transform 200ms ease;
 
         .chat-fab-icon {
-            width: 1.75rem;
-            height: 1.75rem;
+            width: 1.45rem;
+            height: 1.45rem;
         }
 
         &:hover {
             $box-shadow-size: funcs.simplest-calc(0.15);
-            box-shadow: funcs.add-alpha(vars.$sunbeam-yellow, 0.4)
-                0 $box-shadow-size funcs.simplest-calc(0.35);
+            box-shadow:
+                inset 0 1px 0 funcs.add-alpha(vars.$pure-white, 0.45),
+                funcs.add-alpha(vars.$sunbeam-yellow, 0.42)
+                    0 $box-shadow-size funcs.simplest-calc(0.35);
             transform: scale(1.05);
         }
 
         &:active {
-            box-shadow: 0 2px 8px funcs.add-alpha(black, 0.3);
+            box-shadow: 0 2px 8px funcs.add-alpha(vars.$absolute-black, 0.38);
             transform: scale(0.95);
         }
     }
@@ -43,40 +48,48 @@ chat-overlay {
     .chat-overlay-panel {
         @include mixins.flex(stretch, stretch, column);
         position: absolute;
-        bottom: 4.5rem;
+        bottom: 3.75rem;
         right: 0;
-        width: 22rem;
-        height: 30rem;
-        background-color: vars.$charcoal;
-        border-radius: vars.$half-percent;
-        border: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
+        width: min(19rem, calc(100vw - 2.5rem));
+        height: min(25rem, calc(100vh - 6rem));
+        background:
+            linear-gradient(
+                180deg,
+                funcs.add-alpha(vars.$light-charcoal, 0.98) 0%,
+                funcs.add-alpha(vars.$charcoal, 0.99) 100%
+            );
+        border-radius: 0.45rem;
+        border: 1px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.22);
         box-shadow:
-            inset 0 1px 0 funcs.add-alpha(vars.$pure-white, 0.04),
-            0 8px 32px funcs.add-alpha(black, 0.5);
+            inset 0 1px 0 funcs.add-alpha(vars.$pure-white, 0.06),
+            0 8px 28px funcs.add-alpha(vars.$absolute-black, 0.58);
         overflow: hidden;
 
         .chat-overlay-header {
             @include mixins.flex(center, flex-start, row);
-            gap: vars.$half-percent;
-            padding: vars.$half-percent vars.$three-quarter-percent;
-            border-bottom: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
+            gap: 0.45rem;
+            min-height: 2.4rem;
+            padding: 0.45rem 0.65rem;
+            background-color: funcs.add-alpha(vars.$absolute-black, 0.22);
+            border-bottom: 1px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.18);
 
             .chat-overlay-header-icon {
-                width: 1.25rem;
-                height: 1.25rem;
+                width: 1rem;
+                height: 1rem;
             }
 
             .chat-overlay-close {
                 margin-left: auto;
                 background: transparent;
                 border: none;
-                color: funcs.add-alpha(vars.$pure-white, 0.5);
+                color: funcs.add-alpha(vars.$soft-grey, 0.82);
                 cursor: pointer;
-                font-size: 1rem;
-                padding: 0.25rem;
+                font-size: 0.9rem;
+                padding: 0.2rem;
+                line-height: 1;
 
                 &:hover {
-                    color: vars.$pure-white;
+                    color: vars.$sunbeam-yellow;
                 }
             }
         }
@@ -85,23 +98,23 @@ chat-overlay {
             @include mixins.flex(flex-start, flex-start, column);
             flex: 1;
             overflow-y: auto;
-            padding: vars.$three-quarter-percent;
-            gap: vars.$half-percent;
+            padding: 0.65rem;
+            gap: 0.5rem;
 
             &::-webkit-scrollbar {
-                width: 4px;
+                width: 3px;
             }
 
             &::-webkit-scrollbar-track {
-                background: transparent;
+                background: funcs.add-alpha(vars.$absolute-black, 0.2);
             }
 
             &::-webkit-scrollbar-thumb {
-                background: funcs.add-alpha(vars.$pure-white, 0.15);
+                background: funcs.add-alpha(vars.$sunbeam-yellow, 0.35);
                 border-radius: 2px;
 
                 &:hover {
-                    background: funcs.add-alpha(vars.$pure-white, 0.25);
+                    background: funcs.add-alpha(vars.$sunbeam-yellow, 0.55);
                 }
             }
         }
