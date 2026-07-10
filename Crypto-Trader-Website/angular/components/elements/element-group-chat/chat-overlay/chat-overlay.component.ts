@@ -1,12 +1,17 @@
 // chat-overlay.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
-import { chatModuleIcon, ImageAsset } from '@assets/image.assets';
-import { LoggedInService } from '@http/auth/status/logged-in.service';
-import { MySubscriptionTierService } from '@http/user/my-subscription-tier.service';
-import { SubscriptionTier } from '@models/user/types';
-import { ChatMessage } from '@models/chat/types';
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import { chatModuleIcon, ImageAsset } from '@assets/image.assets'
+import { LoggedInService } from '@http/auth/status/logged-in.service'
+import { SubscriptionTierService } from '@http/user/subscription-tier.service'
+import { SubscriptionTierResponse } from '@models/user/types'
+import { ChatMessage } from '@models/chat/types'
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
+import { LoggerContext } from '@models/logging/LoggerContext'
+import { ElementSize } from '@theoliverlear/angular-suite'
+import {
+    LoadingWheelColorScheme
+} from '@components/elements/element-group-system/loading-wheel/models/LoadingWheelColorScheme'
 
 /**
  * Chat popup for quick chat functionality.
@@ -18,18 +23,18 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
     standalone: false,
 })
 export class ChatOverlayComponent implements OnInit {
-    protected readonly chatIcon: ImageAsset = chatModuleIcon;
-    protected isOpen: boolean = false;
-    protected messages: ChatMessage[] = [];
-    protected userInput: string = '';
-    protected isLoading: boolean = false;
-    protected isVisible: boolean = false;
-    private isLoggedIn: boolean = false;
-    private isUltimate: boolean = false;
+    protected readonly chatIcon: ImageAsset = chatModuleIcon
+    protected isOpen: boolean = false
+    protected messages: ChatMessage[] = []
+    protected userInput: string = ''
+    protected isLoading: boolean = false
+    protected isVisible: boolean = false
+    private isLoggedIn: boolean = false
+    private isUltimate: boolean = false
 
     constructor(
         private readonly loggedInService: LoggedInService,
-        private readonly subscriptionTierService: MySubscriptionTierService,
+        private readonly subscriptionTierService: SubscriptionTierService,
         private readonly log: CryptoTraderLoggerService,
     ) {}
 
@@ -38,62 +43,64 @@ export class ChatOverlayComponent implements OnInit {
      * to determine visibility of chat overlay.
      */
     public ngOnInit(): void {
-        this.listenForAuthStatus();
-        this.listenForSubscriptionTier();
+        this.log.setContext(LoggerContext.Chat)
+        this.listenForAuthStatus()
+        this.listenForSubscriptionTier()
     }
 
     private listenForAuthStatus(): void {
-        this.log.log('Listening for auth status for chat overlay display.', 'ChatOverlay');
+        this.log.log('Listening for auth status for chat overlay display.', 'ChatOverlay')
         this.loggedInService.getAuthState().subscribe((authStatus: boolean): void => {
-            this.isLoggedIn = authStatus;
-            this.updateVisibility();
-        });
+            this.log.log(`Observed auth status: ${authStatus}`)
+            this.isLoggedIn = authStatus
+            this.updateVisibility()
+        })
     }
 
     private listenForSubscriptionTier(): void {
-        this.log.log('Listening for subscription tier for chat overlay display.', 'ChatOverlay');
+        this.log.log('Listening for subscription tier for chat overlay display.', 'ChatOverlay')
         this.subscriptionTierService
-            .getSubscriptionTierStream()
-            .subscribe((tier: SubscriptionTier): void => {
-                this.isUltimate = tier === 'ULTIMATE';
-                this.updateVisibility();
-            });
+            .getSubscriptionTier()
+            .subscribe((tier: SubscriptionTierResponse): void => {
+                this.isUltimate = tier.subscriptionTier === 'ULTIMATE'
+                this.updateVisibility()
+            })
     }
 
     private updateVisibility(): void {
-        this.isVisible = this.isLoggedIn && this.isUltimate;
+        this.isVisible = this.isLoggedIn && this.isUltimate
     }
 
     /**
      * Toggles the visibility of the chat overlay.
      */
     public toggle(): void {
-        this.isOpen = !this.isOpen;
-        this.log.debug(`Chat overlay toggled. Open: ${this.isOpen}`, 'ChatOverlay');
+        this.isOpen = !this.isOpen
+        this.log.debug(`Chat overlay toggled. Open: ${this.isOpen}`, 'ChatOverlay')
     }
 
     /**
      * Sends a message to the chat back-end.
      */
     public sendMessage(): void {
-        const text: string = this.userInput.trim();
+        const text: string = this.userInput.trim()
         if (!text) {
-            return;
+            return
         }
-        this.log.info('Sending message from chat overlay', 'ChatOverlay');
-        this.messages.push({ role: 'user', content: text, timestamp: new Date() });
-        this.userInput = '';
-        this.isLoading = true;
+        this.log.info('Sending message from chat overlay', 'ChatOverlay')
+        this.messages.push({ role: 'user', content: text, timestamp: new Date() })
+        this.userInput = ''
+        this.isLoading = true
         // TODO: Connect to ChatService backend
         setTimeout((): void => {
-            this.log.debug('Received mock response in chat overlay', 'ChatOverlay');
+            this.log.debug('Received mock response in chat overlay', 'ChatOverlay')
             this.messages.push({
                 role: 'assistant',
                 content: 'Chat backend is not yet connected.',
                 timestamp: new Date(),
-            });
-            this.isLoading = false;
-        }, 500);
+            })
+            this.isLoading = false
+        }, 500)
     }
 
     /**
@@ -102,8 +109,11 @@ export class ChatOverlayComponent implements OnInit {
      */
     public onKeyDown(event: KeyboardEvent): void {
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            this.sendMessage();
+            event.preventDefault()
+            this.sendMessage()
         }
     }
+
+    protected readonly ElementSize = ElementSize
+    protected readonly LoadingWheelColorScheme = LoadingWheelColorScheme
 }
