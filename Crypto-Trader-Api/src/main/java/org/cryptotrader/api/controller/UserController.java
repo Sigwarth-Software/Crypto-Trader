@@ -29,7 +29,7 @@ public class UserController {
     }
     //=============================-Methods-==================================
 
-    @GetMapping("/me/tier")
+    @GetMapping("/tier")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal ProductUser user) {
         return ResponseEntity.ok(new SubscriptionTierResponse(user.getSubscriptionTier()));
