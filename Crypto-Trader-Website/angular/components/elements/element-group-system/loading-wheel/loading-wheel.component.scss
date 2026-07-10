@@ -104,6 +104,30 @@ loading-wheel {
         }
     }
 
+    &.color-terminal {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                vars.$sunbeam-yellow,
+                vars.$soft-grey,
+                vars.$light-charcoal,
+                vars.$absolute-black,
+                vars.$sunbeam-yellow
+            );
+            border: vars.$thin-border solid vars.$sunbeam-yellow;
+            box-shadow:
+                0 0 vars.$eighth-percent vars.$absolute-black,
+                0 0 vars.$quarter-percent vars.$sunbeam-yellow;
+        }
+
+        .loader-dot {
+            background-color: vars.$sunbeam-yellow;
+            box-shadow:
+                0 0 vars.$quarter-percent vars.$absolute-black,
+                0 0 vars.$half-percent vars.$sunbeam-yellow;
+        }
+    }
+
     &.color-emerald {
         .loader-ring {
             background: conic-gradient(
