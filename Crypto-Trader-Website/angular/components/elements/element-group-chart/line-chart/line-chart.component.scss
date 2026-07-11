@@ -5,8 +5,17 @@
 
 line-chart {
     @extend %soft-border-radius;
+    display: inline-block;
+    line-height: 0;
+    overflow: hidden;
+    vertical-align: top;
     border: vars.$thinnest-border solid vars.$pure-white;
 
     // background-color: lightblue;
     background-color: funcs.add-alpha-opaque(vars.$mint-green, 0.5, vars.$alabaster-stone);
+
+    svg {
+        display: block;
+    }
+
 }
