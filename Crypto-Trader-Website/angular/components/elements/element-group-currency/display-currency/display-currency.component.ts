@@ -39,6 +39,7 @@ export class DisplayCurrencyComponent
     @Input() public currency: DisplayCurrency;
     protected imageAsset: ImageAsset = defaultCurrencyIcon;
     protected history: HistoryPoint[] = [];
+    protected chartData: SparkPoint[] = [];
     protected performance: PerformanceRating = {
         rating: 'neutral',
         changePercent: '0%',
@@ -97,21 +98,16 @@ export class DisplayCurrencyComponent
             });
     }
 
-    /** Sets the chart properties based on historical data.
+    /** Sets the chart data based on historical data.
      *
      */
-    private setChartProperties(): void {
-        const prices: SparkPoint[] = this.history.map(
+    private setChartData(): void {
+        this.chartData = this.history.map(
             (point: HistoryPoint): SparkPoint => ({
                 date: point.date,
                 value: point.value,
             }),
         );
-        this.chartConfig = {
-            ...defaultChartConfig,
-            dimensions: { ...defaultChartConfig.dimensions, margin: { ...defaultChartConfig.dimensions.margin } },
-            data: prices,
-        };
     }
 
     /** Initialize WebSockets on component initialization.
@@ -227,8 +223,8 @@ export class DisplayCurrencyComponent
                 this.currentNumericPrice = initNumericValue;
             }
         }
-        if ('history' in changes) {
-            this.setChartProperties();
+        if ('history' in changes || 'chartData' in changes) {
+            this.setChartData();
         }
         if ('performance' in changes) {
             this.updatePerformance();
@@ -242,7 +238,6 @@ export class DisplayCurrencyComponent
         void this.resolveImageAsset();
         this.updatePerformance();
         this.continuouslyUpdatePrice();
-        // this.setChartProperties();
     }
 
     /** Clean up subscriptions and WebSocket connections on component destruction.
@@ -296,7 +291,7 @@ export class DisplayCurrencyComponent
             .subscribe((points: HistoryPoint[]): void => {
                 this.logger.debug(`History received for ${this.currency.currencyCode}: ${points.length} points`, 'DisplayCurrency');
                 this.history = points;
-                this.setChartProperties();
+                this.setChartData();
             });
     }
 
