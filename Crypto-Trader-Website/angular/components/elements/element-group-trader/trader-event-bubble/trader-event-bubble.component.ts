@@ -12,6 +12,7 @@ import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { TimeFormatterService } from '@ui/time-formatter.service';
 import { TradeEvent } from '@models/trader/types';
 import { VendorOption } from '@models/vendor/VendorOption';
+import { formatIsoDateTime } from '@app/scripts/date-time.scripts'
 
 @Component({
     selector: 'trader-event-bubble',
@@ -122,7 +123,20 @@ export class TraderEventBubbleComponent {
     getTradeDetails(): string {
         // TODO: Further implement this. It would include data like fees,
         //       vendor, more specific trade data, and IDs for support.
-        return `Trade #${this.tradeEvent.id}. If you have any questions, please contact support with your trade ID.`
+        let tradeSummary: string = `Trade #${this.tradeEvent.id}.`
+        let valueChange: number = this.tradeEvent.valueChange;
+        const sharesChange: number = this.tradeEvent.sharesChange;
+        if (valueChange < 1 && sharesChange === 0) {
+            // TODO: Extract isNoValueTrade() util for reuse.
+            valueChange = Number(valueChange.toFixed(2));
+            if (valueChange < 0.01) {
+                const tradeExplanation: string = `Crypto Trader's algorthm determined this low-value trade was worth investing in ${this.tradeEvent.currency} at ${formatIsoDateTime(this.tradeEvent.tradeTime)}.`
+                tradeSummary += `\n\n${tradeExplanation}`
+            }
+        }
+        const tradeSupportMessage: string = `If you have any questions, please contact support with your trade ID.`
+        tradeSummary += `\n\n${tradeSupportMessage}`
+        return tradeSummary
     }
 
     getSharesChange(): string {
