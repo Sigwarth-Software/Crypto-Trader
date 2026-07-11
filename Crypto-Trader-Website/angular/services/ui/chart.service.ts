@@ -13,13 +13,14 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class ChartService {
-    /** Parse raw chart data points into typed date/value pairs, filtering
-     *  out any entries with invalid dates.
+    /** Parse raw chart data points into chronological date/value pairs,
+     *  filtering invalid entries and consolidating duplicate timestamps.
      *
      * @param data
      */
     public parseData(data: ChartDataPoint[]): ParsedPoint[] {
-        return data
+        const pointsByTimestamp: Map<number, ParsedPoint> = new Map<number, ParsedPoint>();
+        data
             .map(
                 (point: ChartDataPoint): ParsedPoint => ({
                     date:
@@ -31,8 +32,16 @@ export class ChartService {
             )
             .filter(
                 (point: ParsedPoint): boolean =>
-                    !isNaN(point.date.getTime()),
-            );
+                    !isNaN(point.date.getTime()) && Number.isFinite(point.value),
+            )
+            .forEach((point: ParsedPoint): void => {
+                pointsByTimestamp.set(point.date.getTime(), point);
+            });
+
+        return Array.from(pointsByTimestamp.values()).sort(
+            (left: ParsedPoint, right: ParsedPoint): number =>
+                left.date.getTime() - right.date.getTime(),
+        );
     }
 
     /** Create D3 time and linear scales from parsed data points.
