@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { AllTradeEventsService } from '@http/trader/all-trade-events.service';
 import { BatchedTradeEventsService } from '@http/trader/batched-trade-events.service';
 import { HasTradeEventsService } from '@http/trader/has-trade-events.service';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
@@ -16,6 +15,7 @@ import { TradeEvent, TradeEventList } from '@models/trader/types';
 
 import { listStagger } from '../../animations/animations';
 import {LoggerContext} from "@models/logging/LoggerContext";
+import { traderPageTitleStripe } from '@assets/page-title-stripe.assets'
 
 @Component({
     selector: 'trader',
@@ -29,6 +29,7 @@ export class TraderComponent implements OnInit, OnChanges {
         events: [],
     };
     tradeEventIds: number[] = [];
+    // TODO: MultiDataLoaderService can be used here.
     private loadingStatus: Record<number, boolean> = {};
     isLoaded: boolean = false;
     isFetching: boolean = false;
@@ -174,4 +175,5 @@ export class TraderComponent implements OnInit, OnChanges {
     }
 
     protected readonly TagType = TagType;
+    protected readonly traderPageTitleStripe = traderPageTitleStripe
 }
