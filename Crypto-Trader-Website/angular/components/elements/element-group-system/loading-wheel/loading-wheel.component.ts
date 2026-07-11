@@ -13,7 +13,7 @@ import { LoadingWheelColorScheme } from './models/LoadingWheelColorScheme';
 })
 export class LoadingWheelComponent {
     @Input() public visible: boolean = true;
-    @Input() public colorScheme: LoadingWheelColorScheme = LoadingWheelColorScheme.OCEAN;
+    @Input() public colorScheme: LoadingWheelColorScheme = LoadingWheelColorScheme.Ocean;
     @Input() public size: ElementSize = ElementSize.MEDIUM;
 
     @HostBinding('style.visibility')
