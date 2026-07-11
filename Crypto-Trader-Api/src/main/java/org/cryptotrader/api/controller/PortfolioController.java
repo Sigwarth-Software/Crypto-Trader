@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
+import org.cryptotrader.api.library.communication.request.RangedPortfolioHistoryRequest;
 import org.cryptotrader.api.library.communication.response.*;
 import org.cryptotrader.api.library.services.AuthContextService;
 import org.cryptotrader.api.library.services.PortfolioService;
@@ -16,6 +17,7 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -76,6 +78,21 @@ public class PortfolioController {
         List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
                 .map(PortfolioHistoryResponse::new)
                 .toList();
+        return ResponseEntity.ok(historyResponses);
+    }
+    @PostMapping("/history/ranged/get")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user, @RequestBody RangedPortfolioHistoryRequest request) {
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+        final LocalDateTime startDate = LocalDateTime.parse(request.getStartDate());
+        final LocalDateTime endDate = LocalDateTime.parse(request.getEndDate());
+        final List<PortfolioHistory> portfolioHistory = this.portfolioService.getRangedPortfolioHistory(portfolio, startDate, endDate);
+        if (portfolioHistory.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        final List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
+            .map(PortfolioHistoryResponse::new)
+            .toList();
         return ResponseEntity.ok(historyResponses);
     }
     @GetMapping("/history/get/asset")
