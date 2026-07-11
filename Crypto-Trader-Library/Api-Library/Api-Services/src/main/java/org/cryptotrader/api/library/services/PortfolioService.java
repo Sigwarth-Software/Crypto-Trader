@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -180,8 +181,12 @@ public class PortfolioService {
         return this.getPortfolioHistory(portfolio.getId());
     }
 
+    public List<PortfolioHistory> getRangedPortfolioHistory(Portfolio portfolio, LocalDateTime startDate, LocalDateTime endDate) {
+        return this.portfolioHistoryRepository.findAllByPortfolioIdAndLastUpdatedBetweenOrderByLastUpdatedAsc(portfolio.getId(), startDate, endDate);
+    }
+
     public List<PortfolioHistory> getPortfolioHistory(Long portfolioId) {
-        return this.portfolioHistoryRepository.findAllByPortfolioId(portfolioId);
+        return this.portfolioHistoryRepository.findAllByPortfolioIdOrderByLastUpdatedAsc(portfolioId);
     }
 
     public List<PortfolioAsset> getAssetsByPortfolio(Long portfolioId) {
