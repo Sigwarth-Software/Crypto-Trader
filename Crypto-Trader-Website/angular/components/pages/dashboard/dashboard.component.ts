@@ -33,6 +33,7 @@ import { Portfolio, PortfolioAsset } from '@models/portfolio/types';
 import { DisplayCurrency, PerformanceRating } from '@models/currency/types';
 import { TradeEvent } from '@models/trader/types';
 import {LoggerContext} from "@models/logging/LoggerContext";
+import { dashboardPageTitleStripe } from '@assets/page-title-stripe.assets'
 
 export interface DashboardCard {
     label: string;
@@ -409,4 +410,5 @@ export class DashboardComponent implements OnInit {
     }
 
     protected readonly TagType: typeof TagType = TagType
+    protected readonly dashboardPageTitleStripe = dashboardPageTitleStripe
 }
