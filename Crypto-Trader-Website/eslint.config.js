@@ -150,7 +150,7 @@ export default tseslint.config(
                 'warn',
                 {
                     min: 3,
-                    exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db'],
+                    exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db', 'vh', 'vw'],
                 },
             ],
         },
