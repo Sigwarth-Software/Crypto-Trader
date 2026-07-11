@@ -2,6 +2,9 @@
 import { Component, Input } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
+import {
+    PageTitleStripe
+} from '@components/elements/element-group-system/page-title-stripe/models/PageTitleStripe'
 
 @Component({
     selector: 'page-title-stripe',
@@ -10,8 +13,7 @@ import { TagType } from '@theoliverlear/angular-suite';
     standalone: false,
 })
 export class PageTitleStripeComponent {
-    @Input() pageTitle: string = '';
-    @Input() pageSubtitle: string = '';
+    @Input() titleStripe: PageTitleStripe
     constructor() {}
 
     protected readonly TagType = TagType;
