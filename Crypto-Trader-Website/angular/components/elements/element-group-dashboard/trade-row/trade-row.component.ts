@@ -5,6 +5,8 @@ import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { TimeFormatterService } from '@ui/time-formatter.service';
 import { TradeEvent } from '@models/trader/types';
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import { LoggerContext } from '@models/logging/LoggerContext'
+import { SharesFormatterService } from '@ui/shares-formatter.service'
 
 @Component({
     selector: 'trade-row',
@@ -14,30 +16,46 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 })
 export class TradeRowComponent implements OnInit {
     // TODO: Remove non-null assertion.
-    @Input() trade!: TradeEvent;
-    @Output() rowClick: EventEmitter<void> = new EventEmitter<void>();
+    @Input() public trade!: TradeEvent;
+    @Output() public rowClick: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
         private readonly currencyFormatter: CurrencyFormatterService,
         private readonly timeFormatter: TimeFormatterService,
-        private readonly logger: CryptoTraderLoggerService,
+        private readonly log: CryptoTraderLoggerService,
+        private readonly sharesFormatter: SharesFormatterService,
     ) {}
 
     public ngOnInit(): void {
-        this.logger.debug(`TradeRowComponent initialized for trade: ${this.trade.id}`, 'TradeRow');
+        this.log.setContext(LoggerContext.Dashboard)
+        this.log.debug(`TradeRowComponent initialized for trade: ${this.trade.id}`);
+        this.log.info(this.trade)
     }
 
     protected formatValue(): string {
         const prefix: string = this.trade.valueChange >= 0 ? '+' : '';
-        return `${prefix}${this.currencyFormatter.formatCurrency(Math.abs(this.trade.valueChange))}`;
+        return `${prefix}${this.currencyFormatter.formatCurrency(this.trade.valueChange, true)}`;
     }
 
     protected formatTime(): string {
         return this.timeFormatter.formatTime(this.trade.tradeTime);
     }
 
+    protected getSharesChange(): string {
+        if (this.trade.sharesChange > 0) {
+
+            const formattedShares: string = this.sharesFormatter.formatShares(
+                this.trade.sharesChange,
+                this.trade.currency,
+            )
+            return `+${formattedShares}`
+        }
+
+        return '+0.00'
+    }
+
     protected onClick(): void {
-        this.logger.info(`Trade row clicked: ${this.trade.id}`, 'TradeRow');
+        this.log.info(`Trade row clicked: ${this.trade.id}`);
         this.rowClick.emit();
     }
 }
