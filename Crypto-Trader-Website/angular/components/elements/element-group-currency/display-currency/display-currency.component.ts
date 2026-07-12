@@ -19,11 +19,13 @@ import { CurrencyDayPerformanceService } from '@http/currency/currency-day-perfo
 import { CurrencyHistoryService } from '@http/currency/currency-history.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { NumberTweenService } from '@ui/number-tween.service';
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { type ChartConfig, type SparkPoint } from '@models/chart/types';
 import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/currency/types';
 import { CurrencyImageService } from '@ui/currency-image.service'
 import { LoggerContext } from '@models/logging/LoggerContext'
+import {
+    BaseLoggingElementComponent
+} from '@components/elements/element-group-system/base-logging-element/base-logging-element.component'
 
 /** Displays a currency's price and performance.
  *
@@ -36,6 +38,7 @@ import { LoggerContext } from '@models/logging/LoggerContext'
     providers: [CurrencyValueWsService],
 })
 export class DisplayCurrencyComponent
+    extends BaseLoggingElementComponent
     implements OnChanges, OnInit, AfterViewInit, OnDestroy, WebSocketCapable
 {
     @Input() public currency: DisplayCurrency
@@ -76,16 +79,18 @@ export class DisplayCurrencyComponent
         private readonly dayPerformance: CurrencyDayPerformanceService,
         private readonly currencyValueWebSocket: CurrencyValueWsService,
         private readonly numberTween: NumberTweenService,
-        private readonly logger: CryptoTraderLoggerService,
         private readonly currencyImageService: CurrencyImageService,
-    ) {}
+    ) {
+        super()
+        this.loggerContext = LoggerContext.Currencies
+    }
 
     public webSocketSubscriptions: Record<string, Subscription> = {}
     /** Initialize web sockets for currency value updates.
      *
      */
     public initializeWebSockets(): void {
-        this.logger.debug(
+        this.log.debug(
             `Initializing WebSockets for ${this.currency?.currencyCode}`,
             'DisplayCurrency',
         )
@@ -96,16 +101,15 @@ export class DisplayCurrencyComponent
                 next: (message: string): void => {
                     const numeric: number = Number(message)
                     if (!isFinite(numeric)) {
-                        this.logger.warn(
-                            `Received non-numeric price update: ${message}`,
-                        )
+                        this.log.warn(`Received non-numeric price update: ${message}`)
                         return
                     }
                     this.setCurrencyNumericPrice(numeric)
                 },
                 error: (error: unknown): void => {
-                    const errorToSave: Error = error instanceof Error ? error : new Error(String(error))
-                    this.logger.error(
+                    const errorToSave: Error =
+                        error instanceof Error ? error : new Error(String(error))
+                    this.log.error(
                         `WebSocket error for ${this.currency?.currencyCode}: ${error}`,
                         errorToSave,
                     )
@@ -129,10 +133,7 @@ export class DisplayCurrencyComponent
      *
      */
     public ngOnInit(): void {
-        this.logger.setContext(LoggerContext.Currencies)
-        this.logger.info(
-            `DisplayCurrencyComponent initialized for ${this.currency?.currencyCode}`,
-        )
+        this.log.info(`DisplayCurrencyComponent initialized for ${this.currency?.currencyCode}`)
         this.initializeWebSockets()
     }
 
@@ -262,9 +263,8 @@ export class DisplayCurrencyComponent
      *
      */
     public ngOnDestroy(): void {
-        this.logger.debug(
-            `Destroying DisplayCurrencyComponent for ${this.currency?.currencyCode}`,
-            'DisplayCurrency',
+        this.log.debug(
+            `Destroying DisplayCurrencyComponent for ${this.currency?.currencyCode}`
         )
         this.destroy$.next()
         this.destroy$.complete()
@@ -280,7 +280,8 @@ export class DisplayCurrencyComponent
         try {
             this.currencyValueWebSocket.disconnect()
         } catch (error) {
-            console.error('Failed to disconnect from WebSocket', error)
+            const errorToSave: Error = error instanceof Error ? error : new Error(String(error))
+            this.log.error('Failed to disconnect from WebSocket', errorToSave)
         }
     }
 
@@ -291,7 +292,7 @@ export class DisplayCurrencyComponent
         this.dayPerformance
             .getCurrencyDayPerformance(this.currency.currencyCode)
             .subscribe((performance: PerformanceRating): void => {
-                this.logger.debug(
+                this.log.debug(
                     `Performance updated for ${this.currency.currencyCode}: ${performance.changePercent}`,
                 )
                 this.performance = performance
@@ -308,11 +309,11 @@ export class DisplayCurrencyComponent
     }
 
     private listenForCurrencyHistory(): void {
-        this.logger.debug(`Fetching history for ${this.currency.currencyCode}`, 'DisplayCurrency')
+        this.log.debug(`Fetching history for ${this.currency.currencyCode}`)
         this.historyService
             .getHistory(this.currency.currencyCode, 24, 60)
             .subscribe((points: HistoryPoint[]): void => {
-                this.logger.debug(
+                this.log.debug(
                     `History received for ${this.currency.currencyCode}: ${points.length} points`,
                 )
                 this.history = points
