@@ -63,8 +63,8 @@ const prettyLogger = new TsLogger({
  */
 @Injectable({ providedIn: 'root' })
 export class CryptoTraderLoggerService {
-    private readonly logger: LogLayer;
-    private context: string = 'System';
+    private readonly logger: LogLayer
+    private context: string = LoggerContext.System
 
     constructor() {
         this.logger = new LogLayer({
@@ -107,24 +107,23 @@ export class CryptoTraderLoggerService {
                     paths: ['password', 'token', 'authorization', 'cookie'],
                 }) as LogLayerPlugin,
             ],
-        });
+        })
     }
 
-    // TODO: Make an enum.
     /** Sets the context of the logger.
      *
      * @param context
      */
     public setContext(context: LoggerContext): void {
-        this.context = context;
-        prettyLogger.settings.name = context;
+        this.context = context
+        prettyLogger.settings.name = context
     }
 
     /** Gets the context of the logger.
      *
      */
     public getContext(): string {
-        return this.context;
+        return this.context
     }
 
     /** Logs a trace message.
@@ -132,11 +131,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public trace(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+    public trace(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        this.getChain(this.getMetadata(metadataOrContext)).trace(message);
+        this.getChain(this.getMetadata(metadataOrContext)).trace(message)
     }
 
     /** Logs a debug message.
@@ -144,11 +146,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public debug(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+    public debug(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        this.getChain(this.getMetadata(metadataOrContext)).debug(message);
+        this.getChain(this.getMetadata(metadataOrContext)).debug(message)
     }
 
     /** Logs an info message.
@@ -156,11 +161,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public info(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+    public info(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        this.getChain(this.getMetadata(metadataOrContext)).info(message);
+        this.getChain(this.getMetadata(metadataOrContext)).info(message)
     }
 
     /** Logs a log message.
@@ -168,11 +176,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public log(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+    public log(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        this.getChain(this.getMetadata(metadataOrContext)).info(message);
+        this.getChain(this.getMetadata(metadataOrContext)).info(message)
     }
 
     /** Logs a warning message.
@@ -180,11 +191,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public warn(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+    public warn(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        this.getChain(this.getMetadata(metadataOrContext)).warn(message);
+        this.getChain(this.getMetadata(metadataOrContext)).warn(message)
     }
 
     /** Logs an error message.
@@ -195,17 +209,20 @@ export class CryptoTraderLoggerService {
      */
     public error(
         message: string | object,
-        error?: Error,
+        error?: Error | string,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        let chain: any = this.getChain(this.getMetadata(metadataOrContext));
+        if (error && typeof error === 'string') {
+            error = new Error(error)
+        }
+        let chain: any = this.getChain(this.getMetadata(metadataOrContext))
         if (error) {
-            chain = chain.withError(error);
+            chain = chain.withError(error)
         }
-        chain.error(message);
+        chain.error(message)
     }
 
     /** Logs a fatal error message.
@@ -216,34 +233,37 @@ export class CryptoTraderLoggerService {
      */
     public fatal(
         message: string | object,
-        error?: Error,
+        error?: Error | string,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
         if (typeof message === 'object') {
-            message = JSON.stringify(message, null, 2);
+            message = JSON.stringify(message, null, 2)
         }
-        let chain: any = this.getChain(this.getMetadata(metadataOrContext));
+        if (error && typeof error === 'string') {
+            error = new Error(error)
+        }
+        let chain: any = this.getChain(this.getMetadata(metadataOrContext))
         if (error) {
-            chain = chain.withError(error);
+            chain = chain.withError(error)
         }
-        chain.fatal(message);
+        chain.fatal(message)
     }
 
     private getMetadata(
         metadataOrContext?: Record<string, unknown> | string,
     ): Record<string, unknown> | undefined {
         if (typeof metadataOrContext === 'string') {
-            return { context: metadataOrContext };
+            return { context: metadataOrContext }
         }
-        return metadataOrContext;
+        return metadataOrContext
     }
 
     // TODO: Call with generic instead of any.
     private getChain(metadata?: Record<string, unknown>): any {
-        let chain: any = this.logger;
+        let chain: any = this.logger
         if (metadata) {
-            chain = chain.withMetadata(metadata);
+            chain = chain.withMetadata(metadata)
         }
-        return chain;
+        return chain
     }
 }
