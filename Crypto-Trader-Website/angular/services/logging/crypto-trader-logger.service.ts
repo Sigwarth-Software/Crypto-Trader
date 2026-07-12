@@ -21,7 +21,7 @@ function formatTimestamp(date: Date): string {
         hour12: false,
     };
     const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(date);
-    const get = (type: string) => parts.find((p) => p.type === type)!.value;
+    const get = (type: string): string => parts.find((p): boolean => p.type === type)!.value;
     return `${get('month')}/${get('day')}/${get('year')} - ${get('hour')}:${get('minute')}:${get('second')}`;
 }
 
@@ -132,7 +132,10 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public trace(message: string, metadataOrContext?: Record<string, unknown> | string): void {
+    public trace(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         this.getChain(this.getMetadata(metadataOrContext)).trace(message);
     }
 
@@ -141,7 +144,10 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public debug(message: string, metadataOrContext?: Record<string, unknown> | string): void {
+    public debug(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         this.getChain(this.getMetadata(metadataOrContext)).debug(message);
     }
 
@@ -150,7 +156,10 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public info(message: string, metadataOrContext?: Record<string, unknown> | string): void {
+    public info(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         this.getChain(this.getMetadata(metadataOrContext)).info(message);
     }
 
@@ -159,7 +168,10 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public log(message: string, metadataOrContext?: Record<string, unknown> | string): void {
+    public log(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         this.getChain(this.getMetadata(metadataOrContext)).info(message);
     }
 
@@ -168,7 +180,10 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public warn(message: string, metadataOrContext?: Record<string, unknown> | string): void {
+    public warn(message: string | object, metadataOrContext?: Record<string, unknown> | string): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         this.getChain(this.getMetadata(metadataOrContext)).warn(message);
     }
 
@@ -179,10 +194,13 @@ export class CryptoTraderLoggerService {
      * @param metadataOrContext
      */
     public error(
-        message: string,
+        message: string | object,
         error?: Error,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         let chain: any = this.getChain(this.getMetadata(metadataOrContext));
         if (error) {
             chain = chain.withError(error);
@@ -197,10 +215,13 @@ export class CryptoTraderLoggerService {
      * @param metadataOrContext
      */
     public fatal(
-        message: string,
+        message: string | object,
         error?: Error,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2);
+        }
         let chain: any = this.getChain(this.getMetadata(metadataOrContext));
         if (error) {
             chain = chain.withError(error);
