@@ -253,6 +253,10 @@ export class DashboardComponent implements OnInit {
         this.allTradeEventsService.getAllTradeEvents().subscribe({
             next: (response): void => {
                 this.log.info(`Fetched ${response.events.length} trade events`)
+                response.events = response.events.sort(
+                    (a: TradeEvent, b: TradeEvent): number =>
+                        new Date(b.tradeTime).getTime() - new Date(a.tradeTime).getTime(),
+                )
                 this.recentTrades = response.events.slice(0, 5)
                 this.isFetchingTrades = false
             },
