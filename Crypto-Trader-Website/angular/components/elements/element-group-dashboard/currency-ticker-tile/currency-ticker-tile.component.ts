@@ -10,14 +10,17 @@ import {
     SimpleChanges,
 } from '@angular/core'
 
-import { CurrencyFormatterService } from '@ui/currency-formatter.service';
-import { DisplayCurrency, PerformanceRating } from '@models/currency/types';
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import { CurrencyFormatterService } from '@ui/currency-formatter.service'
+import { DisplayCurrency, PerformanceRating } from '@models/currency/types'
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
 import { CurrencyImageService } from '@ui/currency-image.service'
 import { defaultCurrencyIcon, ImageAsset } from '@assets/image.assets'
 import { LoggerContext } from '@models/logging/LoggerContext'
 import { ImageColorVariation } from '@models/image/ImageColorVariation'
 
+/**
+ * A component that displays a currency ticker.
+ */
 @Component({
     selector: 'currency-ticker-tile',
     standalone: false,
@@ -38,14 +41,25 @@ export class CurrencyTickerTileComponent implements OnInit, AfterViewInit, OnCha
         private readonly currencyImageService: CurrencyImageService,
     ) {}
 
+    /**
+     * On init, set the logger context.
+     */
     public ngOnInit(): void {
         this.logger.setContext(LoggerContext.Currencies)
     }
 
+    /**
+     * After view is init, resolve the image asset.
+     */
     public ngAfterViewInit(): void {
         void this.resolveImageAsset()
     }
 
+    /**
+     * On changes, resolve the image asset if the currency changes.
+     *
+     * @param changes
+     */
     public ngOnChanges(changes: SimpleChanges): void {
         if ('currency' in changes) {
             void this.resolveImageAsset()
@@ -71,5 +85,5 @@ export class CurrencyTickerTileComponent implements OnInit, AfterViewInit, OnCha
         this.tileClick.emit()
     }
 
-    protected readonly ImageColorVariation = ImageColorVariation
+    protected readonly ImageColorVariation: typeof ImageColorVariation = ImageColorVariation
 }

@@ -1,12 +1,12 @@
 // line-chart.component.ts
-import { Component, HostListener } from '@angular/core';
-import * as d3 from 'd3';
+import { Component, HostListener } from '@angular/core'
+import * as d3 from 'd3'
 
-import { BaseChartComponent } from '@components/elements/element-group-chart/base-chart/base-chart.component';
-import { ChartService } from '@ui/chart.service';
-import { CurrencyFormatterService } from '@ui/currency-formatter.service';
-import { PixelCalculatorService } from '@ui/pixel-calculator.service';
-import { type ChartScales, type ParsedPoint } from '@models/chart/types';
+import { BaseChartComponent } from '@components/elements/element-group-chart/base-chart/base-chart.component'
+import { ChartService } from '@ui/chart.service'
+import { CurrencyFormatterService } from '@ui/currency-formatter.service'
+import { PixelCalculatorService } from '@ui/pixel-calculator.service'
+import { ChartConfig, type ChartScales, type ParsedPoint } from '@models/chart/types'
 
 /** A line chart component with time and price labels. Extends the shared
  *  base chart lifecycle and delegates D3 logic to the engine service.
@@ -23,7 +23,7 @@ export class LineChartComponent extends BaseChartComponent {
         currencyFormatter: CurrencyFormatterService,
         private readonly pixelCalculator: PixelCalculatorService,
     ) {
-        super(engine, currencyFormatter);
+        super(engine, currencyFormatter)
     }
 
     /** Resize the chart when the window is resized.
@@ -32,7 +32,7 @@ export class LineChartComponent extends BaseChartComponent {
      */
     @HostListener('window:resize', ['$event'])
     public onResize(event: Event): void {
-        this.render();
+        this.render()
     }
 
     /** Override render to dynamically size based on viewport before
@@ -46,9 +46,9 @@ export class LineChartComponent extends BaseChartComponent {
         if (window.innerWidth < 1100) {
             widthVw = MAX_WIDTH_VW
         }
-        this.config.dimensions.width = this.pixelCalculator.getByViewport(widthVw, 0);
-        this.config.dimensions.height = this.pixelCalculator.getByViewport(0, HEIGHT_VW);
-        super.render();
+        this.config.dimensions.width = this.pixelCalculator.getByViewport(widthVw, 0)
+        this.config.dimensions.height = this.pixelCalculator.getByViewport(0, HEIGHT_VW)
+        super.render()
     }
 
     /** Draw the line series path.
@@ -62,13 +62,13 @@ export class LineChartComponent extends BaseChartComponent {
         data: ParsedPoint[],
         scales: ChartScales,
     ): void {
-        const pathData: string = this.engine.createLinePath(data, scales);
+        const pathData: string = this.engine.createLinePath(data, scales)
         graphic
             .append('path')
             .attr('fill', 'none')
             .attr('stroke', this.config.series.stroke)
             .attr('stroke-width', this.config.series.strokeWidth)
-            .attr('d', pathData);
+            .attr('d', pathData)
     }
 
     /** Draw price labels at min/max and time labels at start/end.
@@ -80,10 +80,10 @@ export class LineChartComponent extends BaseChartComponent {
         graphic: d3.Selection<SVGGElement, unknown, null, undefined>,
         scales: ChartScales,
     ): void {
-        const { theme, axes } = this.config;
-        const [yMin, yMax] = scales.y.domain();
-        const labelPadTopEm: number = 1.4;
-        const labelPadBottomEm: number = -0.5;
+        const { theme, axes }: Pick<ChartConfig, 'theme' | 'axes'> = this.config
+        const [yMin, yMax]: number[] = scales.y.domain()
+        const labelPadTopEm: number = 1.4
+        const labelPadBottomEm: number = -0.5
 
         if (axes.showPriceLabels) {
             graphic
@@ -95,7 +95,7 @@ export class LineChartComponent extends BaseChartComponent {
                 .attr('text-anchor', 'end')
                 .attr('fill', theme.textColor)
                 .attr('font-size', axes.fontSize)
-                .text(this.currencyFormatter.formatCurrency(yMax));
+                .text(this.currencyFormatter.formatCurrency(yMax))
 
             graphic
                 .append('text')
@@ -106,14 +106,11 @@ export class LineChartComponent extends BaseChartComponent {
                 .attr('text-anchor', 'end')
                 .attr('fill', theme.textColor)
                 .attr('font-size', axes.fontSize)
-                .text(this.currencyFormatter.formatCurrency(yMin));
+                .text(this.currencyFormatter.formatCurrency(yMin))
         }
 
         if (axes.showTimeLabels) {
-            const { startLabel, endLabel } = this.engine.formatTimeBounds(
-                scales,
-                axes.timeFormat,
-            );
+            const { startLabel, endLabel } = this.engine.formatTimeBounds(scales, axes.timeFormat)
 
             graphic
                 .append('text')
@@ -124,7 +121,7 @@ export class LineChartComponent extends BaseChartComponent {
                 .attr('text-anchor', 'start')
                 .attr('fill', theme.textColor)
                 .attr('font-size', axes.fontSize)
-                .text(startLabel);
+                .text(startLabel)
 
             graphic
                 .append('text')
@@ -135,7 +132,7 @@ export class LineChartComponent extends BaseChartComponent {
                 .attr('text-anchor', 'end')
                 .attr('fill', theme.textColor)
                 .attr('font-size', axes.fontSize)
-                .text(endLabel);
+                .text(endLabel)
         }
     }
 }

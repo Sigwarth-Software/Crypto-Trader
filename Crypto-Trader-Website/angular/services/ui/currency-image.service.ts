@@ -20,7 +20,7 @@ export class CurrencyImageService {
      * asset for the given currency, or a default image asset if the currency
      * image is not available.
      */
-    async resolveImageAsset(currency: DisplayCurrency | string): Promise<ImageAsset> {
+    public async resolveImageAsset(currency: DisplayCurrency | string): Promise<ImageAsset> {
         let src: string
         let alt: string
         if (typeof currency === 'string') {
@@ -50,7 +50,7 @@ export class CurrencyImageService {
      * @returns {Promise<boolean>} A promise that resolves to true if the
      * image loads successfully, or false if it fails to load.
      */
-    async imageLoads(src: string): Promise<boolean> {
+    public async imageLoads(src: string): Promise<boolean> {
         return new Promise<boolean>((resolve): void => {
             const image = new Image()
             image.onload = (): void => {

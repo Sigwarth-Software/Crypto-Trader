@@ -21,11 +21,14 @@ export class PerformanceArrowComponent implements OnChanges {
         changePercent: '0%',
     }
     @Input() public includePercent: boolean = false
-
     @Input() public imageColor: ImageColorVariation = ImageColorVariation.White
-
     protected imageAsset: ImageAsset = whiteUpArrowIcon
 
+    /**
+     * On changes, update the image asset if the image color changes.
+     *
+     * @param changes The changes observed in the browser.
+     */
     public ngOnChanges(changes: SimpleChanges): void {
         if ('imageColor' in changes) {
             this.resolveImageAsset()
@@ -43,13 +46,13 @@ export class PerformanceArrowComponent implements OnChanges {
     /** On positive performance, point upward.
      * @returns {boolean} true if currency is a positive performance, false otherwise.
      */
-    @HostBinding('class.up') get isUp(): boolean {
+    @HostBinding('class.up') public get isUp(): boolean {
         return this.performance && this.performance.rating === 'up'
     }
     /** On negative performance, point downward.
      * @returns {boolean} true if currency is a negative performance, false otherwise.
      */
-    @HostBinding('class.down') get isDown(): boolean {
+    @HostBinding('class.down') public get isDown(): boolean {
         return this.performance && this.performance.rating === 'down'
     }
     constructor() {}

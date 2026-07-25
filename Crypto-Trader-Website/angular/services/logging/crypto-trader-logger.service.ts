@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Logger as TsLogger } from 'tslog';
-import { LogLayer, type LogLayerPlugin } from 'loglayer';
+import { LogLayer } from 'loglayer';
 import { TsLogTransport } from '@loglayer/transport-tslog';
-import { HttpTransport } from '@loglayer/transport-http';
+import { HttpPayloadTemplateParams, HttpTransport } from '@loglayer/transport-http'
 import { redactionPlugin } from '@loglayer/plugin-redaction';
 import { serializeError } from 'serialize-error';
 import { environment } from '@environments/environment';
@@ -75,11 +75,16 @@ export class CryptoTraderLoggerService {
                 }),
                 new HttpTransport({
                     url: environment.logging.serverLoggingUrl || '/api/logs/website',
-                    headers: () => ({
+                    headers: (): Record<string, string> => ({
                         'content-type': 'application/json',
                         'x-client-app': 'crypto-trader-website',
                     }),
-                    payloadTemplate: ({ logLevel, message, data, error }) =>
+                    payloadTemplate: ({
+                        logLevel,
+                        message,
+                        data,
+                        error,
+                    }: HttpPayloadTemplateParams): string =>
                         JSON.stringify({
                             timestamp: formatTimestamp(new Date()),
                             level: logLevel,
@@ -105,7 +110,7 @@ export class CryptoTraderLoggerService {
             plugins: [
                 redactionPlugin({
                     paths: ['password', 'token', 'authorization', 'cookie'],
-                }) as LogLayerPlugin,
+                }),
             ],
         })
     }

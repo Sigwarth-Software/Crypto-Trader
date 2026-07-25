@@ -6,8 +6,8 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { SignupCredentials } from '@models/auth/SignupCredentials'
 
 import { AuthInputType } from '../auth-input/models/AuthInputType'
-import {PossibleString} from "@models/types";
-import {LoggerContext} from "@models/logging/LoggerContext";
+import { PossibleString } from '@models/types'
+import { LoggerContext } from '@models/logging/LoggerContext'
 
 /** A section for signup up in the auth console.
  *

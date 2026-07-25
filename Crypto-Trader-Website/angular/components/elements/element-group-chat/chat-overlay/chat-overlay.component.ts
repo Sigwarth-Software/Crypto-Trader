@@ -49,7 +49,7 @@ export class ChatOverlayComponent implements OnInit {
     }
 
     private listenForAuthStatus(): void {
-        this.log.log('Listening for auth status for chat overlay display.', 'ChatOverlay')
+        this.log.log('Listening for auth status for chat overlay display.')
         this.loggedInService.getAuthState().subscribe((authStatus: boolean): void => {
             this.log.log(`Observed auth status: ${authStatus}`)
             this.isLoggedIn = authStatus
@@ -58,7 +58,7 @@ export class ChatOverlayComponent implements OnInit {
     }
 
     private listenForSubscriptionTier(): void {
-        this.log.log('Listening for subscription tier for chat overlay display.', 'ChatOverlay')
+        this.log.log('Listening for subscription tier for chat overlay display.')
         this.subscriptionTierService
             .getSubscriptionTier()
             .subscribe((tier: SubscriptionTierResponse): void => {
@@ -76,7 +76,7 @@ export class ChatOverlayComponent implements OnInit {
      */
     public toggle(): void {
         this.isOpen = !this.isOpen
-        this.log.debug(`Chat overlay toggled. Open: ${this.isOpen}`, 'ChatOverlay')
+        this.log.debug(`Chat overlay toggled. Open: ${this.isOpen}`)
     }
 
     /**
@@ -87,13 +87,13 @@ export class ChatOverlayComponent implements OnInit {
         if (!text) {
             return
         }
-        this.log.info('Sending message from chat overlay', 'ChatOverlay')
+        this.log.info('Sending message from chat overlay')
         this.messages.push({ role: 'user', content: text, timestamp: new Date() })
         this.userInput = ''
         this.isLoading = true
         // TODO: Connect to ChatService backend
         setTimeout((): void => {
-            this.log.debug('Received mock response in chat overlay', 'ChatOverlay')
+            this.log.debug('Received mock response in chat overlay')
             this.messages.push({
                 role: 'assistant',
                 content: 'Chat backend is not yet connected.',
@@ -114,6 +114,7 @@ export class ChatOverlayComponent implements OnInit {
         }
     }
 
-    protected readonly ElementSize = ElementSize
-    protected readonly LoadingWheelColorScheme = LoadingWheelColorScheme
+    protected readonly ElementSize: typeof ElementSize = ElementSize
+    protected readonly LoadingWheelColorScheme: typeof LoadingWheelColorScheme =
+        LoadingWheelColorScheme
 }

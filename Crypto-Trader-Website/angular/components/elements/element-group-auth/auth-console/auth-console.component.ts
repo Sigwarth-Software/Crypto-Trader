@@ -10,10 +10,8 @@ import { TokenStorageService } from '@auth/token-storage.service'
 import { LoginCredentials } from '@models/auth/LoginCredentials'
 import { SignupCredentials } from '@models/auth/SignupCredentials'
 import { AuthResponse, LoginRequest, SignupRequest } from '@models/auth/types'
-import {
-    CryptoTraderLoggerService
-} from "@services/logging/crypto-trader-logger.service";
-import {LoggerContext} from "@models/logging/LoggerContext";
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
+import { LoggerContext } from '@models/logging/LoggerContext'
 
 /**
  * Authentication console component for the landing/authorize page.
