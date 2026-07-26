@@ -24,7 +24,7 @@ import org.cryptotrader.admin.route.AppPage;
 public class NavItem extends HBox {
     @FXML
     private Button actionButton;
-    
+
     private final ObjectProperty<AppPage> page = new SimpleObjectProperty<>();
     public NavItem() {
         SpringContext.getBean(ComponentLoader.class).loadWithFxRoot(this, this);
@@ -33,17 +33,17 @@ public class NavItem extends HBox {
 
     @Autowired
     private ApplicationEventPublisher events;
-    
+
     @FXML
     public void initialize() {
         this.actionButton.textProperty().bind(Bindings.createStringBinding(() -> {
-            AppPage enumPage = this.page.get();
+            final AppPage enumPage = this.page.get();
             return enumPage == null ? "" : enumPage.pageName;
         }, this.page));
     }
-    
+
     @FXML
-    public void go() {
+    public void navigate() {
         log.info("Navigating to {}", this.page.get());
         this.events.publishEvent(new PageNavigationEvent(this.page.get()));
     }
@@ -55,7 +55,7 @@ public class NavItem extends HBox {
     public ObjectProperty<AppPage> pageProperty() {
         return page;
     }
-    
+
     public void setPage(AppPage page) {
         this.page.set(page);
     }
