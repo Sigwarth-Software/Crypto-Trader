@@ -33,9 +33,12 @@ import java.util.List;
 @Scope("prototype")
 @Lazy
 public class Chart extends HBox {
+    private static final String AREA_CHART_STYLE_CLASS = "ct-area-chart";
+    private static final String DEFAULT_CURRENCY_CODE = "BTC";
+
     @Autowired
     private DataPointFetcher dataPointFetcher;
-    
+
     private List<ChartDataPoint<LocalDateTime, Double>> dataPoints;
 
     private final NumberAxis xAxis;
@@ -46,21 +49,21 @@ public class Chart extends HBox {
 
     public Chart() {
         SpringContext.getBean(ComponentLoader.class).loadWithFxRoot(this, this);
-        xAxis = new NumberAxis();
-        yAxis = new NumberAxis();
+        this.xAxis = new NumberAxis();
+        this.yAxis = new NumberAxis();
 
-        xAxis.setForceZeroInRange(false);
-        yAxis.setForceZeroInRange(false);
+        this.xAxis.setForceZeroInRange(false);
+        this.yAxis.setForceZeroInRange(false);
 
-        xAxis.setAutoRanging(true);
-        yAxis.setAutoRanging(true);
+        this.xAxis.setAutoRanging(true);
+        this.yAxis.setAutoRanging(true);
 
-        xAxis.setTickLabelGap(6);
-        yAxis.setTickLabelGap(6);
+        this.xAxis.setTickLabelGap(6);
+        this.yAxis.setTickLabelGap(6);
 
         // Format X as time "HH:mm:ss" (adjust formatter as desired)
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
-        xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+        this.xAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override public String toString(Number value) {
                 long epochMillis = value.longValue();
                 LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
@@ -70,24 +73,24 @@ public class Chart extends HBox {
         });
 
         // Chart
-        areaChart = new AreaChart<>(xAxis, yAxis);
-        areaChart.setAnimated(false);
-        areaChart.setLegendVisible(false);
-        areaChart.setCreateSymbols(false);
-        areaChart.setHorizontalGridLinesVisible(true);
-        areaChart.setVerticalGridLinesVisible(false);
+        this.areaChart = new AreaChart<>(xAxis, yAxis);
+        this.areaChart.setAnimated(false);
+        this.areaChart.setLegendVisible(false);
+        this.areaChart.setCreateSymbols(false);
+        this.areaChart.setHorizontalGridLinesVisible(true);
+        this.areaChart.setVerticalGridLinesVisible(false);
 
         // Series
-        series = new XYChart.Series<>();
-        areaChart.getData().add(series);
+        this.series = new XYChart.Series<>();
+        this.areaChart.getData().add(series);
 
         // Appearance
-        areaChart.getStyleClass().add("ct-area-chart");
-        areaChart.setEffect(new DropShadow());
+        this.areaChart.getStyleClass().add(AREA_CHART_STYLE_CLASS);
+        this.areaChart.setEffect(new DropShadow());
         setPadding(new Insets(8));
-        getChildren().add(areaChart);
-        VBox.setVgrow(areaChart, Priority.ALWAYS);
-        
+        getChildren().add(this.areaChart);
+        VBox.setVgrow(this.areaChart, Priority.ALWAYS);
+
         this.initGraph();
     }
 
@@ -102,31 +105,31 @@ public class Chart extends HBox {
                     items.add(new XYChart.Data<>(x, y));
                 }
             }
-            series.setData(items);
+            this.series.setData(items);
 
             // Adjust axis range a bit for nicer margins
             long minX = items.stream().mapToLong(d -> d.getXValue().longValue()).min().orElse(0L);
             long maxX = items.stream().mapToLong(d -> d.getXValue().longValue()).max().orElse(0L);
             if (minX < maxX) {
-                double pad = (maxX - minX) * 0.05;
-                xAxis.setAutoRanging(false);
-                xAxis.setLowerBound(minX - pad);
-                xAxis.setUpperBound(maxX + pad);
-                xAxis.setTickUnit(Math.max(1, (maxX - minX) / 6.0));
+                final double pad = (maxX - minX) * 0.05;
+                this.xAxis.setAutoRanging(false);
+                this.xAxis.setLowerBound(minX - pad);
+                this.xAxis.setUpperBound(maxX + pad);
+                this.xAxis.setTickUnit(Math.max(1, (maxX - minX) / 6.0));
             } else {
-                xAxis.setAutoRanging(true);
+                this.xAxis.setAutoRanging(true);
             }
 
-            double minY = items.stream().mapToDouble(d -> d.getYValue().doubleValue()).min().orElse(0.0);
-            double maxY = items.stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0.0);
+            final double minY = items.stream().mapToDouble(d -> d.getYValue().doubleValue()).min().orElse(0.0);
+            final double maxY = items.stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0.0);
             if (minY < maxY) {
-                double padY = (maxY - minY) * 0.1;
-                yAxis.setAutoRanging(false);
-                yAxis.setLowerBound(minY - padY);
-                yAxis.setUpperBound(maxY + padY);
-                yAxis.setTickUnit(Math.max(0.0001, (maxY - minY) / 5.0));
+                final double padY = (maxY - minY) * 0.1;
+                this.yAxis.setAutoRanging(false);
+                this.yAxis.setLowerBound(minY - padY);
+                this.yAxis.setUpperBound(maxY + padY);
+                this.yAxis.setTickUnit(Math.max(0.0001, (maxY - minY) / 5.0));
             } else {
-                yAxis.setAutoRanging(true);
+                this.yAxis.setAutoRanging(true);
             }
         } else {
             series.getData().clear();
@@ -134,9 +137,9 @@ public class Chart extends HBox {
             yAxis.setAutoRanging(true);
         }
     }
-    
+
     public void initGraph() {
-        List<ChartDataPoint<LocalDateTime, Double>> dataPoints = this.dataPointFetcher.getLastDayCurrencyHistory("BTC");
+        final List<ChartDataPoint<LocalDateTime, Double>> dataPoints = this.dataPointFetcher.getLastDayCurrencyHistory(DEFAULT_CURRENCY_CODE);
         this.setDataPoints(dataPoints);
     }
 
