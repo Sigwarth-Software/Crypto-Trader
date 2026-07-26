@@ -23,6 +23,6 @@ class WarnOffensesTableController {
         descriptionCol.cellValueFactory = PropertyValueFactory("description")
 
         warnOffensesDataTable.setColumns(listOf(nameCol, descriptionCol))
-        warnOffensesDataTable.setItems(FXCollections.observableArrayList(*WarnOffense.values()))
+        warnOffensesDataTable.setItems(FXCollections.observableArrayList(*WarnOffense.entries.toTypedArray()))
     }
 }
