@@ -19,5 +19,10 @@ export const portfolioPageTitleStripe: PageTitleStripe = {
 
 export const traderPageTitleStripe: PageTitleStripe = {
     pageTitle: 'Trader',
-    pageSubtitle: 'Your automated trades — see the profit.'
+    pageSubtitle: 'Your automated trades — see the profit.',
+}
+
+export const modulesPageTitleStripe: PageTitleStripe = {
+    pageTitle: 'The Crypto Trader Ecosystem',
+    pageSubtitle: '20 modules. One mission. Democratizing automated trading.',
 }

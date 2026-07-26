@@ -1,10 +1,10 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core'
 
-import { SsImgComponent } from '@theoliverlear/angular-suite';
-import { defaultAvatar, ImageAsset, profileIcon } from '@assets/image.assets';
+import { SsImgComponent } from '@theoliverlear/angular-suite'
+import { ImageAsset, profileIcon } from '@assets/image.assets'
 
-/** A component for displaying a profile picture.
- *
+/**
+ * A component for displaying a profile picture.
  */
 @Component({
     selector: 'profile-picture',
@@ -13,11 +13,9 @@ import { defaultAvatar, ImageAsset, profileIcon } from '@assets/image.assets';
     styleUrls: ['./profile-picture.component.scss'],
 })
 export class ProfilePictureComponent {
-    @Input() public userId: number = 0;
-    @Input() public isHeadlineProfilePicture: boolean = false;
-    @Input() public imageAsset: ImageAsset = profileIcon;
-    @ViewChild('profilePictureImage') public profilePictureImage: SsImgComponent;
+    @Input() public userId: number = 0
+    @Input() public isHeadlineProfilePicture: boolean = false
+    @Input() public imageAsset: ImageAsset = profileIcon
+    @ViewChild('profilePictureImage') public profilePictureImage: SsImgComponent
     constructor() {}
-
-    protected readonly defaultAvatar: ImageAsset = defaultAvatar;
 }

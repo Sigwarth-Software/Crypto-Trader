@@ -1,7 +1,10 @@
 // module-interface-selector.component.ts
-import { Component, Input } from '@angular/core';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+import { Component, Input } from '@angular/core'
+import { ModuleInfo } from '@models/module/ModuleInfo'
 
+/**
+ * A component that allows users to select a module interface.
+ */
 @Component({
     selector: 'module-interface-selector',
     standalone: false,
@@ -9,18 +12,28 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
     styleUrls: ['./module-interface-selector.component.scss'],
 })
 export class ModuleInterfaceSelectorComponent {
-    @Input() public modules: ModuleInfo[] = [];
+    @Input() public modules: ModuleInfo[] = []
 
-    protected activeInterface: string = 'website';
+    protected activeInterface: string = 'website'
 
-    selectInterface(name: string): void {
-        this.activeInterface = name.toLowerCase();
+    /**
+     * Sets the active interface to the specified name.
+     *
+     * @param name
+     */
+    public selectInterface(name: string): void {
+        this.activeInterface = name.toLowerCase()
     }
 
-    getActiveInterface(): ModuleInfo | undefined {
+    /**
+     * Returns the currently active interface module info.
+     *
+     * @returns The active interface module info, or undefined if not found.
+     */
+    public getActiveInterface(): ModuleInfo | undefined {
         return this.modules.find(
-            (m: ModuleInfo): boolean =>
-                m.name.toLowerCase() === this.activeInterface,
-        );
+            (moduleInfo: ModuleInfo): boolean =>
+                moduleInfo.name.toLowerCase() === this.activeInterface,
+        )
     }
 }

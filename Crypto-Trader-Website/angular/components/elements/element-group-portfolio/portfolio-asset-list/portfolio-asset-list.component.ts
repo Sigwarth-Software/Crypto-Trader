@@ -7,8 +7,8 @@ import { AssetFieldSortType } from '@models/sort/types';
 
 import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFieldType';
 
-/** Component for displaying a list of assets in a portfolio.
- *
+/**
+ * Component for displaying a list of assets in a portfolio.
  */
 @Component({
     selector: 'portfolio-asset-list',
@@ -17,24 +17,24 @@ import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFie
     standalone: false,
 })
 export class PortfolioAssetListComponent implements OnInit {
-    @Input() public assets: PortfolioAsset[] = [];
-    private originalAssetsState: PortfolioAsset[] = [];
+    @Input() public assets: PortfolioAsset[] = []
+    private originalAssetsState: PortfolioAsset[] = []
     public sortState: AssetFieldSortType = [
         PortfolioAssetFieldType.CURRENCY_NAME,
         SimpleSortState.NONE,
-    ];
+    ]
     constructor() {}
 
-    /** On init, try to store original assets.
-     *
+    /**
+     * On init, try to store original assets.
      */
     public ngOnInit(): void {
-        this.attemptStoreOriginalAssets();
+        this.attemptStoreOriginalAssets()
     }
 
     private attemptStoreOriginalAssets(): void {
         if (this.hasAssets()) {
-            this.originalAssetsState = [...this.assets];
+            this.originalAssetsState = [...this.assets]
         }
     }
 
@@ -42,7 +42,7 @@ export class PortfolioAssetListComponent implements OnInit {
      * @returns true if assets list has assets, false otherwise.
      */
     public hasAssets(): boolean {
-        return this.assets.length > 0;
+        return this.assets.length > 0
     }
 
     /** Sorts assets list by type.
@@ -51,100 +51,100 @@ export class PortfolioAssetListComponent implements OnInit {
      */
     public sortAssets(assetSortType: AssetFieldSortType): void {
         if (!this.canSort()) {
-            return;
+            return
         }
-        this.sortState = assetSortType;
+        this.sortState = assetSortType
         if (assetSortType[1] === SimpleSortState.NONE) {
-            this.resetSort();
-            return;
+            this.resetSort()
+            return
         }
-        this.sortByType(assetSortType);
+        this.sortByType(assetSortType)
     }
 
     private sortByType(assetSortType: AssetFieldSortType): void {
         switch (assetSortType[0]) {
             case PortfolioAssetFieldType.TOTAL_VALUE:
-                this.sortByTotalValue();
-                break;
+                this.sortByTotalValue()
+                break
             case PortfolioAssetFieldType.CURRENCY_NAME:
-                this.sortByCurrencyName();
-                break;
+                this.sortByCurrencyName()
+                break
             case PortfolioAssetFieldType.SHARES:
-                this.sortByShares();
-                break;
+                this.sortByShares()
+                break
             case PortfolioAssetFieldType.LAST_UPDATED:
-                this.sortByLastUpdated();
-                break;
+                this.sortByLastUpdated()
+                break
             case PortfolioAssetFieldType.TARGET_PRICE:
-                this.sortByTargetPrice();
-                break;
+                this.sortByTargetPrice()
+                break
             case PortfolioAssetFieldType.VENDOR_NAME:
-                this.sortByVendorName();
-                break;
+                this.sortByVendorName()
+                break
             default:
-                throw new Error(`Unknown AssetFieldSortType: ${assetSortType.toString()}`);
+                throw new Error(`Unknown AssetFieldSortType: ${assetSortType.toString()}`)
         }
     }
 
     protected canSort(): boolean {
-        return this.assets.length > 1;
+        return this.assets.length > 1
     }
 
     protected sortByCurrencyName(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.currencyName.localeCompare(b.currencyName));
+            this.assets.sort((a, b): number => a.currencyName.localeCompare(b.currencyName))
         } else {
-            this.assets.sort((a, b): number => b.currencyName.localeCompare(a.currencyName));
+            this.assets.sort((a, b): number => b.currencyName.localeCompare(a.currencyName))
         }
     }
 
     protected sortByShares(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.shares - b.shares);
+            this.assets.sort((a, b): number => a.shares - b.shares)
         } else {
-            this.assets.sort((a, b): number => b.shares - a.shares);
+            this.assets.sort((a, b): number => b.shares - a.shares)
         }
     }
 
     private sortByTotalValue(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.totalValueInDollars - b.totalValueInDollars);
+            this.assets.sort((a, b): number => a.totalValueInDollars - b.totalValueInDollars)
         } else {
-            this.assets.sort((a, b): number => b.totalValueInDollars - a.totalValueInDollars);
+            this.assets.sort((a, b): number => b.totalValueInDollars - a.totalValueInDollars)
         }
     }
 
     private sortByTargetPrice(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.targetPrice - b.targetPrice);
+            this.assets.sort((a, b): number => a.targetPrice - b.targetPrice)
         } else {
-            this.assets.sort((a, b): number => b.targetPrice - a.targetPrice);
+            this.assets.sort((a, b): number => b.targetPrice - a.targetPrice)
         }
     }
 
     private sortByVendorName(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.vendorName.localeCompare(b.vendorName));
+            this.assets.sort((a, b): number => a.vendorName.localeCompare(b.vendorName))
         } else {
-            this.assets.sort((a, b): number => b.vendorName.localeCompare(a.vendorName));
+            this.assets.sort((a, b): number => b.vendorName.localeCompare(a.vendorName))
         }
     }
 
     private sortByLastUpdated(): void {
-        const sortType: SimpleSortState = this.sortState[1];
+        const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.lastUpdated.localeCompare(b.lastUpdated));
+            this.assets.sort((a, b): number => a.lastUpdated.localeCompare(b.lastUpdated))
         } else {
-            this.assets.sort((a, b): number => b.lastUpdated.localeCompare(a.lastUpdated));
+            this.assets.sort((a, b): number => b.lastUpdated.localeCompare(a.lastUpdated))
         }
     }
 
     private resetSort(): void {
-        this.assets = [...this.originalAssetsState];
+        this.assets = [...this.originalAssetsState]
     }
 }

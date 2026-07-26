@@ -1,7 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core'
 
-import { TagType } from '@theoliverlear/angular-suite';
+import { TagType } from '@theoliverlear/angular-suite'
 
+/**
+ * A component for displaying an onboarding promo.
+ */
 @Component({
     selector: 'start-trading-promo',
     standalone: false,
@@ -11,7 +14,7 @@ import { TagType } from '@theoliverlear/angular-suite';
 export class StartTradingPromoComponent {
     constructor() {}
 
-    @Input() public useGradientBackground: boolean = true;
+    @Input() public useGradientBackground: boolean = true
 
-    protected readonly TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }

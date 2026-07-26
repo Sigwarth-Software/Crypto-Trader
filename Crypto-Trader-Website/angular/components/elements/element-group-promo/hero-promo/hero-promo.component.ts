@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-import { ElementSize, TagType } from '@theoliverlear/angular-suite';
-import { getStartedElementLink } from '@assets/element-link.assets';
+import { ElementSize, TagType, TextElementLink } from '@theoliverlear/angular-suite'
+import { getStartedElementLink } from '@assets/element-link.assets'
 import {
     transparentLogo,
     stockIcon,
     circleCheckmarkIcon,
     bookIcon,
-} from '@assets/image.assets';
+    ImageAsset,
+} from '@assets/image.assets'
 
+/**
+ * A component for displaying a hero promo.
+ */
 @Component({
     selector: 'hero-promo',
     standalone: false,
@@ -18,11 +22,11 @@ import {
 export class HeroPromoComponent {
     constructor() {}
 
-    protected readonly TagType = TagType;
-    protected readonly transparentLogo = transparentLogo;
-    protected readonly stockIcon = stockIcon;
-    protected readonly circleCheckmarkIcon = circleCheckmarkIcon;
-    protected readonly bookIcon = bookIcon;
-    protected readonly ElementSize = ElementSize;
-    protected readonly getStartedElementLink = getStartedElementLink;
+    protected readonly TagType: typeof TagType = TagType
+    protected readonly transparentLogo: ImageAsset = transparentLogo
+    protected readonly stockIcon: ImageAsset = stockIcon
+    protected readonly circleCheckmarkIcon: ImageAsset = circleCheckmarkIcon
+    protected readonly bookIcon: ImageAsset = bookIcon
+    protected readonly ElementSize: typeof ElementSize = ElementSize
+    protected readonly getStartedElementLink: TextElementLink = getStartedElementLink
 }

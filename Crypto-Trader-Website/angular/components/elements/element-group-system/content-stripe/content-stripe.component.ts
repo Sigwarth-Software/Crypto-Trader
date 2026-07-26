@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-/** A stripe across the page with content in it.
- *
+/**
+ * A stripe across the page with content in it.
  */
 @Component({
     selector: 'content-stripe',

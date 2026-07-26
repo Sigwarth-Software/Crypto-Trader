@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-import { navBarAccountLink } from '@assets/element-link.assets';
-import { ElementLink } from '@theoliverlear/angular-suite';
+import { navBarAccountLink } from '@assets/element-link.assets'
+import { ElementLink } from '@theoliverlear/angular-suite'
 
-/** Profile picture in the navigation bar for account access.
- *
+/**
+ * Profile picture in the navigation bar for account access.
  */
 @Component({
     selector: 'nav-bar-profile-picture',
@@ -15,5 +15,5 @@ import { ElementLink } from '@theoliverlear/angular-suite';
 export class NavBarProfilePictureComponent {
     constructor() {}
 
-    protected readonly navBarAccountLink: ElementLink = navBarAccountLink;
+    protected readonly navBarAccountLink: ElementLink = navBarAccountLink
 }

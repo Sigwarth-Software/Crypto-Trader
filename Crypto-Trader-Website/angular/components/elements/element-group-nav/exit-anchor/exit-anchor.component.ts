@@ -1,16 +1,20 @@
 // exit-anchor.component.ts
-import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 
-import { ElementLink } from '@theoliverlear/angular-suite';
-import { homeElementLink } from '@assets/element-link.assets';
-import { exitIcon, ImageAsset } from '@assets/image.assets';
-import { LogoutService } from '@http/auth/access/logout.service';
-import { TokenStorageService } from '@auth/token-storage.service';
-import { AuthResponse } from '@models/auth/types';
+import { ElementLink } from '@theoliverlear/angular-suite'
+import { homeElementLink } from '@assets/element-link.assets'
+import { exitIcon, ImageAsset } from '@assets/image.assets'
+import { LogoutService } from '@http/auth/access/logout.service'
+import { TokenStorageService } from '@auth/token-storage.service'
+import { AuthResponse } from '@models/auth/types'
+import {
+    CryptoTraderLoggerService
+} from '@services/logging/crypto-trader-logger.service'
+import { LoggerContext } from '@models/logging/LoggerContext'
 
-/** An anchor that logs the user out and navigates to the auth page.
- *
+/**
+ * An anchor that logs the user out and navigates to the auth page.
  */
 @Component({
     selector: 'exit-anchor',
@@ -18,15 +22,23 @@ import { AuthResponse } from '@models/auth/types';
     styleUrls: ['./exit-anchor.component.scss'],
     standalone: false,
 })
-export class ExitAnchorComponent {
+export class ExitAnchorComponent implements OnInit {
     constructor(
         private readonly logoutService: LogoutService,
         private readonly tokenStorageService: TokenStorageService,
         private readonly router: Router,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
-    /** Clears the token and navigates to the authorize page on click.
-     *
+    /**
+     * On init, set the logger context.
+     */
+    public ngOnInit(): void {
+        this.logger.setContext(LoggerContext.Navigation)
+    }
+
+    /**
+     * Clears the token and navigates to the authorize page on click.
      */
     @HostListener('click')
     public onClick(): void {
@@ -35,25 +47,25 @@ export class ExitAnchorComponent {
         // cannot blacklist the token. Clear it after the request completes.
         this.logoutService.logout().subscribe({
             next: (authResponse: AuthResponse): void => {
-                console.log('Logged out: ', authResponse);
+                console.log('Logged out: ', authResponse)
             },
-            error: (error): void => {
+            error: (error: unknown): void => {
                 // Even if logout fails, clear local token to avoid lingering client auth
-                console.warn('Logout request error (ignored):', error);
+                this.logger.warn('Logout request error (ignored):', { error })
             },
             complete: (): void => {
                 try {
-                    this.tokenStorageService.clear();
+                    this.tokenStorageService.clear()
                 } catch {
-                    console.error('Failed to clear token storage');
+                    console.error('Failed to clear token storage')
                 }
                 void this.router.navigate(['/authorize']).then((): void => {
-                    console.log('Logout complete');
-                });
+                    this.logger.info('Logout complete')
+                })
             },
-        });
+        })
     }
 
-    protected readonly exitIcon: ImageAsset = exitIcon;
-    protected readonly homeElementLink: ElementLink = homeElementLink;
+    protected readonly exitIcon: ImageAsset = exitIcon
+    protected readonly homeElementLink: ElementLink = homeElementLink
 }

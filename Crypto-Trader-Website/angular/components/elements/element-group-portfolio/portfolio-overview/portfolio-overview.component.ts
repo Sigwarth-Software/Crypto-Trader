@@ -1,19 +1,19 @@
 // portfolio-overview.component.ts
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 
-import { TagType } from '@theoliverlear/angular-suite';
-import { ImageAsset } from '@assets/image.assets';
-import { CurrencyFormatterService } from '@ui/currency-formatter.service';
-import { CurrencyImageService } from '@ui/currency-image.service';
-import { SharesFormatterService } from '@ui/shares-formatter.service';
-import { TimeFormatterService } from '@ui/time-formatter.service';
-import { Portfolio, PortfolioAsset } from '@models/portfolio/types';
+import { TagType } from '@theoliverlear/angular-suite'
+import { ImageAsset } from '@assets/image.assets'
+import { CurrencyFormatterService } from '@ui/currency-formatter.service'
+import { CurrencyImageService } from '@ui/currency-image.service'
+import { SharesFormatterService } from '@ui/shares-formatter.service'
+import { TimeFormatterService } from '@ui/time-formatter.service'
+import { Portfolio, PortfolioAsset } from '@models/portfolio/types'
 
 // TODO: Move to types or asset file.
-type ImageWithText = [string, ImageAsset];
+type ImageWithText = [string, ImageAsset]
 
-/** A summary of a portfolio.
- *
+/**
+ * A component with a summary of a portfolio.
  */
 @Component({
     selector: 'portfolio-overview',
@@ -22,8 +22,9 @@ type ImageWithText = [string, ImageAsset];
     standalone: false,
 })
 export class PortfolioOverviewComponent implements OnInit, OnChanges {
-    @Input() public portfolio: Portfolio;
-    protected currencyImagesValues: ImageWithText[] = [];
+    @Input() public portfolio: Portfolio
+    protected currencyImagesValues: ImageWithText[] = []
+
     constructor(
         private readonly currencyFormatter: CurrencyFormatterService,
         private readonly timeFormatter: TimeFormatterService,
@@ -31,21 +32,22 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
         private readonly sharesFormatter: SharesFormatterService,
     ) {}
 
-    /** On changes, load new currency images.
-     *
+    /**
+     * On changes, load new currency images.
      * @param changes
      */
     public ngOnChanges(changes: SimpleChanges): void {
         if ('portfolio' in changes) {
-            void this.loadCurrencyImages();
+            void this.loadCurrencyImages()
         }
     }
 
-    /** On component initialization, load currency images.
+    /**
+     * On component initialization, load currency images.
      *
      */
     public ngOnInit(): void {
-        void this.loadCurrencyImages();
+        void this.loadCurrencyImages()
     }
 
     /**
@@ -53,7 +55,7 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      * @returns True if the portfolio has assets, false otherwise.
      */
     protected hasCurrencies(): boolean {
-        return this.portfolio.assets.length > 0;
+        return this.portfolio.assets.length > 0
     }
 
     /**
@@ -64,23 +66,22 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
             this.portfolio.assets
                 .map(async (asset: PortfolioAsset): Promise<ImageWithText> => {
                     const currencyImage: ImageAsset =
-                        await this.currencyImageService.resolveImageAsset(asset.currencyCode);
+                        await this.currencyImageService.resolveImageAsset(asset.currencyCode)
                     const assetValue: string = this.currencyFormatter.formatCurrency(
                         asset.totalValueInDollars,
-                    );
-                    return [assetValue, currencyImage] as ImageWithText;
+                    )
+                    return [assetValue, currencyImage] as ImageWithText
                 })
                 .reverse(),
-        );
+        )
     }
 
     /**
      * A formatted string of the portfolio's dollar balance.
      * @returns A formatted string representing the dollar balance.
-     *
      */
     protected getDollarBalance(): string {
-        return this.currencyFormatter.formatCurrency(this.portfolio.dollarBalance);
+        return this.currencyFormatter.formatCurrency(this.portfolio.dollarBalance)
     }
 
     /**
@@ -88,7 +89,7 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      * @returns A formatted string representing the share balance.
      */
     protected getSharesBalance(): string {
-        return this.currencyFormatter.formatCurrency(this.portfolio.shareBalance);
+        return this.currencyFormatter.formatCurrency(this.portfolio.shareBalance)
     }
 
     /**
@@ -96,7 +97,7 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      * @returns A formatted string representing the total worth.
      */
     protected getTotalWorth(): string {
-        return this.currencyFormatter.formatCurrency(this.portfolio.totalWorth);
+        return this.currencyFormatter.formatCurrency(this.portfolio.totalWorth)
     }
 
     /**
@@ -104,8 +105,8 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      * @returns A readable time string.
      */
     protected getLastUpdated(): string {
-        return this.timeFormatter.formatTime(this.portfolio.lastUpdated);
+        return this.timeFormatter.formatTime(this.portfolio.lastUpdated)
     }
 
-    protected readonly TagType: typeof TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }

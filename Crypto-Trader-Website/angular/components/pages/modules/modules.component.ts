@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
-import { TagType } from '@theoliverlear/angular-suite';
-import { StatItem } from '@components/elements/element-group-system/stat-strip/stat-strip.component';
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import { TagType } from '@theoliverlear/angular-suite'
+import { StatItem } from '@components/elements/element-group-system/stat-strip/stat-strip.component'
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
+import { modulesPageTitleStripe } from '@assets/page-title-stripe.assets'
+import { LoggerContext } from '@models/logging/LoggerContext'
+import { PageTitleStripe } from '@components/elements/element-group-system/page-title-stripe/models/PageTitleStripe'
 
 /**
  * The promotional page for the modules of Crypto Trader.
@@ -16,11 +19,12 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 export class ModulesComponent implements OnInit {
     constructor(private readonly logger: CryptoTraderLoggerService) {}
 
+    /**
+     * On init, set the logger context.
+     */
     public ngOnInit(): void {
-        this.logger.info('ModulesComponent initialized.', 'Modules');
+        this.logger.setContext(LoggerContext.Promo)
     }
-
-    protected readonly TagType = TagType;
 
     // TODO: Move to assets file.
     protected readonly statItems: StatItem[] = [
@@ -29,5 +33,8 @@ export class ModulesComponent implements OnInit {
         { icon: '🔒', label: 'Open Source' },
         { icon: '🚀', label: '24/7 Operation' },
         { icon: '📊', label: '30+ Subprojects', value: 30, suffix: '+ Subprojects' },
-    ];
+    ]
+
+    protected readonly TagType: typeof TagType = TagType
+    protected readonly modulesPageTitleStripe: PageTitleStripe = modulesPageTitleStripe
 }

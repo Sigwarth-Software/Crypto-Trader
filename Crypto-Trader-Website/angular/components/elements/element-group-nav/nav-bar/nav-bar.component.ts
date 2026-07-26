@@ -1,20 +1,15 @@
 import { Component, HostBinding, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 
 import { TextElementLink } from '@theoliverlear/angular-suite'
-import {
-    navBarCurrenciesTextLink,
-    navBarHomeLink,
-    navBarPortfolioTextLink,
-    navBarTraderTextLink,
-} from '@assets/element-link.assets'
+import { navBarHomeLink } from '@assets/element-link.assets'
 import { LoggedInService } from '@http/auth/status/logged-in.service'
 
 import { NavBarItemOption } from '../nav-bar-item/models/NavBarItemOption'
 import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
-import {LoggerContext} from "@models/logging/LoggerContext";
+import { LoggerContext } from '@models/logging/LoggerContext'
 
-/** A navigation bar that contains links to different pages.
- *
+/**
+ * A navigation bar that contains links to different pages.
  */
 @Component({
     selector: 'nav-bar',
@@ -33,7 +28,7 @@ export class NavBarComponent implements OnInit, OnChanges {
     protected isLoggedIn: boolean = false
     constructor(
         private readonly loggedInService: LoggedInService,
-        private readonly log: CryptoTraderLoggerService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
     /**
@@ -46,44 +41,42 @@ export class NavBarComponent implements OnInit, OnChanges {
         }
     }
 
-    /** On init, listen for auth status changes and verify login status.
-     *
+    /**
+     * On init, listen for auth status changes and verify login status.
      */
     public ngOnInit(): void {
-        this.log.setContext(LoggerContext.Navigation)
+        this.logger.setContext(LoggerContext.Navigation)
         this.listenForAuthStatus()
         this.verifyLoginStatus()
     }
 
     private listenForAuthStatus(): void {
         this.loggedInService.getAuthState().subscribe((authStatus: boolean): void => {
-            this.log.debug(`Auth status changed: ${authStatus}`)
+            this.logger.debug(`Auth status changed: ${authStatus}`)
             this.isLoggedIn = authStatus
         })
     }
 
     // TODO: Add more robust options filters.
     protected shouldShowNavItem(navBarItemOption: NavBarItemOption): boolean {
-        if (
-            navBarItemOption === NavBarItemOption.Simulator ||
-            navBarItemOption === NavBarItemOption.Currencies
-        ) {
+        const NAV_ITEMS_TO_SHOW_WHEN_LOGGED_OUT: NavBarItemOption[] = [
+            NavBarItemOption.Simulator,
+            NavBarItemOption.Currencies,
+        ]
+        if (NAV_ITEMS_TO_SHOW_WHEN_LOGGED_OUT.includes(navBarItemOption)) {
             return true
         }
         return this.isLoggedIn
     }
 
-    /** Verify login status by subscribing to the logged in service.
-     *
+    /**
+     * Verify login status by subscribing to the logged-in service.
      */
     public verifyLoginStatus(): void {
-        this.log.debug('Verifying login status...')
+        this.logger.debug('Verifying login status...')
         this.loggedInService.isLoggedIn().subscribe()
     }
 
     protected readonly navBarHomeLink: TextElementLink = navBarHomeLink
-    protected readonly navBarPortfolioLink: TextElementLink = navBarPortfolioTextLink
-    protected readonly navBarTraderLink: TextElementLink = navBarTraderTextLink
-    protected readonly navBarCurrenciesLink: TextElementLink = navBarCurrenciesTextLink
     protected readonly NavBarItemOption: typeof NavBarItemOption = NavBarItemOption
 }

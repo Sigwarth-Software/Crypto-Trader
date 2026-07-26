@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
 import {
     websiteModuleIcon,
     adminModuleIcon,
     consoleModuleIcon,
     mobileModuleIcon,
-} from '@assets/image.assets';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+} from '@assets/image.assets'
+import { ModuleInfo } from '@models/module/ModuleInfo'
+
+/**
+ * A component for displaying an interface promo.
+ */
 @Component({
     selector: 'interface-promo',
     standalone: false,
@@ -15,9 +19,6 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
 })
 export class InterfacePromoComponent {
     constructor() {}
-
-
-    protected readonly TagType = TagType;
 
     // TODO: Move to assets file.
     protected readonly interfaceModules: ModuleInfo[] = [
@@ -77,5 +78,7 @@ export class InterfacePromoComponent {
             ],
             techStack: ['Mobile', 'Cross-Platform'],
         },
-    ];
+    ]
+
+    protected readonly TagType: typeof TagType = TagType
 }
