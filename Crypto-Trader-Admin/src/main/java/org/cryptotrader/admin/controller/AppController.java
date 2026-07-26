@@ -8,7 +8,6 @@ import org.cryptotrader.desktop.library.component.ViewLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-//import org.cryptotrader.admin.component.ViewLoader;
 import org.cryptotrader.admin.event.PageNavigationEvent;
 import org.cryptotrader.admin.route.AppPage;
 import org.cryptotrader.admin.ui.NavBar;
@@ -34,8 +33,8 @@ public class AppController extends BaseViewController {
 
     @EventListener
     public void onNavigate(PageNavigationEvent event) {
-        log.info("Navigation event received");
-        Class<?> controllerClass;
+        log.info("Navigation event received: {}", event.appPage());
+        final Class<?> controllerClass;
         switch (event.appPage()) {
             case AppPage.ADMIN_USERS -> controllerClass = AdminUsersController.class;
             case AppPage.AUTH -> controllerClass = AuthController.class;
@@ -44,7 +43,7 @@ public class AppController extends BaseViewController {
             case AppPage.TABLE_USER_DATA -> controllerClass = UserTableController.class;
             case AppPage.TABLE_BAN_OFFENSES -> controllerClass = BanOffensesTableController.class;
             case AppPage.TABLE_WARN_OFFENSES -> controllerClass = WarnOffensesTableController.class;
-            default -> throw new IllegalArgumentException("Unknown appPage: " + event.appPage());
+            default -> throw new IllegalArgumentException("Unknown page: " + event.appPage());
         }
         this.viewLoader.loadView(this.page, controllerClass);
     }
