@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.net.URL;
 
 public class AdminApplication extends Application {
+    private static final String ROOT_APP_VIEW_PATH = "ui/view/app/AppView.fxml";
+    private static final String ROOT_APP_STYLESHEET_PATH = "ui/view/app/AppView.css";
+    private static final String APP_PANEL_TITLE = "Crypto Trader Admin Panel";
+
     private ConfigurableApplicationContext applicationContext;
 
     @Override
@@ -32,14 +36,14 @@ public class AdminApplication extends Application {
                                       .headless(false)
                                       .run();
     }
-    
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AdminApplication.class.getResource("ui/view/app/AppView.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(AdminApplication.class.getResource(ROOT_APP_VIEW_PATH));
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
-        Scene scene = new Scene(fxmlLoader.load(), 900, 700);
-        stage.setTitle("Crypto Trader Admin Panel");
-        URL cssPath = AdminApplication.class.getResource("ui/view/app/AppView.css");
+        final Scene scene = new Scene(fxmlLoader.load(), 900, 700);
+        stage.setTitle(APP_PANEL_TITLE);
+        final URL cssPath = AdminApplication.class.getResource(ROOT_APP_STYLESHEET_PATH);
         addPossibleStylesheet(cssPath, scene);
         stage.setScene(scene);
         CSSFX.start();
@@ -83,10 +87,10 @@ public class AdminApplication extends Application {
 
             Parent newRoot = reloadLoader.load();
             scene.setRoot(newRoot);
+            // TODO: Add a property or profile which triggers ScenicView.
 //            ScenicView.show(newRoot);
-            System.out.println("[Hot Reload] scene root swapped; controller = "
-                    + reloadLoader.getController() + " @"
-                    + System.identityHashCode(reloadLoader.getController()));
+            final int controllerIdentityHash = System.identityHashCode(reloadLoader.getController());
+            System.out.printf("[Hot Reload] scene root swapped, controller = %s @%d%n", reloadLoader.getController(), controllerIdentityHash);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
