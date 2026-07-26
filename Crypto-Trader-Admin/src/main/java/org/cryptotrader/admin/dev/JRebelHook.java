@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+@Deprecated(forRemoval = true)
 public final class JRebelHook {
     private static final String JREBEL_FACTORY_OLD = "org.zeroturnaround.javarebel.ReloaderFactory";
     private static final String JREBEL_FACTORY_NEW = "com.zeroturnaround.javarebel.ReloaderFactory";
