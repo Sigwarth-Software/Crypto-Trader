@@ -12,16 +12,18 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 @Profile("beast")
 public class BeastTaskExecutorConfig {
+    private static final String THREAD_NAME_PREFIX = "Beast-";
     //==============================-Beans-===================================
 
     //---------------------Thread-Pool-Task-Executor--------------------------
     @Bean(name = "taskExecutor")
     public TaskExecutor beastThreadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // TODO: Make these configurable values.
         executor.setCorePoolSize(8);
         executor.setMaxPoolSize(16);
         executor.setQueueCapacity(2000);
-        executor.setThreadNamePrefix("Beast-");
+        executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
         executor.initialize();
         return executor;
     }
