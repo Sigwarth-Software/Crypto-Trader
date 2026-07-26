@@ -1,10 +1,9 @@
 package org.cryptotrader.api.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
+// TODO: Delete this.
 @Configuration
 public class HttpConfig {
-    
+
 }
