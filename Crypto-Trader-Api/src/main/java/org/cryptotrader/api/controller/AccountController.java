@@ -25,7 +25,6 @@ import java.util.Optional;
  * @see ProfilePictureOperations
  * @see ProductUserService
  * @see SessionService
- * @author Oliver Lear Sigwarth
  */
 @RestController
 @RequestMapping("/api/account")
@@ -40,7 +39,6 @@ public class AccountController {
      * @see ProfilePictureOperations
      * @see ProductUserService
      * @see SessionService
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     //===========================-Constructors-===============================
     @Autowired
@@ -69,25 +67,24 @@ public class AccountController {
      * @see SessionService#userInSession(HttpSession)
      * @see ProfilePictureOperations#saveProfilePicture(ProfilePicture)
      * @see ProductUserService#saveUser(ProductUser)
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     //----------------------------Upload-Image--------------------------------
     @PostMapping("/image/upload")
-    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") MultipartFile file,
-                                                                            HttpSession session) {
-        boolean userInSession = this.sessionService.userInSession(session);
+    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") final MultipartFile file,
+                                                                            final HttpSession session) {
+        final boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
+        final Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        ProductUser sessionUser = possibleSessionUser.get();
-        String fileName = file.getOriginalFilename();
+        final ProductUser sessionUser = possibleSessionUser.get();
+        final String fileName = file.getOriginalFilename();
         try {
-            byte[] fileData = file.getBytes();
-            ProfilePicture profilePicture = ProfilePicture.builder()
+            final byte[] fileData = file.getBytes();
+            final ProfilePicture profilePicture = ProfilePicture.builder()
                                                           .fileName(fileName)
                                                           .fileData(fileData)
                                                           .user(sessionUser)
@@ -97,12 +94,12 @@ public class AccountController {
             this.profilePictureService.saveProfilePicture(profilePicture);
             this.productUserService.saveUser(sessionUser);
             return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    
+
     /**
      * Verifies if a user has a profile picture based on their ID.
      *
@@ -115,21 +112,19 @@ public class AccountController {
      * @see HasProfilePictureResponse
      * @see ResponseEntity
      * @see ProfilePictureOperations#existsByUserId(Long)
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     @GetMapping("/get/{id}/has-profile-picture")
-    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(@PathVariable String id) {
-        long userId;
+    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(@PathVariable final String id) {
+        final long userId;
         try {
             userId = Long.parseLong(id);
         } catch (NumberFormatException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
+        final boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
         return ResponseEntity.ok(new HasProfilePictureResponse(hasProfilePicture));
     }
-    
-    
+
     /**
      * Retrieves the profile picture for a user given their ID.
      * If no profile picture is found for the user, a 404 (NOT_FOUND) response
@@ -148,14 +143,14 @@ public class AccountController {
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable String id) {
-        long userId = Long.parseLong(id);
-        Optional<ProfilePicture> possibleProfilePicture = this.profilePictureService.findByUserId(userId);
+        final long userId = Long.parseLong(id);
+        final Optional<ProfilePicture> possibleProfilePicture = this.profilePictureService.findByUserId(userId);
         if (possibleProfilePicture.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            ProfilePicture profilePicture = possibleProfilePicture.get();
-            byte[] imageData = profilePicture.getFileData();
-            String fileType = profilePicture.getFileType();
+            final ProfilePicture profilePicture = possibleProfilePicture.get();
+            final byte[] imageData = profilePicture.getFileData();
+            final String fileType = profilePicture.getFileType();
             return ResponseEntity.ok().contentType(MediaType.parseMediaType(fileType)).body(imageData);
         }
     }
