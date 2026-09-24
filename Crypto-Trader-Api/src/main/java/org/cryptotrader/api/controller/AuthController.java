@@ -7,10 +7,11 @@ import org.cryptotrader.api.library.communication.request.LoginRequest;
 import org.cryptotrader.api.library.communication.request.SignupRequest;
 import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.ProductUser;
-import org.cryptotrader.api.library.events.UserRegisteredEvent;
-import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.extension.HttpRequestExtensionsKt;
 import org.cryptotrader.api.library.model.dpop.DpopProofContext;
+import org.cryptotrader.api.library.model.dpop.DpopVerificationResult;
+import org.cryptotrader.api.library.model.jwt.RefreshTokenIssue;
+import org.cryptotrader.api.library.model.jwt.RotationResult;
 import org.cryptotrader.universal.library.model.http.AuthStatus;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.config.SecurityProperties;
@@ -28,12 +29,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
-/**
- * Authentication API endpoints implementing DPoP-bound access tokens and
- * rotating refresh tokens.
- */
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
@@ -49,14 +44,14 @@ public class AuthController {
     private final SecurityProperties securityProperties;
 
     @Autowired
-    public AuthController(AuthService authService,
-                          ProductUserService productUserService,
-                          AuthContextService authContextService,
-                          JwtTokenService jwtTokenService,
-                          RefreshTokenService refreshTokenService,
-                          DpopReplayCache replayCache,
-                          DpopVerifierService dpopVerifier,
-                          SecurityProperties securityProperties) {
+    public AuthController(final AuthService authService,
+                          final ProductUserService productUserService,
+                          final AuthContextService authContextService,
+                          final JwtTokenService jwtTokenService,
+                          final RefreshTokenService refreshTokenService,
+                          final DpopReplayCache replayCache,
+                          final DpopVerifierService dpopVerifier,
+                          final SecurityProperties securityProperties) {
         this.authService = authService;
         this.productUserService = productUserService;
         this.authContextService = authContextService;
@@ -67,31 +62,30 @@ public class AuthController {
         this.securityProperties = securityProperties;
     }
 
-    /**
-     * Registers a new user and initializes an authenticated session.
-     */
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest signupRequest,
-                                               @RequestHeader(value = "DPoP", required = false) String dpopProof,
-                                               HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> signup(@RequestBody final SignupRequest signupRequest,
+                                               @RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                               final HttpServletRequest request) {
         if (this.authContextService.isAuthenticated()) {
-            AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
+            final AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authResponse);
         }
         String jwkThumbprint = null;
+
         if (dpopProof != null) {
-            jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, "POST");
+            jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, RequestMethod.POST);
             if (jwkThumbprint == null) {
-                AuthResponse authResponse = new AuthResponse(false);
+                final AuthResponse authResponse = new AuthResponse(false);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
             }
         }
-        PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(signupRequest, jwkThumbprint);
+        final PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(signupRequest, jwkThumbprint);
+
         if (signupResponse.getPayload().isAuthorized()) {
-            ProductUser possibleUser = this.productUserService.getUserByEmail(signupRequest.getEmail());
+            final ProductUser possibleUser = this.productUserService.getUserByEmail(signupRequest.getEmail());
             // Issue refresh token cookie bound to jkt
-            RefreshTokenService.RefreshTokenIssue issue = this.refreshTokenService.issue(possibleUser.getId(), jwkThumbprint);
-            ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
+            final RefreshTokenIssue issue = this.refreshTokenService.issue(possibleUser.getId(), jwkThumbprint);
+            final ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                              issue.getId(),
                                                                              issue.getExpiresAt(),
                                                                              this.securityProperties.cookieSecure(),
@@ -103,31 +97,31 @@ public class AuthController {
         return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
     }
 
-    /**
-     * Authenticates user credentials and starts a session.
-     */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest,
-                                              @RequestHeader(value = "DPoP", required = false) String dpopProof,
-                                              HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody final LoginRequest loginRequest,
+                                              @RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                              final HttpServletRequest request) {
         if (this.authContextService.isAuthenticated()) {
-            AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
+            final AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authResponse);
         }
-        boolean hasProof = this.dpopVerifier.isValidProof(dpopProof);
-        AuthResponse unauthorizedResponse = new AuthResponse(false);
+        final boolean hasProof = this.dpopVerifier.isValidProof(dpopProof);
+        final AuthResponse unauthorizedResponse = new AuthResponse(false);
+
         if (!hasProof) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedResponse);
         }
-        String jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, "POST");
+        final String jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, RequestMethod.POST);
+
         if (jwkThumbprint == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedResponse);
         }
-        PayloadStatusResponse<AuthResponse> loginResponse = this.authService.login(loginRequest, jwkThumbprint);
+        final PayloadStatusResponse<AuthResponse> loginResponse = this.authService.login(loginRequest, jwkThumbprint);
+
         if (loginResponse.getPayload().isAuthorized()) {
-            ProductUser user = this.productUserService.getUserByEmail(loginRequest.getEmail());
-            RefreshTokenService.RefreshTokenIssue issue = this.refreshTokenService.issue(user.getId(), jwkThumbprint);
-            ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
+            final ProductUser user = this.productUserService.getUserByEmail(loginRequest.getEmail());
+            final RefreshTokenIssue issue = this.refreshTokenService.issue(user.getId(), jwkThumbprint);
+            final ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                              issue.getId(),
                                                                              issue.getExpiresAt(),
                                                                              this.securityProperties.cookieSecure(),
@@ -154,36 +148,40 @@ public class AuthController {
      * - __Host-rt: Secure HttpOnly refresh token.
      */
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestHeader(value = "DPoP", required = false) String dpopProof,
-                                                HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> refresh(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                                final HttpServletRequest request) {
         // Must have refresh cookie
-        String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+        final String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+
         if (cookieValue == null || cookieValue.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(false));
         }
-        boolean hasProof = this.dpopVerifier.isValidProof(dpopProof);
+        final boolean hasProof = this.dpopVerifier.isValidProof(dpopProof);
+
         if (!hasProof) {
-            ResponseCookie del = deleteCookie(this.refreshTokenService.cookieName(),
+            final ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
                                                                     this.securityProperties.cookieSecure(),
                                                                     this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .header(HttpHeaders.SET_COOKIE, del.toString())
+                    .header(HttpHeaders.SET_COOKIE, cookieToDelete.toString())
                     .body(new AuthResponse(false));
         }
-        String jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, "POST");
+        final String jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, RequestMethod.POST);
+
         if (jwkThumbprint == null) {
             // DPoP mandatory on refresh
-            ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+            final ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
                                                                                this.securityProperties.cookieSecure(),
                                                                                this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.SET_COOKIE, cookieToDelete.toString())
                     .body(new AuthResponse(false));
         }
-        RefreshTokenService.RotationResult rotationResult = this.refreshTokenService.validateAndRotate(cookieValue, jwkThumbprint);
+        final RotationResult rotationResult = this.refreshTokenService.validateAndRotate(cookieValue, jwkThumbprint);
+
         if (rotationResult.getNewRecord() == null) {
             // reuse or invalid
-            ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+            final ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
                                                                                this.securityProperties.cookieSecure(),
                                                                                this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -191,16 +189,17 @@ public class AuthController {
                     .body(new AuthResponse(false));
         }
         // Load user and issue new access token bound to same jkt
-        long userId = rotationResult.getNewRecord().getUserId();
-        ProductUser user = this.productUserService.getUserById(userId);
-        String email = (user != null) ? user.getEmail() : null;
+        final long userId = rotationResult.getNewRecord().getUserId();
+        final ProductUser user = this.productUserService.getUserById(userId);
+        final String email = (user != null) ? user.getEmail() : null;
+
         if (email == null) {
             log.error("User not found for refresh token: {}", userId);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AuthResponse(false));
         }
-        String token = this.jwtTokenService.generateToken(String.valueOf(user.getId()), email, jwkThumbprint);
-        AuthResponse payload = new AuthResponse(true, token);
-        ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
+        final String token = this.jwtTokenService.generateToken(String.valueOf(user.getId()), email, jwkThumbprint);
+        final AuthResponse payload = new AuthResponse(true, token);
+        final ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                          rotationResult.getNewRecord().getId(),
                                                                          rotationResult.getNewRecord().getExpiresAt(),
                                                                          this.securityProperties.cookieSecure(),
@@ -208,14 +207,10 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(payload);
     }
 
-    /**
-     * Quick status check used by the UI.
-     * Returns authorized=true if the current request is authenticated.
-     */
     @GetMapping("/logged-in")
     public ResponseEntity<AuthResponse> isLoggedIn() {
-        boolean authenticated = this.authContextService.isAuthenticated();
-        AuthResponse authResponse = new AuthResponse(authenticated);
+        final boolean authenticated = this.authContextService.isAuthenticated();
+        final AuthResponse authResponse = new AuthResponse(authenticated);
         return ResponseEntity.ok(authResponse);
     }
 
@@ -225,21 +220,21 @@ public class AuthController {
      * @param dpopProof Optional DPoP proof to validate the request origin.
      */
     @PostMapping("/logout")
-    public ResponseEntity<AuthResponse> logout(@RequestHeader(value = "DPoP", required = false) String dpopProof,
-                                               HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> logout(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                               final HttpServletRequest request) {
         // DPoP is optional for logout: if provided and valid, great; if missing/invalid, we still end the session.
         // Attempt to derive jkt only to validate the proof when present; ignore failures.
-        boolean isValidProof = this.dpopVerifier.isValidProof(dpopProof);
+        final boolean isValidProof = this.dpopVerifier.isValidProof(dpopProof);
         if (isValidProof) {
             try {
-                this.deriveJwkThumbprintFromProof(dpopProof, request, "POST");
+                this.deriveJwkThumbprintFromProof(dpopProof, request, RequestMethod.POST);
             } catch (Exception _) {
                 // Ignore proof validation failures
             }
         }
         // Clear refresh cookie and revoke its family
-        String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
-        ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+        final String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+        final ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
                                                                            this.securityProperties.cookieSecure(),
                                                                            this.securityProperties.cookieSamesite());
         if (cookieValue != null && !cookieValue.isBlank()) {
@@ -247,8 +242,11 @@ public class AuthController {
         }
         // Blacklist presented access token if any
         this.authContextService.logout();
-        AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookieToDelete.toString()).body(authResponse);
+        final AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED);
+        return ResponseEntity.ok().header(
+            HttpHeaders.SET_COOKIE,
+            cookieToDelete.toString()
+        ).body(authResponse);
     }
 
     @GetMapping("/logout")
@@ -270,7 +268,7 @@ public class AuthController {
      * @param expectedMethod The expected HTTP method of the request.
      * @return The jkt (thumbprint) if verification succeeds; otherwise null.
      */
-    private String deriveJwkThumbprintFromProof(String dpopProof, HttpServletRequest request, String expectedMethod) {
+    private String deriveJwkThumbprintFromProof(String dpopProof, HttpServletRequest request, RequestMethod expectedMethod) {
         try {
             // If the pre-JWT DPoPValidationFilter has already verified the proof, reuse its context
             Object context = (request != null) ? request.getAttribute("dpop.proof") : null;
@@ -278,7 +276,7 @@ public class AuthController {
                 return proofContext.getKeyThumbprint();
             }
             // Otherwise, verify here (including replay check)
-            DpopVerifierService.VerificationResult verification = this.dpopVerifier.verify(dpopProof,
+            DpopVerificationResult verification = this.dpopVerifier.verify(dpopProof,
                                                                                            expectedMethod,
                                                                                            HttpRequestExtensionsKt.fullUrl(request),
                                                                                            null,
@@ -294,30 +292,5 @@ public class AuthController {
             log.debug("Failed to derive jkt from DPoP proof", ex);
         }
         return null;
-    }
-
-    // Convenience overloads for unit tests and backward compatibility (not HTTP endpoints)
-    /**
-     * Overload without DPoP or request argument for tests.
-     */
-    @Deprecated(forRemoval = true)
-    public ResponseEntity<AuthResponse> signup(SignupRequest signupRequest) {
-        return signup(signupRequest, null, null);
-    }
-
-    /**
-     * Overload without DPoP or request argument for tests.
-     */
-    @Deprecated(forRemoval = true)
-    public ResponseEntity<AuthResponse> login(LoginRequest loginRequest) {
-        return login(loginRequest, null, null);
-    }
-
-    /**
-     * Overload without DPoP or request argument for tests.
-     */
-    @Deprecated(forRemoval = true)
-    public ResponseEntity<AuthResponse> logout() {
-        return logout(null, null);
     }
 }
