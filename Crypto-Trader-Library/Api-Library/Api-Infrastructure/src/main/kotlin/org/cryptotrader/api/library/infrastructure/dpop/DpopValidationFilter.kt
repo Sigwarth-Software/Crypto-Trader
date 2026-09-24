@@ -20,6 +20,7 @@ import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.extension.sendUnauthorized
 import org.cryptotrader.api.library.extension.fullUrl
+import org.cryptotrader.api.library.model.dpop.DpopVerificationResult
 import org.cryptotrader.api.library.services.dpop.DpopVerifierService
 
 /**
@@ -80,7 +81,7 @@ class DpopValidationFilter(
 
         try {
             // Verify DPoP proof cryptographically and validate claims (require 'ath' when token provided)
-            val verification: DpopVerifierService.VerificationResult? =
+            val verification: DpopVerificationResult? =
                 this.dpopVerifier.verify(dpopHeader, request.method, request.fullUrl(), accessToken)
             if (verification == null) {
                 log.debug("DPoP proof verification failed")
