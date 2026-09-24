@@ -282,6 +282,7 @@
                 <configuration>
                     <compilerPlugins>
                         <plugin>spring</plugin>
+                        <plugin>lombok</plugin>
                     </compilerPlugins>
                 </configuration>
             </plugin>
