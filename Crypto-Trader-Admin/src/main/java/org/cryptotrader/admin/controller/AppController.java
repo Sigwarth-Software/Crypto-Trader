@@ -22,7 +22,7 @@ public class AppController extends BaseViewController {
     private final ViewLoader viewLoader;
 
     @Autowired
-    public AppController(ViewLoader viewLoader) {
+    public AppController(final ViewLoader viewLoader) {
         this.viewLoader = viewLoader;
     }
 
@@ -32,7 +32,7 @@ public class AppController extends BaseViewController {
     }
 
     @EventListener
-    public void onNavigate(PageNavigationEvent event) {
+    public void onNavigate(final PageNavigationEvent event) {
         log.info("Navigation event received: {}", event.appPage());
         final Class<?> controllerClass;
         switch (event.appPage()) {
