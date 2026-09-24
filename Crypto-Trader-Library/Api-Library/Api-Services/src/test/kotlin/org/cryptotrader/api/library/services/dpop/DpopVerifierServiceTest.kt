@@ -2,6 +2,7 @@ package org.cryptotrader.api.library.services.dpop
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import org.cryptotrader.api.library.model.dpop.DpopVerificationResult
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -105,14 +106,14 @@ class DpopVerifierServiceTest : CryptoTraderTest() {
             val requestUri = "http://localhost:8080/api/auth/login"
 
             val dpop = createValidDpopProof(requestMethod, requestUri)
-            val result: DpopVerifierService.VerificationResult? = dpopVerifierService.verify(dpop, requestMethod, requestUri)
+            val result: DpopVerificationResult? = dpopVerifierService.verify(dpop, requestMethod, requestUri)
             assertNotNull(result)
         }
 
         @Test
         @DisplayName("Should return null on invalid DPoP proof")
         fun verify_ReturnsNull_OnInvalidProof() {
-            val result: DpopVerifierService.VerificationResult? = dpopVerifierService.verify("", "GET", "http://localhost:8080/api/auth/login")
+            val result: DpopVerificationResult? = dpopVerifierService.verify("", "GET", "http://localhost:8080/api/auth/login")
             assertNull(result)
         }
     }
