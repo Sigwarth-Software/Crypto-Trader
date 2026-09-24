@@ -46,3 +46,6 @@ tink/
 
 /.aiassistant/**
 /.junie/**
+.env
+/.local
+/**/.env
