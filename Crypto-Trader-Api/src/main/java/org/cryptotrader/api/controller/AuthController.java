@@ -74,6 +74,7 @@ public class AuthController {
 
         if (dpopProof != null) {
             jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, RequestMethod.POST);
+
             if (jwkThumbprint == null) {
                 final AuthResponse authResponse = new AuthResponse(false);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
@@ -135,13 +136,11 @@ public class AuthController {
 
     /**
      * Rotates access and refresh tokens.
-     *
      * Implementation Details:
      * - Validates the DPoP proof and the provided refresh cookie.
      * - Performs refresh token rotation (RTR) to prevent reuse of old tokens.
      * - Issues new tokens bound to the same public key thumbprint.
      * - Revokes the refresh token family on detection of suspicious activity.
-     *
      * Headers:
      * - DPoP (required): A signed proof for this request.
      * Cookie:
@@ -181,9 +180,11 @@ public class AuthController {
 
         if (rotationResult.getNewRecord() == null) {
             // reuse or invalid
-            final ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
-                                                                               this.securityProperties.cookieSecure(),
-                                                                               this.securityProperties.cookieSamesite());
+            final ResponseCookie cookieToDelete = deleteCookie(
+                this.refreshTokenService.cookieName(),
+                this.securityProperties.cookieSecure(),
+                this.securityProperties.cookieSamesite()
+            );
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.SET_COOKIE, cookieToDelete.toString())
                     .body(new AuthResponse(false));
@@ -195,15 +196,23 @@ public class AuthController {
 
         if (email == null) {
             log.error("User not found for refresh token: {}", userId);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AuthResponse(false));
+            return ResponseEntity.status(
+                HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(new AuthResponse(false));
         }
-        final String token = this.jwtTokenService.generateToken(String.valueOf(user.getId()), email, jwkThumbprint);
+        final String token = this.jwtTokenService.generateToken(
+            String.valueOf(user.getId()),
+            email,
+            jwkThumbprint
+        );
         final AuthResponse payload = new AuthResponse(true, token);
-        final ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
-                                                                         rotationResult.getNewRecord().getId(),
-                                                                         rotationResult.getNewRecord().getExpiresAt(),
-                                                                         this.securityProperties.cookieSecure(),
-                                                                         this.securityProperties.cookieSamesite());
+        final ResponseCookie cookie = buildRefreshCookie(
+            this.refreshTokenService.cookieName(),
+            rotationResult.getNewRecord().getId(),
+            rotationResult.getNewRecord().getExpiresAt(),
+            this.securityProperties.cookieSecure(),
+            this.securityProperties.cookieSamesite()
+        );
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(payload);
     }
 
@@ -250,8 +259,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<AuthResponse> logoutGet(@RequestHeader(value = "DPoP", required = false) String dpopProof,
-                                                  HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> logoutGet(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                                  final HttpServletRequest request) {
         return logout(dpopProof, request);
     }
 
@@ -259,7 +268,6 @@ public class AuthController {
 
     /**
      * Derives the JWK thumbprint (jkt) from a DPoP proof according to RFC 9449.
-     *
      * This method validates the signature and claims of the DPoP proof and returns
      * the cryptographic thumbprint of the public key.
      *
@@ -268,19 +276,25 @@ public class AuthController {
      * @param expectedMethod The expected HTTP method of the request.
      * @return The jkt (thumbprint) if verification succeeds; otherwise null.
      */
-    private String deriveJwkThumbprintFromProof(String dpopProof, HttpServletRequest request, RequestMethod expectedMethod) {
+    private String deriveJwkThumbprintFromProof(final String dpopProof, final HttpServletRequest request, final RequestMethod expectedMethod) {
         try {
             // If the pre-JWT DPoPValidationFilter has already verified the proof, reuse its context
-            Object context = (request != null) ? request.getAttribute("dpop.proof") : null;
-            if (context instanceof DpopProofContext proofContext) {
+            final Object context = (request != null) ? request.getAttribute("dpop.proof") : null;
+            if (context instanceof final DpopProofContext proofContext) {
                 return proofContext.getKeyThumbprint();
             }
             // Otherwise, verify here (including replay check)
-            DpopVerificationResult verification = this.dpopVerifier.verify(dpopProof,
-                                                                                           expectedMethod,
-                                                                                           HttpRequestExtensionsKt.fullUrl(request),
-                                                                                           null,
-                                                                                           20L);
+            if (request == null) {
+                log.warn("Servlet request is null, cannot find proof.");
+                return null;
+            }
+            final DpopVerificationResult verification = this.dpopVerifier.verify(
+                dpopProof,
+                expectedMethod,
+                HttpRequestExtensionsKt.fullUrl(request),
+                null,
+                20L
+            );
             if (verification == null) {
                 return null;
             }
