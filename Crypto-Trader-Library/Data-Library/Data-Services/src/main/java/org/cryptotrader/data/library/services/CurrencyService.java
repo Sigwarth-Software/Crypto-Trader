@@ -13,11 +13,11 @@ import org.cryptotrader.data.library.model.currency.PerformanceRating;
 import org.cryptotrader.data.library.repository.CurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.CurrencyRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
-import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
 import org.cryptotrader.data.library.services.entity.CurrencyEntityService;
 import org.cryptotrader.data.library.services.entity.CurrencyHistoryEntityService;
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService;
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +40,6 @@ public class CurrencyService {
     //============================-Variables-=================================
     private final CurrencyRepository currencyRepository;
     private final CurrencyHistoryRepository currencyHistoryRepository;
-    private final UniqueCurrencyRepository uniqueCurrencyRepository;
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
 
     private final CurrencyEntityService currencyEntityService;
@@ -50,17 +49,15 @@ public class CurrencyService {
 
     //===========================-Constructors-===============================
     @Autowired
-    public CurrencyService(CurrencyRepository currencyRepository,
-                           CurrencyHistoryRepository currencyHistoryRepository,
-                           UniqueCurrencyRepository uniqueCurrencyRepository,
-                           UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
-                           CurrencyEntityService currencyEntityService,
-                           CurrencyHistoryEntityService currencyHistoryEntityService,
-                           UniqueCurrencyEntityService uniqueCurrencyEntityService,
-                           UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService) {
+    public CurrencyService(final CurrencyRepository currencyRepository,
+                           final CurrencyHistoryRepository currencyHistoryRepository,
+                           final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
+                           final CurrencyEntityService currencyEntityService,
+                           final CurrencyHistoryEntityService currencyHistoryEntityService,
+                           final UniqueCurrencyEntityService uniqueCurrencyEntityService,
+                           final UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
-        this.uniqueCurrencyRepository = uniqueCurrencyRepository;
         this.uniqueCurrencyHistoryRepository = uniqueCurrencyHistoryRepository;
         this.currencyEntityService = currencyEntityService;
         this.currencyHistoryEntityService = currencyHistoryEntityService;
@@ -70,8 +67,8 @@ public class CurrencyService {
 
 
     public TimeValueResponse getFuzzyCurrencyHistory(String currencyCode, FuzzyTimeValueRequest request) {
-        LocalDateTime requestedTime = LocalDateTime.parse(request.getDateTime());
-        CurrencyHistory closestRecord = this.currencyHistoryRepository.findClosestCurrencyHistoryByCurrencyCode(currencyCode, requestedTime);
+        final LocalDateTime requestedTime = LocalDateTime.parse(request.getDateTime());
+        final CurrencyHistory closestRecord = this.currencyHistoryRepository.findClosestCurrencyHistoryByCurrencyCode(currencyCode, requestedTime);
         if (closestRecord == null) {
             return null;
         }
@@ -88,10 +85,10 @@ public class CurrencyService {
     }
 
     public DisplayCurrencyListResponse getCurrencyValuesResponse() {
-        List<Currency> currencies = this.getTopTenNonEncapsulatedCurrencies();
-        currencies.sort((currencyOne, currencyTwo) -> {
-            return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
-        });
+        final List<Currency> currencies = this.getTopTenNonEncapsulatedCurrencies();
+        currencies.sort((currencyOne, currencyTwo) ->
+            Double.compare(currencyTwo.getValue(), currencyOne.getValue()));
+
         return new DisplayCurrencyListResponse(currencies.stream()
                 .filter(Objects::nonNull)
                 .map(this::toCurrencyValueResponse)
@@ -99,8 +96,8 @@ public class CurrencyService {
                 .toList());
     }
 
-    public DisplayCurrencyListResponse getCurrencyValuesResponse(int offset) {
-        List<Currency> currencies = this.getTopNonEncapsulatedCurrencies(offset);
+    public DisplayCurrencyListResponse getCurrencyValuesResponse(final int offset) {
+        final List<Currency> currencies = this.getTopNonEncapsulatedCurrencies(offset);
         currencies.sort((currencyOne, currencyTwo) -> Double.compare(currencyTwo.getValue(), currencyOne.getValue()));
         return new DisplayCurrencyListResponse(currencies.stream()
                 .filter(Objects::nonNull)
@@ -109,11 +106,11 @@ public class CurrencyService {
                 .toList());
     }
 
-    public List<Currency> getTopNonEncapsulatedCurrencies(int offset) {
-        int pageSize = 10;
-        int safeOffset = Math.max(0, offset);
-        int page = safeOffset / pageSize;
-        Pageable pageable = PageRequest.of(page, pageSize);
+    public List<Currency> getTopNonEncapsulatedCurrencies(final int offset) {
+        final int pageSize = 10;
+        final int safeOffset = Math.max(0, offset);
+        final int page = safeOffset / pageSize;
+        final Pageable pageable = PageRequest.of(page, pageSize);
         return this.currencyRepository.findNonEncapsulated(pageable);
     }
 
@@ -125,13 +122,13 @@ public class CurrencyService {
         return this.currencyRepository.findTop10ByOrderByValueDesc();
     }
 
-    public List<String> getCurrencyNames(boolean withCode) {
-        return this.getAllCurrencies().stream().map(currency -> {
-            return this.getCurrencyName(withCode, currency);
-        }).toList();
+    public List<String> getCurrencyNames(final boolean withCode) {
+        return this.getAllCurrencies().stream().map(currency ->
+            this.getCurrencyName(withCode, currency)).toList();
     }
 
-    public String getCurrencyName(boolean withCode, Currency currency) {
+    public String getCurrencyName(final boolean withCode,
+                                  final Currency currency) {
         String nameString = currency.getName();
         if (withCode) {
             nameString = nameString + " (" + currency.getCurrencyCode() + ")";
@@ -147,39 +144,44 @@ public class CurrencyService {
         return this.currencyRepository.findAllCurrencyCodes();
     }
 
-    public void saveCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
+    public void saveCurrencyIfNew(final Currency currency,
+                                  final Currency previousCurrency,
+                                  final Currency updatedCurrency) {
         if (this.hasCurrencyChanged(previousCurrency, updatedCurrency)) {
             this.saveCurrency(currency);
         }
     }
 
-    private boolean hasCurrencyChanged(Currency previousCurrency, Currency updatedCurrency) {
+    private boolean hasCurrencyChanged(final Currency previousCurrency,
+                                       final Currency updatedCurrency) {
         if (previousCurrency == null || updatedCurrency == null) {
             return true;
         }
         return previousCurrency.getValue() != updatedCurrency.getValue();
     }
 
-    public void saveCurrency(Currency currency) {
+    public void saveCurrency(final Currency currency) {
         this.currencyEntityService.save(currency);
         this.currencyHistoryEntityService.save(new CurrencyHistory(currency, currency.getValue()));
     }
 
-    public void saveAllCurrencies(List<Currency> currencies) {
+    public void saveAllCurrencies(final List<Currency> currencies) {
         this.currencyEntityService.saveAll(currencies);
         this.currencyHistoryEntityService.saveAll(currencies.stream()
                 .map(currency -> new CurrencyHistory(currency, currency.getValue()))
                 .collect(Collectors.toList()));
     }
 
-    public void saveAllUniqueCurrencies(List<UniqueCurrency> uniqueCurrencies) {
+    public void saveAllUniqueCurrencies(final List<UniqueCurrency> uniqueCurrencies) {
         this.uniqueCurrencyEntityService.saveAll(uniqueCurrencies);
         this.uniqueCurrencyHistoryEntityService.saveAll(uniqueCurrencies.stream()
                 .map(uniqueCurrency -> new UniqueCurrencyHistory(uniqueCurrency.getAssociatedCurrency()))
                 .collect(Collectors.toList()));
     }
 
-    public void saveUniqueCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
+    public void saveUniqueCurrencyIfNew(final Currency currency,
+                                        final Currency previousCurrency,
+                                        final Currency updatedCurrency) {
         if (!this.existsInUniqueCurrencyTable(currency.getCurrencyCode())) {
             this.saveUniqueCurrency(currency);
             return;
@@ -189,62 +191,64 @@ public class CurrencyService {
         }
     }
 
-    public boolean shouldSaveUniqueCurrency(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
+    public boolean shouldSaveUniqueCurrency(final Currency currency, final Currency previousCurrency, final Currency updatedCurrency) {
         if (!this.existsInUniqueCurrencyTable(currency.getCurrencyCode())) {
             return true;
         }
         return this.hasCurrencyChanged(previousCurrency, updatedCurrency);
     }
 
-    public void saveUniqueCurrency(Currency currency) {
-        UniqueCurrency uniqueCurrency = new UniqueCurrency(currency);
-        UniqueCurrencyHistory uniqueCurrencyHistory = new UniqueCurrencyHistory(currency);
+    public void saveUniqueCurrency(final Currency currency) {
+        final UniqueCurrency uniqueCurrency = new UniqueCurrency(currency);
+        final UniqueCurrencyHistory uniqueCurrencyHistory = new UniqueCurrencyHistory(currency);
         this.uniqueCurrencyEntityService.save(uniqueCurrency);
         this.uniqueCurrencyHistoryEntityService.save(uniqueCurrencyHistory);
 
     }
 
     //------------------------Get-Currency-By-Name----------------------------
-    public Currency getCurrencyByName(String currencyName) {
+    public Currency getCurrencyByName(final String currencyName) {
         return this.currencyRepository.getCurrencyByName(currencyName);
     }
     //-------------------Get-Currency-By-Currency-Code------------------------
-    public Currency getCurrencyByCurrencyCode(String currencyCode) {
+    public Currency getCurrencyByCurrencyCode(final String currencyCode) {
         return this.currencyRepository.getCurrencyByCurrencyCode(currencyCode);
     }
-    public boolean existsInCurrencyTable(String currencyCode) {
+    public boolean existsInCurrencyTable(final String currencyCode) {
         return this.currencyEntityService.existsById(currencyCode);
     }
-    public boolean existsInCurrencyHistoryTable(String currencyCode) {
+    public boolean existsInCurrencyHistoryTable(final String currencyCode) {
         return this.currencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
     }
-    public boolean existsInUniqueCurrencyTable(String currencyCode) {
+    public boolean existsInUniqueCurrencyTable(final String currencyCode) {
         return this.uniqueCurrencyEntityService.existsById(currencyCode);
     }
-    public boolean existsInUniqueCurrencyHistoryTable(String currencyCode) {
+    public boolean existsInUniqueCurrencyHistoryTable(final String currencyCode) {
         return this.uniqueCurrencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
     }
 
-    public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours) {
-        return this.getCurrencyHistory(currencyCode, hours, 60);
+    public List<TimeValueResponse> getCurrencyHistory(final String currencyCode,
+                                                      final int hours) {
+        final int DEFAULT_INTERVAL_SECONDS = 60;
+        return this.getCurrencyHistory(currencyCode, hours, DEFAULT_INTERVAL_SECONDS);
     }
 
-    public PerformanceRating getDayPerformance(String currencyCode) {
-        Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
+    public PerformanceRating getDayPerformance(final String currencyCode) {
+        final Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
         if (currency == null) {
             return PerformanceRating.NEUTRAL;
         }
-        double currentPrice = currency.getValue();
-        CurrencyHistory previousDay = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode);
+        final double currentPrice = currency.getValue();
+        final CurrencyHistory previousDay = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode);
         if (previousDay == null) {
             return PerformanceRating.NEUTRAL;
         }
-        double lastDayPrice = previousDay.getValue();
+        final double lastDayPrice = previousDay.getValue();
         return PerformanceRating.fromValues(lastDayPrice, currentPrice);
     }
 
-    public String getPercentageDayPerformance(String currencyCode) {
-        Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
+    public String getPercentageDayPerformance(final String currencyCode) {
+        final Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
         if (currency == null) {
             return "0.00%";
         }
@@ -261,36 +265,38 @@ public class CurrencyService {
         return String.format("%+.2f%%", percentDelta);
     }
 
-    public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours, int intervalSeconds) {
+    public List<TimeValueResponse> getCurrencyHistory(final String currencyCode,
+                                                      final int hours,
+                                                      int intervalSeconds) {
         if (intervalSeconds <= 0) {
             intervalSeconds = 60;
         }
-        LocalDateTime since = LocalDateTime.now().minusHours(hours);
-        List<Object[]> rows = this.currencyHistoryRepository.findDownsampledHistory(currencyCode, since, intervalSeconds);
+        final LocalDateTime since = LocalDateTime.now().minusHours(hours);
+        final List<Object[]> rows = this.currencyHistoryRepository.findDownsampledHistory(currencyCode, since, intervalSeconds);
         return rows.stream()
                 .map(record -> {
                     Object time = record[0];
                     LocalDateTime localDateTime = null;
-                    if (time instanceof Timestamp timestamp) {
+                    if (time instanceof final Timestamp timestamp) {
                         localDateTime = timestamp.toLocalDateTime();
-                    } else if (time instanceof LocalDateTime dateTime) {
+                    } else if (time instanceof final LocalDateTime dateTime) {
                         localDateTime = dateTime;
-                    } else if (time instanceof Instant instant) {
+                    } else if (time instanceof final Instant instant) {
                         localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                    } else if (time instanceof OffsetDateTime offsetDateTime) {
+                    } else if (time instanceof final OffsetDateTime offsetDateTime) {
                         localDateTime = offsetDateTime.toLocalDateTime();
-                    } else if (time instanceof ZonedDateTime zonedDateTime) {
+                    } else if (time instanceof final ZonedDateTime zonedDateTime) {
                         localDateTime = zonedDateTime.toLocalDateTime();
                     }
 
-                    String isoTime = localDateTime != null ? localDateTime.toString() : String.valueOf(time);
-                    double valueAtTime = ((Number) record[1]).doubleValue();
+                    final String isoTime = localDateTime != null ? localDateTime.toString() : String.valueOf(time);
+                    final double valueAtTime = ((Number) record[1]).doubleValue();
                     return new TimeValueResponse(isoTime, valueAtTime);
                 })
                 .toList();
     }
 
-    public List<String> getTopCurrenciesByPerformance(int topCount) {
+    public List<String> getTopCurrenciesByPerformance(final int topCount) {
         return this.getAllCurrencies()
             .stream()
             .filter(Objects::nonNull)
@@ -304,7 +310,7 @@ public class CurrencyService {
             )
             .limit(topCount)
             .map(currency -> {
-                Double currencyPerformanceScore =
+                final Double currencyPerformanceScore =
                     this.getCurrencyPerformanceScore(currency);
 
                 if (currencyPerformanceScore == null) {
@@ -314,18 +320,7 @@ public class CurrencyService {
                     ) + " [N/A]";
                 }
 
-                boolean isPositive = currencyPerformanceScore >= 0;
-                boolean isNoChange = currencyPerformanceScore == 0.0;
-
-                String currencyPerformanceScoreString;
-
-                if (isNoChange) {
-                    currencyPerformanceScoreString = "";
-                } else if (isPositive) {
-                    currencyPerformanceScoreString = "+" + currencyPerformanceScore;
-                } else {
-                    currencyPerformanceScoreString = "-" + currencyPerformanceScore;
-                }
+                final String currencyPerformanceScoreString = this.getCurrencyPerformanceScoreString(currencyPerformanceScore);
 
                 return this.getCurrencyName(
                     true,
@@ -335,15 +330,31 @@ public class CurrencyService {
             .toList();
     }
 
-    public Double getCurrencyPerformanceScore(Currency currency) {
-        String percentageDayPerformance =
+    private @NonNull String getCurrencyPerformanceScoreString(final Double currencyPerformanceScore) {
+        final boolean isPositive = currencyPerformanceScore >= 0;
+        final boolean isNoChange = currencyPerformanceScore == 0.0;
+
+        final String currencyPerformanceScoreString;
+
+        if (isNoChange) {
+            currencyPerformanceScoreString = "";
+        } else if (isPositive) {
+            currencyPerformanceScoreString = "+" + currencyPerformanceScore;
+        } else {
+            currencyPerformanceScoreString = "-" + currencyPerformanceScore;
+        }
+        return currencyPerformanceScoreString;
+    }
+
+    public Double getCurrencyPerformanceScore(final Currency currency) {
+        final String percentageDayPerformance =
             this.getPercentageDayPerformance(currency.getCurrencyCode());
 
         try {
             return Double.parseDouble(
                 percentageDayPerformance.replaceFirst("%$", "")
             );
-        } catch (NumberFormatException exception) {
+        } catch (final NumberFormatException exception) {
             return null;
         }
     }
