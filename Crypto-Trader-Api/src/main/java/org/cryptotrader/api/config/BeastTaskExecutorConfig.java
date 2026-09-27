@@ -8,6 +8,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+/** Configuration for the beast task executor. */
 @Configuration
 @EnableAsync
 @Profile("beast")
@@ -16,6 +17,10 @@ public class BeastTaskExecutorConfig {
     //==============================-Beans-===================================
 
     //---------------------Thread-Pool-Task-Executor--------------------------
+    /**
+     * Bean for the beast thread pool task executor.
+     * @return The beast thread pool task executor.
+     */
     @Bean(name = "taskExecutor")
     public TaskExecutor beastThreadPoolTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
