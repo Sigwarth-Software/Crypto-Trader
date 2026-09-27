@@ -44,6 +44,7 @@ public class PortfolioController {
         final PortfolioResponse portfolioResponse = new PortfolioResponse(portfolio);
         return ResponseEntity.ok(portfolioResponse);
     }
+
     //------------------------Add-Portfolio-Asset-----------------------------
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
@@ -55,19 +56,24 @@ public class PortfolioController {
         this.portfolioService.addAssetToPortfolio(portfolio, portfolioAssetRequest);
         return ResponseEntity.ok(new OperationSuccessfulResponse(true));
     }
+
     //-------------------------Is-Empty-Portfolio-----------------------------
     @GetMapping("/empty")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<HasPortfolioResponse> emptyPortfolio(
         @NotNull @AuthenticationPrincipal final ProductUser user
     ) {
-        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(
+            user.getId()
+        );
+
         if (portfolio == null) {
             return ResponseEntity.ok(new HasPortfolioResponse(false));
         } else {
             return ResponseEntity.ok(new HasPortfolioResponse(!portfolio.isEmpty()));
         }
     }
+
     //------------------------Get-Portfolio-History---------------------------
     @GetMapping("/history/get")
     @PreAuthorize("isAuthenticated()")
@@ -83,6 +89,7 @@ public class PortfolioController {
                 .toList();
         return ResponseEntity.ok(historyResponses);
     }
+
     @PostMapping("/history/ranged/get")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user, @RequestBody RangedPortfolioHistoryRequest request) {
@@ -99,43 +106,58 @@ public class PortfolioController {
             .toList();
         return ResponseEntity.ok(historyResponses);
     }
+
     @GetMapping("/history/get/asset")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioAssetHistoryResponse>> getPortfolioAssetHistory(@AuthenticationPrincipal ProductUser user) {
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(portfolio);
-        List<PortfolioAssetHistoryResponse> assetHistoryResponses = portfolioAssetHistory.stream()
-                                                                                         .map(PortfolioAssetHistoryResponse::new)
-                                                                                         .toList();
+    public ResponseEntity<List<PortfolioAssetHistoryResponse>> getPortfolioAssetHistory(
+        @NotNull @AuthenticationPrincipal final ProductUser user
+    ) {
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(
+            user.getId()
+        );
+        final List<PortfolioAssetHistory> portfolioAssetHistory =
+            this.portfolioService.getPortfolioAssetHistory(portfolio);
+        final List<PortfolioAssetHistoryResponse> assetHistoryResponses =
+            portfolioAssetHistory.stream()
+            .map(PortfolioAssetHistoryResponse::new)
+            .toList();
         return ResponseEntity.ok(assetHistoryResponses);
     }
     @GetMapping("/history/get/asset/{currencyName}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(@AuthenticationPrincipal ProductUser user,
-                                                                                          @PathVariable String currencyName) {
+    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(
+        @NotNull @AuthenticationPrincipal final ProductUser user,
+        @Nullable @PathVariable final  String currencyName
+    ) {
         return null;
     }
     //------------------------Get-Portfolio-Profit----------------------------
     @GetMapping("/history/profit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AssetValueResponse> getPortfolioProfit(@AuthenticationPrincipal ProductUser user) {
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        double profit = this.portfolioService.getPortfolioProfit(portfolio);
-        AssetValueResponse profitResponse = new AssetValueResponse(profit);
+    public ResponseEntity<AssetValueResponse> getPortfolioProfit(@NotNull @AuthenticationPrincipal final ProductUser user) {
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+        final double profit = this.portfolioService.getPortfolioProfit(portfolio);
+        final AssetValueResponse profitResponse = new AssetValueResponse(profit);
         return ResponseEntity.ok(profitResponse);
     }
     //------------------Get-Portfolio-Profit-By-Currency----------------------
     @GetMapping("/history/profit/{currencyName}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(@NotNull @AuthenticationPrincipal ProductUser user,
-                                                                           @Nullable @PathVariable String currencyName) {
+    public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(
+        @NotNull @AuthenticationPrincipal final ProductUser user,
+        @Nullable @PathVariable final String currencyName
+    ) {
         if (currencyName == null || currencyName.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        PortfolioAsset portfolioAsset = this.portfolioService.getPortfolioAssetByCurrencyName(portfolio, currencyName);
-        double profit = this.portfolioService.getPortfolioAssetProfit(portfolioAsset);
-        AssetValueResponse profitResponse = new AssetValueResponse(profit);
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+        final PortfolioAsset portfolioAsset =
+            this.portfolioService.getPortfolioAssetByCurrencyName(
+                portfolio,
+                currencyName
+            );
+        final double profit = this.portfolioService.getPortfolioAssetProfit(portfolioAsset);
+        final AssetValueResponse profitResponse = new AssetValueResponse(profit);
         return ResponseEntity.ok(profitResponse);
     }
 }
