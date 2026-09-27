@@ -1,4 +1,5 @@
 package org.cryptotrader.api.config;
+
 //=================================-Imports-==================================
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+/** Configuration for the default task executor. */
 @Configuration
 @EnableAsync
 @Profile("!beast")
@@ -15,6 +17,12 @@ public class TaskExecutorConfig {
     //==============================-Beans-===================================
 
     //---------------------Thread-Pool-Task-Executor--------------------------
+
+    /**
+     * Bean for the default thread pool task executor.
+     *
+     * @return The default thread pool task executor.
+     */
     @Bean(name = "taskExecutor")
     public TaskExecutor threadPoolTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
