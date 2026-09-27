@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core'
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core'
 import { Router } from '@angular/router'
-import { Subscription } from 'rxjs'
 
-import { AuthPopup, AuthType, WebSocketCapable } from '@theoliverlear/angular-suite'
-import { SignupWsService } from '@ws/signup-ws.service'
+import { AuthPopup, AuthType } from '@theoliverlear/angular-suite'
 import { LoginService } from '@http/auth/access/login.service'
 import { SignupService } from '@http/auth/access/signup.service'
 import { TokenStorageService } from '@auth/token-storage.service'
@@ -15,12 +13,6 @@ import { LoggerContext } from '@models/logging/LoggerContext'
 
 /**
  * Authentication console component for the landing/authorize page.
- *
- * Responsibilities:
- * - Coordinates login and signup flows using the AuthService (HTTP + DPoP).
- * - Shows UI feedback via AuthPopup events.
- * - Avoids sending credentials over WebSockets; only the signup WS is used for
- *   ancillary messages, while login/signup are performed over HTTP.
  */
 @Component({
     selector: 'auth-console',
@@ -28,13 +20,11 @@ import { LoggerContext } from '@models/logging/LoggerContext'
     templateUrl: './auth-console.component.html',
     styleUrls: ['./auth-console.component.scss'],
 })
-export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
+export class AuthConsoleComponent {
     @Input() public currentAuthType: AuthType = AuthType.SIGN_UP
     @Output() public authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>()
     protected attempts: number = 0
-    public webSocketSubscriptions: Record<string, Subscription> = {}
     constructor(
-        private readonly signupWebSocket: SignupWsService,
         private readonly signupService: SignupService,
         private readonly loginService: LoginService,
         private readonly router: Router,
@@ -44,7 +34,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         this.logger.setContext(LoggerContext.Auth)
     }
 
-    /** Attempts to log in a user with input credentials.
+    /**
+     * Attempts to log in a user with input credentials.
      *
      * @param loginCredentials
      */
@@ -56,7 +47,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         }
     }
 
-    /** Logs in a user with a provided request.
+    /**
+     * Logs in a user with a provided request.
      *
      * @param loginRequest
      */
@@ -77,7 +69,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         })
     }
 
-    /** Saves authorization token from controller response.
+    /**
+     * Saves authorization token from controller response.
      *
      * @param authResponse
      */
@@ -87,7 +80,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         }
     }
 
-    /** Attempts to sign up a user with input credentials.
+    /**
+     * Attempts to sign up a user with input credentials.
      *
      * @param signupCredentials
      */
@@ -99,7 +93,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         }
     }
 
-    /** Signs up a user with a provided request.
+    /**
+     * Signs up a user with a provided request.
      *
      * @param signupRequest
      */
@@ -125,7 +120,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         })
     }
 
-    /** Emits an authorization popup event to the parent component.
+    /**
+     * Emits an authorization popup event to the parent component.
      *
      * @param authPopup
      */
@@ -133,7 +129,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         this.authPopupEvent.emit(authPopup)
     }
 
-    /** Updates the current authentication type.
+    /**
+     * Updates the current authentication type.
      *
      * @param authType
      */
@@ -141,75 +138,42 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         this.emitAuthPopup(AuthPopup.NONE)
         this.currentAuthType = authType
     }
-    /** Returns whether the current authentication type is signup.
-     * @returns {boolean}
+    /**
+     * Returns whether the current authentication type is signup.
+     *
+     * @returns {boolean} True if the current authentication type is signup,
+     * false otherwise.
      */
     protected isSignupSection(): boolean {
         return this.currentAuthType === AuthType.SIGN_UP
     }
-    /** Returns whether the current authentication type is login.
-     * @returns {boolean}
+
+    /**
+     * Returns whether the current authentication type is login.
      *
+     * @returns {boolean} True if the current authentication type is login,
+     * false otherwise.
      */
     protected isLoginSection(): boolean {
         return this.currentAuthType === AuthType.LOGIN
     }
 
-    /** Initializes WebSocket subscriptions for authentication.
-     *
-     */
-    public initializeWebSockets(): void {
-        this.logger.info('[WS] Connecting signup socket…')
-        this.signupWebSocket.connect()
-        this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
-            next: (authResponse: AuthResponse): void => {
-                this.logger.info(`[WS][signup] message: ${JSON.stringify(authResponse)}`)
-                if (!authResponse) {
-                    return
-                }
-                if (authResponse.authorized) {
-                    this.saveToken(authResponse)
-                    void this.router.navigate(['/portfolio'])
-                } else {
-                    if (this.attempts !== 0) {
-                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS)
-                    }
-                }
-            },
-            error: (error): void => {
-                const errorMessage: string = error instanceof Error ? error.message : String(error)
-                this.logger.info('[WS][signup] error:', errorMessage)
-            },
-            complete: (): void => {
-                this.logger.info('[WS][signup] complete')
-            },
-        })
-    }
 
-    /** Disconnects WebSocket subscriptions on component destruction.
-     *
-     */
-    public ngOnDestroy(): void {
-        Object.values(this.webSocketSubscriptions).forEach((sub: Subscription): void => {
-            try {
-                sub.unsubscribe()
-            } catch {
-                /* empty */
-            }
-        })
-        this.webSocketSubscriptions = {}
-        try {
-            this.signupWebSocket.disconnect()
-        } catch {
-            /* empty */
-        }
-    }
-
-    /** Navigates to the home page (close modal).
-     *
+    /**
+     * Navigates to the home page.
      */
     protected navigateHome(): void {
         void this.router.navigate(['/'])
+    }
+
+    @HostListener('document:keydown.enter', ['$event'])
+    protected onEnterKey(event: KeyboardEvent): void {
+        event.preventDefault()
+        if (this.isSignupSection()) {
+            this.attemptSignup(new SignupCredentials())
+        } else if (this.isLoginSection()) {
+            this.attemptLogin(new LoginCredentials())
+        }
     }
 
     protected readonly AuthPopup: typeof AuthPopup = AuthPopup

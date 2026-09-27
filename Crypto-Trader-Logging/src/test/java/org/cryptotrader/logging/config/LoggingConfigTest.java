@@ -44,4 +44,18 @@ public class LoggingConfigTest {
             assertNotNull(bugsLogsAppender);
         }
     }
+
+    @Nested
+    @DisplayName("Application Log Kafka Appender")
+    class ApplicationLogKafkaAppenderWiring {
+        @Test
+        @DisplayName("testApplicationLogKafkaAppenderIsAttachedToCryptotraderLogger")
+        void testApplicationLogKafkaAppenderIsAttachedToCryptotraderLogger() {
+            LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+            // TODO: Pull out constants for logger names and appender names.
+            Appender<ILoggingEvent> asyncAppender = context.getLogger("org.cryptotrader")
+                    .getAppender("ASYNC_APPLICATION_LOG_KAFKA");
+            assertNotNull(asyncAppender);
+        }
+    }
 }

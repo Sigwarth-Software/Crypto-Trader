@@ -5,6 +5,10 @@ export enum SubscriptionTier {
 }
 export namespace SubscriptionTier {
     export function values(): SubscriptionTier[] {
-        return Object.values(SubscriptionTier) as SubscriptionTier[]
+        return [
+            SubscriptionTier.Free,
+            SubscriptionTier.Pro,
+            SubscriptionTier.Ultimate,
+        ]
     }
 }

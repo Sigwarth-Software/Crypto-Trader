@@ -59,6 +59,12 @@ spring:
         detailedPortfolioSimulationResponses-out-0:
           destination: ct.simulator.detailed.responses
           contentType: application/vnd.cryptotrader.encrypted+json
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
 
 security:
   crypto:

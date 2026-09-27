@@ -153,6 +153,24 @@ export default tseslint.config(
                     exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db', 'vh', 'vw'],
                 },
             ],
+            'padding-line-between-statements': [
+                'warn',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                },
+                {
+                    blankLine: 'any',
+                    prev: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                },
+                {
+                    blankLine: 'never',
+                    prev: 'block-like',
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                },
+            ],
         },
     },
     {

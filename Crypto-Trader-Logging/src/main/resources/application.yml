@@ -24,7 +24,7 @@ spring:
       region:
         static: us-east-1
     function:
-      definition: frontendLogsConsumer;executionSpeedLogsConsumer
+      definition: frontendLogsConsumer;executionSpeedLogsConsumer;applicationLogsConsumer;applicationExceptionsConsumer
     stream:
       enabled: true
       defaultBinder: kafka
@@ -36,6 +36,20 @@ spring:
         executionSpeedLogsConsumer-in-0:
           destination: ct.logging.execution-speed.v1
           group: crypto-trader-logging
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationLogsConsumer-in-0:
+          destination: ct.logging.application.v1
+          group: crypto-trader-logging
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptionsConsumer-in-0:
+          destination: ct.logging.exception.v1
+          group: crypto-trader-logging
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
           contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
@@ -64,6 +78,24 @@ spring:
               dlqName: ct.logging.execution-speed.v1.DLT
               configuration:
                 group.instance.id: logging-service-execution-speed-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          applicationLogsConsumer-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.logging.application.v1.DLT
+              configuration:
+                group.instance.id: logging-service-application-log-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          applicationExceptionsConsumer-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.logging.exception.v1.DLT
+              configuration:
+                group.instance.id: logging-service-application-exception-01
                 session.timeout.ms: 30000
                 heartbeat.interval.ms: 10000
                 max.poll.interval.ms: 900000

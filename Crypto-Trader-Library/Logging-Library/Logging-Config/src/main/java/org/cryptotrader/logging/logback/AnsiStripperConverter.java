@@ -8,13 +8,17 @@ import ch.qos.logback.core.pattern.CompositeConverter;
  * This ensures that log files remain clean even when console colors are enabled.
  */
 public class AnsiStripperConverter extends CompositeConverter<ILoggingEvent> {
-    @Override
-    protected String transform(ILoggingEvent event, String in) {
-        if (in == null) {
+    private static final String ANSI_ESCAPE_REGEX = "\u001B\\[[;\\d]*[A-Za-z]";
+
+    public static String stripEscapeCode(String input) {
+        if (input == null) {
             return null;
         }
+        return input.replaceAll(ANSI_ESCAPE_REGEX, "");
+    }
 
-        final String colorCodeRegex = "\u001B\\[[;\\d]*m";
-        return in.replaceAll(colorCodeRegex, "");
+    @Override
+    protected String transform(ILoggingEvent event, String input) {
+        return stripEscapeCode(input);
     }
 }

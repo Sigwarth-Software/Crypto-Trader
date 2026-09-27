@@ -2,6 +2,7 @@ package org.cryptotrader.data.library.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +30,8 @@ public class MarketSnapshotsBackfiller {
     //=============================-Methods-==================================
 
     //--------------------------Build-Snapshots-------------------------------
-    public void buildSnapshots(boolean fullRefresh) {
-        List<String> codes = this.getCurrencyCodes();
+    public void buildSnapshots(final boolean fullRefresh) {
+        final List<String> codes = this.getCurrencyCodes();
         if (codes.isEmpty()) {
             log.warn("No non-base currencies found – nothing to do.");
             return;
@@ -43,18 +44,20 @@ public class MarketSnapshotsBackfiller {
         this.executeSnapshotCreation(fullRefresh, codes, baseRows);
     }
     //---------------------Execute-Snapshot-Creation--------------------------
-    private void executeSnapshotCreation(boolean fullRefresh, List<String> codes, long baseRows) {
+    private void executeSnapshotCreation(final boolean fullRefresh,
+                                         final List<String> codes,
+                                         final long baseRows) {
         this.initTable();
         this.createBaseColumn();
         this.addCodeColumns(codes);
         if (fullRefresh) {
             this.truncateTable();
         }
-        int cores = Math.min(Runtime.getRuntime().availableProcessors(), 18);
-        ExecutorService threadPool = Executors.newFixedThreadPool(cores);
-        ScheduledExecutorService rowTicker = Executors.newSingleThreadScheduledExecutor();
-        LongAdder numInserted = new LongAdder();
-        long startedTimeNanos = System.nanoTime();
+        final int cores = Math.min(Runtime.getRuntime().availableProcessors(), 18);
+        final ExecutorService threadPool = Executors.newFixedThreadPool(cores);
+        final ScheduledExecutorService rowTicker = Executors.newSingleThreadScheduledExecutor();
+        final LongAdder numInserted = new LongAdder();
+        final long startedTimeNanos = System.nanoTime();
 
         runRowTracker(rowTicker, numInserted, startedTimeNanos);
         this.runInsertThreads(baseRows, threadPool, codes, numInserted);
@@ -62,11 +65,13 @@ public class MarketSnapshotsBackfiller {
         logBackfillCompletion(startedTimeNanos, numInserted, cores);
     }
     //---------------------------Await-Shutdown-------------------------------
-    private static void awaitShutdown(ExecutorService pool, ScheduledExecutorService ticker) {
+    private static void awaitShutdown(final ExecutorService pool,
+                                      final ScheduledExecutorService ticker) {
         pool.shutdown();
         try {
-            pool.awaitTermination(365, TimeUnit.DAYS);
-        } catch (InterruptedException exception) {
+            final boolean result = pool.awaitTermination(365, TimeUnit.DAYS);
+            log.info("Thread pool shutdown completed: {}", result);
+        } catch (final InterruptedException exception) {
             Thread.currentThread().interrupt();
         }
         ticker.shutdownNow();
@@ -76,7 +81,11 @@ public class MarketSnapshotsBackfiller {
         this.jdbc.execute("TRUNCATE TABLE market_snapshots;");
     }
     //--------------------------Add-Code-Columns------------------------------
-    private void addCodeColumns(List<String> codes) {
+    private void addCodeColumns(final List<String> codes) {
+        if (codes == null || codes.isEmpty()) {
+            log.warn("No currency codes provided for column addition.");
+            return;
+        }
         codes.forEach(code -> this.jdbc.execute(addCodeColumn(code)));
     }
     //--------------------------Add-Code-Column-------------------------------
@@ -94,10 +103,12 @@ public class MarketSnapshotsBackfiller {
     """.formatted(BASE_COLUMN));
     }
     //----------------------Log-Backfill-Completion---------------------------
-    private static void logBackfillCompletion(long startedTimeNanos, LongAdder inserted, int cores) {
-        long nanosElapsed = System.nanoTime() - startedTimeNanos;
-        double sec = nanosElapsed / NANO_TO_SECONDS;
-        double rowsPerSecond = inserted.sum() / Math.max(sec, 0.001);
+    private static void logBackfillCompletion(final long startedTimeNanos,
+                                              final LongAdder inserted,
+                                              final int cores) {
+        final long nanosElapsed = System.nanoTime() - startedTimeNanos;
+        final double sec = nanosElapsed / NANO_TO_SECONDS;
+        final double rowsPerSecond = inserted.sum() / Math.max(sec, 0.001);
         log.info("Snapshot back-fill complete – {} rows, {} rows/s ({} threads).",
                 inserted.sum(),
                 rowsPerSecond,
@@ -141,19 +152,19 @@ public class MarketSnapshotsBackfiller {
                 }));
     }
     //--------------------------Run-Row-Tracker-------------------------------
-    private static void runRowTracker(ScheduledExecutorService scheduler,
-                                      LongAdder inserted, 
-                                      long bootTimeNanos) {
+    private static void runRowTracker(final ScheduledExecutorService scheduler,
+                                      final LongAdder inserted,
+                                      final long bootTimeNanos) {
         scheduler.scheduleAtFixedRate(new Runnable() {
             long lastCount = 0;
             @Override
             public void run() {
-                long currentRowSum = inserted.sum();
-                long numRowsProcessed = currentRowSum - lastCount;
+                final long currentRowSum = inserted.sum();
+                final long numRowsProcessed = currentRowSum - lastCount;
                 lastCount = currentRowSum;
-                double elapsedSec = (System.nanoTime() - bootTimeNanos) / NANO_TO_SECONDS;
-                double averageRowsPerSecond = elapsedSec == 0 ? 0 : currentRowSum / elapsedSec;
-                long roundedAverageRowsPerSecond = Math.round(averageRowsPerSecond);
+                final double elapsedSec = (System.nanoTime() - bootTimeNanos) / NANO_TO_SECONDS;
+                final double averageRowsPerSecond = elapsedSec == 0 ? 0 : currentRowSum / elapsedSec;
+                final long roundedAverageRowsPerSecond = Math.round(averageRowsPerSecond);
                 log.info("{} rows/s   |   {} rows/s avg   |   {} total",
                         numRowsProcessed,
                         roundedAverageRowsPerSecond,
@@ -201,13 +212,13 @@ public class MarketSnapshotsBackfiller {
                               selectCols, lateralJoins);
     }
     //-------------------------Get-Lateral-Joins------------------------------
-    private static String getLateralJoins(List<String> codes) {
+    private static String getLateralJoins(@NotNull final List<String> codes) {
         return codes.stream()
                     .map(MarketSnapshotsBackfiller::getLateralJoin)
                     .collect(Collectors.joining("\n"));
     }
     //--------------------------Get-Lateral-Join------------------------------
-    private static String getLateralJoin(String code) {
+    private static String getLateralJoin(@NotNull final String code) {
         return """
                 LEFT JOIN LATERAL (
                     SELECT currency_value
@@ -224,7 +235,7 @@ public class MarketSnapshotsBackfiller {
                               code.toLowerCase());
     }
     //------------------------Get-Coalesce-Queries----------------------------
-    private static String getCoalesceQueries(List<String> codes) {
+    private static String getCoalesceQueries(final List<String> codes) {
         final String baseAlias = "btc.currency_value AS " + BASE_COLUMN + ",\n   ";
         return baseAlias + codes.stream()
                                 .map(MarketSnapshotsBackfiller::getCoalesceQuery)
@@ -251,7 +262,7 @@ public class MarketSnapshotsBackfiller {
     private void removeCloseEntries() {
         this.jdbc.execute("""
             BEGIN;
-            
+
             WITH ordered AS (
                 SELECT id,
                        last_updated,
@@ -263,7 +274,7 @@ public class MarketSnapshotsBackfiller {
             WHERE  ms.id = ord.id
               AND  ord.prev_time IS NOT NULL
               AND  ord.last_updated - ord.prev_time < INTERVAL '3.5 seconds';
-            
+
             COMMIT;
         """);
     }
@@ -271,12 +282,12 @@ public class MarketSnapshotsBackfiller {
     private void updateEntryIds() {
         this.jdbc.execute("""
             BEGIN;
-            
+
             ALTER TABLE market_snapshots DROP CONSTRAINT market_snapshots_pkey;
             ALTER TABLE market_snapshots ALTER COLUMN id DROP NOT NULL;
-            
+
             UPDATE market_snapshots SET id = NULL;
-            
+
             WITH ordered AS (
                 SELECT ctid,
                        row_number() OVER (ORDER BY last_updated) AS new_id
@@ -286,10 +297,10 @@ public class MarketSnapshotsBackfiller {
             SET    id = ord.new_id
             FROM   ordered ord
             WHERE  ms.ctid = ord.ctid;
-            
+
             ALTER TABLE market_snapshots ALTER COLUMN id SET NOT NULL;
             ALTER TABLE market_snapshots ADD PRIMARY KEY (id);
-            
+
             SELECT setval('market_snapshots_id_seq',
                           (SELECT max(id) FROM market_snapshots), true);
 
@@ -297,7 +308,10 @@ public class MarketSnapshotsBackfiller {
         """);
     }
     //--------------------------To-Price-Column-------------------------------
-    private static String toPriceColumn(String code) {
+    private static @NotNull String toPriceColumn(final String code) {
+        if (code == null || code.isBlank()) {
+            throw new IllegalArgumentException("Currency code cannot be null or blank.");
+        }
         return code.toLowerCase() + "_price";
     }
 }

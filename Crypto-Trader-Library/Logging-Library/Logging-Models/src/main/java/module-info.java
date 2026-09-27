@@ -6,6 +6,7 @@ open module org.cryptotrader.logging.library.models {
 
     requires org.cryptotrader.universal.library.models;
     requires org.cryptotrader.api.library.models;
+    requires spring.boot;
 
     exports org.cryptotrader.logging.library.entity;
 }
