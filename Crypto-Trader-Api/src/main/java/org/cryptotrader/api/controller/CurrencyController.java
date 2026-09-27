@@ -7,6 +7,8 @@ import org.cryptotrader.api.library.communication.response.*;
 import org.cryptotrader.universal.library.communication.response.TimeValueResponse;
 import org.cryptotrader.data.library.model.currency.PerformanceRating;
 import org.cryptotrader.data.library.services.CurrencyService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -24,27 +26,29 @@ import java.util.List;
 public class CurrencyController {
     private final CurrencyService currencyService;
     @Autowired
-    public CurrencyController(CurrencyService currencyService) {
+    public CurrencyController(@NotNull final CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
     @PermitAll
     @PostMapping("/value")
-    public ResponseEntity<AssetValueResponse> getCurrencyValue(@RequestBody AssetValueRequest assetValueRequest) {
-        Currency currency = this.currencyService.getCurrencyByCurrencyCode(assetValueRequest.getCurrencyCode());
+    public ResponseEntity<AssetValueResponse> getCurrencyValue(@NotNull @RequestBody final AssetValueRequest assetValueRequest) {
+        final Currency currency = this.currencyService.getCurrencyByCurrencyCode(assetValueRequest.getCurrencyCode());
+
         if (currency == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            double assetValue = currency.getValue() * assetValueRequest.getShares();
+            final double assetValue = currency.getValue() * assetValueRequest.getShares();
             return new ResponseEntity<>(new AssetValueResponse(assetValue), HttpStatus.OK);
         }
     }
     @PermitAll
     @GetMapping("/performance/{currencyCode}")
-    public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(@PathVariable String currencyCode) {
+    public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(@Nullable @PathVariable final String currencyCode) {
         if (currencyCode == null || currencyCode.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
+            final PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
+
             if (performanceRatingResponse == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
