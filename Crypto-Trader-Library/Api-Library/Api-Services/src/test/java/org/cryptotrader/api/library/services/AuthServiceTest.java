@@ -57,8 +57,8 @@ public class AuthServiceTest extends CryptoTraderTest {
         this.testUsername = "Ollie";
         this.testEmail = "ollie@ollie.com";
         this.testPassword = "password";
-        SafePassword clientSideHashedPassword = new SafePassword(this.testPassword);
-        String encodedPassword = clientSideHashedPassword.getEncodedPassword();
+        final SafePassword clientSideHashedPassword = new SafePassword(this.testPassword);
+        final String encodedPassword = clientSideHashedPassword.getEncodedPassword();
         this.userRequest = new UserRequest(this.testUsername, this.testEmail, encodedPassword);
         this.loginRequest = new LoginRequest(this.testEmail, encodedPassword);
         this.signupRequest = new SignupRequest(this.testEmail, encodedPassword);
@@ -76,11 +76,11 @@ public class AuthServiceTest extends CryptoTraderTest {
         @Test
         @DisplayName("Constructor should instantiate object")
         public void constructor_InstantiatesAuthService_WhenValidArgumentsProvided() {
-            ProductUserService productUserService = Mockito.mock(ProductUserService.class);
-            PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
-            UserEventsPublisher userEventsPublisher = Mockito.mock(UserEventsPublisher.class);
-            JwtTokenService jwtService = Mockito.mock(JwtTokenService.class);
-            AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher, jwtService);
+            final ProductUserService productUserService = Mockito.mock(ProductUserService.class);
+            final PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
+            final UserEventsPublisher userEventsPublisher = Mockito.mock(UserEventsPublisher.class);
+            final JwtTokenService jwtService = Mockito.mock(JwtTokenService.class);
+            final AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher, jwtService);
             assertNotNull(authService);
         }
     }
@@ -93,9 +93,9 @@ public class AuthServiceTest extends CryptoTraderTest {
         public void signup_SignUpUsers_WithValidRequests() {
             when(productUserService.userExistsByEmail(testEmail)).thenReturn(false);
             when(jwtService.generateToken(Mockito.anyString(), Mockito.anyString(), Mockito.isNull())).thenReturn("signed.jwt.token");
-            PayloadStatusResponse<AuthResponse> actualResponse = authService.signup(signupRequest);
+            final PayloadStatusResponse<AuthResponse> actualResponse = authService.signup(signupRequest);
             verify(productUserService).userExistsByEmail(testEmail);
-            AuthResponse actualAuthResponse = actualResponse.getPayload();
+            final AuthResponse actualAuthResponse = actualResponse.getPayload();
             assertTrue(actualAuthResponse.isAuthorized());
             assertNotNull(actualAuthResponse.getToken());
         }
@@ -104,9 +104,9 @@ public class AuthServiceTest extends CryptoTraderTest {
         @DisplayName("Should not sign up existing users")
         public void signup_NotSignUp_WhenUserExists() {
             when(productUserService.userExistsByEmail(testEmail)).thenReturn(true);
-            AuthResponse expectedResponse = new AuthResponse(false);
-            PayloadStatusResponse<AuthResponse> actualResponse = authService.signup(signupRequest);
-            AuthResponse actualAuthResponse = actualResponse.getPayload();
+            final AuthResponse expectedResponse = new AuthResponse(false);
+            final PayloadStatusResponse<AuthResponse> actualResponse = authService.signup(signupRequest);
+            final AuthResponse actualAuthResponse = actualResponse.getPayload();
             assertEquals(expectedResponse.isAuthorized(), actualAuthResponse.isAuthorized());
         }
     }
@@ -120,10 +120,10 @@ public class AuthServiceTest extends CryptoTraderTest {
             when(productUserService.getUserByEmail(testEmail)).thenReturn(user);
             when(productUserService.comparePassword(user, userRequest.getPassword())).thenReturn(true);
             when(jwtService.generateToken(Mockito.anyString(), Mockito.anyString(), Mockito.isNull())).thenReturn("signed.jwt.token");
-            PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
+            final PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
             verify(productUserService).getUserByEmail(testEmail);
             verify(productUserService).comparePassword(user, userRequest.getPassword());
-            AuthResponse payload = actualResponse.getPayload();
+            final AuthResponse payload = actualResponse.getPayload();
             assertTrue(payload.isAuthorized());
             assertNotNull(payload.getToken());
         }
@@ -132,8 +132,8 @@ public class AuthServiceTest extends CryptoTraderTest {
         @DisplayName("Should not login users with invalid requests")
         public void login_NotLoginUsers_WithInvalidRequests() {
             when(productUserService.getUserByEmail(testEmail)).thenReturn(null);
-            AuthResponse expectedResponse = new AuthResponse(false);
-            PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
+            final AuthResponse expectedResponse = new AuthResponse(false);
+            final PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
             verify(productUserService).getUserByEmail(testEmail);
             assertEquals(expectedResponse, actualResponse.getPayload());
         }
@@ -142,9 +142,9 @@ public class AuthServiceTest extends CryptoTraderTest {
         @DisplayName("Should not login users with mismatched passwords")
         public void login_NotLoginUsers_WithMismatchedPasswords() {
             when(productUserService.getUserByEmail(testEmail)).thenReturn(user);
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final AuthResponse expectedResponse = new AuthResponse(false);
             when(productUserService.comparePassword(user, userRequest.getPassword())).thenReturn(false);
-            PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
+            final PayloadStatusResponse<AuthResponse> actualResponse = authService.login(loginRequest);
             verify(productUserService).getUserByEmail(testEmail);
             verify(productUserService).comparePassword(user, userRequest.getPassword());
             assertEquals(expectedResponse, actualResponse.getPayload());

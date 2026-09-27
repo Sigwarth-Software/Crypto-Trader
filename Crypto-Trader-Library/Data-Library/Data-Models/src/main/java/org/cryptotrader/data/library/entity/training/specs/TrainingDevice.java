@@ -6,11 +6,11 @@ public enum TrainingDevice {
     GPU_ONE("AMD_6900_XT");
     public final String device;
 
-    TrainingDevice(String device) {
+    TrainingDevice(final String device) {
         this.device = device;
     }
 
-    public static TrainingDevice from(String device) {
+    public static TrainingDevice from(final String device) {
         return switch (device) {
             case "cpu" -> TrainingDevice.CPU;
             case "AMD_6700_XT", "gpu_0" -> TrainingDevice.GPU_ZERO;

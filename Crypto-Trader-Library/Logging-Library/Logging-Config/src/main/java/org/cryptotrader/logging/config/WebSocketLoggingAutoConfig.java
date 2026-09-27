@@ -21,7 +21,7 @@ public class WebSocketLoggingAutoConfig implements WebSocketMessageBrokerConfigu
     private final ObjectProvider<StompChannelLoggingInterceptor> interceptorProvider;
 
     @Autowired
-    public WebSocketLoggingAutoConfig(ObjectProvider<StompChannelLoggingInterceptor> interceptorProvider) {
+    public WebSocketLoggingAutoConfig(final ObjectProvider<StompChannelLoggingInterceptor> interceptorProvider) {
         this.interceptorProvider = interceptorProvider;
     }
 
@@ -33,22 +33,22 @@ public class WebSocketLoggingAutoConfig implements WebSocketMessageBrokerConfigu
 
     @Bean
     @ConditionalOnMissingBean(StompChannelLoggingInterceptor.class)
-    public StompChannelLoggingInterceptor stompChannelLoggingInterceptor(CryptoTraderWebSocketLoggingProperties props,
-                                                                         LogRedactor logRedactor) {
+    public StompChannelLoggingInterceptor stompChannelLoggingInterceptor(final CryptoTraderWebSocketLoggingProperties props,
+                                                                         final LogRedactor logRedactor) {
         return new StompChannelLoggingInterceptor(props, logRedactor);
     }
 
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
+    public void configureClientInboundChannel(final ChannelRegistration registration) {
+        final StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
         if (interceptor != null) {
             registration.interceptors(interceptor);
         }
     }
 
     @Override
-    public void configureClientOutboundChannel(ChannelRegistration registration) {
-        StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
+    public void configureClientOutboundChannel(final ChannelRegistration registration) {
+        final StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
         if (interceptor != null) {
             registration.interceptors(interceptor);
         }

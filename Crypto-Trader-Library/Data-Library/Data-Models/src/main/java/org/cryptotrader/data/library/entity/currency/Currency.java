@@ -50,28 +50,28 @@ public class Currency extends Identifiable<String> {
         this.value = 0;
         this.lastUpdated = LocalDateTime.now();
     }
-    public Currency(String name, String currencyCode) {
+    public Currency(final String name, final String currencyCode) {
         this.name = name;
         this.currencyCode = currencyCode;
         this.urlPath = this.getCoinbaseUrl();
         this.value = this.getApiValue();
         this.lastUpdated = LocalDateTime.now();
     }
-    public Currency(String name, String currencyCode, String urlPath) {
+    public Currency(final String name, final String currencyCode, final String urlPath) {
         this.name = name;
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = this.getApiValue();
         this.lastUpdated = LocalDateTime.now();
     }
-    public Currency(String name, String currencyCode, double value, String urlPath) {
+    public Currency(final String name, final String currencyCode, final double value, final String urlPath) {
         this.name = name;
         this.currencyCode = currencyCode;
         this.value = value;
         this.urlPath = urlPath;
         this.lastUpdated = LocalDateTime.now();
     }
-    public Currency(String name, String currencyCode, String urlPath, double value, LocalDateTime lastUpdated) {
+    public Currency(final String name, final String currencyCode, final String urlPath, final double value, final LocalDateTime lastUpdated) {
         this.name = name;
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
@@ -90,17 +90,17 @@ public class Currency extends Identifiable<String> {
     }
     //---------------------------Get-Api-Value--------------------------------
     public double getApiValue() {
-        String currencyApiJson = this.getCurrencyApiJson();
-        boolean isEmpty = currencyApiJson == null || currencyApiJson.isEmpty();
-        boolean isNoDataString = currencyApiJson.equals(ApiDataRetriever.NO_DATA_ERROR_MESSAGE);
+        final String currencyApiJson = this.getCurrencyApiJson();
+        final boolean isEmpty = currencyApiJson == null || currencyApiJson.isEmpty();
+        final boolean isNoDataString = currencyApiJson.equals(ApiDataRetriever.NO_DATA_ERROR_MESSAGE);
         if (isNoDataString || isEmpty) {
-            String errorMessage = "No data received from API for %s. Aborting Currency construction.".formatted(this.currencyCode);
+            final String errorMessage = "No data received from API for %s. Aborting Currency construction.".formatted(this.currencyCode);
             throw new IllegalStateException(errorMessage);
         }
         return this.getValueFromJson(currencyApiJson);
     }
     //----------------------------Format-Value--------------------------------
-    public String formatValue(double value) {
+    public String formatValue(final double value) {
         String reformattedValue = decimalFormat.format(value);
         if (reformattedValue == null) {
             reformattedValue = "";
@@ -109,21 +109,21 @@ public class Currency extends Identifiable<String> {
     }
     //-----------------------Get-Currency-Api-Json----------------------------
     public String getCurrencyApiJson() {
-        ApiDataRetriever apiDataRetriever = new ApiDataRetriever(this.urlPath);
+        final ApiDataRetriever apiDataRetriever = new ApiDataRetriever(this.urlPath);
         return apiDataRetriever.getResponse();
     }
     //------------------------Get-Value-From-Json-----------------------------
-    public double getValueFromJson(String json) {
-        StringBuilder currencyJson = new StringBuilder(json);
-        String amountKey = "amount\":\"";
-        int amountLength = amountKey.length();
-        int indexOfAmount = currencyJson.indexOf(amountKey) + amountLength;
-        int endIndex = currencyJson.length();
+    public double getValueFromJson(final String json) {
+        final StringBuilder currencyJson = new StringBuilder(json);
+        final String amountKey = "amount\":\"";
+        final int amountLength = amountKey.length();
+        final int indexOfAmount = currencyJson.indexOf(amountKey) + amountLength;
+        final int endIndex = currencyJson.length();
         currencyJson.delete(0, indexOfAmount);
-        int indexOfCloseQuote = currencyJson.indexOf("\"");
+        final int indexOfCloseQuote = currencyJson.indexOf("\"");
         currencyJson.delete(indexOfCloseQuote, endIndex);
-        String currencyValueString = currencyJson.toString();
-        double currencyValue = Double.parseDouble(currencyValueString);
+        final String currencyValueString = currencyJson.toString();
+        final double currencyValue = Double.parseDouble(currencyValueString);
         return currencyValue;
     }
     //-------------------------Get-Updated-Value------------------------------
@@ -138,15 +138,15 @@ public class Currency extends Identifiable<String> {
         return this.value;
     }
 
-    public static Currency fromExisting(String currencyCode) {
-        Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
+    public static Currency fromExisting(final String currencyCode) {
+        final Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
         return currencies.stream()
             .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
     }
 
-    public static Currency fromHistory(CurrencyHistory currencyHistory) {
+    public static Currency fromHistory(final CurrencyHistory currencyHistory) {
         return Currency.builder()
             .name(currencyHistory.getName())
             .currencyCode(currencyHistory.getCurrency().getCurrencyCode())
@@ -155,8 +155,8 @@ public class Currency extends Identifiable<String> {
             .build();
     }
 
-    public static Currency from(Currency currency) {
-        Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
+    public static Currency from(final Currency currency) {
+        final Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
             currency.getUrlPath(), currency.getValue(),
             currency.getLastUpdated());
         return newCurrency;
@@ -165,16 +165,16 @@ public class Currency extends Identifiable<String> {
 
     //------------------------------Equals------------------------------------
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) {
             return true;
         }
-        if (object instanceof Currency comparedCurrency) {
-            boolean sameName = this.name.equals(comparedCurrency.name);
-            boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);
-            boolean sameValue = this.value == comparedCurrency.value;
-            boolean sameUrl = this.urlPath.equals(comparedCurrency.urlPath);
-            boolean sameLastUpdated = this.lastUpdated.equals(comparedCurrency.lastUpdated);
+        if (object instanceof final Currency comparedCurrency) {
+            final boolean sameName = this.name.equals(comparedCurrency.name);
+            final boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);
+            final boolean sameValue = this.value == comparedCurrency.value;
+            final boolean sameUrl = this.urlPath.equals(comparedCurrency.urlPath);
+            final boolean sameLastUpdated = this.lastUpdated.equals(comparedCurrency.lastUpdated);
             return sameName && sameCode && sameValue && sameUrl && sameLastUpdated;
         }
         return false;
@@ -184,7 +184,7 @@ public class Currency extends Identifiable<String> {
     //------------------------------To-String---------------------------------
     @Override
     public String toString() {
-        String currencyString = """
+        final String currencyString = """
                 %18s --- %5s - %16s""".formatted(this.name, this.currencyCode,
             "$" + decimalFormat.format(this.value));
         return currencyString;
@@ -197,7 +197,7 @@ public class Currency extends Identifiable<String> {
         return decimalFormat;
     }
     //=============================-Setters-==================================
-    public void setValue(double value) {
+    public void setValue(final double value) {
         this.value = value;
         this.lastUpdated = LocalDateTime.now();
     }
@@ -208,7 +208,7 @@ public class Currency extends Identifiable<String> {
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(final String id) {
         this.currencyCode = id;
     }
 }

@@ -15,8 +15,8 @@ public class IpBanAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public IpBanFilter ipBanFilter(IpBanManager ipBanService,
-                                   @Value("${security.ip-ban.block-status:429}") int blockStatus) {
+    public IpBanFilter ipBanFilter(final IpBanManager ipBanService,
+                                   @Value("${security.ip-ban.block-status:429}") final int blockStatus) {
         return new IpBanFilter(ipBanService, blockStatus);
     }
 }

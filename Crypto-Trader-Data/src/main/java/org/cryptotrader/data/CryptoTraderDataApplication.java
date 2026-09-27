@@ -32,8 +32,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderDataApplication {
-    public static void main(String[] args) {
-        boolean loadCurrencies = shouldLoadCurrencies();
+    public static void main(final String[] args) {
+        final boolean loadCurrencies = shouldLoadCurrencies();
         if (loadCurrencies) {
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
@@ -43,9 +43,9 @@ public class CryptoTraderDataApplication {
     }
 
     private static boolean shouldLoadCurrencies() {
-        String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
-        String loadCurrenciesSetting = System.getProperty("cryptotrader.load.currency", loadCurrenciesEnv);
-        boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
+        final String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
+        final String loadCurrenciesSetting = System.getProperty("cryptotrader.load.currency", loadCurrenciesEnv);
+        final boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
         return loadCurrencies;
     }
 

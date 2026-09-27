@@ -32,7 +32,7 @@ public class PortfolioAssetTest extends CryptoTraderTest {
         public void testShouldBeSellableWithShares() {
             testAsset.setShares(1);
             testAsset.setTargetPrice(100);
-            boolean expected = true;
+            final boolean expected = true;
             assertEquals(expected, testAsset.canSell());
         }
 
@@ -41,7 +41,7 @@ public class PortfolioAssetTest extends CryptoTraderTest {
         public void testShouldNotBeSellableWithoutShares() {
             testAsset.setShares(0);
             testAsset.setTargetPrice(100);
-            boolean expected = false;
+            final boolean expected = false;
             assertEquals(expected, testAsset.canSell());
         }
 
@@ -50,7 +50,7 @@ public class PortfolioAssetTest extends CryptoTraderTest {
         public void testShouldBeBuyableWithWalletDollars() {
             testAsset.setAssetWalletDollars(100);
             testAsset.setTargetPrice(100);
-            boolean expected = true;
+            final boolean expected = true;
             assertEquals(expected, testAsset.canBuy());
         }
 

@@ -20,33 +20,33 @@ public class ViewLoader {
     private final ApplicationContext applicationContext;
 
     @Autowired
-    public ViewLoader(ApplicationContext applicationContext) {
+    public ViewLoader(final ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public Parent initializeView(Class<?> controllerClass) {
-        String fxmlPath = this.resolveFxmlPath(controllerClass);
-        String cssPath = fxmlPath.replace(".fxml", ".css");
-        URL resource = Objects.requireNonNull(controllerClass.getResource(fxmlPath));
-        URL cssResource = controllerClass.getResource(cssPath);
-        FXMLLoader loader = new FXMLLoader(resource);
+    public Parent initializeView(final Class<?> controllerClass) {
+        final String fxmlPath = this.resolveFxmlPath(controllerClass);
+        final String cssPath = fxmlPath.replace(".fxml", ".css");
+        final URL resource = Objects.requireNonNull(controllerClass.getResource(fxmlPath));
+        final URL cssResource = controllerClass.getResource(cssPath);
+        final FXMLLoader loader = new FXMLLoader(resource);
         loader.setControllerFactory(this.applicationContext::getBean);
         try {
-            Parent load = loader.load();
+            final Parent load = loader.load();
             if (cssResource != null) {
                 load.getStylesheets().add(cssResource.toExternalForm());
             }
             return load;
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new IllegalStateException("Failed to load FXML: " + fxmlPath, exception);
         }
     }
 
-    public void loadView(Pane container,
-                         Class<?> controllerClass) {
-        Parent view = this.initializeView(controllerClass);
+    public void loadView(final Pane container,
+                         final Class<?> controllerClass) {
+        final Parent view = this.initializeView(controllerClass);
         try {
-            if (container instanceof VBox vbox) {
+            if (container instanceof final VBox vbox) {
                 javafx.scene.layout.VBox.setVgrow(view, javafx.scene.layout.Priority.ALWAYS);
             } else if (container instanceof javafx.scene.layout.AnchorPane) {
                 AnchorPane.setTopAnchor(view, 0.0);
@@ -54,47 +54,47 @@ public class ViewLoader {
                 AnchorPane.setLeftAnchor(view, 0.0);
                 AnchorPane.setRightAnchor(view, 0.0);
             }
-        } catch (Throwable ignored) {
-            
+        } catch (final Throwable ignored) {
+
         }
         container.getChildren().setAll(view);
     }
 
-    private String resolveFxmlPath(Class<?> controllerClass) {
-        String simpleName = controllerClass.getSimpleName();
-        String basePackage = extractBasePackage(controllerClass, simpleName);
-        String rawFeature = simpleName.substring(0, simpleName.length() - "Controller".length());
-        String feature = toKebabCase(rawFeature);
-        String viewName = simpleName.replace("Controller", "View") + ".fxml";
-        String resourcePackage = basePackage + ".ui.view." + feature;
-        String resourcePath = "/" + resourcePackage.replace('.', '/') + "/" + viewName;
+    private String resolveFxmlPath(final Class<?> controllerClass) {
+        final String simpleName = controllerClass.getSimpleName();
+        final String basePackage = extractBasePackage(controllerClass, simpleName);
+        final String rawFeature = simpleName.substring(0, simpleName.length() - "Controller".length());
+        final String feature = toKebabCase(rawFeature);
+        final String viewName = simpleName.replace("Controller", "View") + ".fxml";
+        final String resourcePackage = basePackage + ".ui.view." + feature;
+        final String resourcePath = "/" + resourcePackage.replace('.', '/') + "/" + viewName;
         return resourcePath;
     }
 
-    private static String extractBasePackage(Class<?> controllerClass, String simpleName) {
+    private static String extractBasePackage(final Class<?> controllerClass, final String simpleName) {
         if (!isValidClass(simpleName)) {
             throw new IllegalArgumentException("Controller class must end with 'Controller': " + simpleName);
         }
-        String packageName = controllerClass.getPackageName();
-        int controllerIndex = packageName.lastIndexOf(".controller");
+        final String packageName = controllerClass.getPackageName();
+        final int controllerIndex = packageName.lastIndexOf(".controller");
         if (controllerIndex < 0) {
             throw new IllegalArgumentException("Package must contain '.controller': " + packageName);
         }
-        String basePackage = packageName.substring(0, controllerIndex);
+        final String basePackage = packageName.substring(0, controllerIndex);
         return basePackage;
     }
 
-    private static String toKebabCase(String input) {
+    private static String toKebabCase(final String input) {
         if (input == null || input.isEmpty()) {
             return "";
         }
-        StringBuilder kebabString = new StringBuilder();
-        char[] chars = input.toCharArray();
+        final StringBuilder kebabString = new StringBuilder();
+        final char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            char letter = chars[i];
-            boolean isUpper = Character.isUpperCase(letter);
+            final char letter = chars[i];
+            final boolean isUpper = Character.isUpperCase(letter);
             if (i > 0 && isUpper) {
-                boolean hasLowerNeighbor = Character.isLowerCase(chars[i - 1]) || (i + 1 < chars.length && Character.isLowerCase(chars[i + 1]));
+                final boolean hasLowerNeighbor = Character.isLowerCase(chars[i - 1]) || (i + 1 < chars.length && Character.isLowerCase(chars[i + 1]));
                 if (hasLowerNeighbor) {
                     kebabString.append('-');
                 }
@@ -103,8 +103,8 @@ public class ViewLoader {
         }
         return kebabString.toString();
     }
-    
-    private static boolean isValidClass(String simpleName) {
+
+    private static boolean isValidClass(final String simpleName) {
         return simpleName.endsWith("Controller");
     }
 }

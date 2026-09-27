@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AssetValueResponse {
     public double value;
-    public AssetValueResponse(double value) {
+    public AssetValueResponse(final double value) {
         this.value = value;
     }
 }

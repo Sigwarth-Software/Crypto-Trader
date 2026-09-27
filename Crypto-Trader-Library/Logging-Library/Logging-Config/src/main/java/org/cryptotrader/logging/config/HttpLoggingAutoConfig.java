@@ -16,8 +16,8 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 public class HttpLoggingAutoConfig {
     @Bean
     @ConditionalOnMissingBean
-    public HttpExchangeLoggingFilter httpExchangeLoggingFilter(CryptoTraderHttpLoggingProperties props,
-                                                               LogRedactor logRedactor) {
+    public HttpExchangeLoggingFilter httpExchangeLoggingFilter(final CryptoTraderHttpLoggingProperties props,
+                                                               final LogRedactor logRedactor) {
         return new HttpExchangeLoggingFilter(
                 props.isIncludeQueryString(),
                 props.isIncludePayload(),

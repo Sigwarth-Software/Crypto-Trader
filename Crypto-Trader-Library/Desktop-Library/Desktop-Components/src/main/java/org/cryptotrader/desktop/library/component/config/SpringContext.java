@@ -10,14 +10,14 @@ public class SpringContext implements ApplicationContextAware {
     private static ApplicationContext context;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         SpringContext.context = applicationContext;
     }
 
-    public static <T> T getBean(Class<T> type) {
+    public static <T> T getBean(final Class<T> type) {
         return context.getBean(type);
     }
-    
+
     public static ApplicationContext getContext() {
         return context;
     }

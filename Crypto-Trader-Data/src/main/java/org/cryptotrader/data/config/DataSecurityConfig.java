@@ -17,7 +17,7 @@ public class DataSecurityConfig {
     private String trustedIp;
 
     @Bean
-    public SecurityFilterChain trustedHostFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain trustedHostFilterChain(final HttpSecurity http) throws Exception {
         http.securityMatcher(isFromTrustedHost())
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .csrf(AbstractHttpConfigurer::disable);

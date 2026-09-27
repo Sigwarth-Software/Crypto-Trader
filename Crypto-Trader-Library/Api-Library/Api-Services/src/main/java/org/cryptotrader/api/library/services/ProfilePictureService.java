@@ -18,26 +18,26 @@ public class ProfilePictureService implements ProfilePictureOperations {
     private final ProfilePictureEntityService profilePictureEntityService;
     //===========================-Constructors-===============================
     @Autowired
-    public ProfilePictureService(ProfilePictureRepository profilePictureRepository,
-                                 ProfilePictureEntityService profilePictureEntityService) {
+    public ProfilePictureService(final ProfilePictureRepository profilePictureRepository,
+                                 final ProfilePictureEntityService profilePictureEntityService) {
         this.profilePictureRepository = profilePictureRepository;
         this.profilePictureEntityService = profilePictureEntityService;
     }
     //============================-Methods-===================================
-    public void saveProfilePicture(ProfilePicture profilePicture) {
+    public void saveProfilePicture(final ProfilePicture profilePicture) {
 //        this.profilePictureRepository.save(profilePicture);
         this.profilePictureEntityService.save(profilePicture);
     }
     @Transactional
-    public Optional<ProfilePicture> findByUserId(Long userId) {
-        ProfilePicture profilePicture = this.profilePictureRepository.findByUserId(userId);
+    public Optional<ProfilePicture> findByUserId(final Long userId) {
+        final ProfilePicture profilePicture = this.profilePictureRepository.findByUserId(userId);
         if (profilePicture == null) {
             return Optional.empty();
         } else {
             return Optional.of(profilePicture);
         }
     }
-    public boolean existsByUserId(Long userId) {
+    public boolean existsByUserId(final Long userId) {
         return this.profilePictureRepository.existsByUserId(userId);
     }
 }

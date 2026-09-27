@@ -5,11 +5,11 @@ public enum QueryLoad {
     BULK("bulk");
     public final String load;
 
-    QueryLoad(String load) {
+    QueryLoad(final String load) {
         this.load = load;
     }
 
-    public static QueryLoad from(String load) {
+    public static QueryLoad from(final String load) {
         return switch (load) {
             case "batches" -> QueryLoad.BATCHES;
             case "bulk" -> QueryLoad.BULK;

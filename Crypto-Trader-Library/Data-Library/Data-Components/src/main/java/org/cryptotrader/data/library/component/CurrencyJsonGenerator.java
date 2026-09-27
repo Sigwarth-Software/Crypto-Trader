@@ -27,57 +27,57 @@ public class CurrencyJsonGenerator {
     private static final Path OUTPUT_PATH = Paths.get("src/main/resources/static/currencies.json");
 
     @Autowired
-    public CurrencyJsonGenerator(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public CurrencyJsonGenerator(final RestTemplate restTemplate, final ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
 
-    private <T> T fetchJson(String url, ParameterizedTypeReference<T> typeRef) {
+    private <T> T fetchJson(final String url, final ParameterizedTypeReference<T> typeRef) {
         return this.restTemplate.exchange(url, HttpMethod.GET, null, typeRef).getBody();
     }
 
     public static void deleteExistingJson() {
         try {
-            boolean deleted = Files.deleteIfExists(OUTPUT_PATH);
+            final boolean deleted = Files.deleteIfExists(OUTPUT_PATH);
             if (deleted) {
                 log.info("Existing JSON file deleted at {}", OUTPUT_PATH);
             } else {
                 log.info("No existing JSON file found at {}", OUTPUT_PATH);
             }
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new RuntimeException("Failed to delete existing JSON file at " + OUTPUT_PATH, exception);
         }
         SupportedCurrencies.clearCurrencies();
     }
 
     public List<Map<String, Object>> getCurrencies() {
-        List<Map<String, Object>> currencies = fetchJson(EXCHANGE_API_URL,
+        final List<Map<String, Object>> currencies = fetchJson(EXCHANGE_API_URL,
                 new ParameterizedTypeReference<>() { });
 
-        Map<String, Object> exchangeRatesRoot = fetchJson(CURRENCY_RATES_URL, 
+        final Map<String, Object> exchangeRatesRoot = fetchJson(CURRENCY_RATES_URL,
                 new ParameterizedTypeReference<>() { });
-        
-        Map<String, Object> data = asMap(exchangeRatesRoot.get("data"));
-        Map<String, Object> rates = asMap(data.get("rates"));
 
-        Set<String> currenciesToSkip = new HashSet<>(Arrays.asList(
+        final Map<String, Object> data = asMap(exchangeRatesRoot.get("data"));
+        final Map<String, Object> rates = asMap(data.get("rates"));
+
+        final Set<String> currenciesToSkip = new HashSet<>(Arrays.asList(
                 "DYP", "USD", "LQTY", "WLUNA", "GUSD",
                 "DAI", "ME", "MASK", "USDC", "DAR",
                 "AERGO", "TONE", "RAD", "NU"
         ));
 
-        List<Map<String, Object>> matchedCurrencies = new ArrayList<>();
+        final List<Map<String, Object>> matchedCurrencies = new ArrayList<>();
         if (currencies != null) {
-            for (Map<String, Object> currency : currencies) {
-                String id = this.asString(currency.get("id"));
-                String name = this.asString(currency.get("name"));
+            for (final Map<String, Object> currency : currencies) {
+                final String id = this.asString(currency.get("id"));
+                final String name = this.asString(currency.get("name"));
                 if (id == null || name == null) {
                     continue;
                 }
                 if (rates.containsKey(id)) {
-                    boolean containsDigit = id.chars().anyMatch(Character::isDigit);
+                    final boolean containsDigit = id.chars().anyMatch(Character::isDigit);
                     if (!containsDigit && !currenciesToSkip.contains(id)) {
-                        Map<String, Object> entry = new HashMap<>();
+                        final Map<String, Object> entry = new HashMap<>();
                         entry.put("name", name);
                         entry.put("code", id);
                         matchedCurrencies.add(entry);
@@ -92,32 +92,32 @@ public class CurrencyJsonGenerator {
         if (!Files.exists(OUTPUT_PATH)) {
             throw new NoSuchFileException(OUTPUT_PATH.toString());
         }
-        byte[] fileAsBytes = Files.readAllBytes(OUTPUT_PATH);
+        final byte[] fileAsBytes = Files.readAllBytes(OUTPUT_PATH);
         return this.objectMapper.readValue(fileAsBytes, new TypeReference<>() { });
     }
 
-    public void saveJson(List<Map<String, Object>> matchedCryptos) {
+    public void saveJson(final List<Map<String, Object>> matchedCryptos) {
         try {
             Files.createDirectories(OUTPUT_PATH.getParent());
-            try (BufferedWriter writer = Files.newBufferedWriter(OUTPUT_PATH, StandardCharsets.UTF_8,
+            try (final BufferedWriter writer = Files.newBufferedWriter(OUTPUT_PATH, StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
                 this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(writer, matchedCryptos);
             }
             log.info("Matched cryptocurrencies saved to {}", OUTPUT_PATH);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new RuntimeException("Failed to save JSON to " + OUTPUT_PATH, exception);
         }
     }
 
-    public List<String> getAllCurrencyCodes(boolean useCache) {
+    public List<String> getAllCurrencyCodes(final boolean useCache) {
         List<Map<String, Object>> currencies;
         if (useCache) {
             try {
                 currencies = this.getCachedCurrencies();
-            } catch (NoSuchFileException e) {
+            } catch (final NoSuchFileException e) {
                 log.error("Cache file not found. Fetching currencies from API.");
                 currencies = this.getCurrencies();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 log.error("Failed to read cache. Fetching currencies from API.");
                 currencies = this.getCurrencies();
             }
@@ -125,29 +125,29 @@ public class CurrencyJsonGenerator {
             currencies = getCurrencies();
         }
 
-        List<String> codes = currencies.stream()
+        final List<String> codes = currencies.stream()
                 .map(codeMap -> asString(codeMap.get("code")))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         log.info("Number of currencies found: {}", codes.size());
         return codes;
     }
-    
+
     public void generateAndSave() {
         deleteExistingJson();
         this.saveJson(this.getCurrencies());
         SupportedCurrencies.loadCurrenciesFromJson();
     }
-    
+
     @SuppressWarnings("unchecked")
-    private Map<String, Object> asMap(Object object) {
+    private Map<String, Object> asMap(final Object object) {
         if (object instanceof Map) {
             return (Map<String, Object>) object;
         }
         return Collections.emptyMap();
     }
 
-    private String asString(Object object) {
+    private String asString(final Object object) {
         if (object == null) {
             return null;
         }

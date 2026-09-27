@@ -46,14 +46,14 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     private final boolean colorEnabled;
     private final LogRedactor logRedactor;
 
-    public HttpExchangeLoggingFilter(boolean includeQueryString,
-                                     boolean includeRequestPayload,
-                                     int maxRequestPayloadLength,
-                                     boolean includeHeaders,
-                                     boolean includeResponsePayload,
-                                     int maxResponsePayloadLength,
-                                     boolean colorEnabled,
-                                     LogRedactor logRedactor) {
+    public HttpExchangeLoggingFilter(final boolean includeQueryString,
+                                     final boolean includeRequestPayload,
+                                     final int maxRequestPayloadLength,
+                                     final boolean includeHeaders,
+                                     final boolean includeResponsePayload,
+                                     final int maxResponsePayloadLength,
+                                     final boolean colorEnabled,
+                                     final LogRedactor logRedactor) {
         this.includeQueryString = includeQueryString;
         this.includeRequestPayload = includeRequestPayload;
         this.maxRequestPayloadLength = maxRequestPayloadLength;
@@ -65,29 +65,29 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain filterChain)
             throws ServletException, IOException {
-        ContentCachingRequestWrapper req = new ContentCachingRequestWrapper(request);
+        final ContentCachingRequestWrapper req = new ContentCachingRequestWrapper(request);
 
         if (this.isStreamingRequest(request)) {
             this.interceptStreamingLog(response, filterChain, req);
             return;
         }
-        ContentCachingResponseWrapper res = new ContentCachingResponseWrapper(response);
-        long start = System.currentTimeMillis();
+        final ContentCachingResponseWrapper res = new ContentCachingResponseWrapper(response);
+        final long start = System.currentTimeMillis();
         Exception ex = null;
         try {
             filterChain.doFilter(req, res);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             ex = exception;
             throw exception;
         } finally {
-            long tookMs = System.currentTimeMillis() - start;
+            final long tookMs = System.currentTimeMillis() - start;
             try {
                 this.logExchange(req, res, tookMs, ex);
-            } catch (Exception loggingEx) {
+            } catch (final Exception loggingEx) {
                 log.warn("Failed to log HTTP exchange", loggingEx);
             }
             // Copy cached body back to response
@@ -99,43 +99,43 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void interceptStreamingLog(HttpServletResponse response,
-                                       FilterChain filterChain,
-                                       ContentCachingRequestWrapper req) throws IOException, ServletException {
-        long start = System.currentTimeMillis();
+    private void interceptStreamingLog(final HttpServletResponse response,
+                                       final FilterChain filterChain,
+                                       final ContentCachingRequestWrapper req) throws IOException, ServletException {
+        final long start = System.currentTimeMillis();
         Exception exception = null;
         try {
             filterChain.doFilter(req, response);
-        } catch (Exception caughtException) {
+        } catch (final Exception caughtException) {
             exception = caughtException;
             throw caughtException;
         } finally {
-            long tookMs = System.currentTimeMillis() - start;
+            final long tookMs = System.currentTimeMillis() - start;
             try {
                 this.logExchange(req, response, tookMs, exception);
-            } catch (Exception loggingEx) {
+            } catch (final Exception loggingEx) {
                 log.warn("Failed to log HTTP exchange", loggingEx);
             }
         }
     }
 
-    private boolean isStreamingRequest(HttpServletRequest request) {
-        String accept = request.getHeader(HttpHeaders.ACCEPT);
+    private boolean isStreamingRequest(final HttpServletRequest request) {
+        final String accept = request.getHeader(HttpHeaders.ACCEPT);
         return accept != null && accept.contains(MediaType.TEXT_EVENT_STREAM_VALUE);
     }
 
-    private void logExchange(ContentCachingRequestWrapper req, HttpServletResponse response, long tookMs, @Nullable Exception ex) {
-        String scheme = req.getScheme();
-        String protocol = req.getProtocol(); // e.g., HTTP/1.1
-        String method = req.getMethod();
-        String uri = req.getRequestURI();
-        String query = req.getQueryString();
-        String remote = req.getRemoteAddr();
-        String ipAddress = resolveIpAddress(req);
-        int status = response.getStatus();
-        boolean isWebSocket = isWebSocketUpgrade(req);
+    private void logExchange(final ContentCachingRequestWrapper req, final HttpServletResponse response, final long tookMs, @Nullable final Exception ex) {
+        final String scheme = req.getScheme();
+        final String protocol = req.getProtocol(); // e.g., HTTP/1.1
+        final String method = req.getMethod();
+        final String uri = req.getRequestURI();
+        final String query = req.getQueryString();
+        final String remote = req.getRemoteAddr();
+        final String ipAddress = resolveIpAddress(req);
+        final int status = response.getStatus();
+        final boolean isWebSocket = isWebSocketUpgrade(req);
 
-        StringBuilder sb = new StringBuilder(256);
+        final StringBuilder sb = new StringBuilder(256);
         // Prefix
         sb.append(color("[", AnsiColor.BRIGHT_BLACK)).append(color(isWebSocket ? "WS" : "HTTP", AnsiColor.CYAN, AnsiStyle.BOLD))
           .append(color("] ", AnsiColor.BRIGHT_BLACK));
@@ -153,7 +153,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         // Duration
         sb.append(' ').append(color(tookMs + "ms", durationColor(tookMs)));
         // Sizes
-        int reqLen = req.getContentLength();
+        final int reqLen = req.getContentLength();
         int resLen = -1;
         if (response instanceof ContentCachingResponseWrapper) {
             resLen = ((ContentCachingResponseWrapper) response).getContentSize();
@@ -180,7 +180,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
 
         if (this.includeRequestPayload) {
-            String payload = this.formatPayloadForLog(
+            final String payload = this.formatPayloadForLog(
                     getBody(req.getContentAsByteArray(), req.getCharacterEncoding(), this.maxRequestPayloadLength),
                     req.getContentType()
             );
@@ -189,8 +189,8 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                   .append(color(payload, AnsiColor.WHITE));
             }
         }
-        if (this.includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
-            String payload = this.formatPayloadForLog(
+        if (this.includeResponsePayload && response instanceof final ContentCachingResponseWrapper res) {
+            final String payload = this.formatPayloadForLog(
                     getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), this.maxResponsePayloadLength),
                     response.getContentType()
             );
@@ -209,45 +209,45 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void appendHeaders(StringBuilder sb, String title, HttpServletRequest req) {
+    private void appendHeaders(final StringBuilder sb, final String title, final HttpServletRequest req) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
-        for (Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
-            String name = names.nextElement();
-            List<String> values = java.util.Collections.list(req.getHeaders(name));
-            String redactedValues = values.stream()
+        for (final Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
+            final String name = names.nextElement();
+            final List<String> values = java.util.Collections.list(req.getHeaders(name));
+            final String redactedValues = values.stream()
                     .map(value -> this.logRedactor.redactHeader(name, value))
                     .collect(Collectors.joining(", "));
             sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
-    private void appendHeaders(StringBuilder sb, String title, HttpServletResponse res) {
+    private void appendHeaders(final StringBuilder sb, final String title, final HttpServletResponse res) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
-        for (String name : res.getHeaderNames()) {
-            String redactedValues = res.getHeaders(name).stream()
+        for (final String name : res.getHeaderNames()) {
+            final String redactedValues = res.getHeaders(name).stream()
                     .map(value -> this.logRedactor.redactHeader(name, value))
                     .collect(Collectors.joining(", "));
             sb.append("  ").append(this.color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(this.color(redactedValues, AnsiColor.WHITE)).append('\n');
         }
     }
 
-    private String resolveIpAddress(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
+    private String resolveIpAddress(final HttpServletRequest request) {
+        final String xForwardedFor = request.getHeader("X-Forwarded-For");
         if (xForwardedFor != null && !xForwardedFor.isBlank()) {
             return xForwardedFor.split(",")[0].trim();
         }
         return request.getRemoteAddr();
     }
 
-    private boolean isWebSocketUpgrade(HttpServletRequest req) {
-        String upgrade = req.getHeader(HttpHeaders.UPGRADE);
+    private boolean isWebSocketUpgrade(final HttpServletRequest req) {
+        final String upgrade = req.getHeader(HttpHeaders.UPGRADE);
         return upgrade != null && "websocket".equalsIgnoreCase(upgrade);
     }
 
-    private String getBody(byte[] buf, @Nullable String encoding, int max) {
+    private String getBody(final byte[] buf, @Nullable final String encoding, final int max) {
         if (buf == null || buf.length == 0) return "";
-        int len = Math.min(buf.length, max);
-        Charset charset = Charset.forName(Objects.requireNonNullElse(encoding, Charset.defaultCharset().name()));
+        final int len = Math.min(buf.length, max);
+        final Charset charset = Charset.forName(Objects.requireNonNullElse(encoding, Charset.defaultCharset().name()));
         String body = new String(buf, 0, len, charset);
         if (buf.length > max) {
             body += "…";
@@ -255,7 +255,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private String formatPayloadForLog(String payload, @Nullable String contentType) {
+    private String formatPayloadForLog(final String payload, @Nullable final String contentType) {
         if (!StringUtils.hasText(payload)) {
             return payload;
         }
@@ -265,25 +265,25 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
 
         try {
-            JsonNode tree = JSON_PRETTY_PRINTER.readTree(payload);
-            JsonNode redactedTree = this.logRedactor.redact(tree);
+            final JsonNode tree = JSON_PRETTY_PRINTER.readTree(payload);
+            final JsonNode redactedTree = this.logRedactor.redact(tree);
             return JSON_PRETTY_PRINTER.writerWithDefaultPrettyPrinter().writeValueAsString(redactedTree);
-        } catch (Exception ignored) {
+        } catch (final Exception ignored) {
             return this.logRedactor.redactText(payload);
         }
     }
 
-    private AnsiColor durationColor(long ms) {
+    private AnsiColor durationColor(final long ms) {
         if (ms > 2000) return AnsiColor.RED;
         if (ms > 700) return AnsiColor.YELLOW;
         return AnsiColor.GREEN;
     }
 
-    private String color(String text, AnsiColor color) {
+    private String color(final String text, final AnsiColor color) {
         return this.color(text, color, null);
     }
 
-    private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
+    private String color(final String text, final AnsiColor color, @Nullable final AnsiStyle style) {
         if (!this.colorEnabled) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);

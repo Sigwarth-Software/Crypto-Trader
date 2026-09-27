@@ -13,16 +13,16 @@ import java.util.List;
 import java.util.Properties;
 
 public class YamlPropertySourceFactory implements PropertySourceFactory {
-    
+
     @Override
-    public @NotNull PropertySource<?> createPropertySource(String name, EncodedResource encodedResource) throws IOException {
-        Resource resource = encodedResource.getResource();
+    public @NotNull PropertySource<?> createPropertySource(final String name, final EncodedResource encodedResource) throws IOException {
+        final Resource resource = encodedResource.getResource();
         String sourceName = name != null ? name : resource.getFilename();
         if (sourceName == null) {
             sourceName = "application.yml";
         }
-        YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
-        List<PropertySource<?>> sources = loader.load(sourceName, resource);
+        final YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
+        final List<PropertySource<?>> sources = loader.load(sourceName, resource);
         if (sources.isEmpty()) {
             return new PropertiesPropertySource(sourceName, new Properties());
         }

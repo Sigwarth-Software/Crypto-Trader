@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 public class LogRedactionAutoConfig {
     @Bean
     @ConditionalOnMissingBean
-    public LogRedactor logRedactor(LogRedactionProperties properties) {
+    public LogRedactor logRedactor(final LogRedactionProperties properties) {
         return new LogRedactor(properties);
     }
 }

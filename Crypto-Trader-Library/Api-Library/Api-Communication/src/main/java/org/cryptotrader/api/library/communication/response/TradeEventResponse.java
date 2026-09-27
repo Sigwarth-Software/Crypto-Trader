@@ -15,13 +15,13 @@ public class TradeEventResponse {
     private String tradeType;
     private String vendor;
 
-    public TradeEventResponse(Long id,
-                              String currency,
-                              double valueChange,
-                              double sharesChange,
-                              LocalDateTime tradeTime,
-                              String tradeType,
-                              Vendor vendor) {
+    public TradeEventResponse(final Long id,
+                              final String currency,
+                              final double valueChange,
+                              final double sharesChange,
+                              final LocalDateTime tradeTime,
+                              final String tradeType,
+                              final Vendor vendor) {
         this.id = id;
         this.currency = currency;
         this.valueChange = valueChange;

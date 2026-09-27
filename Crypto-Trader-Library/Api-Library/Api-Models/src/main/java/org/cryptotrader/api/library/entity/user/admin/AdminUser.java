@@ -17,11 +17,11 @@ public class AdminUser extends User {
         super();
     }
 
-    public AdminUser(String username, String rawPassword) {
+    public AdminUser(final String username, final String rawPassword) {
         super(username, rawPassword);
     }
 
-    public AdminUser(String username, SafePassword encodedPassword) {
+    public AdminUser(final String username, final SafePassword encodedPassword) {
         super(username, encodedPassword);
     }
 }

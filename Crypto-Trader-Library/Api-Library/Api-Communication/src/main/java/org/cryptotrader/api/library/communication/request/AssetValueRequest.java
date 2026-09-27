@@ -6,7 +6,7 @@ import lombok.Data;
 public class AssetValueRequest {
     private String currencyCode;
     private double shares;
-    public AssetValueRequest(String currencyCode, double shares) {
+    public AssetValueRequest(final String currencyCode, final double shares) {
         this.currencyCode = currencyCode;
         this.shares = shares;
     }

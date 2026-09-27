@@ -16,7 +16,7 @@ class LogRedactorTest {
 
     @Test
     void redact_MasksNestedSensitiveJsonFields() throws Exception {
-        JsonNode input = OBJECT_MAPPER.readTree("""
+        final JsonNode input = OBJECT_MAPPER.readTree("""
                 {
                   "email": "user@example.com",
                   "password": "secret",
@@ -26,7 +26,7 @@ class LogRedactorTest {
                 }
                 """);
 
-        JsonNode redacted = this.redactor.redact(input);
+        final JsonNode redacted = this.redactor.redact(input);
 
         assertEquals("user@example.com", redacted.get("email").asText());
         assertEquals("[REDACTED]", redacted.get("password").asText());
@@ -41,7 +41,7 @@ class LogRedactorTest {
 
     @Test
     void redactQueryString_MasksConfiguredFieldValues() {
-        String redacted = this.redactor.redactQueryString("email=user%40example.com&password=secret");
+        final String redacted = this.redactor.redactQueryString("email=user%40example.com&password=secret");
 
         assertTrue(redacted.contains("email=user%40example.com"));
         assertFalse(redacted.contains("secret"));
@@ -50,7 +50,7 @@ class LogRedactorTest {
 
     @Test
     void redactText_MasksFormStyleSensitiveFields() {
-        String redacted = this.redactor.redactText("email=user@example.com&password=secret&token=abc123");
+        final String redacted = this.redactor.redactText("email=user@example.com&password=secret&token=abc123");
 
         assertTrue(redacted.contains("email=user@example.com"));
         assertFalse(redacted.contains("secret"));

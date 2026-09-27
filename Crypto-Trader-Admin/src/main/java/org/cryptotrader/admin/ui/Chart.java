@@ -62,14 +62,14 @@ public class Chart extends HBox {
         this.yAxis.setTickLabelGap(6);
 
         // Format X as time "HH:mm:ss" (adjust formatter as desired)
-        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
+        final DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.xAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            @Override public String toString(Number value) {
-                long epochMillis = value.longValue();
-                LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
+            @Override public String toString(final Number value) {
+                final long epochMillis = value.longValue();
+                final LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
                 return timeFmt.format(ldt);
             }
-            @Override public Number fromString(String string) { return 0L; }
+            @Override public Number fromString(final String string) { return 0L; }
         });
 
         // Chart
@@ -94,13 +94,13 @@ public class Chart extends HBox {
         this.initGraph();
     }
 
-    public void setDataPoints(List<ChartDataPoint<LocalDateTime, Double>> points) {
+    public void setDataPoints(final List<ChartDataPoint<LocalDateTime, Double>> points) {
         this.dataPoints = points;
-        ObservableList<XYChart.Data<Number, Number>> items = FXCollections.observableArrayList();
+        final ObservableList<XYChart.Data<Number, Number>> items = FXCollections.observableArrayList();
         if (points != null && !points.isEmpty()) {
-            for (ChartDataPoint<LocalDateTime, Double> p : points) {
-                long x = p.getX().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                Double y = p.getY();
+            for (final ChartDataPoint<LocalDateTime, Double> p : points) {
+                final long x = p.getX().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                final Double y = p.getY();
                 if (y != null) {
                     items.add(new XYChart.Data<>(x, y));
                 }
@@ -108,8 +108,8 @@ public class Chart extends HBox {
             this.series.setData(items);
 
             // Adjust axis range a bit for nicer margins
-            long minX = items.stream().mapToLong(d -> d.getXValue().longValue()).min().orElse(0L);
-            long maxX = items.stream().mapToLong(d -> d.getXValue().longValue()).max().orElse(0L);
+            final long minX = items.stream().mapToLong(d -> d.getXValue().longValue()).min().orElse(0L);
+            final long maxX = items.stream().mapToLong(d -> d.getXValue().longValue()).max().orElse(0L);
             if (minX < maxX) {
                 final double pad = (maxX - minX) * 0.05;
                 this.xAxis.setAutoRanging(false);

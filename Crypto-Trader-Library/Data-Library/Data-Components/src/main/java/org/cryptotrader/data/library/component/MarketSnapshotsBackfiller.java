@@ -36,7 +36,7 @@ public class MarketSnapshotsBackfiller {
             log.warn("No non-base currencies found – nothing to do.");
             return;
         }
-        long baseRows = this.getBaseRows();
+        final long baseRows = this.getBaseRows();
         if (baseRows == 0) {
             log.warn("No base currency rows found – nothing to back-fill.");
             return;
@@ -89,7 +89,7 @@ public class MarketSnapshotsBackfiller {
         codes.forEach(code -> this.jdbc.execute(addCodeColumn(code)));
     }
     //--------------------------Add-Code-Column-------------------------------
-    private static String addCodeColumn(String code) {
+    private static String addCodeColumn(final String code) {
         return """
                     ALTER TABLE market_snapshots
                     ADD COLUMN IF NOT EXISTS %s NUMERIC(34,18);
@@ -125,29 +125,29 @@ public class MarketSnapshotsBackfiller {
     }
     //---------------------------Get-Base-Rows--------------------------------
     private Long getBaseRows() {
-        String baseQuery = """
+        final String baseQuery = """
                 SELECT COUNT(*) FROM currency_history
                 WHERE  currency_code = ?""";
         return this.jdbc.queryForObject(baseQuery, Long.class, BASE_CODE);
     }
     //-------------------------Get-Currency-Codes-----------------------------
     private List<String> getCurrencyCodes() {
-        String selectQuery = "SELECT DISTINCT currency_code " +
+        final String selectQuery = "SELECT DISTINCT currency_code " +
                              "FROM currencies WHERE currency_code <> ? " +
                              "ORDER BY 1";
         return this.jdbc.queryForList(selectQuery, String.class, BASE_CODE);
     }
     //-------------------------Run-Insert-Threads-----------------------------
-    private void runInsertThreads(long baseRows,
-                                  ExecutorService threadPool,
-                                  List<String> codes,
-                                  LongAdder numInserted) {
-        long batchCount = (baseRows + BATCH_SIZE - 1) / BATCH_SIZE;
+    private void runInsertThreads(final long baseRows,
+                                  final ExecutorService threadPool,
+                                  final List<String> codes,
+                                  final LongAdder numInserted) {
+        final long batchCount = (baseRows + BATCH_SIZE - 1) / BATCH_SIZE;
         LongStream.range(0, batchCount)
                 .parallel()
                 .forEach(slice -> threadPool.submit(() -> {
-                    int offset = (int) (slice * BATCH_SIZE);
-                    int rowsProcessed = this.processBatchSlice(offset, codes);
+                    final int offset = (int) (slice * BATCH_SIZE);
+                    final int rowsProcessed = this.processBatchSlice(offset, codes);
                     numInserted.add(rowsProcessed);
                 }));
     }
@@ -174,22 +174,22 @@ public class MarketSnapshotsBackfiller {
         }, 1, 1, TimeUnit.SECONDS);
     }
     //------------------------Process-Batch-Slice-----------------------------
-    private int processBatchSlice(int offset, List<String> codes) {
-        String sql = getSnapshotFillQuery(offset, codes);
+    private int processBatchSlice(final int offset, final List<String> codes) {
+        final String sql = getSnapshotFillQuery(offset, codes);
         return this.jdbc.update(sql);
     }
     //----------------------Get-Snapshot-Fill-Query---------------------------
-    private static String getSnapshotFillQuery(int offset, List<String> codes) {
-        String insertCols = getInsertColumns(codes);
-        String selectCols = getCoalesceQueries(codes);
-        String lateralJoins = getLateralJoins(codes);
+    private static String getSnapshotFillQuery(final int offset, final List<String> codes) {
+        final String insertCols = getInsertColumns(codes);
+        final String selectCols = getCoalesceQueries(codes);
+        final String lateralJoins = getLateralJoins(codes);
         return getInsertQuery(offset, insertCols, selectCols, lateralJoins);
     }
     //--------------------------Get-Insert-Query------------------------------
-    private static String getInsertQuery(int offset,
-                                         String insertCols,
-                                         String selectCols,
-                                         String lateralJoins) {
+    private static String getInsertQuery(final int offset,
+                                         final String insertCols,
+                                         final String selectCols,
+                                         final String lateralJoins) {
         return """
                 INSERT INTO market_snapshots (%s)
                 WITH btc_data AS (
@@ -242,12 +242,12 @@ public class MarketSnapshotsBackfiller {
                                 .collect(Collectors.joining(",\n  "));
     }
     //-------------------------Get-Coalesce-Query-----------------------------
-    private static String getCoalesceQuery(String code) {
+    private static String getCoalesceQuery(final String code) {
         return "COALESCE(%s.currency_value, NULL) AS %s".formatted(code.toLowerCase(),
                                                                    toPriceColumn(code));
     }
     //-------------------------Get-Insert-Columns-----------------------------
-    private static String getInsertColumns(List<String> codes) {
+    private static String getInsertColumns(final List<String> codes) {
         final String insertBase = "last_updated, " + BASE_COLUMN + ", ";
         return insertBase + codes.stream()
                                  .map(MarketSnapshotsBackfiller::toPriceColumn)

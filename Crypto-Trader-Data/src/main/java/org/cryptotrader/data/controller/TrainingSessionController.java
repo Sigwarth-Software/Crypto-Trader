@@ -16,13 +16,13 @@ public class TrainingSessionController {
     private final TrainingSessionService trainingSessionService;
 
     @Autowired
-    public TrainingSessionController(TrainingSessionService trainingSessionService) {
+    public TrainingSessionController(final TrainingSessionService trainingSessionService) {
         this.trainingSessionService = trainingSessionService;
     }
-    
-    
+
+
     @RequestMapping("/add")
-    public ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody TrainingSessionRequest request) {
+    public ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody final TrainingSessionRequest request) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

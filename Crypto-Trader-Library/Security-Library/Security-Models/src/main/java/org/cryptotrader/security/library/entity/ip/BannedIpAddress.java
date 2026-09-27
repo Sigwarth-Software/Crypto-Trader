@@ -27,7 +27,7 @@ public class BannedIpAddress extends IpAddress {
     @Column(nullable = false, name = "attempts")
     private int attempts = 1;
 
-    public BannedIpAddress(String ipAddress) {
+    public BannedIpAddress(final String ipAddress) {
         super(ipAddress);
         this.occurredAt = LocalDateTime.now();
     }

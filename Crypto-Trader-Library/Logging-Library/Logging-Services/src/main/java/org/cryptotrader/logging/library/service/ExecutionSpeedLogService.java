@@ -16,14 +16,14 @@ public class ExecutionSpeedLogService {
     private final ExecutionSpeedLogEntityService executionSpeedLogEntityService;
 
     @Autowired
-    public ExecutionSpeedLogService(ExecutionSpeedLogEntityService executionSpeedLogEntityService) {
+    public ExecutionSpeedLogService(final ExecutionSpeedLogEntityService executionSpeedLogEntityService) {
         this.executionSpeedLogEntityService = executionSpeedLogEntityService;
     }
 
     @Transactional
-    public void persist(ExecutionSpeedLogEventPayload entry,
-                        ExecutionSpeedWarningLevel warningLevel) {
-        ExecutionSpeedLog entity = new ExecutionSpeedLog(
+    public void persist(final ExecutionSpeedLogEventPayload entry,
+                        final ExecutionSpeedWarningLevel warningLevel) {
+        final ExecutionSpeedLog entity = new ExecutionSpeedLog(
             entry.getExecutionSpeed(),
             entry.getExpectedExecutionSpeed(),
             entry.getFullMethodQualifiedName(),

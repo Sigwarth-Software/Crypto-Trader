@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class CurrencyController {
     private final CurrencyService currencyService;
     @Autowired
-    public CurrencyController(CurrencyService currencyService) {
+    public CurrencyController(final CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
 }

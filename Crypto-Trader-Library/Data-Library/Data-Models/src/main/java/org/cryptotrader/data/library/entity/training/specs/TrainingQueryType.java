@@ -6,11 +6,11 @@ public enum TrainingQueryType {
     HISTORICAL_PRICE_SPACED("historical_price_spaced");
     public final String type;
 
-    TrainingQueryType(String type) {
+    TrainingQueryType(final String type) {
         this.type = type;
     }
 
-    public static TrainingQueryType from(String type) {
+    public static TrainingQueryType from(final String type) {
         return switch (type) {
             case "current_price" -> TrainingQueryType.CURRENT_PRICE;
             case "historical_price" -> TrainingQueryType.HISTORICAL_PRICE;

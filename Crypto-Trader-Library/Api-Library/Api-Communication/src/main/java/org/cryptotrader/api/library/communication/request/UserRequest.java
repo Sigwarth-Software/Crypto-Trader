@@ -9,9 +9,9 @@ public class UserRequest {
     private String email;
     private String password;
     //============================-Constructors-==============================
-    public UserRequest(String username,
-                       String email,
-                       String password) {
+    public UserRequest(final String username,
+                       final String email,
+                       final String password) {
         this.username = username;
         this.email = email;
         this.password = password;

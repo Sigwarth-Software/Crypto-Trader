@@ -147,7 +147,7 @@ public class LoggingController {
     ) {
         final List<FrontendLogEvent> events = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new StringReader(ndjsonBody))) {
+        try (final BufferedReader reader = new BufferedReader(new StringReader(ndjsonBody))) {
             String line;
 
             while ((line = reader.readLine()) != null) {

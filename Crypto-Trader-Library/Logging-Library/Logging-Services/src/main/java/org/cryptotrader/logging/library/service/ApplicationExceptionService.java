@@ -18,13 +18,13 @@ public class ApplicationExceptionService {
     private final ApplicationExceptionEntityService applicationExceptionEntityService;
 
     @Autowired
-    public ApplicationExceptionService(ApplicationExceptionEntityService applicationExceptionEntityService) {
+    public ApplicationExceptionService(final ApplicationExceptionEntityService applicationExceptionEntityService) {
         this.applicationExceptionEntityService = applicationExceptionEntityService;
     }
 
     @Transactional
-    public void persist(ApplicationExceptionEventPayload entry, LocalDateTime receivedAt) {
-        ApplicationException entity = ApplicationException.builder()
+    public void persist(final ApplicationExceptionEventPayload entry, final LocalDateTime receivedAt) {
+        final ApplicationException entity = ApplicationException.builder()
                 .timestamp(entry.getTimestamp())
                 .module(LogModule.fromModuleName(entry.getModule()))
                 .logger(entry.getLogger())

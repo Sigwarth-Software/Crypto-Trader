@@ -28,9 +28,9 @@ public class PortfolioTradeExecutionService {
     private final EntityManager entityManager;
 
     @Autowired
-    public PortfolioTradeExecutionService(PortfolioService portfolioService,
-                                          TradeEventService tradeEventService,
-                                          EntityManager entityManager) {
+    public PortfolioTradeExecutionService(final PortfolioService portfolioService,
+                                          final TradeEventService tradeEventService,
+                                          final EntityManager entityManager) {
         this.portfolioService = portfolioService;
         this.tradeEventService = tradeEventService;
         this.entityManager = entityManager;
@@ -38,11 +38,11 @@ public class PortfolioTradeExecutionService {
 
     @Transactional
     @TimeTracked(expectedMillis = 750, shouldPersist = true)
-    public void executeTrader(Trader trader, TradingEngine assetTrader) {
-        PortfolioAsset traderAsset = assetTrader.getAsset();
+    public void executeTrader(final Trader trader, final TradingEngine assetTrader) {
+        final PortfolioAsset traderAsset = assetTrader.getAsset();
         this.entityManager.unwrap(Session.class).setReadOnly(traderAsset.getCurrency(), true);
-        PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
-        boolean tradeOccurred = assetTrader.trade();
+        final PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
+        final boolean tradeOccurred = assetTrader.trade();
         if (tradeOccurred) {
             log.info("{} Trade executed for trader {} on asset {}. Shares: {} {}, Wallet Dollars: {}, Target Price: {}.",
                 PortfolioTraderService.getLogPrefix(trader.getPortfolio().getUser().getSubscriptionTier()),
@@ -59,24 +59,24 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    public void triggerAllTraders(List<Trader> traders) {
-        for (Trader trader : traders) {
-            for (TradingEngine assetTrader : trader.getAssetTraders()) {
+    public void triggerAllTraders(final List<Trader> traders) {
+        for (final Trader trader : traders) {
+            for (final TradingEngine assetTrader : trader.getAssetTraders()) {
                 this.executeTrader(trader, assetTrader);
             }
         }
     }
 
-    private void saveAssetChanges(Trader trader, PortfolioAsset traderAsset, boolean tradeOccurred) {
-        PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(traderAsset, tradeOccurred);
-        PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(traderAsset);
-        PortfolioAssetHistory previousWithShares = this.getLastPortfolioAssetWithSharesSinceTime(portfolioAssetHistory);
+    private void saveAssetChanges(final Trader trader, final PortfolioAsset traderAsset, final boolean tradeOccurred) {
+        final PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(traderAsset, tradeOccurred);
+        final PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(traderAsset);
+        final PortfolioAssetHistory previousWithShares = this.getLastPortfolioAssetWithSharesSinceTime(portfolioAssetHistory);
         this.portfolioService.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
         this.portfolioService.setPortfolioSharesChange(previousWithShares, portfolioAssetHistory);
         traderAsset.addPortfolioAssetHistory(portfolioAssetHistory);
-        Portfolio traderPortfolio = trader.getPortfolio();
-        PortfolioHistory previousPortfolioHistory = this.portfolioService.getLatestPortfolioHistory(traderPortfolio);
-        PortfolioHistory portfolioHistory = new PortfolioHistory(traderPortfolio, tradeOccurred);
+        final Portfolio traderPortfolio = trader.getPortfolio();
+        final PortfolioHistory previousPortfolioHistory = this.portfolioService.getLatestPortfolioHistory(traderPortfolio);
+        final PortfolioHistory portfolioHistory = new PortfolioHistory(traderPortfolio, tradeOccurred);
         this.setValueChange(previousPortfolioHistory, portfolioHistory);
         traderPortfolio.addPortfolioHistory(portfolioHistory);
         this.saveAll(traderAsset, traderPortfolio, portfolioAssetHistory, portfolioHistory);
@@ -85,26 +85,26 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    private static boolean hasAssetChanged(PortfolioAsset previousAsset, PortfolioAsset traderAsset) {
+    private static boolean hasAssetChanged(final PortfolioAsset previousAsset, final PortfolioAsset traderAsset) {
         return !previousAsset.equals(traderAsset);
     }
 
-    private static void updateTraders(Trader trader, TradingEngine assetTrader) {
+    private static void updateTraders(final Trader trader, final TradingEngine assetTrader) {
         assetTrader.getAsset().updateValues();
         trader.getPortfolio().updateValues();
     }
 
     @TimeTracked(expectedMillis = 100, shouldPersist = true)
-    private void saveTradeEvent(PortfolioAssetHistory portfolioAssetHistory) {
-        TradeType tradeType = TradeEvent.getTradeType(portfolioAssetHistory);
-        TradeEvent tradeEvent = new TradeEvent(portfolioAssetHistory,
+    private void saveTradeEvent(final PortfolioAssetHistory portfolioAssetHistory) {
+        final TradeType tradeType = TradeEvent.getTradeType(portfolioAssetHistory);
+        final TradeEvent tradeEvent = new TradeEvent(portfolioAssetHistory,
             tradeType,
             portfolioAssetHistory.getValueChange(),
             portfolioAssetHistory.getSharesChange());
         this.tradeEventService.saveTradeEvent(tradeEvent);
     }
 
-    private void setValueChange(PortfolioHistory previousPortfolioHistory, PortfolioHistory portfolioHistory) {
+    private void setValueChange(final PortfolioHistory previousPortfolioHistory, final PortfolioHistory portfolioHistory) {
         if (previousPortfolioHistory != null) {
             portfolioHistory.calculateValueChange(previousPortfolioHistory);
         } else {
@@ -112,15 +112,15 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    private PortfolioAssetHistory getLastPortfolioAssetWithSharesSinceTime(PortfolioAssetHistory assetToLookRetrospectively) {
+    private PortfolioAssetHistory getLastPortfolioAssetWithSharesSinceTime(final PortfolioAssetHistory assetToLookRetrospectively) {
         return this.portfolioService.getLatestPreviousAssetHistoryWithShares(assetToLookRetrospectively);
     }
 
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
-    private void saveAll(PortfolioAsset traderAsset,
-                         Portfolio traderPortfolio,
-                         PortfolioAssetHistory portfolioAssetHistory,
-                         PortfolioHistory portfolioHistory) {
+    private void saveAll(final PortfolioAsset traderAsset,
+                         final Portfolio traderPortfolio,
+                         final PortfolioAssetHistory portfolioAssetHistory,
+                         final PortfolioHistory portfolioHistory) {
         this.portfolioService.savePortfolioAsset(traderAsset);
         this.portfolioService.savePortfolio(traderPortfolio);
         this.portfolioService.savePortfolioAssetHistory(portfolioAssetHistory);

@@ -9,7 +9,7 @@ public class PortfolioAssetRequest {
     double shares;
     double walletDollars;
     //===========================-Constructors-===============================
-    public PortfolioAssetRequest(String currencyName, double shares, double walletDollars) {
+    public PortfolioAssetRequest(final String currencyName, final double shares, final double walletDollars) {
         this.currencyName = currencyName;
         this.shares = shares;
         this.walletDollars = walletDollars;

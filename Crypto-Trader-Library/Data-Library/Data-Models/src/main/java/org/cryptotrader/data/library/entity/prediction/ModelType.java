@@ -6,10 +6,10 @@ public enum ModelType {
     MULTI_LAYER("multi_layer"),
     COMPLEX_MULTI_LAYER("complex_multi_layer");
     public final String modelType;
-    ModelType(String modelType) {
+    ModelType(final String modelType) {
         this.modelType = modelType;
     }
-    public static ModelType from(String modelType) {
+    public static ModelType from(final String modelType) {
         return switch (modelType) {
             case "lstm" -> ModelType.LSTM;
             case "complex_lstm" -> ModelType.COMPLEX_LSTM;

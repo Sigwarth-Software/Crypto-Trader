@@ -19,28 +19,28 @@ public class CryptoTrader {
     public CryptoTrader() {
         this.traders = new ArrayList<>();
     }
-    public CryptoTrader(List<Trader> traders) {
+    public CryptoTrader(final List<Trader> traders) {
         this.traders = traders;
     }
     //=============================-Methods-==================================
 
     //------------------------Trade-All-Portfolios----------------------------
     public void tradeAllPortfolios() {
-        for (Trader trader : this.traders) {
+        for (final Trader trader : this.traders) {
             trader.tradeAllAssets();
         }
     }
     //---------------------------Add-Portfolio--------------------------------
-    public void addTrader(Trader trader) {
+    public void addTrader(final Trader trader) {
         this.traders.add(trader);
     }
     //----------------------------Add-Traders---------------------------------
-    public void addTraders(ArrayList<Trader> traders) {
+    public void addTraders(final ArrayList<Trader> traders) {
         this.traders.addAll(traders);
     }
     //-------------------------Add-All-Portfolios-----------------------------
-    public void addAllPortfolios(List<Portfolio> portfolios) {
-        for (Portfolio portfolio : portfolios) {
+    public void addAllPortfolios(final List<Portfolio> portfolios) {
+        for (final Portfolio portfolio : portfolios) {
             this.addTrader(new Trader(portfolio));
         }
     }
@@ -53,7 +53,7 @@ public class CryptoTrader {
         return this.traders.isEmpty();
     }
 
-    public List<Trader> getTradersBySubscriptionTier(SubscriptionTier subscriptionTier) {
+    public List<Trader> getTradersBySubscriptionTier(final SubscriptionTier subscriptionTier) {
         return this.traders.stream()
                 .filter(trader -> trader.getPortfolio().getUser().getSubscriptionTier() == subscriptionTier)
                 .toList();

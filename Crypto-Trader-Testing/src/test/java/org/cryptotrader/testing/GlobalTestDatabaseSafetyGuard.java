@@ -22,7 +22,7 @@ public final class GlobalTestDatabaseSafetyGuard implements LauncherSessionListe
             "jdbc:h2:mem:crypto_trader_global_tests;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
 
     @Override
-    public void launcherSessionOpened(LauncherSession session) {
+    public void launcherSessionOpened(final LauncherSession session) {
         requireExactProperty("cryptotrader.global-tests.safe", "true");
         requireTestProfile();
         requireExactProperty("spring.datasource.url", SAFE_URL);
@@ -42,8 +42,8 @@ public final class GlobalTestDatabaseSafetyGuard implements LauncherSessionListe
     }
 
     private static void requireTestProfile() {
-        String profiles = System.getProperty("spring.profiles.active", "");
-        boolean testIsActive = profiles.lines()
+        final String profiles = System.getProperty("spring.profiles.active", "");
+        final boolean testIsActive = profiles.lines()
                 .flatMap(line -> java.util.Arrays.stream(line.split(",")))
                 .map(String::trim)
                 .anyMatch("test"::equals);
@@ -53,39 +53,39 @@ public final class GlobalTestDatabaseSafetyGuard implements LauncherSessionListe
         }
     }
 
-    private static void requireExactProperty(String name, String expected) {
-        String actual = System.getProperty(name);
+    private static void requireExactProperty(final String name, final String expected) {
+        final String actual = System.getProperty(name);
         if (!expected.equals(actual)) {
             fail("JVM property " + name + " must equal " + expected, actual);
         }
     }
 
-    private static void requireExactEnvironment(String name, String expected) {
-        String actual = System.getenv(name);
+    private static void requireExactEnvironment(final String name, final String expected) {
+        final String actual = System.getenv(name);
         if (!expected.equals(actual)) {
             fail("environment variable " + name + " must equal " + expected, actual);
         }
     }
 
     private static void rejectAnyPostgreSqlDatasourceSetting() {
-        for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
+        for (final Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
             rejectPostgreSqlValue("JVM property " + entry.getKey(), String.valueOf(entry.getValue()));
         }
-        for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
-            String name = entry.getKey().toLowerCase(Locale.ROOT);
+        for (final Map.Entry<String, String> entry : System.getenv().entrySet()) {
+            final String name = entry.getKey().toLowerCase(Locale.ROOT);
             if (name.contains("datasource") || name.startsWith("psql_") || name.contains("database_url")) {
                 rejectPostgreSqlValue("environment variable " + entry.getKey(), entry.getValue());
             }
         }
     }
 
-    private static void rejectPostgreSqlValue(String source, String value) {
+    private static void rejectPostgreSqlValue(final String source, final String value) {
         if (value != null && value.toLowerCase(Locale.ROOT).contains("jdbc:postgresql:")) {
             fail(source + " contains a forbidden PostgreSQL URL", value);
         }
     }
 
-    private static void fail(String requirement, String actual) {
+    private static void fail(final String requirement, final String actual) {
         throw new IllegalStateException(
                 "GLOBAL TEST DATABASE SAFETY CHECK FAILED: " + requirement
                         + ". Actual value: " + String.valueOf(actual)

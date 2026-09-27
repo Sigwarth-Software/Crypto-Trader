@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data/news-sentiment")
 public class NewsSentimentController {
     private final NewsSentimentService newsSentimentService;
-    
+
     @Autowired
-    public NewsSentimentController(NewsSentimentService newsSentimentService) {
+    public NewsSentimentController(final NewsSentimentService newsSentimentService) {
         this.newsSentimentService = newsSentimentService;
     }
-    
+
     @PostMapping("/add")
-    public ResponseEntity<OperationSuccessfulResponse> add(@RequestBody NewsSentimentRequest request) {
+    public ResponseEntity<OperationSuccessfulResponse> add(@RequestBody final NewsSentimentRequest request) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -23,7 +23,7 @@ public class UserController {
     private final PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
-    public UserController(ProductUserService productUserService, PortfolioService portfolioService) {
+    public UserController(final ProductUserService productUserService, final PortfolioService portfolioService) {
         this.productUserService = productUserService;
         this.portfolioService = portfolioService;
     }
@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/tier")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal ProductUser user) {
+    public ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal final ProductUser user) {
         return ResponseEntity.ok(new SubscriptionTierResponse(user.getSubscriptionTier()));
     }
 

@@ -15,7 +15,7 @@ public class IdentifiableEntity<T> extends Identifiable<T> {
     public IdentifiableEntity() {
         this.id = null;
     }
-    public IdentifiableEntity(T id) {
+    public IdentifiableEntity(final T id) {
         this.id = id;
     }
 }

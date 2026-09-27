@@ -23,7 +23,7 @@ public class DocsSecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
     @Order(1)
-    public SecurityFilterChain docsAndActuator(HttpSecurity http) throws Exception {
+    public SecurityFilterChain docsAndActuator(final HttpSecurity http) throws Exception {
         http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/actuator/**");
         http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable);

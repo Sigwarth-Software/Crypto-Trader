@@ -23,7 +23,7 @@ public class ApiDataRetriever {
     public static final String NO_DATA_ERROR_MESSAGE = "Error: No data received " +
                                                 "from API";
     //===========================-Constructors-===============================
-    public ApiDataRetriever(String url) {
+    public ApiDataRetriever(final String url) {
         this.url = url;
         this.response = "";
         this.fetchResponse();
@@ -32,22 +32,22 @@ public class ApiDataRetriever {
 
     //---------------------------Fetch-Response-------------------------------
     public void fetchResponse() {
-        StringBuilder responseJson = new StringBuilder();
+        final StringBuilder responseJson = new StringBuilder();
         HttpsURLConnection urlConnection = null;
         BufferedReader apiReader = null;
         try {
-            URI uri = new URI(this.url);
+            final URI uri = new URI(this.url);
             urlConnection = (HttpsURLConnection) uri.toURL().openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-            InputStream urlStream = urlConnection.getInputStream();
-            InputStreamReader urlStreamReader = new InputStreamReader(urlStream);
+            final InputStream urlStream = urlConnection.getInputStream();
+            final InputStreamReader urlStreamReader = new InputStreamReader(urlStream);
             apiReader = new BufferedReader(urlStreamReader);
             String jsonLine;
             while ((jsonLine = apiReader.readLine()) != null) {
                 responseJson.append(jsonLine);
             }
-        } catch (URISyntaxException | IOException ex) {
+        } catch (final URISyntaxException | IOException ex) {
             log.error("Error fetching API data: {}", ex.getMessage());
         } finally {
             if (responseJson.isEmpty()) {
@@ -60,12 +60,12 @@ public class ApiDataRetriever {
         }
     }
     //-----------------------Shut-Down-Connections----------------------------
-    public static void shutDownConnections(HttpsURLConnection urlConnection,
-                                           BufferedReader apiReader) {
+    public static void shutDownConnections(final HttpsURLConnection urlConnection,
+                                           final BufferedReader apiReader) {
         if (apiReader != null) {
             try {
                 apiReader.close();
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 log.error("Error closing API reader: {}", ex.getMessage());
             }
         }

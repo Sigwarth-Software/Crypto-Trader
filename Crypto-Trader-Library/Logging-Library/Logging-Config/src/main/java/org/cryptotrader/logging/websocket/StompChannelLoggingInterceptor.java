@@ -30,24 +30,24 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
     private final LogRedactor logRedactor;
 
     @Override
-    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+    public Message<?> preSend(final Message<?> message, final MessageChannel channel) {
         try {
             logMessage(message);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.warn("Failed to log STOMP frame", ex);
         }
         return message;
     }
 
-    private void logMessage(Message<?> message) {
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+    private void logMessage(final Message<?> message) {
+        final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         if (accessor == null) return;
-        StompCommand cmd = accessor.getCommand();
-        String sessionId = accessor.getSessionId();
-        Principal user = accessor.getUser();
-        String destination = accessor.getDestination();
+        final StompCommand cmd = accessor.getCommand();
+        final String sessionId = accessor.getSessionId();
+        final Principal user = accessor.getUser();
+        final String destination = accessor.getDestination();
 
-        StringBuilder sb = new StringBuilder(256);
+        final StringBuilder sb = new StringBuilder(256);
         sb.append(color("[", AnsiColor.BRIGHT_BLACK)).append(color("WS", AnsiColor.CYAN, AnsiStyle.BOLD))
           .append(color("] ", AnsiColor.BRIGHT_BLACK));
         sb.append(color(cmd != null ? cmd.name() : "FRAME", AnsiColor.BLUE, AnsiStyle.BOLD));
@@ -60,24 +60,24 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         if (user != null) {
             sb.append(' ').append(color("user=" + user.getName(), AnsiColor.BRIGHT_BLACK));
         }
-        Object payload = message.getPayload();
-        int size = sizeOf(payload);
+        final Object payload = message.getPayload();
+        final int size = sizeOf(payload);
         sb.append(' ').append(color(humanSize(size), AnsiColor.MAGENTA));
 
         if (props.isIncludeHeaders()) {
             sb.append('\n').append(color("Headers:", AnsiColor.BRIGHT_BLACK)).append('\n');
-            for (Map.Entry<String, Object> objectEntry : message.getHeaders().entrySet()) {
-                String value = this.logRedactor.redactHeader(objectEntry.getKey(), String.valueOf(objectEntry.getValue()));
-                String formattedKey = color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK);
-                String formattedValue = color(value, AnsiColor.WHITE);
+            for (final Map.Entry<String, Object> objectEntry : message.getHeaders().entrySet()) {
+                final String value = this.logRedactor.redactHeader(objectEntry.getKey(), String.valueOf(objectEntry.getValue()));
+                final String formattedKey = color(objectEntry.getKey() + ": ", AnsiColor.BRIGHT_BLACK);
+                final String formattedValue = color(value, AnsiColor.WHITE);
                 sb.append("  ").append(formattedKey).append(formattedValue).append('\n');
             }
         }
         if (props.isIncludePayload() && payload != null) {
-            String text = asText(payload, props.getMaxPayloadLength());
+            final String text = asText(payload, props.getMaxPayloadLength());
             if (!text.isEmpty()) {
-                String formattedKey = color("Payload:", AnsiColor.BRIGHT_BLACK);
-                String formattedValue = color(this.logRedactor.redactText(text), AnsiColor.WHITE);
+                final String formattedKey = color("Payload:", AnsiColor.BRIGHT_BLACK);
+                final String formattedValue = color(this.logRedactor.redactText(text), AnsiColor.WHITE);
                 sb.append('\n').append(formattedKey).append(' ').append(formattedValue);
             }
         }
@@ -96,11 +96,11 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         }
     }
 
-    private String color(String text, AnsiColor color) {
+    private String color(final String text, final AnsiColor color) {
         return color(text, color, null);
     }
 
-    private String color(String text, AnsiColor color, @Nullable AnsiStyle style) {
+    private String color(final String text, final AnsiColor color, @Nullable final AnsiStyle style) {
         if (!this.props.isColorEnabled()) return text;
         if (style != null) {
             return AnsiOutput.toString(style, color, text, AnsiStyle.NORMAL);

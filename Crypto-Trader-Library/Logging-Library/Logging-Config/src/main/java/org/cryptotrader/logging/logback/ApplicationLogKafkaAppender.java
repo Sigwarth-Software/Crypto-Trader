@@ -27,7 +27,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     };
 
     @Override
-    protected void append(ILoggingEvent event) {
+    protected void append(final ILoggingEvent event) {
         if (this.isRecursiveLoggerEvent(event)) {
             return;
         }
@@ -36,17 +36,17 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
             return;
         }
 
-        LogEventsPublisher publisher = LogEventPublisherBridge.publisher();
+        final LogEventsPublisher publisher = LogEventPublisherBridge.publisher();
         if (publisher == null) {
             return;
         }
 
-        LogRedactor redactor = LogEventPublisherBridge.redactor();
-        String module = this.getContextProperty("ct_app_name", "unknown-service");
-        LocalDateTime timestamp = this.toLocalDateTime(event.getTimeStamp());
+        final LogRedactor redactor = LogEventPublisherBridge.redactor();
+        final String module = this.getContextProperty("ct_app_name", "unknown-service");
+        final LocalDateTime timestamp = this.toLocalDateTime(event.getTimeStamp());
 
-        String message = this.redactText(redactor, event.getFormattedMessage());
-        IThrowableProxy throwableProxy = event.getThrowableProxy();
+        final String message = this.redactText(redactor, event.getFormattedMessage());
+        final IThrowableProxy throwableProxy = event.getThrowableProxy();
 
         publisher.publishApplicationLog(new ApplicationLogEventPayload(
                 timestamp,
@@ -82,9 +82,9 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
         }
     }
 
-    private boolean isRecursiveLoggerEvent(ILoggingEvent event) {
-        String loggerName = event.getLoggerName();
-        for (String prefix : RECURSIVE_LOGGER_PREFIXES) {
+    private boolean isRecursiveLoggerEvent(final ILoggingEvent event) {
+        final String loggerName = event.getLoggerName();
+        for (final String prefix : RECURSIVE_LOGGER_PREFIXES) {
             if (loggerName.startsWith(prefix)) {
                 return true;
             }
@@ -93,41 +93,41 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     }
 
     private boolean isPersistenceEnabled() {
-        String mode = this.getContextProperty("ct_persistence_mode", LogPersistenceMode.DATABASE.name());
+        final String mode = this.getContextProperty("ct_persistence_mode", LogPersistenceMode.DATABASE.name());
         return !LogPersistenceMode.DISK.name().equalsIgnoreCase(mode);
     }
 
-    private String getContextProperty(String name, String defaultValue) {
+    private String getContextProperty(final String name, final String defaultValue) {
         if (this.getContext() == null) {
             return defaultValue;
         }
-        String value = this.getContext().getProperty(name);
+        final String value = this.getContext().getProperty(name);
         if (value != null) {
             return value;
         }
         return defaultValue;
     }
 
-    private String redactText(LogRedactor redactor, String text) {
-        String stripped = AnsiStripperConverter.stripEscapeCode(text);
+    private String redactText(final LogRedactor redactor, final String text) {
+        final String stripped = AnsiStripperConverter.stripEscapeCode(text);
         if (redactor != null) {
             return redactor.redactText(stripped);
         }
         return stripped;
     }
 
-    private Map<String, String> getMdcContext(ILoggingEvent event) {
-        Map<String, String> mdcPropertyMap;
+    private Map<String, String> getMdcContext(final ILoggingEvent event) {
+        final Map<String, String> mdcPropertyMap;
         try {
             mdcPropertyMap = event.getMDCPropertyMap();
-        } catch (RuntimeException exception) {
+        } catch (final RuntimeException exception) {
             return null;
         }
         return (mdcPropertyMap == null || mdcPropertyMap.isEmpty()) ? null : mdcPropertyMap;
     }
 
     // TODO: Move to Universal-Scripts.
-    private LocalDateTime toLocalDateTime(long epochMillis) {
+    private LocalDateTime toLocalDateTime(final long epochMillis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
     }
 }

@@ -357,7 +357,7 @@ public class AuthController {
                 return null;
             }
             return verification.getJwkThumbprint();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.debug("Failed to derive jkt from DPoP proof", ex);
         }
         return null;

@@ -47,13 +47,13 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Value("${cryptotrader.api.cors.allow-credentials:true}")
     private boolean allowCredentials;
-    
+
     /**
      * Programmatically registers CORS rules for all controller endpoints.
      * Uses properties to set allowed origins/methods/headers and whether credentials are allowed.
      */
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
+    public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(this.allowedOrigins.toArray(String[]::new))
                 .allowedMethods(this.allowedMethods.toArray(String[]::new))
@@ -61,7 +61,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowCredentials(this.allowCredentials)
                 .exposedHeaders(this.exposedHeaders.toArray(String[]::new));
     }
-    
+
     /**
      * Provide a CorsConfigurationSource bean for components that look it up directly (e.g. Spring Security).
      * Mirrors the same properties as addCorsMappings for consistency.
@@ -69,13 +69,13 @@ public class CorsConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnMissingBean(CorsConfigurationSource.class)
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        final CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(this.allowedOrigins);
         config.setAllowedMethods(this.allowedMethods);
         config.setAllowedHeaders(this.allowedHeaders);
         config.setAllowCredentials(this.allowCredentials);
         config.setExposedHeaders(this.exposedHeaders);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }

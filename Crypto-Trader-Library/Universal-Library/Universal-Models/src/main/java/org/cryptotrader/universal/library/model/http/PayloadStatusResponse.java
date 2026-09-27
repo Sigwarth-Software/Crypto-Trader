@@ -10,7 +10,7 @@ public class PayloadStatusResponse<T> {
     //=============================-Variables-=================================
     private T payload;
     private HttpStatus status;
-    public PayloadStatusResponse(T payload, HttpStatus status) {
+    public PayloadStatusResponse(final T payload, final HttpStatus status) {
         this.payload = payload;
         this.status = status;
     }

@@ -21,30 +21,30 @@ public class LogRedactor {
 
     private final LogRedactionProperties properties;
 
-    public LogRedactor(LogRedactionProperties properties) {
+    public LogRedactor(final LogRedactionProperties properties) {
         this.properties = properties;
     }
 
-    public String redactHeader(@Nullable String name, @Nullable String value) {
+    public String redactHeader(@Nullable final String name, @Nullable final String value) {
         if (!this.properties.isEnabled() || value == null) {
             return value;
         }
         return this.isSensitiveHeader(name) ? this.properties.getReplacement() : value;
     }
 
-    public String redactQueryString(@Nullable String queryString) {
+    public String redactQueryString(@Nullable final String queryString) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(queryString)) {
             return queryString;
         }
 
-        String[] pairs = queryString.split("&", -1);
+        final String[] pairs = queryString.split("&", -1);
         for (int index = 0; index < pairs.length; index++) {
-            int separatorIndex = pairs[index].indexOf('=');
+            final int separatorIndex = pairs[index].indexOf('=');
             if (separatorIndex < 0) {
                 continue;
             }
-            String encodedName = pairs[index].substring(0, separatorIndex);
-            String name = URLDecoder.decode(encodedName, StandardCharsets.UTF_8);
+            final String encodedName = pairs[index].substring(0, separatorIndex);
+            final String name = URLDecoder.decode(encodedName, StandardCharsets.UTF_8);
             if (this.isSensitiveField(name)) {
                 pairs[index] = encodedName + "=" + URLEncoder.encode(this.properties.getReplacement(), StandardCharsets.UTF_8);
             }
@@ -52,28 +52,28 @@ public class LogRedactor {
         return String.join("&", pairs);
     }
 
-    public String redactText(@Nullable String text) {
+    public String redactText(@Nullable final String text) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(text)) {
             return text;
         }
 
         String redacted = text;
-        for (String field : this.properties.getFields()) {
+        for (final String field : this.properties.getFields()) {
             redacted = this.redactAssignment(redacted, field);
         }
         return redacted;
     }
 
-    public JsonNode redact(JsonNode node) {
+    public JsonNode redact(final JsonNode node) {
         if (!this.properties.isEnabled() || node == null) {
             return node;
         }
 
         if (node.isObject()) {
-            ObjectNode copy = (ObjectNode) node.deepCopy();
-            Iterator<Map.Entry<String, JsonNode>> fields = copy.fields();
+            final ObjectNode copy = (ObjectNode) node.deepCopy();
+            final Iterator<Map.Entry<String, JsonNode>> fields = copy.fields();
             while (fields.hasNext()) {
-                Map.Entry<String, JsonNode> entry = fields.next();
+                final Map.Entry<String, JsonNode> entry = fields.next();
                 if (this.isSensitiveField(entry.getKey())) {
                     copy.put(entry.getKey(), this.properties.getReplacement());
                 } else {
@@ -84,7 +84,7 @@ public class LogRedactor {
         }
 
         if (node.isArray()) {
-            ArrayNode copy = OBJECT_MAPPER.createArrayNode();
+            final ArrayNode copy = OBJECT_MAPPER.createArrayNode();
             node.forEach(child -> copy.add(this.redact(child)));
             return copy;
         }
@@ -92,14 +92,14 @@ public class LogRedactor {
         return node;
     }
 
-    private String redactAssignment(String text, String field) {
-        Pattern pattern = Pattern.compile(
+    private String redactAssignment(final String text, final String field) {
+        final Pattern pattern = Pattern.compile(
                 "(?i)([?&\\s,{\\[]?)(\"?" + Pattern.quote(field) + "\"?\\s*[:=]\\s*)(\"?)([^\"&\\s,}\\]]+)(\"?)"
         );
-        Matcher matcher = pattern.matcher(text);
-        StringBuilder redacted = new StringBuilder();
+        final Matcher matcher = pattern.matcher(text);
+        final StringBuilder redacted = new StringBuilder();
         while (matcher.find()) {
-            String replacement = matcher.group(1)
+            final String replacement = matcher.group(1)
                     + matcher.group(2)
                     + matcher.group(3)
                     + this.properties.getReplacement()
@@ -110,7 +110,7 @@ public class LogRedactor {
         return redacted.toString();
     }
 
-    private boolean isSensitiveHeader(@Nullable String header) {
+    private boolean isSensitiveHeader(@Nullable final String header) {
         if (header == null) {
             return false;
         }
@@ -118,7 +118,7 @@ public class LogRedactor {
                 .anyMatch(sensitiveHeader -> sensitiveHeader.equalsIgnoreCase(header));
     }
 
-    private boolean isSensitiveField(@Nullable String field) {
+    private boolean isSensitiveField(@Nullable final String field) {
         if (field == null) {
             return false;
         }

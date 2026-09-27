@@ -9,15 +9,15 @@ public class EntityNotFoundException extends RuntimeException {
         super(DEFAULT_MESSAGE);
     }
 
-    public EntityNotFoundException(String message) {
+    public EntityNotFoundException(final String message) {
         super(message);
     }
 
-    public <T> EntityNotFoundException(String message, Identifiable<T> entity) {
+    public <T> EntityNotFoundException(final String message, final Identifiable<T> entity) {
         super(message + ": ID " + entity.getId() + " (" + entity.getClass().getSimpleName() + ")" );
     }
 
-    public <T> EntityNotFoundException(Identifiable<T> entity) {
+    public <T> EntityNotFoundException(final Identifiable<T> entity) {
         super(DEFAULT_MESSAGE + ": ID " + entity.getId() + " (" + entity.getClass().getSimpleName() + ")" );
     }
 }

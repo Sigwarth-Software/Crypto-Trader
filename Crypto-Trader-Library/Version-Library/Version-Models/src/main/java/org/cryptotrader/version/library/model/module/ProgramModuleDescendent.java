@@ -12,19 +12,19 @@ public class ProgramModuleDescendent extends ProgramModule {
     private ProgramModule parent;
     private ProgramModule child;
 
-    public ProgramModuleDescendent(ModuleLibrary moduleType,
-                                   Path modulePath,
-                                   ConfigFileType configFileType) {
+    public ProgramModuleDescendent(final ModuleLibrary moduleType,
+                                   final Path modulePath,
+                                   final ConfigFileType configFileType) {
         super(moduleType, modulePath, configFileType);
         this.parent = null;
         this.child = null;
     }
-    
-    public ProgramModuleDescendent(ModuleLibrary moduleType,
-                                   Path modulePath,
-                                   ConfigFileType configFileType,
-                                   ProgramModule parent,
-                                   ProgramModule child) {
+
+    public ProgramModuleDescendent(final ModuleLibrary moduleType,
+                                   final Path modulePath,
+                                   final ConfigFileType configFileType,
+                                   final ProgramModule parent,
+                                   final ProgramModule child) {
         super(moduleType, modulePath, configFileType);
         this.parent = parent;
         this.child = child;

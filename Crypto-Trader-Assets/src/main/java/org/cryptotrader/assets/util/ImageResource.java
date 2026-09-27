@@ -6,8 +6,8 @@ public class ImageResource extends LoadableResource {
     public ImageResource() {
         super();
     }
-    
-    public Image getImage(String url) {
+
+    public Image getImage(final String url) {
         return new Image(this.resourceLoader.asResourceStream(url));
     }
 }

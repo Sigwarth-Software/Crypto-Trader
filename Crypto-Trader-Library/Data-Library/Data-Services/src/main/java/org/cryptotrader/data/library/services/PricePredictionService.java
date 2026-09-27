@@ -14,15 +14,15 @@ public class PricePredictionService {
     private final CurrencyService currencyService;
     private final PricePredictionRepository pricePredictionRepository;
     @Autowired
-    public PricePredictionService(CurrencyService currencyService,
-                                  PricePredictionRepository pricePredictionRepository) {
+    public PricePredictionService(final CurrencyService currencyService,
+                                  final PricePredictionRepository pricePredictionRepository) {
         this.currencyService = currencyService;
         this.pricePredictionRepository = pricePredictionRepository;
     }
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
-    public PricePrediction savePrediction(PricePredictionRequest pricePredictionRequest) {
-        Currency currency = this.currencyService.getCurrencyByCurrencyCode(pricePredictionRequest.getCurrencyCode());
-        PricePrediction pricePrediction = PricePrediction.builder()
+    public PricePrediction savePrediction(final PricePredictionRequest pricePredictionRequest) {
+        final Currency currency = this.currencyService.getCurrencyByCurrencyCode(pricePredictionRequest.getCurrencyCode());
+        final PricePrediction pricePrediction = PricePrediction.builder()
                 .currencyCode(pricePredictionRequest.getCurrencyCode())
                 .currencyName(currency.getName())
                 .predictedPrice(pricePredictionRequest.getPredictedPrice())
@@ -36,7 +36,7 @@ public class PricePredictionService {
         return this.pricePredictionRepository.save(pricePrediction);
     }
 
-    public PricePrediction getById(Long id) {
+    public PricePrediction getById(final Long id) {
         return this.pricePredictionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Price prediction not found with id: " + id));
     }

@@ -17,36 +17,36 @@ public class TraderService {
     private final TradeEventService tradeEventService;
 
     @Autowired
-    public TraderService(PortfolioService portfolioService,
-                         CurrencyService currencyService,
-                         TradeEventService tradeEventService) {
+    public TraderService(final PortfolioService portfolioService,
+                         final CurrencyService currencyService,
+                         final TradeEventService tradeEventService) {
         this.portfolioService = portfolioService;
         this.currencyService = currencyService;
         this.tradeEventService = tradeEventService;
     }
-    
-    public TradeEventListResponse getTradeEvents(ProductUser user) {
-        List<TradeEvent> tradeEvents = this.getAllTradeEvents(user);
+
+    public TradeEventListResponse getTradeEvents(final ProductUser user) {
+        final List<TradeEvent> tradeEvents = this.getAllTradeEvents(user);
         return this.toTradeEventListResponse(tradeEvents);
     }
 
-    public TradeEventListResponse getTradeEvents(ProductUser user, int offset, int limit) {
-        List<TradeEvent> tradeEvents = this.tradeEventService.getSelectionByProductUser(user, offset, limit);
+    public TradeEventListResponse getTradeEvents(final ProductUser user, final int offset, final int limit) {
+        final List<TradeEvent> tradeEvents = this.tradeEventService.getSelectionByProductUser(user, offset, limit);
         return this.toTradeEventListResponse(tradeEvents);
     }
-    public List<TradeEvent> getAllTradeEvents(ProductUser user) {
+    public List<TradeEvent> getAllTradeEvents(final ProductUser user) {
         return this.tradeEventService.getAllByProductUser(user);
     }
 
-    public TradeEventListResponse toTradeEventListResponse(List<TradeEvent> tradeEvents) {
+    public TradeEventListResponse toTradeEventListResponse(final List<TradeEvent> tradeEvents) {
         return new TradeEventListResponse(tradeEvents.stream()
                                                      .map(this::toTradeEventResponse)
                                                      .toList()
         );
     }
 
-    public TradeEventResponse toTradeEventResponse(TradeEvent tradeEvent) {
-        String currencyName = this.currencyService.getCurrencyName(true,
+    public TradeEventResponse toTradeEventResponse(final TradeEvent tradeEvent) {
+        final String currencyName = this.currencyService.getCurrencyName(true,
                                                                    tradeEvent.getAssetHistory().getCurrency());
         return new TradeEventResponse(
                 tradeEvent.getId(),
@@ -58,8 +58,8 @@ public class TraderService {
                 tradeEvent.getAssetHistory().getVendor()
         );
     }
-    
-    public boolean userHasTrades(ProductUser user) {
+
+    public boolean userHasTrades(final ProductUser user) {
         return this.tradeEventService.userHasTrades(user);
     }
 }

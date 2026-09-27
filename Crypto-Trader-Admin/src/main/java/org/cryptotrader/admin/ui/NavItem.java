@@ -56,7 +56,7 @@ public class NavItem extends HBox {
         return page;
     }
 
-    public void setPage(AppPage page) {
+    public void setPage(final AppPage page) {
         this.page.set(page);
     }
 }

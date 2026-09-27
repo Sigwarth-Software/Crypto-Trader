@@ -8,8 +8,8 @@ import java.util.List;
 
 @Deprecated(forRemoval = true)
 public class Main {
-    public static void main(String[] args) {
-        List<PomElement> allPoms = PomParser.getAllPoms();
+    public static void main(final String[] args) {
+        final List<PomElement> allPoms = PomParser.getAllPoms();
         allPoms.forEach(pomElement -> {
             System.out.println(pomElement.getPom().getModuleDependency().getName());
         });

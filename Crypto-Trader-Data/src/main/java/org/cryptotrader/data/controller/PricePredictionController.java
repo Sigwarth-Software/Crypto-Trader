@@ -16,15 +16,15 @@ public class PricePredictionController {
     private final PricePredictionService pricePredictionService;
 
     @Autowired
-    public PricePredictionController(PricePredictionService pricePredictionService) {
+    public PricePredictionController(final PricePredictionService pricePredictionService) {
         this.pricePredictionService = pricePredictionService;
     }
     @RequestMapping("/add")
-    public ResponseEntity<PredictionIdResponse> predictions(@RequestBody PricePredictionRequest pricePredictionRequest) {
+    public ResponseEntity<PredictionIdResponse> predictions(@RequestBody final PricePredictionRequest pricePredictionRequest) {
         if (pricePredictionRequest == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Long predictionId = this.pricePredictionService.savePrediction(pricePredictionRequest).getId();
+        final Long predictionId = this.pricePredictionService.savePrediction(pricePredictionRequest).getId();
         if (predictionId == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

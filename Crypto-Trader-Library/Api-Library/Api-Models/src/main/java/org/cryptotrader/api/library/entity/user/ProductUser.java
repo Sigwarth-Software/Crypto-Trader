@@ -46,31 +46,31 @@ public class ProductUser extends User implements UserDetails {
         this.portfolio = null;
         this.lastLogin = null;
     }
-    public ProductUser(String username, String rawPassword) {
+    public ProductUser(final String username, final String rawPassword) {
         super(username, rawPassword);
         this.email = null;
     }
-    public ProductUser(String username, String rawPassword, String email) {
+    public ProductUser(final String username, final String rawPassword, final String email) {
         super(username, rawPassword);
         this.email = email;
     }
-    public ProductUser(String username, SafePassword encodedPassword) {
+    public ProductUser(final String username, final SafePassword encodedPassword) {
         super(username, encodedPassword);
         this.email = null;
         this.portfolio = new Portfolio(this);
     }
-    public ProductUser(String username, String email, SafePassword encodedPassword) {
+    public ProductUser(final String username, final String email, final SafePassword encodedPassword) {
         super(username, encodedPassword);
         this.email = email;
         this.portfolio = new Portfolio(this);
     }
-    public ProductUser(String username,
-                String email,
-                SafePassword encodedPassword,
-                Portfolio portfolio,
-                ProfilePicture profilePicture,
-                LocalDateTime lastLogin,
-                SubscriptionTier subscriptionTier) {
+    public ProductUser(final String username,
+                       final String email,
+                       final SafePassword encodedPassword,
+                       final Portfolio portfolio,
+                       final ProfilePicture profilePicture,
+                       final LocalDateTime lastLogin,
+                       final SubscriptionTier subscriptionTier) {
         super(username, encodedPassword);
         this.email = email;
         this.portfolio = portfolio;
@@ -78,12 +78,12 @@ public class ProductUser extends User implements UserDetails {
         this.lastLogin = lastLogin;
         this.subscriptionTier = subscriptionTier;
     }
-    public ProductUser(String username, String rawPassword, Portfolio portfolio) {
+    public ProductUser(final String username, final String rawPassword, final Portfolio portfolio) {
         super(username, rawPassword);
         this.email = null;
         this.portfolio = portfolio;
     }
-    public ProductUser(String username, String rawPassword, Portfolio portfolio, LocalDateTime lastLogin) {
+    public ProductUser(final String username, final String rawPassword, final Portfolio portfolio, final LocalDateTime lastLogin) {
         super(username, rawPassword);
         this.email = null;
         this.portfolio = portfolio;

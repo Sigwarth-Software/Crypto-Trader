@@ -77,14 +77,14 @@ public class PortfolioController {
     //------------------------Get-Portfolio-History---------------------------
     @GetMapping("/history/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user) {
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
+    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final ProductUser user) {
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+        final List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
 
         if (portfolioHistory.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
+        final List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
                 .map(PortfolioHistoryResponse::new)
                 .toList();
         return ResponseEntity.ok(historyResponses);
@@ -92,8 +92,8 @@ public class PortfolioController {
 
     @PostMapping("/history/ranged/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user, @RequestBody RangedPortfolioHistoryRequest request) {
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
+    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final ProductUser user, @RequestBody final RangedPortfolioHistoryRequest request) {
+        final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         final LocalDateTime startDate = LocalDateTime.parse(request.getStartDate());
         final LocalDateTime endDate = LocalDateTime.parse(request.getEndDate());
         final List<PortfolioHistory> portfolioHistory = this.portfolioService.getRangedPortfolioHistory(portfolio, startDate, endDate);

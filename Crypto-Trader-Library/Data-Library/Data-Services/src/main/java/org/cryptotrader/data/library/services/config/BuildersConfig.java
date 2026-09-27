@@ -13,13 +13,13 @@ public class BuildersConfig {
 
     @Bean
     @Primary
-    public PricePredictionLookup pricePredictionLookup(PricePredictionService pricePredictionService) {
+    public PricePredictionLookup pricePredictionLookup(final PricePredictionService pricePredictionService) {
         return pricePredictionService::getById;
     }
 
     @Bean
     @Scope("prototype")
-    public TrainingSessionBuilder trainingSessionBuilder(PricePredictionLookup predictionLookup) {
+    public TrainingSessionBuilder trainingSessionBuilder(final PricePredictionLookup predictionLookup) {
         return new TrainingSessionBuilder(predictionLookup);
     }
 }

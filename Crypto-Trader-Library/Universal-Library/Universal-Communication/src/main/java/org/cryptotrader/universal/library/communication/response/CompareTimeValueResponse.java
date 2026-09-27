@@ -6,7 +6,7 @@ import lombok.Data;
 public class CompareTimeValueResponse extends TimeValueResponse {
     private double comparedValue;
 
-    public CompareTimeValueResponse(String time, double value, double comparedValue) {
+    public CompareTimeValueResponse(final String time, final double value, final double comparedValue) {
         super(time, value);
         this.comparedValue = comparedValue;
     }

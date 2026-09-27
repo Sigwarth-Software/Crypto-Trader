@@ -23,42 +23,42 @@ public class PomParser {
     private static List<String> skipDirs = List.of("target", "node_modules", ".angular", "logs", ".git");
     private static Path rootPath = Path.of("..");
     public static List<PomElement> getAllPoms() {
-        List<PomElement> modules;
-        List<Path> pomPaths = getPomPaths();
+        final List<PomElement> modules;
+        final List<Path> pomPaths = getPomPaths();
         modules = pomPaths.stream().map(PomParser::getPom).collect(Collectors.toList());
         return modules;
     }
 
-    public static PomElement getPom(Path pomPath) {
+    public static PomElement getPom(final Path pomPath) {
         try {
-            Document doc = new SAXBuilder().build(pomPath.toFile());
-            Element project = doc.getRootElement();
-            PomElement pom = new PomElement(project, pomPath);
+            final Document doc = new SAXBuilder().build(pomPath.toFile());
+            final Element project = doc.getRootElement();
+            final PomElement pom = new PomElement(project, pomPath);
             return pom;
-        } catch (IOException | JDOMException exception) {
+        } catch (final IOException | JDOMException exception) {
             throw new RuntimeException(exception);
         }
 
     }
 
     public static String getVersionString() {
-        List<PomElement> pomElements = getAllPoms();
-        StringBuilder versionString = new StringBuilder();
+        final List<PomElement> pomElements = getAllPoms();
+        final StringBuilder versionString = new StringBuilder();
         pomElements.forEach(pomElement -> {
-            String name = pomElement.getPom().getModuleDependency().getName();
-            String version = pomElement.getVersion();
+            final String name = pomElement.getPom().getModuleDependency().getName();
+            final String version = pomElement.getVersion();
             versionString.append("%s: %s\n".formatted(name, version));
         });
         return versionString.toString();
     }
-    
-    public static String textFromNamespace(Element element, 
-                                           Namespace namespace,
-                                           String name) {
+
+    public static String textFromNamespace(final Element element,
+                                           final Namespace namespace,
+                                           final String name) {
         return element.getChild(name, namespace).getText();
     }
 
-    public static String getModulePath(Path path) {
+    public static String getModulePath(final Path path) {
         String modulePath = path.toString();
         modulePath = modulePath.replace("..", "Crypto-Trader");
         modulePath = modulePath.replace("\\pom.xml", "");
@@ -66,12 +66,12 @@ public class PomParser {
     }
 
     public static List<Path> getPomPaths() {
-        List<Path> paths = new ArrayList<>();
+        final List<Path> paths = new ArrayList<>();
         try {
             Files.walkFileTree(rootPath, new SimpleFileVisitor<>() {
                 @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-                    Path name = dir.getFileName();
+                public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) {
+                    final Path name = dir.getFileName();
                     if (name != null && skipDirs.contains(name.toString())) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
@@ -79,14 +79,14 @@ public class PomParser {
                 }
 
                 @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
                     if (attrs.isRegularFile() && "pom.xml".equals(file.getFileName().toString())) {
                         paths.add(file);
                     }
                     return FileVisitResult.CONTINUE;
                 }
             });
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new IllegalStateException("Error in searching for pom.xml files.", exception);
         }
         return paths;

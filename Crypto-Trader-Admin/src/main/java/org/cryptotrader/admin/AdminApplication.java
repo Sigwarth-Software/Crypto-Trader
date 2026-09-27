@@ -38,7 +38,7 @@ public class AdminApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(final Stage stage) throws IOException {
         final FXMLLoader fxmlLoader = new FXMLLoader(AdminApplication.class.getResource(ROOT_APP_VIEW_PATH));
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
         final Scene scene = new Scene(fxmlLoader.load(), 900, 700);
@@ -54,17 +54,17 @@ public class AdminApplication extends Application {
         this.addJRebelListener(scene);
     }
 
-    private static void addPossibleStylesheet(URL cssPath, Scene scene) {
+    private static void addPossibleStylesheet(final URL cssPath, final Scene scene) {
         if (cssPath != null) {
             scene.getStylesheets().add(cssPath.toExternalForm());
         }
     }
 
-    private static void addDesktopIcon(Stage stage) {
+    private static void addDesktopIcon(final Stage stage) {
         stage.getIcons().add(CryptoTraderLogoImageAssets.CROPPED_TRANSPARENT_PNG);
     }
 
-    private void addJRebelListener(Scene scene) {
+    private void addJRebelListener(final Scene scene) {
         JRebelHook.register(
                 () -> reloadScene(scene),
                 "org.cryptotrader.admin.controller",
@@ -72,26 +72,26 @@ public class AdminApplication extends Application {
         );
     }
 
-    private void addReloadKeybind(Scene scene) {
+    private void addReloadKeybind(final Scene scene) {
         scene.getAccelerators().put(new KeyCodeCombination(KeyCode.R,
                 KeyCombination.CONTROL_DOWN,
                 KeyCombination.SHIFT_DOWN), () -> reloadScene(scene));
     }
 
 
-    public void reloadScene(Scene scene) {
+    public void reloadScene(final Scene scene) {
         try {
-            FXMLLoader reloadLoader = new FXMLLoader(
+            final FXMLLoader reloadLoader = new FXMLLoader(
                     AdminApplication.class.getResource("ui/view/app/AppView.fxml"));
             reloadLoader.setControllerFactory(this.applicationContext::getBean);
 
-            Parent newRoot = reloadLoader.load();
+            final Parent newRoot = reloadLoader.load();
             scene.setRoot(newRoot);
             // TODO: Add a property or profile which triggers ScenicView.
 //            ScenicView.show(newRoot);
             final int controllerIdentityHash = System.identityHashCode(reloadLoader.getController());
             System.out.printf("[Hot Reload] scene root swapped, controller = %s @%d%n", reloadLoader.getController(), controllerIdentityHash);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             ex.printStackTrace();
         }
     }

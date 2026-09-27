@@ -20,12 +20,12 @@ public class EventPublisher {
     private final StreamBridge streamBridge;
 
     @Autowired
-    public EventPublisher(StreamBridge streamBridge) {
+    public EventPublisher(final StreamBridge streamBridge) {
         this.streamBridge = streamBridge;
     }
 
-    public <T> boolean publish(String bindingName, T payload) {
-        Message<T> message = MessageBuilder
+    public <T> boolean publish(final String bindingName, final T payload) {
+        final Message<T> message = MessageBuilder
                 .withPayload(payload)
                 .setHeader(MessageHeaders.CONTENT_TYPE, ENCRYPTED_JSON_CONTENT_TYPE)
                 .setHeader(EVENT_BINDING_HEADER, bindingName)
@@ -35,8 +35,8 @@ public class EventPublisher {
         return this.streamBridge.send(bindingName, message);
     }
 
-    public <T> boolean publish(String bindingName, T payload, Map<String, Object> headers) {
-        Message<T> message = MessageBuilder
+    public <T> boolean publish(final String bindingName, final T payload, final Map<String, Object> headers) {
+        final Message<T> message = MessageBuilder
                 .withPayload(payload)
                 .copyHeaders(headers)
                 .setHeaderIfAbsent(MessageHeaders.CONTENT_TYPE, ENCRYPTED_JSON_CONTENT_TYPE)
@@ -47,7 +47,7 @@ public class EventPublisher {
         return this.streamBridge.send(bindingName, message);
     }
 
-    private void logPublish(String bindingName, Object payload) {
+    private void logPublish(final String bindingName, final Object payload) {
         log.debug("Publishing event to binding '{}' with payload: \n{}", bindingName, payload);
     }
 }

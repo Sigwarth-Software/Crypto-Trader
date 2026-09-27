@@ -16,17 +16,17 @@ class ExecutionSpeedLogConsumerConfigTest {
 
     @Test
     void classifiesOverResourcedMethodBeforePersisting() {
-        ExecutionSpeedLogService persistenceService = mock(ExecutionSpeedLogService.class);
-        TimeTrackingProperties properties = new TimeTrackingProperties();
-        ExecutionSpeedLogConsumerConfig config = new ExecutionSpeedLogConsumerConfig(persistenceService, properties);
-        ExecutionSpeedLogEventPayload payload = payload(80L, 100L);
+        final ExecutionSpeedLogService persistenceService = mock(ExecutionSpeedLogService.class);
+        final TimeTrackingProperties properties = new TimeTrackingProperties();
+        final ExecutionSpeedLogConsumerConfig config = new ExecutionSpeedLogConsumerConfig(persistenceService, properties);
+        final ExecutionSpeedLogEventPayload payload = payload(80L, 100L);
 
         config.executionSpeedLogsConsumer().accept(new GenericMessage<>(payload));
 
         verify(persistenceService).persist(payload, ExecutionSpeedWarningLevel.EXCEEDING);
     }
 
-    private ExecutionSpeedLogEventPayload payload(long executionSpeed, long expectedExecutionSpeed) {
+    private ExecutionSpeedLogEventPayload payload(final long executionSpeed, final long expectedExecutionSpeed) {
         return new ExecutionSpeedLogEventPayload(
             executionSpeed,
             "org.cryptotrader.Example.execute",

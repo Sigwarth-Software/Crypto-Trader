@@ -31,35 +31,35 @@ public class HealthCheckService {
 
 
     @Autowired
-    public HealthCheckService(RestTemplate restTemplate,
-                              HealthStatusEntityService healthStatusEntityService) {
+    public HealthCheckService(final RestTemplate restTemplate,
+                              final HealthStatusEntityService healthStatusEntityService) {
         this.restTemplate = restTemplate;
         this.healthStatusEntityService = healthStatusEntityService;
     }
 
-    public void checkAndPersist(CryptoTraderService service) {
+    public void checkAndPersist(final CryptoTraderService service) {
         if (service == CryptoTraderService.DATABASE) {
             this.checkDatabase();
             return;
         }
 
-        String url = this.getHealthUrl(service);
+        final String url = this.getHealthUrl(service);
         ServiceStatus status;
         int httpCode = 0;
         String details = null;
 
         try {
-            ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
+            final ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
             httpCode = response.getStatusCode().value();
             status = (httpCode == 200) ? ServiceStatus.ALIVE : ServiceStatus.DEAD;
             details = (httpCode == 200) ? "HTTP 200 OK" : response.getBody();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             status = ServiceStatus.DEAD;
             details = e.getMessage();
             log.warn("Health check failed for {}: {}", service, e.getMessage());
         }
 
-        HealthStatus entity = HealthStatus.builder()
+        final HealthStatus entity = HealthStatus.builder()
             .service(service)
             .status(status)
             .httpStatusCode(httpCode)
@@ -75,16 +75,16 @@ public class HealthCheckService {
         ServiceStatus status;
         String details = null;
 
-        try (Socket socket = new Socket(this.psqlHost, CryptoTraderService.DATABASE.getPort())) {
+        try (final Socket socket = new Socket(this.psqlHost, CryptoTraderService.DATABASE.getPort())) {
             status = ServiceStatus.ALIVE;
             details = "PostgreSQL accepting connections at " + this.psqlHost + ":" + CryptoTraderService.DATABASE.getPort();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             status = ServiceStatus.DEAD;
             details = e.getMessage();
             log.warn("Health check failed for {}: {}", CryptoTraderService.DATABASE, e.getMessage());
         }
 
-        HealthStatus entity = HealthStatus.builder()
+        final HealthStatus entity = HealthStatus.builder()
             .service(CryptoTraderService.DATABASE)
             .status(status)
             .httpStatusCode(0)
@@ -96,7 +96,7 @@ public class HealthCheckService {
         log.info("Health check for {}: {}", CryptoTraderService.DATABASE, status);
     }
 
-    private String getHealthUrl(CryptoTraderService service) {
+    private String getHealthUrl(final CryptoTraderService service) {
         if (service == CryptoTraderService.DOCS) {
             // TODO: Replace hardcoded URL.
             return "https://sigwarth-software.github.io/Crypto-Trader/";

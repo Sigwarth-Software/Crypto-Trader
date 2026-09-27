@@ -26,13 +26,13 @@ public class PomElement {
     private Element baseElement;
     private Path path;
 
-    public PomElement(Element baseElement, Path path) {
+    public PomElement(final Element baseElement, final Path path) {
         this.baseElement = baseElement;
         this.path = path;
         this.parent = resolveParent();
     }
 
-    public String textFromNamespace(String name) {
+    public String textFromNamespace(final String name) {
         Element child = this.baseElement.getChild(name, this.baseElement.getNamespace());
         if (child == null) {
             child = this.baseElement.getChild(name, MAVEN_NAMESPACE);
@@ -41,7 +41,7 @@ public class PomElement {
             child = this.baseElement.getChild(name);
         }
         if (child != null) {
-            String text = child.getText();
+            final String text = child.getText();
             if (text != null && !text.isBlank()) {
                 return text;
             }
@@ -49,7 +49,7 @@ public class PomElement {
         return this.getParent().map(parent -> parent.textFromNamespace(name)).orElse("");
     }
 
-    public String directText(String name) {
+    public String directText(final String name) {
         Element child = this.baseElement.getChild(name, this.baseElement.getNamespace());
         if (child == null) {
             child = this.baseElement.getChild(name, MAVEN_NAMESPACE);
@@ -65,28 +65,28 @@ public class PomElement {
         if (parentEl == null) parentEl = this.baseElement.getChild("parent", MAVEN_NAMESPACE);
         if (parentEl == null) parentEl = this.baseElement.getChild("parent");
         if (parentEl == null) return null;
-        String groupId = getChildText(parentEl, "groupId");
-        String artifactId = getChildText(parentEl, "artifactId");
-        String version = getChildText(parentEl, "version");
-        String name = "parent";
+        final String groupId = getChildText(parentEl, "groupId");
+        final String artifactId = getChildText(parentEl, "artifactId");
+        final String version = getChildText(parentEl, "version");
+        final String name = "parent";
         return new PomDependency(name, version, groupId, artifactId);
     }
 
     public Pom getParentPomModel() {
-        PomDependency coords = this.getParentDependency();
+        final PomDependency coords = this.getParentDependency();
         if (coords == null) return null;
-        Optional<PomElement> possibleParent = this.getParent();
+        final Optional<PomElement> possibleParent = this.getParent();
         if (possibleParent.isEmpty()) {
             return null;
         }
-        PomElement parentElement = possibleParent.get();
-        Path modulePath = Path.of(parentElement.getModulePath());
-        ConfigFileType fileType = ConfigFileType.POM;
-        ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
+        final PomElement parentElement = possibleParent.get();
+        final Path modulePath = Path.of(parentElement.getModulePath());
+        final ConfigFileType fileType = ConfigFileType.POM;
+        final ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
         return new Pom(module, modulePath, fileType, coords);
     }
 
-    private String getChildText(Element element, String name) {
+    private String getChildText(final Element element, final String name) {
         Element child = element.getChild(name, element.getNamespace());
         if (child == null) child = element.getChild(name, MAVEN_NAMESPACE);
         if (child == null) child = element.getChild(name);
@@ -107,7 +107,7 @@ public class PomElement {
         boolean relPresent = false;
         if (relativePath != null) {
             relPresent = true;
-            String text = relativePath.getText();
+            final String text = relativePath.getText();
             if (text != null && !text.isBlank()) {
                 relativePathText = text.trim();
             } else {
@@ -117,12 +117,12 @@ public class PomElement {
         if (!relPresent) {
             relativePathText = "..\\pom.xml";
         }
-        Path parentPomPath = this.path.getParent().resolve(relativePathText).normalize();
+        final Path parentPomPath = this.path.getParent().resolve(relativePathText).normalize();
         try {
-            Document doc = new SAXBuilder().build(parentPomPath.toFile());
-            Element project = doc.getRootElement();
+            final Document doc = new SAXBuilder().build(parentPomPath.toFile());
+            final Element project = doc.getRootElement();
             return Optional.of(new PomElement(project, parentPomPath));
-        } catch (IOException | JDOMException e) {
+        } catch (final IOException | JDOMException e) {
             return Optional.empty();
         }
     }
@@ -136,14 +136,14 @@ public class PomElement {
     }
 
     public Pom getPom() {
-        ConfigFileType fileType = ConfigFileType.POM;
-        Path modulePath = Path.of(getModulePath());
-        String name = this.directText("name");
-        String artifactId = this.directText("artifactId");
-        String version = this.directText("version");
-        String groupId = this.directText("groupId");
-        ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
-        PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
+        final ConfigFileType fileType = ConfigFileType.POM;
+        final Path modulePath = Path.of(getModulePath());
+        final String name = this.directText("name");
+        final String artifactId = this.directText("artifactId");
+        final String version = this.directText("version");
+        final String groupId = this.directText("groupId");
+        final ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
+        final PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
         return new Pom(module, modulePath, fileType, moduleDependency);
     }
 

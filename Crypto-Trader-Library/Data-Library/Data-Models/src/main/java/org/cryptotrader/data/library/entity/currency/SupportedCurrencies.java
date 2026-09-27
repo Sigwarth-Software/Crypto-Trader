@@ -19,7 +19,7 @@ public class SupportedCurrencies {
     private static final int MAX_CURRENCIES = 500;
     //==========================-Static-Actions-==============================
     static {
-        boolean loadCurrencies = Boolean.parseBoolean(System.getProperty("cryptotrader.load.currency", "false"));
+        final boolean loadCurrencies = Boolean.parseBoolean(System.getProperty("cryptotrader.load.currency", "false"));
         if (loadCurrencies) {
             loadCurrenciesFromJson();
         } else {
@@ -27,8 +27,8 @@ public class SupportedCurrencies {
         }
     }
 
-    public static void popCurrency(String code) {
-        Currency currency = CURRENCY_MAP.remove(code);
+    public static void popCurrency(final String code) {
+        final Currency currency = CURRENCY_MAP.remove(code);
         if (currency != null) {
             SUPPORTED_CURRENCIES.remove(currency);
             log.info("Popped currency: {} ({})", currency.getName(), code);
@@ -47,32 +47,32 @@ public class SupportedCurrencies {
     }
 
     public static void loadCurrenciesFromJson(final String jsonPath) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File jsonFile = new File(jsonPath);
+            final File jsonFile = new File(jsonPath);
             if (!jsonFile.exists()) {
                 log.error("Currency JSON file not found. Using empty list.");
                 return;
             }
             loadCurrenciesFromJson(objectMapper, jsonFile);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new RuntimeException("Failed to load currencies from JSON", exception);
         }
     }
 
-    private static void loadCurrenciesFromJson(ObjectMapper objectMapper, File jsonFile) throws IOException {
-        List<Map<String, String>> currencyData = objectMapper.readValue(jsonFile, new TypeReference<>() {});
-        for (Map<String, String> entry : currencyData) {
-            String name = entry.get("name");
-            String code = entry.get("code");
+    private static void loadCurrenciesFromJson(final ObjectMapper objectMapper, final File jsonFile) throws IOException {
+        final List<Map<String, String>> currencyData = objectMapper.readValue(jsonFile, new TypeReference<>() {});
+        for (final Map<String, String> entry : currencyData) {
+            final String name = entry.get("name");
+            final String code = entry.get("code");
             if (code != null && !code.isEmpty() && Character.isDigit(code.charAt(0))) {
                 log.warn("Skipping currency with invalid code (starts with digit): {} ({})", name, code);
                 continue;
             }
-            Currency currency;
+            final Currency currency;
             try {
                 currency = new Currency(name, code);
-            } catch (IllegalStateException exception) {
+            } catch (final IllegalStateException exception) {
                 continue;
             }
             if (name.equals("Bitcoin")) {

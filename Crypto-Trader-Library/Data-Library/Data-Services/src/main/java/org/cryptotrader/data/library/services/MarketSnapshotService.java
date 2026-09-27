@@ -39,7 +39,7 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
             if (existing != null) {
                 this.knownColumns.addAll(existing);
             }
-        } catch (DataAccessException exception) {
+        } catch (final DataAccessException exception) {
             log.warn("Could not load known columns (table may not exist yet): {}", exception.getMessage());
         }
     }
@@ -49,46 +49,46 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     //---------------------------Save-Snapshot--------------------------------
     @TimeTracked(expectedMillis = 5, shouldPersist = true)
     @Transactional
-    public void saveSnapshot(Map<String, Currency> currencies) {
+    public void saveSnapshot(final Map<String, Currency> currencies) {
         if (!isValidCurrencyMap(currencies)) {
             log.warn("No valid currencies provided for a market snapshot.");
             return;
         }
-        List<String> columns = new ArrayList<>(List.of(DEFAULT_COLUMNS));
-        List<Object> params = new ArrayList<>();
-        LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("America/Chicago"));
+        final List<String> columns = new ArrayList<>(List.of(DEFAULT_COLUMNS));
+        final List<Object> params = new ArrayList<>();
+        final LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("America/Chicago"));
         params.add(currentTime);
         loadColumnsAndParams(currencies, columns, params);
-        String columnList = String.join(", ", columns);
-        String questionMarks = getQuestionMarks(columns);
+        final String columnList = String.join(", ", columns);
+        final String questionMarks = getQuestionMarks(columns);
         this.executeSnapshotQuery(currencies, columnList, questionMarks, params);
     }
     //-----------------------Execute-Snapshot-Query---------------------------
-    private void executeSnapshotQuery(Map<String, Currency> currencies,
-                                      String columnList,
-                                      String questionMarks,
-                                      List<Object> params) {
-        String query = """
+    private void executeSnapshotQuery(final Map<String, Currency> currencies,
+                                      final String columnList,
+                                      final String questionMarks,
+                                      final List<Object> params) {
+        final String query = """
                 INSERT INTO market_snapshots (%s) VALUES (%s)"""
                 .formatted(columnList, questionMarks);
         try {
             this.jdbcTemplate.update(query, params.toArray());
             log.debug("Inserted market snapshot with {} currencies.", currencies.size());
-        } catch (DataAccessException exception) {
+        } catch (final DataAccessException exception) {
             log.error("Failed to insert market snapshot: ", exception);
             throw exception;
         }
     }
     //-------------------------Get-Question-Marks-----------------------------
-    private static String getQuestionMarks(List<String> columns) {
+    private static String getQuestionMarks(final List<String> columns) {
         return columns.stream().map(currency -> "?").collect(Collectors.joining(", "));
     }
     //----------------------Load-Columns-And-Params---------------------------
-    private void loadColumnsAndParams(Map<String, Currency> currencies,
-                                      List<String> columns,
-                                      List<Object> params) {
+    private void loadColumnsAndParams(final Map<String, Currency> currencies,
+                                      final List<String> columns,
+                                      final List<Object> params) {
         currencies.forEach((code, currency) -> {
-            String priceColumn = toPriceColumn(code);
+            final String priceColumn = toPriceColumn(code);
 
             if (!this.knownColumns.contains(priceColumn)) {
                 createCurrencyColumn(priceColumn);
@@ -100,18 +100,18 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
         });
     }
     //-----------------------Create-Currency-Column---------------------------
-    private void createCurrencyColumn(String priceColumn) {
+    private void createCurrencyColumn(final String priceColumn) {
         this.jdbcTemplate.execute("""
             ALTER TABLE market_snapshots
             ADD COLUMN IF NOT EXISTS %s NUMERIC(34,18)
         """.formatted(priceColumn));
     }
     //--------------------------To-Price-Column-------------------------------
-    private static String toPriceColumn(String code) {
+    private static String toPriceColumn(final String code) {
         return code.toLowerCase() + "_price";
     }
     //-----------------------Is-Valid-Currency-Map----------------------------
-    private static boolean isValidCurrencyMap(Map<String, Currency> currencies) {
+    private static boolean isValidCurrencyMap(final Map<String, Currency> currencies) {
         return !(currencies == null || currencies.isEmpty());
     }
 }

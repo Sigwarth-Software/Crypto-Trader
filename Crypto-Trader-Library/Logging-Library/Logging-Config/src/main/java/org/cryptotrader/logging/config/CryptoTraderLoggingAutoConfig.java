@@ -36,27 +36,27 @@ public class CryptoTraderLoggingAutoConfig {
     @ConditionalOnMissingBean
     @ConditionalOnClass(StreamBridge.class)
     @ConditionalOnBean(StreamBridge.class)
-    public EventPublisher eventPublisher(StreamBridge streamBridge) {
+    public EventPublisher eventPublisher(final StreamBridge streamBridge) {
         return new EventPublisher(streamBridge);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public LogEventsPublisher logEventsPublisher(@Autowired(required = false) EventPublisher eventPublisher) {
+    public LogEventsPublisher logEventsPublisher(@Autowired(required = false) final EventPublisher eventPublisher) {
         return new LogEventsPublisher(eventPublisher);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) LogEventsPublisher logEventsPublisher,
-                                                 TimeTrackingProperties timeTrackingProperties) {
+    public TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) final LogEventsPublisher logEventsPublisher,
+                                                 final TimeTrackingProperties timeTrackingProperties) {
         return new TimeTrackingAspect(logEventsPublisher, timeTrackingProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public LogEventPublisherBridge logEventPublisherBridge(LogEventsPublisher logEventsPublisher,
-                                                           @Autowired(required = false) LogRedactor logRedactor) {
+    public LogEventPublisherBridge logEventPublisherBridge(final LogEventsPublisher logEventsPublisher,
+                                                           @Autowired(required = false) final LogRedactor logRedactor) {
         return new LogEventPublisherBridge(logEventsPublisher, logRedactor);
     }
 }

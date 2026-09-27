@@ -12,7 +12,7 @@ public class TimeValueResponse {
         this.value = 0;
     }
 
-    public TimeValueResponse(String timestamp, double value) {
+    public TimeValueResponse(final String timestamp, final double value) {
         this.timestamp = timestamp;
         this.value = value;
     }

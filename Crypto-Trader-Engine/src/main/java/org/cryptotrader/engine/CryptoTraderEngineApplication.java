@@ -51,8 +51,8 @@ import static org.cryptotrader.health.library.model.ServiceStatusChecker.isServi
     "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderEngineApplication {
-    public static void main(String[] args) {
-        boolean tradingEnabled = isTradingEnabled();
+    public static void main(final String[] args) {
+        final boolean tradingEnabled = isTradingEnabled();
         if (!tradingEnabled) {
             disableTrading();
         }
@@ -69,9 +69,9 @@ public class CryptoTraderEngineApplication {
     }
 
     private static boolean isTradingEnabled() {
-        String tradingEnabledEnv = System.getenv().getOrDefault("CRYPTO_TRADER_ENGINE_TRADING_ENABLED", "true");
-        String tradingEnabledProperty = System.getProperty("cryptotrader.engine.trading.enabled", tradingEnabledEnv);
-        boolean tradingEnabled = Boolean.parseBoolean(tradingEnabledProperty);
+        final String tradingEnabledEnv = System.getenv().getOrDefault("CRYPTO_TRADER_ENGINE_TRADING_ENABLED", "true");
+        final String tradingEnabledProperty = System.getProperty("cryptotrader.engine.trading.enabled", tradingEnabledEnv);
+        final boolean tradingEnabled = Boolean.parseBoolean(tradingEnabledProperty);
         return tradingEnabled;
     }
 
@@ -83,15 +83,15 @@ public class CryptoTraderEngineApplication {
         private static final String DATA_CA_BUNDLE_ENV = "CT_HEALTH_CA_BUNDLE_DATA";
         private static final String DATA_CA_BUNDLE_PROPERTY = "ct.health.caBundle.data";
 
-        EngineStartupVerifier(Environment environment) {
-            String dataCaBundle = environment.getProperty(DATA_CA_BUNDLE_ENV);
+        EngineStartupVerifier(final Environment environment) {
+            final String dataCaBundle = environment.getProperty(DATA_CA_BUNDLE_ENV);
             if (dataCaBundle != null && !dataCaBundle.isBlank()) {
                 System.setProperty(DATA_CA_BUNDLE_PROPERTY, dataCaBundle);
             }
         }
 
         @Override
-        public void run(ApplicationArguments args) {
+        public void run(final ApplicationArguments args) {
             for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
                 if (isServiceAlive(CryptoTraderService.DATA)) {
                     return;
@@ -100,7 +100,7 @@ public class CryptoTraderEngineApplication {
                 if (attempt < MAX_RETRIES) {
                     try {
                         Thread.sleep(RETRY_DELAY_MS);
-                    } catch (InterruptedException exception) {
+                    } catch (final InterruptedException exception) {
                         Thread.currentThread().interrupt();
                         throw new IllegalStateException(
                             "Interrupted while waiting for Crypto-Trader-Data service.", exception);

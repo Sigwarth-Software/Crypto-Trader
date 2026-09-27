@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class LogoutResponse {
     private boolean isLoggedOut;
-    public LogoutResponse(boolean isLoggedOut) {
+    public LogoutResponse(final boolean isLoggedOut) {
         this.isLoggedOut = isLoggedOut;
     }
 }

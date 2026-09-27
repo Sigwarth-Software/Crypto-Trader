@@ -18,13 +18,13 @@ class TimeTrackingAspectTest {
 
     @Test
     void logsExecutionTimeByDefault() {
-        Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        final Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
+        final ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
         logger.addAppender(appender);
 
         try {
-            TrackedService proxy = proxy(new TrackedService());
+            final TrackedService proxy = proxy(new TrackedService());
 
             assertThat(proxy.logged()).isEqualTo("tracked");
             assertThat(appender.list)
@@ -41,13 +41,13 @@ class TimeTrackingAspectTest {
 
     @Test
     void skipsLoggingWhenDisabled() {
-        Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        final Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
+        final ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
         logger.addAppender(appender);
 
         try {
-            TrackedService proxy = proxy(new TrackedService());
+            final TrackedService proxy = proxy(new TrackedService());
 
             assertThat(proxy.silent()).isEqualTo("silent");
             assertThat(appender.list).isEmpty();
@@ -56,8 +56,8 @@ class TimeTrackingAspectTest {
         }
     }
 
-    private TrackedService proxy(TrackedService target) {
-        AspectJProxyFactory proxyFactory = new AspectJProxyFactory(target);
+    private TrackedService proxy(final TrackedService target) {
+        final AspectJProxyFactory proxyFactory = new AspectJProxyFactory(target);
         proxyFactory.addAspect(aspect);
         return (TrackedService) proxyFactory.getProxy();
     }

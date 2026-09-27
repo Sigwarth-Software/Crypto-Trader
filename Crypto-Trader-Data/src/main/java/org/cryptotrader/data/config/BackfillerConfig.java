@@ -12,11 +12,11 @@ public class BackfillerConfig {
 
     //------------------------Snapshots-Cli-Runner----------------------------
     @Bean
-    CommandLineRunner snapshotsCliRunner(CurrencyHarvesterService currencyService,
-                                         ApplicationArguments args) {
+    CommandLineRunner snapshotsCliRunner(final CurrencyHarvesterService currencyService,
+                                         final ApplicationArguments args) {
         return commandLineArgs -> {
             if (args.containsOption("buildSnapshots")) {
-                boolean fullRefresh = args.containsOption("fullRefresh");
+                final boolean fullRefresh = args.containsOption("fullRefresh");
                 currencyService.buildMarketSnapshots(fullRefresh);
             }
         };
