@@ -25,14 +25,21 @@ import java.util.List;
 @RequestMapping("/api/currency")
 public class CurrencyController {
     private final CurrencyService currencyService;
+
     @Autowired
     public CurrencyController(@NotNull final CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
+
     @PermitAll
     @PostMapping("/value")
-    public ResponseEntity<AssetValueResponse> getCurrencyValue(@NotNull @RequestBody final AssetValueRequest assetValueRequest) {
-        final Currency currency = this.currencyService.getCurrencyByCurrencyCode(assetValueRequest.getCurrencyCode());
+    public ResponseEntity<AssetValueResponse> getCurrencyValue(
+        @NotNull @RequestBody final AssetValueRequest assetValueRequest
+    ) {
+        final Currency currency =
+            this.currencyService.getCurrencyByCurrencyCode(
+                assetValueRequest.getCurrencyCode()
+            );
 
         if (currency == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,16 +50,23 @@ public class CurrencyController {
     }
     @PermitAll
     @GetMapping("/performance/{currencyCode}")
-    public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(@Nullable @PathVariable final String currencyCode) {
+    public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(
+        @Nullable @PathVariable final String currencyCode
+    ) {
         if (currencyCode == null || currencyCode.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            final PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
+            final PerformanceRating performanceRatingResponse =
+                this.currencyService.getDayPerformance(currencyCode);
 
             if (performanceRatingResponse == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            String changePercent = this.currencyService.getPercentageDayPerformance(currencyCode);
+            final String changePercent =
+                this.currencyService.getPercentageDayPerformance(
+                    currencyCode
+                );
+
             if (changePercent == null || changePercent.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -63,8 +77,12 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/list")
-    public ResponseEntity<CurrencyNamesResponse> getList(@RequestParam(value = "withCode", defaultValue = "false") boolean withCode) {
-        CurrencyNamesResponse response = new CurrencyNamesResponse(this.currencyService.getCurrencyNames(withCode));
+    public ResponseEntity<CurrencyNamesResponse> getList(
+        @RequestParam(value = "withCode", defaultValue = "false") final boolean withCode
+    ) {
+        final CurrencyNamesResponse response = new CurrencyNamesResponse(
+            this.currencyService.getCurrencyNames(withCode)
+        );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -77,24 +95,34 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping(value = "/all", params = "offset")
-    public ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(@RequestParam(value = "offset", defaultValue = "0") int offset) {
+    public ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(
+        @RequestParam(value = "offset", defaultValue = "0") final int offset
+    ) {
         if (offset < 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(offset), HttpStatus.OK);
+        return new ResponseEntity<>(
+            this.currencyService.getCurrencyValuesResponse(offset),
+            HttpStatus.OK
+        );
     }
 
     @PermitAll
     @GetMapping("/display/{code}")
-    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(@PathVariable String code) {
+    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(
+        @PathVariable final String code
+    ) {
         if (code == null || code.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Currency currency = this.currencyService.getCurrencyByCurrencyCode(code);
+        final Currency currency =
+            this.currencyService.getCurrencyByCurrencyCode(code);
+
         if (currency == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        DisplayCurrencyResponse response = this.currencyService.toCurrencyValueResponse(currency);
+        final DisplayCurrencyResponse response = this.currencyService.toCurrencyValueResponse(currency);
+
         if (response == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -103,10 +131,21 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/history/{code}")
-    public ResponseEntity<List<TimeValueResponse>> getHistory(@PathVariable String code,
-                                                              @RequestParam(value = "hours", defaultValue = "24") int hours,
-                                                              @RequestParam(value = "intervalSeconds", defaultValue = "60") int intervalSeconds) {
-        List<TimeValueResponse> history = this.currencyService.getCurrencyHistory(code, hours, intervalSeconds);
+    public ResponseEntity<List<TimeValueResponse>> getHistory(
+        @Nullable @PathVariable final String code,
+        @RequestParam(value = "hours", defaultValue = "24") final int hours,
+        @RequestParam(value = "intervalSeconds", defaultValue = "60") final int intervalSeconds
+    ) {
+        if (code == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final List<TimeValueResponse> history =
+            this.currencyService.getCurrencyHistory(
+                code,
+                hours,
+                intervalSeconds
+            );
+
         if (history == null || history.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -114,9 +153,16 @@ public class CurrencyController {
     }
     @PermitAll
     @PostMapping("/history/fuzzy/{code}")
-    public ResponseEntity<TimeValueResponse> getFuzzyHistory(@PathVariable String code,
-                                                             @RequestBody FuzzyTimeValueRequest request) {
-        TimeValueResponse response = this.currencyService.getFuzzyCurrencyHistory(code, request);
+    public ResponseEntity<TimeValueResponse> getFuzzyHistory(
+        @Nullable @PathVariable final String code,
+        @NotNull @RequestBody final FuzzyTimeValueRequest request
+    ) {
+        if (code == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final TimeValueResponse response =
+            this.currencyService.getFuzzyCurrencyHistory(code, request);
+
         if (response == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
