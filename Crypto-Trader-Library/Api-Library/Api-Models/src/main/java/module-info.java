@@ -14,6 +14,7 @@ open module org.cryptotrader.api.library.models {
     requires org.cryptotrader.data.library.models;
     requires transitive org.cryptotrader.universal.library.models;
     requires spring.security.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.api.library.entity.portfolio;
     exports org.cryptotrader.api.library.entity.portfolio.builder;
