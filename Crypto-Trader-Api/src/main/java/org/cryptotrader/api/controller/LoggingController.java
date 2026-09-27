@@ -1,10 +1,10 @@
 package org.cryptotrader.api.controller;
+
 //=================================-Imports-==================================
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.AuthContextService;
-import org.cryptotrader.api.library.services.AuthService;
 import org.cryptotrader.logging.library.communication.request.FrontendLogErrorRequest;
 import org.cryptotrader.logging.library.communication.request.FrontendLogRequest;
 import org.cryptotrader.logging.library.communication.response.FrontendLogResponse;
@@ -13,6 +13,8 @@ import org.cryptotrader.logging.library.events.FrontendLogEvent;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +38,9 @@ public class LoggingController {
     private final AuthContextService authContextService;
     //===========================-Constructors-===============================
     @Autowired
-    public LoggingController(LogEventsPublisher logEventsPublisher,
-                             ObjectMapper objectMapper,
-                             AuthContextService authContextService) {
+    public LoggingController(@NotNull final LogEventsPublisher logEventsPublisher,
+                             @NotNull final ObjectMapper objectMapper,
+                             @NotNull final AuthContextService authContextService) {
         this.logEventsPublisher = logEventsPublisher;
         this.objectMapper = objectMapper;
         this.authContextService = authContextService;
@@ -53,18 +55,25 @@ public class LoggingController {
     //       with the user, while they attempt to replicate the issue. This
     //       would be in Crypto-Trader-Admin where a button with configs can
     //       be pressed to enable for 15/30/60 mins.
-    @PostMapping(value = "/website", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value = "/website",
+        consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<FrontendLogResponse> receiveSingleLog(
-        @RequestBody FrontendLogRequest logEntry,
-        HttpServletRequest request) {
+        @NotNull @RequestBody final FrontendLogRequest logEntry,
+        @NotNull final HttpServletRequest request
+    ) {
         final boolean isAuthenticated = this.authContextService.isAuthenticated();
         ProductUser user = null;
+
         if (isAuthenticated) {
             user = this.authContextService.getAuthenticatedProductUser();
         }
-        FrontendLogEvent event = this.mapToEvent(logEntry, request, user);
-        FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
-            List.of(event), LocalDateTime.now(ZoneId.of("America/Chicago")));
+        final FrontendLogEvent event = this.mapToEvent(logEntry, request, user);
+        final FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
+            List.of(event),
+            LocalDateTime.now(ZoneId.of("America/Chicago"))
+        );
         this.logEventsPublisher.publishBatch(batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(1, "accepted"));
@@ -72,24 +81,34 @@ public class LoggingController {
 
     @PostMapping(value = "/website", consumes = "application/x-ndjson")
     public ResponseEntity<FrontendLogResponse> receiveBatchLogs(
-        @RequestBody String ndjsonBody,
-        HttpServletRequest request) {
+        @NotNull @RequestBody final String ndjsonBody,
+        @NotNull final HttpServletRequest request
+    ) {
         final boolean isAuthenticated = this.authContextService.isAuthenticated();
         ProductUser user = null;
+
         if (isAuthenticated) {
             user = this.authContextService.getAuthenticatedProductUser();
         }
-        List<FrontendLogEvent> entries = this.parseNdjson(ndjsonBody, request, user);
-        FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
-            entries, LocalDateTime.now(ZoneId.of("America/Chicago")));
+        final List<FrontendLogEvent> entries = this.parseNdjson(
+            ndjsonBody,
+            request,
+            user
+        );
+        final FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
+            entries,
+            LocalDateTime.now(ZoneId.of("America/Chicago"))
+        );
         this.logEventsPublisher.publishBatch(batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(entries.size(), "accepted"));
     }
 
     // TODO: Add to service class.
-    private FrontendLogEvent mapToEvent(FrontendLogRequest dto, HttpServletRequest request, ProductUser user) {
-        FrontendLogErrorRequest error = dto.getError();
+    private FrontendLogEvent mapToEvent(@NotNull final FrontendLogRequest dto,
+                                        @NotNull final HttpServletRequest request,
+                                        @Nullable final ProductUser user) {
+        final FrontendLogErrorRequest error = dto.getError();
         return new FrontendLogEvent(
             dto.getTimestamp(),
             dto.getLevel(),
@@ -109,8 +128,11 @@ public class LoggingController {
     }
 
     // TODO: Add to service class.
-    private String resolveIpAddress(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
+    private String resolveIpAddress(@NotNull final HttpServletRequest request) {
+        final String xForwardedFor = request.getHeader(
+            "X-Forwarded-For"
+        );
+
         if (xForwardedFor != null && !xForwardedFor.isBlank()) {
             return xForwardedFor.split(",")[0].trim();
         }
@@ -118,17 +140,26 @@ public class LoggingController {
     }
 
     // TODO: Add to service class.
-    private List<FrontendLogEvent> parseNdjson(String ndjsonBody, HttpServletRequest request, ProductUser user) {
-        List<FrontendLogEvent> events = new ArrayList<>();
+    private @NotNull List<FrontendLogEvent> parseNdjson(
+        @NotNull final String ndjsonBody,
+        @NotNull final HttpServletRequest request,
+        @Nullable final ProductUser user
+    ) {
+        final List<FrontendLogEvent> events = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new StringReader(ndjsonBody))) {
             String line;
+
             while ((line = reader.readLine()) != null) {
                 if (!line.isBlank()) {
-                    FrontendLogRequest dto = this.objectMapper.readValue(line, FrontendLogRequest.class);
+                    final FrontendLogRequest dto = this.objectMapper.readValue(
+                        line,
+                        FrontendLogRequest.class
+                    );
                     events.add(this.mapToEvent(dto, request, user));
                 }
             }
-        } catch (Exception exception) {
+        } catch (@NotNull final Exception exception) {
             log.error("Failed to parse NDJSON frontend log batch", exception);
         }
         return events;
