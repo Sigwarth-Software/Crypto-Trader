@@ -1,9 +1,12 @@
 package org.cryptotrader.api.controller;
+
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
 import org.cryptotrader.api.library.services.ProductUserService;
 import org.cryptotrader.api.library.services.models.ProfilePictureOperations;
 import org.cryptotrader.api.library.services.SessionService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,9 +45,9 @@ public class AccountController {
      */
     //===========================-Constructors-===============================
     @Autowired
-    public AccountController(SessionService sessionService,
-                             ProfilePictureOperations profilePictureService,
-                             ProductUserService productUserService) {
+    public AccountController(@NotNull final SessionService sessionService,
+                             @NotNull final ProfilePictureOperations profilePictureService,
+                             @NotNull final ProductUserService productUserService) {
         this.sessionService = sessionService;
         this.profilePictureService = profilePictureService;
         this.productUserService = productUserService;
@@ -70,18 +73,30 @@ public class AccountController {
      */
     //----------------------------Upload-Image--------------------------------
     @PostMapping("/image/upload")
-    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") final MultipartFile file,
-                                                                            final HttpSession session) {
+    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(
+        @NotNull @RequestParam("file") final MultipartFile file,
+        @NotNull final HttpSession session
+    ) {
         final boolean userInSession = this.sessionService.userInSession(session);
+
         if (!userInSession) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.UNAUTHORIZED
+            );
         }
-        final Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
+        final Optional<ProductUser> possibleSessionUser =
+            this.sessionService.getUserFromSession(session);
+
         if (possibleSessionUser.isEmpty()) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.UNAUTHORIZED
+            );
         }
         final ProductUser sessionUser = possibleSessionUser.get();
         final String fileName = file.getOriginalFilename();
+
         try {
             final byte[] fileData = file.getBytes();
             final ProfilePicture profilePicture = ProfilePicture.builder()
@@ -94,8 +109,11 @@ public class AccountController {
             this.profilePictureService.saveProfilePicture(profilePicture);
             this.productUserService.saveUser(sessionUser);
             return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
-        } catch (final IOException ex) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (@NotNull final IOException ioException) {
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -114,15 +132,20 @@ public class AccountController {
      * @see ProfilePictureOperations#existsByUserId(Long)
      */
     @GetMapping("/get/{id}/has-profile-picture")
-    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(@PathVariable final String id) {
+    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(
+        @Nullable @PathVariable final String id
+    ) {
         final long userId;
+
         try {
             userId = Long.parseLong(id);
-        } catch (NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException numberFormatException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         final boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
-        return ResponseEntity.ok(new HasProfilePictureResponse(hasProfilePicture));
+        return ResponseEntity.ok(new HasProfilePictureResponse(
+            hasProfilePicture
+        ));
     }
 
     /**
@@ -142,16 +165,23 @@ public class AccountController {
      */
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
-    public ResponseEntity<byte[]> getProfilePicture(@PathVariable String id) {
+    public ResponseEntity<byte[]> getProfilePicture(@Nullable @PathVariable final String id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         final long userId = Long.parseLong(id);
-        final Optional<ProfilePicture> possibleProfilePicture = this.profilePictureService.findByUserId(userId);
+        final Optional<ProfilePicture> possibleProfilePicture =
+            this.profilePictureService.findByUserId(userId);
+
         if (possibleProfilePicture.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             final ProfilePicture profilePicture = possibleProfilePicture.get();
             final byte[] imageData = profilePicture.getFileData();
             final String fileType = profilePicture.getFileType();
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType(fileType)).body(imageData);
+            return ResponseEntity.ok().contentType(
+                MediaType.parseMediaType(fileType)
+            ).body(imageData);
         }
     }
 }
