@@ -2,10 +2,12 @@ package org.cryptotrader.data.library.entity.news.builder;
 
 import org.cryptotrader.data.library.entity.news.NewsSentiment;
 import org.cryptotrader.data.library.entity.news.builder.models.AbstractNewsSentiment;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/** A builder factory for creating news sentiment entities. */
 public class NewsSentimentBuilder extends AbstractNewsSentiment {
     private Long articleId;
     private String title;
@@ -18,7 +20,7 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
     private double compositeScore;
     private double cryptoRelevance;
     private LocalDateTime lastUpdated;
-    
+
     public NewsSentimentBuilder() {
         this.articleId = 0L;
         this.title = "";
@@ -32,88 +34,88 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
         this.cryptoRelevance = 0;
         this.lastUpdated = LocalDateTime.now();
     }
-    
+
     @Override
-    public AbstractNewsSentiment articleId(Long articleId) {
+    public @NotNull AbstractNewsSentiment articleId(final Long articleId) {
         this.articleId = articleId;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment title(String title) {
+    public @NotNull AbstractNewsSentiment title(final String title) {
         this.title = title;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment publishedDate(String publishedDate) {
+    public @NotNull AbstractNewsSentiment publishedDate(final String publishedDate) {
         this.publishedDate = LocalDateTime.parse(publishedDate,
                                                  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment publishedDate(LocalDateTime publishedDate) {
+    public @NotNull AbstractNewsSentiment publishedDate(final LocalDateTime publishedDate) {
         this.publishedDate = publishedDate;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment source(String source) {
+    public @NotNull AbstractNewsSentiment source(final String source) {
         this.source = source;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment url(String url) {
+    public @NotNull AbstractNewsSentiment url(final String url) {
         this.url = url;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment positiveScore(double positiveScore) {
+    public @NotNull AbstractNewsSentiment positiveScore(final double positiveScore) {
         this.positiveScore = positiveScore;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment neutralScore(double neutralScore) {
+    public @NotNull AbstractNewsSentiment neutralScore(final double neutralScore) {
         this.neutralScore = neutralScore;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment negativeScore(double negativeScore) {
+    public @NotNull AbstractNewsSentiment negativeScore(final double negativeScore) {
         this.negativeScore = negativeScore;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment compositeScore(double compositeScore) {
+    public @NotNull AbstractNewsSentiment compositeScore(final double compositeScore) {
         this.compositeScore = compositeScore;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment cryptoRelevance(double cryptoRelevance) {
+    public @NotNull AbstractNewsSentiment cryptoRelevance(final double cryptoRelevance) {
         this.cryptoRelevance = cryptoRelevance;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment lastUpdated(LocalDateTime lastUpdated) {
+    public @NotNull AbstractNewsSentiment lastUpdated(final LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
     }
 
     @Override
-    public AbstractNewsSentiment lastUpdated(String lastUpdated) {
+    public @NotNull AbstractNewsSentiment lastUpdated(final String lastUpdated) {
         this.lastUpdated = LocalDateTime.parse(lastUpdated);
         return this;
     }
 
     @Override
-    public NewsSentiment build() {
+    public @NotNull NewsSentiment build() {
         return new NewsSentiment(
                 this.articleId,
                 this.title,
