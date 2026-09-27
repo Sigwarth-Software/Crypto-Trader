@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 /** A class defining a builder for portfolio history entities. */
 public abstract class AbstractPortfolioHistory implements BuilderFactory<PortfolioHistory> {
-    public abstract @NotNull AbstractPortfolioHistory portfolio(@Nullable Portfolio portfolio);
+    public abstract @NotNull AbstractPortfolioHistory portfolio(@NotNull Portfolio portfolio);
 
     public abstract @NotNull AbstractPortfolioHistory dollarBalance(double dollarBalance);
 
