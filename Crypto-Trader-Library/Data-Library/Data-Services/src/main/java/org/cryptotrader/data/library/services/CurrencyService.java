@@ -17,7 +17,7 @@ import org.cryptotrader.data.library.services.entity.CurrencyEntityService;
 import org.cryptotrader.data.library.services.entity.CurrencyHistoryEntityService;
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService;
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -330,7 +330,7 @@ public class CurrencyService {
             .toList();
     }
 
-    private @NonNull String getCurrencyPerformanceScoreString(final Double currencyPerformanceScore) {
+    private @NotNull String getCurrencyPerformanceScoreString(final Double currencyPerformanceScore) {
         final boolean isPositive = currencyPerformanceScore >= 0;
         final boolean isNoChange = currencyPerformanceScore == 0.0;
 
