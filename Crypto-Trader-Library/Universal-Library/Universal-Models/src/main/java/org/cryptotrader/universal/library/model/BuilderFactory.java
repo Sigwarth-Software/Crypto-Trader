@@ -8,7 +8,6 @@ package org.cryptotrader.universal.library.model;
  * @see org.cryptotrader.api.library.entity.user.builder.models.AbstractProfilePicture
  * @see org.cryptotrader.api.library.entity.portfolio.Portfolio
  * @see org.cryptotrader.api.library.entity.user.ProductUser
- * @author Oliver Lear Sigwarth (theoliverlear)
  */
 public interface BuilderFactory<T> {
     T build();
