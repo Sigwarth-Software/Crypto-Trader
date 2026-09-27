@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
  *
  * @see Currency
  * @see BuilderFactory
- * @author Oliver Lear Sigwarth (theoliverlear)
  */
 public abstract class AbstractCurrency implements BuilderFactory<Currency> {
     public abstract @NotNull AbstractCurrency name(@Nullable String name);
