@@ -7,6 +7,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -20,16 +21,16 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class PomParser {
-    private static List<String> skipDirs = List.of("target", "node_modules", ".angular", "logs", ".git");
-    private static Path rootPath = Path.of("..");
-    public static List<PomElement> getAllPoms() {
+    private static @NotNull List<String> skipDirs = List.of("target", "node_modules", ".angular", "logs", ".git");
+    private static @NotNull Path rootPath = Path.of("..");
+    public static @NotNull List<PomElement> getAllPoms() {
         final List<PomElement> modules;
         final List<Path> pomPaths = getPomPaths();
         modules = pomPaths.stream().map(PomParser::getPom).collect(Collectors.toList());
         return modules;
     }
 
-    public static PomElement getPom(final Path pomPath) {
+    public static @NotNull PomElement getPom(final @NotNull Path pomPath) {
         try {
             final Document doc = new SAXBuilder().build(pomPath.toFile());
             final Element project = doc.getRootElement();
@@ -41,7 +42,7 @@ public class PomParser {
 
     }
 
-    public static String getVersionString() {
+    public static @NotNull String getVersionString() {
         final List<PomElement> pomElements = getAllPoms();
         final StringBuilder versionString = new StringBuilder();
         pomElements.forEach(pomElement -> {
@@ -52,25 +53,25 @@ public class PomParser {
         return versionString.toString();
     }
 
-    public static String textFromNamespace(final Element element,
+    public static String textFromNamespace(final @NotNull Element element,
                                            final Namespace namespace,
                                            final String name) {
         return element.getChild(name, namespace).getText();
     }
 
-    public static String getModulePath(final Path path) {
+    public static @NotNull String getModulePath(final @NotNull Path path) {
         String modulePath = path.toString();
         modulePath = modulePath.replace("..", "Crypto-Trader");
         modulePath = modulePath.replace("\\pom.xml", "");
         return modulePath;
     }
 
-    public static List<Path> getPomPaths() {
+    public static @NotNull List<Path> getPomPaths() {
         final List<Path> paths = new ArrayList<>();
         try {
             Files.walkFileTree(rootPath, new SimpleFileVisitor<>() {
                 @Override
-                public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) {
+                public @NotNull FileVisitResult preVisitDirectory(final @NotNull Path dir, final BasicFileAttributes attrs) {
                     final Path name = dir.getFileName();
                     if (name != null && skipDirs.contains(name.toString())) {
                         return FileVisitResult.SKIP_SUBTREE;
@@ -79,7 +80,7 @@ public class PomParser {
                 }
 
                 @Override
-                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
+                public @NotNull FileVisitResult visitFile(final @NotNull Path file, final @NotNull BasicFileAttributes attrs) {
                     if (attrs.isRegularFile() && "pom.xml".equals(file.getFileName().toString())) {
                         paths.add(file);
                     }

@@ -29,6 +29,7 @@ open module org.cryptotrader.engine.library.services {
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
     requires org.jspecify;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.engine.library.services;
 }

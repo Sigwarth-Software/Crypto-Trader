@@ -7,17 +7,18 @@ import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.entity.user.builder.models.AbstractProductUser;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 
 /** A builder factory for product user entities. */
 public class ProductUserBuilder extends AbstractProductUser {
-    private String username;
-    private String email;
-    private SafePassword safePassword;
-    private Portfolio portfolio;
+    private @Nullable String username;
+    private @Nullable String email;
+    private @Nullable SafePassword safePassword;
+    private @Nullable Portfolio portfolio;
     private ProfilePicture profilePicture;
-    private LocalDateTime lastLogin;
+    private @Nullable LocalDateTime lastLogin;
     private SubscriptionTier subscriptionTier;
 
     public ProductUserBuilder() {

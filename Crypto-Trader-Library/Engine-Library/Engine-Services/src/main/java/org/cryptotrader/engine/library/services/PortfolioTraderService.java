@@ -7,6 +7,8 @@ import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.model.trade.CryptoTrader;
 import org.cryptotrader.api.library.model.trade.Trader;
 import org.cryptotrader.api.library.services.PortfolioService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,7 @@ public class PortfolioTraderService {
     }
 
     //--------------------------Trade-Portfolios------------------------------
-    public void tradePortfolios(final List<Portfolio> portfolios, final SubscriptionTier subscriptionTier) {
+    public void tradePortfolios(final @Nullable List<Portfolio> portfolios, final @NotNull SubscriptionTier subscriptionTier) {
         final String logPrefix = getLogPrefix(subscriptionTier);
         if (portfolios == null || portfolios.isEmpty()) {
             log.info("{} No traders found. No trades will be made.", logPrefix);
@@ -75,7 +77,7 @@ public class PortfolioTraderService {
         this.triggerAllTraders(this.cryptoTrader.getTradersBySubscriptionTier(subscriptionTier));
     }
 
-    static @NonNull String getLogPrefix(final SubscriptionTier subscriptionTier) {
+    static @NonNull String getLogPrefix(final @NotNull SubscriptionTier subscriptionTier) {
         final String resetAnsi = "\u001B[0m";
         final String purpleAnsi = "\u001B[35m";
         final String greenAnsi = "\u001B[32m";
@@ -113,7 +115,7 @@ public class PortfolioTraderService {
         this.tradePortfolios(portfolios, SubscriptionTier.ULTIMATE);
     }
 
-    public List<Portfolio> filterBySubscriptionTier(final List<Portfolio> portfolios, final SubscriptionTier tier) {
+    public @NotNull List<Portfolio> filterBySubscriptionTier(final @NotNull List<Portfolio> portfolios, final SubscriptionTier tier) {
         final List<Portfolio> portfoliosByTier = portfolios.stream()
                 .filter(portfolio -> portfolio.getUser().getSubscriptionTier() == tier)
                 .toList();
@@ -132,7 +134,7 @@ public class PortfolioTraderService {
     }
 
     @TimeTracked(expectedMillis = 2000, shouldPersist = true)
-    public void triggerAllTraders(final List<Trader> traders) {
+    public void triggerAllTraders(final @NotNull List<Trader> traders) {
         this.portfolioTradeExecutionService.triggerAllTraders(traders);
     }
 

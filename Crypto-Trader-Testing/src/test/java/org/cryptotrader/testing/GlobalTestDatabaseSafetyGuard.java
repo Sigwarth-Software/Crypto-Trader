@@ -1,5 +1,7 @@
 package org.cryptotrader.testing;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.platform.launcher.LauncherSession;
 import org.junit.platform.launcher.LauncherSessionListener;
 
@@ -53,14 +55,14 @@ public final class GlobalTestDatabaseSafetyGuard implements LauncherSessionListe
         }
     }
 
-    private static void requireExactProperty(final String name, final String expected) {
+    private static void requireExactProperty(final @NotNull String name, final @NotNull String expected) {
         final String actual = System.getProperty(name);
         if (!expected.equals(actual)) {
             fail("JVM property " + name + " must equal " + expected, actual);
         }
     }
 
-    private static void requireExactEnvironment(final String name, final String expected) {
+    private static void requireExactEnvironment(final String name, final @NotNull String expected) {
         final String actual = System.getenv(name);
         if (!expected.equals(actual)) {
             fail("environment variable " + name + " must equal " + expected, actual);
@@ -79,7 +81,7 @@ public final class GlobalTestDatabaseSafetyGuard implements LauncherSessionListe
         }
     }
 
-    private static void rejectPostgreSqlValue(final String source, final String value) {
+    private static void rejectPostgreSqlValue(final String source, final @Nullable String value) {
         if (value != null && value.toLowerCase(Locale.ROOT).contains("jdbc:postgresql:")) {
             fail(source + " contains a forbidden PostgreSQL URL", value);
         }

@@ -6,6 +6,8 @@ import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.User;
 import org.cryptotrader.api.library.repository.ProductUserRepository;
 import org.cryptotrader.api.library.services.entity.user.ProductUserEntityService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +76,7 @@ public class ProductUserService {
      * @param password the plaintext password to verify
      * @return true when the password matches
      */
-    public boolean comparePassword(final User user, final String password) {
+    public boolean comparePassword(final @NotNull User user, final String password) {
         final boolean passwordsMatch = user.getSafePassword().compareUnencodedPassword(password);
         return passwordsMatch;
     }
@@ -83,7 +85,7 @@ public class ProductUserService {
      * Persist a ProductUser.
      * @param user the entity to save
      */
-    public void saveUser(final ProductUser user) {
+    public void saveUser(final @NotNull ProductUser user) {
         log.info("Saving user: {}", user.getUsername());
 //        this.productUserRepository.save(user);
         this.productUserEntityService.save(user);
@@ -94,7 +96,7 @@ public class ProductUserService {
      * @param id numeric id
      * @return ProductUser or null if none
      */
-    public ProductUser getUserById(final Long id) {
+    public @Nullable ProductUser getUserById(final @NotNull Long id) {
 //        return this.productUserRepository.getUserById(id);
         return this.productUserEntityService.findById(id).orElse(null);
     }

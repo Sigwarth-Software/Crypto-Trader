@@ -3,6 +3,7 @@ package org.cryptotrader.desktop.library.component.ui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 import org.cryptotrader.desktop.library.component.config.SpringContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,7 @@ public abstract class BaseComponent extends HBox implements Loadable {
         }
     }
 
-    private String resolveFxmlPath(final Class<?> componentClass) {
+    private @NotNull String resolveFxmlPath(final @NotNull Class<?> componentClass) {
         String packageName = componentClass.getPackageName();
         if (!packageName.contains(".ui")) {
             throw new IllegalArgumentException("Component must be in a '.ui' package: " + packageName);

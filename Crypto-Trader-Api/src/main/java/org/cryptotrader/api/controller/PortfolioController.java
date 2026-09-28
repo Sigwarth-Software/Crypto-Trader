@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/portfolio")
 public class PortfolioController {
     //============================-Variables-=================================
-    private final PortfolioService portfolioService;
+    private final @NotNull PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
     public PortfolioController(@NotNull final PortfolioService portfolioService) {
@@ -37,7 +37,7 @@ public class PortfolioController {
     //---------------------------Get-Portfolio--------------------------------
     @GetMapping("/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PortfolioResponse> getPortfolio(
+    public @NotNull ResponseEntity<PortfolioResponse> getPortfolio(
         @NotNull @AuthenticationPrincipal final ProductUser user
     ) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
@@ -48,7 +48,7 @@ public class PortfolioController {
     //------------------------Add-Portfolio-Asset-----------------------------
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<OperationSuccessfulResponse> addPortfolioAsset(
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> addPortfolioAsset(
         @NotNull @AuthenticationPrincipal final ProductUser user,
         @NotNull @RequestBody final PortfolioAssetRequest portfolioAssetRequest
     ) {
@@ -60,7 +60,7 @@ public class PortfolioController {
     //-------------------------Is-Empty-Portfolio-----------------------------
     @GetMapping("/empty")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<HasPortfolioResponse> emptyPortfolio(
+    public @NotNull ResponseEntity<HasPortfolioResponse> emptyPortfolio(
         @NotNull @AuthenticationPrincipal final ProductUser user
     ) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(
@@ -77,7 +77,7 @@ public class PortfolioController {
     //------------------------Get-Portfolio-History---------------------------
     @GetMapping("/history/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final ProductUser user) {
+    public @NotNull ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final @NotNull ProductUser user) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         final List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
 
@@ -92,7 +92,7 @@ public class PortfolioController {
 
     @PostMapping("/history/ranged/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final ProductUser user, @RequestBody final RangedPortfolioHistoryRequest request) {
+    public @NotNull ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final @NotNull ProductUser user, @RequestBody final @NotNull RangedPortfolioHistoryRequest request) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         final LocalDateTime startDate = LocalDateTime.parse(request.getStartDate());
         final LocalDateTime endDate = LocalDateTime.parse(request.getEndDate());
@@ -109,7 +109,7 @@ public class PortfolioController {
 
     @GetMapping("/history/get/asset")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioAssetHistoryResponse>> getPortfolioAssetHistory(
+    public @NotNull ResponseEntity<List<PortfolioAssetHistoryResponse>> getPortfolioAssetHistory(
         @NotNull @AuthenticationPrincipal final ProductUser user
     ) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(
@@ -125,7 +125,7 @@ public class PortfolioController {
     }
     @GetMapping("/history/get/asset/{currencyName}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(
+    public @Nullable ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(
         @NotNull @AuthenticationPrincipal final ProductUser user,
         @Nullable @PathVariable final  String currencyName
     ) {
@@ -134,7 +134,7 @@ public class PortfolioController {
     //------------------------Get-Portfolio-Profit----------------------------
     @GetMapping("/history/profit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AssetValueResponse> getPortfolioProfit(@NotNull @AuthenticationPrincipal final ProductUser user) {
+    public @NotNull ResponseEntity<AssetValueResponse> getPortfolioProfit(@NotNull @AuthenticationPrincipal final ProductUser user) {
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         final double profit = this.portfolioService.getPortfolioProfit(portfolio);
         final AssetValueResponse profitResponse = new AssetValueResponse(profit);
@@ -143,7 +143,7 @@ public class PortfolioController {
     //------------------Get-Portfolio-Profit-By-Currency----------------------
     @GetMapping("/history/profit/{currencyName}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(
+    public @NotNull ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(
         @NotNull @AuthenticationPrincipal final ProductUser user,
         @Nullable @PathVariable final String currencyName
     ) {

@@ -3,14 +3,15 @@ package org.cryptotrader.version.library.model.module;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.cryptotrader.version.library.model.config.ConfigFileType;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
 @NoArgsConstructor
 @Getter
 public class ProgramModuleDescendent extends ProgramModule {
-    private ProgramModule parent;
-    private ProgramModule child;
+    private @Nullable ProgramModule parent;
+    private @Nullable ProgramModule child;
 
     public ProgramModuleDescendent(final ModuleLibrary moduleType,
                                    final Path modulePath,

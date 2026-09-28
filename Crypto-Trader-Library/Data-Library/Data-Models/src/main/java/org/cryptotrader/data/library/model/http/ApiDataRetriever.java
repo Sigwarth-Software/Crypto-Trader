@@ -3,6 +3,7 @@ package org.cryptotrader.data.library.model.http;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -60,8 +61,8 @@ public class ApiDataRetriever {
         }
     }
     //-----------------------Shut-Down-Connections----------------------------
-    public static void shutDownConnections(final HttpsURLConnection urlConnection,
-                                           final BufferedReader apiReader) {
+    public static void shutDownConnections(final @Nullable HttpsURLConnection urlConnection,
+                                           final @Nullable BufferedReader apiReader) {
         if (apiReader != null) {
             try {
                 apiReader.close();

@@ -24,7 +24,7 @@ import java.util.List;
 @Profile("!docs")
 @RequestMapping("/api/currency")
 public class CurrencyController {
-    private final CurrencyService currencyService;
+    private final @NotNull CurrencyService currencyService;
 
     @Autowired
     public CurrencyController(@NotNull final CurrencyService currencyService) {
@@ -33,7 +33,7 @@ public class CurrencyController {
 
     @PermitAll
     @PostMapping("/value")
-    public ResponseEntity<AssetValueResponse> getCurrencyValue(
+    public @NotNull ResponseEntity<AssetValueResponse> getCurrencyValue(
         @NotNull @RequestBody final AssetValueRequest assetValueRequest
     ) {
         final Currency currency =
@@ -50,7 +50,7 @@ public class CurrencyController {
     }
     @PermitAll
     @GetMapping("/performance/{currencyCode}")
-    public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(
+    public @NotNull ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(
         @Nullable @PathVariable final String currencyCode
     ) {
         if (currencyCode == null || currencyCode.isEmpty()) {
@@ -77,7 +77,7 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/list")
-    public ResponseEntity<CurrencyNamesResponse> getList(
+    public @NotNull ResponseEntity<CurrencyNamesResponse> getList(
         @RequestParam(value = "withCode", defaultValue = "false") final boolean withCode
     ) {
         final CurrencyNamesResponse response = new CurrencyNamesResponse(
@@ -89,13 +89,13 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/all")
-    public ResponseEntity<DisplayCurrencyListResponse> getAll() {
+    public @NotNull ResponseEntity<DisplayCurrencyListResponse> getAll() {
         return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(), HttpStatus.OK);
     }
 
     @PermitAll
     @GetMapping(value = "/all", params = "offset")
-    public ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(
+    public @NotNull ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(
         @RequestParam(value = "offset", defaultValue = "0") final int offset
     ) {
         if (offset < 0) {
@@ -109,8 +109,8 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/display/{code}")
-    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(
-        @PathVariable final String code
+    public @NotNull ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(
+        @PathVariable final @Nullable String code
     ) {
         if (code == null || code.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -131,7 +131,7 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/history/{code}")
-    public ResponseEntity<List<TimeValueResponse>> getHistory(
+    public @NotNull ResponseEntity<List<TimeValueResponse>> getHistory(
         @Nullable @PathVariable final String code,
         @RequestParam(value = "hours", defaultValue = "24") final int hours,
         @RequestParam(value = "intervalSeconds", defaultValue = "60") final int intervalSeconds
@@ -153,7 +153,7 @@ public class CurrencyController {
     }
     @PermitAll
     @PostMapping("/history/fuzzy/{code}")
-    public ResponseEntity<TimeValueResponse> getFuzzyHistory(
+    public @NotNull ResponseEntity<TimeValueResponse> getFuzzyHistory(
         @Nullable @PathVariable final String code,
         @NotNull @RequestBody final FuzzyTimeValueRequest request
     ) {

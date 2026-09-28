@@ -14,6 +14,7 @@ import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -143,7 +144,7 @@ public class CurrencyHarvesterService {
         this.backfiller.buildSnapshots(fullRefresh);
     }
 
-    private CurrencyHarvesterService self() {
+    private @NotNull CurrencyHarvesterService self() {
         return this.selfProvider.getObject();
     }
 }

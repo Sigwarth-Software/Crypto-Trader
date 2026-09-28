@@ -3,6 +3,7 @@ package org.cryptotrader.data.library.entity.news.builder;
 import org.cryptotrader.data.library.entity.news.NewsSentiment;
 import org.cryptotrader.data.library.entity.news.builder.models.AbstractNewsSentiment;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class NewsSentimentBuilder extends AbstractNewsSentiment {
     private Long articleId;
     private String title;
-    private LocalDateTime publishedDate;
+    private @Nullable LocalDateTime publishedDate;
     private String source;
     private String url;
     private double positiveScore;
@@ -48,7 +49,7 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
     }
 
     @Override
-    public @NotNull AbstractNewsSentiment publishedDate(final String publishedDate) {
+    public @NotNull AbstractNewsSentiment publishedDate(final @NotNull String publishedDate) {
         this.publishedDate = LocalDateTime.parse(publishedDate,
                                                  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return this;
@@ -109,7 +110,7 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
     }
 
     @Override
-    public @NotNull AbstractNewsSentiment lastUpdated(final String lastUpdated) {
+    public @NotNull AbstractNewsSentiment lastUpdated(final @NotNull String lastUpdated) {
         this.lastUpdated = LocalDateTime.parse(lastUpdated);
         return this;
     }

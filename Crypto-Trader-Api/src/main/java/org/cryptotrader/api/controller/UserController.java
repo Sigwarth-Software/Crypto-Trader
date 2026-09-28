@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.communication.response.SubscriptionTierRespo
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.ProductUserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +31,7 @@ public class UserController {
 
     @GetMapping("/tier")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal final ProductUser user) {
+    public @NotNull ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal final @NotNull ProductUser user) {
         return ResponseEntity.ok(new SubscriptionTierResponse(user.getSubscriptionTier()));
     }
 

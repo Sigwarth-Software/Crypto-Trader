@@ -8,6 +8,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.cryptotrader.data.library.communication.request.NewsSentimentHarvestRequest;
 import org.cryptotrader.data.library.communication.request.NewsSentimentTargetedHarvestRequest;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,7 +30,7 @@ public class NewsSentimentHarvesterClient {
     private final HttpPost httpPost;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
-    private final String analysisBaseUrl;
+    private final @NotNull String analysisBaseUrl;
 
     @Autowired
     public NewsSentimentHarvesterClient(final HttpPost httpPost,
@@ -53,7 +55,7 @@ public class NewsSentimentHarvesterClient {
         this.triggerHarvest(DEFAULT_REQUEST);
     }
 
-    public <T> String requestToJson(final T request) {
+    public <T> @Nullable String requestToJson(final T request) {
         try {
             return this.objectMapper.writeValueAsString(request);
         } catch (final Exception ex) {
@@ -88,8 +90,8 @@ public class NewsSentimentHarvesterClient {
         }
     }
 
-    public static NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(final LocalDate startDate,
-                                                                                final LocalDate endDate) {
+    public static @NotNull NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(final LocalDate startDate,
+                                                                                         final LocalDate endDate) {
         return new NewsSentimentTargetedHarvestRequest(100, startDate, endDate, true);
     }
 
@@ -131,11 +133,11 @@ public class NewsSentimentHarvesterClient {
         }
     }
 
-    private String getAnalysisUrl(final String path) {
+    private @NotNull String getAnalysisUrl(final String path) {
         return this.analysisBaseUrl + path;
     }
 
-    private static String normalizeBaseUrl(final String baseUrl) {
+    private static @NotNull String normalizeBaseUrl(final @Nullable String baseUrl) {
         if (baseUrl == null || baseUrl.isBlank()) {
             return "https://localhost:8000";
         }

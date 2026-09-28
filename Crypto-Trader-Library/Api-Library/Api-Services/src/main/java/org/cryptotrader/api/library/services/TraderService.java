@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.communication.response.TradeEventResponse;
 import org.cryptotrader.api.library.entity.trade.TradeEvent;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.data.library.services.CurrencyService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,27 +26,27 @@ public class TraderService {
         this.tradeEventService = tradeEventService;
     }
 
-    public TradeEventListResponse getTradeEvents(final ProductUser user) {
+    public TradeEventListResponse getTradeEvents(final @NotNull ProductUser user) {
         final List<TradeEvent> tradeEvents = this.getAllTradeEvents(user);
         return this.toTradeEventListResponse(tradeEvents);
     }
 
-    public TradeEventListResponse getTradeEvents(final ProductUser user, final int offset, final int limit) {
+    public TradeEventListResponse getTradeEvents(final @NotNull ProductUser user, final int offset, final int limit) {
         final List<TradeEvent> tradeEvents = this.tradeEventService.getSelectionByProductUser(user, offset, limit);
         return this.toTradeEventListResponse(tradeEvents);
     }
-    public List<TradeEvent> getAllTradeEvents(final ProductUser user) {
+    public @NotNull List<TradeEvent> getAllTradeEvents(final @NotNull ProductUser user) {
         return this.tradeEventService.getAllByProductUser(user);
     }
 
-    public TradeEventListResponse toTradeEventListResponse(final List<TradeEvent> tradeEvents) {
+    public @NotNull TradeEventListResponse toTradeEventListResponse(final @NotNull List<TradeEvent> tradeEvents) {
         return new TradeEventListResponse(tradeEvents.stream()
                                                      .map(this::toTradeEventResponse)
                                                      .toList()
         );
     }
 
-    public TradeEventResponse toTradeEventResponse(final TradeEvent tradeEvent) {
+    public @NotNull TradeEventResponse toTradeEventResponse(final @NotNull TradeEvent tradeEvent) {
         final String currencyName = this.currencyService.getCurrencyName(true,
                                                                    tradeEvent.getAssetHistory().getCurrency());
         return new TradeEventResponse(
@@ -59,7 +60,7 @@ public class TraderService {
         );
     }
 
-    public boolean userHasTrades(final ProductUser user) {
+    public boolean userHasTrades(final @NotNull ProductUser user) {
         return this.tradeEventService.userHasTrades(user);
     }
 }

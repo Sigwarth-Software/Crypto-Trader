@@ -3,6 +3,7 @@ package org.cryptotrader.logging.config;
 import org.cryptotrader.logging.properties.CryptoTraderHttpLoggingProperties;
 import org.cryptotrader.logging.http.HttpExchangeLoggingFilter;
 import org.cryptotrader.logging.redaction.LogRedactor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,8 +17,8 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 public class HttpLoggingAutoConfig {
     @Bean
     @ConditionalOnMissingBean
-    public HttpExchangeLoggingFilter httpExchangeLoggingFilter(final CryptoTraderHttpLoggingProperties props,
-                                                               final LogRedactor logRedactor) {
+    public @NotNull HttpExchangeLoggingFilter httpExchangeLoggingFilter(final @NotNull CryptoTraderHttpLoggingProperties props,
+                                                                        final LogRedactor logRedactor) {
         return new HttpExchangeLoggingFilter(
                 props.isIncludeQueryString(),
                 props.isIncludePayload(),
@@ -31,7 +32,7 @@ public class HttpLoggingAutoConfig {
     }
 
     @Bean
-    public CryptoTraderHttpLoggingProperties cryptoTraderHttpLoggingProperties() {
+    public @NotNull CryptoTraderHttpLoggingProperties cryptoTraderHttpLoggingProperties() {
         return new CryptoTraderHttpLoggingProperties();
     }
 }

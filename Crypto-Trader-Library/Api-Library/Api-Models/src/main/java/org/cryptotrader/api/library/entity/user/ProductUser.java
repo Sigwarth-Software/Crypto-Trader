@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.builder.ProductUserBuilder;
 import org.cryptotrader.universal.library.model.annotation.Loggable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,11 +27,11 @@ public class ProductUser extends User implements UserDetails {
     //============================-Variables-=================================
     @Loggable
     @Column(name = "email")
-    private String email;
+    private @Nullable String email;
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "portfolio_id", referencedColumnName = "id")
-    private Portfolio portfolio;
+    private @Nullable Portfolio portfolio;
     @OneToOne
     @JoinColumn(name = "profile_picture_id")
     private ProfilePicture profilePicture;
@@ -90,12 +92,12 @@ public class ProductUser extends User implements UserDetails {
         this.lastLogin = lastLogin;
     }
 
-    public static ProductUserBuilder builder() {
+    public static @NotNull ProductUserBuilder builder() {
         return new ProductUserBuilder();
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public @NotNull Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 

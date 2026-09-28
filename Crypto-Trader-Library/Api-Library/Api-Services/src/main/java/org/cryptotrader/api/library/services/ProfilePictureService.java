@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.repository.ProfilePictureRepository;
 import org.cryptotrader.api.library.services.entity.user.ProfilePictureEntityService;
 import org.cryptotrader.api.library.services.models.ProfilePictureOperations;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +25,12 @@ public class ProfilePictureService implements ProfilePictureOperations {
         this.profilePictureEntityService = profilePictureEntityService;
     }
     //============================-Methods-===================================
-    public void saveProfilePicture(final ProfilePicture profilePicture) {
+    public void saveProfilePicture(final @NotNull ProfilePicture profilePicture) {
 //        this.profilePictureRepository.save(profilePicture);
         this.profilePictureEntityService.save(profilePicture);
     }
     @Transactional
-    public Optional<ProfilePicture> findByUserId(final Long userId) {
+    public @NotNull Optional<ProfilePicture> findByUserId(final Long userId) {
         final ProfilePicture profilePicture = this.profilePictureRepository.findByUserId(userId);
         if (profilePicture == null) {
             return Optional.empty();

@@ -1,5 +1,7 @@
 package org.cryptotrader.data.library.entity.training.specs;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum TrainingQueryType {
     CURRENT_PRICE("current_price"),
     HISTORICAL_PRICE("historical_price"),
@@ -10,7 +12,7 @@ public enum TrainingQueryType {
         this.type = type;
     }
 
-    public static TrainingQueryType from(final String type) {
+    public static @NotNull TrainingQueryType from(final @NotNull String type) {
         return switch (type) {
             case "current_price" -> TrainingQueryType.CURRENT_PRICE;
             case "historical_price" -> TrainingQueryType.HISTORICAL_PRICE;

@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.desktop.library.component.ViewLoader;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class AppController extends BaseViewController {
     }
 
     @EventListener
-    public void onNavigate(final PageNavigationEvent event) {
+    public void onNavigate(final @NotNull PageNavigationEvent event) {
         log.info("Navigation event received: {}", event.appPage());
         final Class<?> controllerClass;
         switch (event.appPage()) {

@@ -15,6 +15,7 @@ module org.cryptotrader.universal.library.components {
     requires spring.cloud.stream;
     requires spring.integration.core;
     requires spring.messaging;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.universal.library.component;
 }

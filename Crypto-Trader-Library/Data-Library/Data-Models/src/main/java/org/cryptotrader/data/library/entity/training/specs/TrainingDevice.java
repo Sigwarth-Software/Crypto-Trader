@@ -1,5 +1,7 @@
 package org.cryptotrader.data.library.entity.training.specs;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum TrainingDevice {
     CPU("cpu"),
     GPU_ZERO("AMD_6700_XT"),
@@ -10,7 +12,7 @@ public enum TrainingDevice {
         this.device = device;
     }
 
-    public static TrainingDevice from(final String device) {
+    public static @NotNull TrainingDevice from(final @NotNull String device) {
         return switch (device) {
             case "cpu" -> TrainingDevice.CPU;
             case "AMD_6700_XT", "gpu_0" -> TrainingDevice.GPU_ZERO;

@@ -1,6 +1,7 @@
 package org.cryptotrader.version.library.model.module;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 public class ModuleLibrary {
     // TODO: Remove hard-coded dependencies.
-    public static String[] CRYPTO_TRADER_PARENT = {
+    public static String @NotNull [] CRYPTO_TRADER_PARENT = {
             "Crypto-Trader-Admin",
             "Crypto-Trader-Agent",
 //            "Crypto-Trader-Analysis", Not a Java/Kotlin dependency.
@@ -36,7 +37,7 @@ public class ModuleLibrary {
 //            "Crypto-Trader-Website" Not a Java/Kotlin dependency.
     };
 
-    public static String[] LIBRARY_PARENT = {
+    public static String @NotNull [] LIBRARY_PARENT = {
             "Admin-Library",
             "Admin-Events",
             "Admin-Models",
@@ -129,7 +130,7 @@ public class ModuleLibrary {
 
     private String name;
 
-    public static List<ModuleLibrary> getInitializedModules() {
+    public static @NotNull List<ModuleLibrary> getInitializedModules() {
         final List<ModuleLibrary> moduleLibraries = new ArrayList<>(Arrays.stream(CRYPTO_TRADER_PARENT)
                                                                     .map(ModuleLibrary::new)
                                                                     .toList());
@@ -148,7 +149,7 @@ public class ModuleLibrary {
         this.name = name;
     }
 
-    public static ModuleLibrary resolveFromPath(final Path path) {
+    public static @NotNull ModuleLibrary resolveFromPath(final @NotNull Path path) {
         if (path == null) {
             throw new IllegalArgumentException("Path must not be null");
         }
@@ -182,7 +183,7 @@ public class ModuleLibrary {
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
-        if (object instanceof final ModuleLibrary module) {
+        if (object instanceof final @NotNull ModuleLibrary module) {
             return this.name.equals(module.getName());
         }
         return false;

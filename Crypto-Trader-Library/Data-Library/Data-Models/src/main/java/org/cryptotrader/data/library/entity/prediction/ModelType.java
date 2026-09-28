@@ -1,5 +1,7 @@
 package org.cryptotrader.data.library.entity.prediction;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum ModelType {
     LSTM("lstm"),
     COMPLEX_LSTM("complex_lstm"),
@@ -9,7 +11,7 @@ public enum ModelType {
     ModelType(final String modelType) {
         this.modelType = modelType;
     }
-    public static ModelType from(final String modelType) {
+    public static @NotNull ModelType from(final @NotNull String modelType) {
         return switch (modelType) {
             case "lstm" -> ModelType.LSTM;
             case "complex_lstm" -> ModelType.COMPLEX_LSTM;

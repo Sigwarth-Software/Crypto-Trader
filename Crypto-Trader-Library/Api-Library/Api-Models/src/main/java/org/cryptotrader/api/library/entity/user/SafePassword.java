@@ -5,6 +5,8 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
@@ -12,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Embeddable
 public class SafePassword {
     //============================-Variables-=================================
-    private String encodedPassword;
+    private @Nullable String encodedPassword;
     @Transient
     @JsonIgnore
     private BCryptPasswordEncoder encoder;
@@ -46,7 +48,7 @@ public class SafePassword {
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
-        if (object instanceof final SafePassword comparedSafePassword) {
+        if (object instanceof final @NotNull SafePassword comparedSafePassword) {
             return this.encodedPassword != null && this.encodedPassword.equals(comparedSafePassword.encodedPassword);
         }
         return false;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.SubscriptionTier;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,11 +36,11 @@ public class CryptoTrader {
         this.traders.add(trader);
     }
     //----------------------------Add-Traders---------------------------------
-    public void addTraders(final ArrayList<Trader> traders) {
+    public void addTraders(final @NotNull ArrayList<Trader> traders) {
         this.traders.addAll(traders);
     }
     //-------------------------Add-All-Portfolios-----------------------------
-    public void addAllPortfolios(final List<Portfolio> portfolios) {
+    public void addAllPortfolios(final @NotNull List<Portfolio> portfolios) {
         for (final Portfolio portfolio : portfolios) {
             this.addTrader(new Trader(portfolio));
         }
@@ -53,7 +54,7 @@ public class CryptoTrader {
         return this.traders.isEmpty();
     }
 
-    public List<Trader> getTradersBySubscriptionTier(final SubscriptionTier subscriptionTier) {
+    public @NotNull List<Trader> getTradersBySubscriptionTier(final SubscriptionTier subscriptionTier) {
         return this.traders.stream()
                 .filter(trader -> trader.getPortfolio().getUser().getSubscriptionTier() == subscriptionTier)
                 .toList();

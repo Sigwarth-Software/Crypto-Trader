@@ -6,6 +6,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ public class ViewLoader {
         this.applicationContext = applicationContext;
     }
 
-    public Parent initializeView(final Class<?> controllerClass) {
+    public Parent initializeView(final @NotNull Class<?> controllerClass) {
         final String fxmlPath = this.resolveFxmlPath(controllerClass);
         final String cssPath = fxmlPath.replace(".fxml", ".css");
         final URL resource = Objects.requireNonNull(controllerClass.getResource(fxmlPath));
@@ -43,10 +45,10 @@ public class ViewLoader {
     }
 
     public void loadView(final Pane container,
-                         final Class<?> controllerClass) {
+                         final @NotNull Class<?> controllerClass) {
         final Parent view = this.initializeView(controllerClass);
         try {
-            if (container instanceof final VBox vbox) {
+            if (container instanceof final @NotNull VBox vbox) {
                 javafx.scene.layout.VBox.setVgrow(view, javafx.scene.layout.Priority.ALWAYS);
             } else if (container instanceof javafx.scene.layout.AnchorPane) {
                 AnchorPane.setTopAnchor(view, 0.0);
@@ -60,7 +62,7 @@ public class ViewLoader {
         container.getChildren().setAll(view);
     }
 
-    private String resolveFxmlPath(final Class<?> controllerClass) {
+    private @NotNull String resolveFxmlPath(final @NotNull Class<?> controllerClass) {
         final String simpleName = controllerClass.getSimpleName();
         final String basePackage = extractBasePackage(controllerClass, simpleName);
         final String rawFeature = simpleName.substring(0, simpleName.length() - "Controller".length());
@@ -71,7 +73,7 @@ public class ViewLoader {
         return resourcePath;
     }
 
-    private static String extractBasePackage(final Class<?> controllerClass, final String simpleName) {
+    private static @NotNull String extractBasePackage(final @NotNull Class<?> controllerClass, final @NotNull String simpleName) {
         if (!isValidClass(simpleName)) {
             throw new IllegalArgumentException("Controller class must end with 'Controller': " + simpleName);
         }
@@ -84,7 +86,7 @@ public class ViewLoader {
         return basePackage;
     }
 
-    private static String toKebabCase(final String input) {
+    private static @NotNull String toKebabCase(final @Nullable String input) {
         if (input == null || input.isEmpty()) {
             return "";
         }
@@ -104,7 +106,7 @@ public class ViewLoader {
         return kebabString.toString();
     }
 
-    private static boolean isValidClass(final String simpleName) {
+    private static boolean isValidClass(final @NotNull String simpleName) {
         return simpleName.endsWith("Controller");
     }
 }

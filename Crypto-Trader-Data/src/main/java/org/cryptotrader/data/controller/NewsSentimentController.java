@@ -3,6 +3,8 @@ package org.cryptotrader.data.controller;
 import org.cryptotrader.data.library.services.NewsSentimentService;
 import org.cryptotrader.data.library.communication.request.NewsSentimentRequest;
 import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class NewsSentimentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<OperationSuccessfulResponse> add(@RequestBody final NewsSentimentRequest request) {
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> add(@RequestBody final @Nullable NewsSentimentRequest request) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

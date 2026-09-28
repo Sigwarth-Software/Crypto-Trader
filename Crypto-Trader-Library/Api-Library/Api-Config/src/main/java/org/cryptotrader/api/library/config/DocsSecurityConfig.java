@@ -1,6 +1,7 @@
 package org.cryptotrader.api.library.config;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -23,7 +24,7 @@ public class DocsSecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
     @Order(1)
-    public SecurityFilterChain docsAndActuator(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain docsAndActuator(final @NotNull HttpSecurity http) throws Exception {
         http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/actuator/**");
         http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable);
@@ -33,7 +34,7 @@ public class DocsSecurityConfig {
     //--------------------------Password-Encoder------------------------------
     @Bean
     @ConditionalOnMissingBean(BCryptPasswordEncoder.class)
-    public BCryptPasswordEncoder passwordEncoder() {
+    public @NotNull BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

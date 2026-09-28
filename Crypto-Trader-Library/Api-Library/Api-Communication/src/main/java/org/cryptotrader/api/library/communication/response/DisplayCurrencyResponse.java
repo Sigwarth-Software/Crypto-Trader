@@ -2,6 +2,7 @@ package org.cryptotrader.api.library.communication.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class DisplayCurrencyResponse extends CurrencyValueResponse {
         this.logoUrl = logoUrl;
     }
 
-    public String generateUrl() {
+    public @NotNull String generateUrl() {
         final String baseUrl = "/assets/cryptofont/%s.svg";
         return String.format(baseUrl, this.getCurrencyCode().toLowerCase());
     }

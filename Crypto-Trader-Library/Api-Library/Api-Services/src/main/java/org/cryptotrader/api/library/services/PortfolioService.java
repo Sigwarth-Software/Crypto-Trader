@@ -21,6 +21,8 @@ import org.cryptotrader.api.library.repository.PortfolioHistoryRepository;
 import org.cryptotrader.api.library.repository.PortfolioRepository;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.hibernate.Hibernate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,8 +73,8 @@ public class PortfolioService {
      * Calculate and set value and share deltas on the current history entry using an optional previous entry.
      * If no previous is provided, the current entry's valueChange is set to 0.
      */
-    public void setPortfolioValueChange(final PortfolioAssetHistory previousPortfolioAssetHistory,
-                                        final PortfolioAssetHistory portfolioAssetHistory) {
+    public void setPortfolioValueChange(final @Nullable PortfolioAssetHistory previousPortfolioAssetHistory,
+                                        final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         if (previousPortfolioAssetHistory != null) {
             portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
         } else {
@@ -80,8 +82,8 @@ public class PortfolioService {
         }
     }
 
-    public void setPortfolioSharesChange(final PortfolioAssetHistory previousAssetWithShares,
-                                         final PortfolioAssetHistory portfolioAssetHistory) {
+    public void setPortfolioSharesChange(final @Nullable PortfolioAssetHistory previousAssetWithShares,
+                                         final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         if (previousAssetWithShares != null) {
             portfolioAssetHistory.calculateShareChange(previousAssetWithShares);
         } else {
@@ -89,7 +91,7 @@ public class PortfolioService {
         }
     }
 
-    public PortfolioAssetHistoryResponse toPortfolioAssetHistoryResponse(final PortfolioAssetHistory portfolioAssetHistory) {
+    public @NotNull PortfolioAssetHistoryResponse toPortfolioAssetHistoryResponse(final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         return new PortfolioAssetHistoryResponse(
                 portfolioAssetHistory.getCurrency().getCurrencyCode(),
                 portfolioAssetHistory.getShares(),
@@ -105,20 +107,20 @@ public class PortfolioService {
         );
     }
 
-    public PortfolioHistoryResponse toPortfolioHistoryResponse(final PortfolioHistory portfolioHistory) {
+    public @NotNull PortfolioHistoryResponse toPortfolioHistoryResponse(final @NotNull PortfolioHistory portfolioHistory) {
         return new PortfolioHistoryResponse(portfolioHistory);
     }
 
-    public List<PortfolioAssetHistoryResponse> toHistoryResponses(final List<PortfolioAssetHistory> assetHistories) {
+    public @NotNull List<PortfolioAssetHistoryResponse> toHistoryResponses(final @NotNull List<PortfolioAssetHistory> assetHistories) {
         return assetHistories.stream()
                 .map(this::toPortfolioAssetHistoryResponse)
                 .toList();
     }
 
-    public List<PortfolioAssetHistory> getPortfolioAssetHistory(final Portfolio portfolio) {
+    public List<PortfolioAssetHistory> getPortfolioAssetHistory(final @NotNull Portfolio portfolio) {
         return this.portfolioAssetHistoryRepository.findAllByPortfolioId(portfolio.getId());
     }
-    public PortfolioAssetHistory getLatestPortfolioAssetHistory(final PortfolioAsset portfolioAsset) {
+    public PortfolioAssetHistory getLatestPortfolioAssetHistory(final @NotNull PortfolioAsset portfolioAsset) {
         return this.portfolioAssetHistoryRepository.findFirstByPortfolioAssetIdOrderByLastUpdatedDesc(portfolioAsset.getId());
     }
 
@@ -126,7 +128,7 @@ public class PortfolioService {
      * Find the most recent preceding history entry for the same asset where shares != 0.
      * Returns null when input is incomplete or no such entry exists.
      */
-    public PortfolioAssetHistory getLatestPreviousAssetHistoryWithShares(final PortfolioAssetHistory currentHistory) {
+    public @Nullable PortfolioAssetHistory getLatestPreviousAssetHistoryWithShares(final @Nullable PortfolioAssetHistory currentHistory) {
         if (currentHistory == null || currentHistory.getPortfolioAsset() == null || currentHistory.getLastUpdated() == null) {
             return null;
         }
@@ -137,26 +139,26 @@ public class PortfolioService {
         }
         return list.getFirst();
     }
-    public PortfolioHistory getLatestPortfolioHistory(final Portfolio portfolio) {
+    public PortfolioHistory getLatestPortfolioHistory(final @NotNull Portfolio portfolio) {
         return this.portfolioHistoryRepository.findFirstByPortfolioIdOrderByLastUpdatedDesc(portfolio.getId());
     }
     //---------------------Save-Portfolio-Asset-History-----------------------
-    public void savePortfolioAssetHistory(final PortfolioAssetHistory portfolioAssetHistory) {
+    public void savePortfolioAssetHistory(final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         this.portfolioAssetHistoryEntityService.save(portfolioAssetHistory);
     }
     //----------------------Save-Portfolio-History----------------------------
-    public void savePortfolioHistory(final PortfolioHistory portfolioHistory) {
+    public void savePortfolioHistory(final @NotNull PortfolioHistory portfolioHistory) {
         this.portfolioHistoryEntityService.save(portfolioHistory);
     }
 
     //---------------------------Save-Portfolio-------------------------------
     @Transactional
-    public void savePortfolio(final Portfolio portfolio) {
+    public void savePortfolio(final @NotNull Portfolio portfolio) {
         this.portfolioEntityService.save(portfolio);
     }
     //------------------------Save-Portfolio-Asset----------------------------
     @Transactional
-    public void savePortfolioAsset(final PortfolioAsset portfolioAsset) {
+    public void savePortfolioAsset(final @NotNull PortfolioAsset portfolioAsset) {
         this.portfolioAssetEntityService.save(portfolioAsset);
     }
     //----------------------Get-Portfolio-By-User-Id--------------------------
@@ -165,23 +167,23 @@ public class PortfolioService {
         return this.portfolioRepository.findPortfolioByUserId(userId);
     }
     //-------------------------Get-All-Portfolios-----------------------------
-    public List<Portfolio> getAllPortfolios() {
+    public @NotNull List<Portfolio> getAllPortfolios() {
         return this.portfolioEntityService.findAll();
     }
     //-----------------------Add-Asset-To-Portfolio---------------------------
     @Transactional
-    public void addAssetToPortfolio(final Portfolio portfolio, final PortfolioAssetRequest portfolioAssetRequest) {
+    public void addAssetToPortfolio(final @NotNull Portfolio portfolio, final @NotNull PortfolioAssetRequest portfolioAssetRequest) {
         final Currency requestCurrency = this.currencyService.getCurrencyByName(portfolioAssetRequest.getCurrencyName());
         final PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
         this.portfolioEntityService.save(portfolio);
         this.portfolioAssetEntityService.save(portfolioAsset);
     }
     //-----------------------Get-Portfolio-History----------------------------
-    public List<PortfolioHistory> getPortfolioHistory(final Portfolio portfolio) {
+    public List<PortfolioHistory> getPortfolioHistory(final @NotNull Portfolio portfolio) {
         return this.getPortfolioHistory(portfolio.getId());
     }
 
-    public List<PortfolioHistory> getRangedPortfolioHistory(final Portfolio portfolio, final LocalDateTime startDate, final LocalDateTime endDate) {
+    public List<PortfolioHistory> getRangedPortfolioHistory(final @NotNull Portfolio portfolio, final LocalDateTime startDate, final LocalDateTime endDate) {
         return this.portfolioHistoryRepository.findAllByPortfolioIdAndLastUpdatedBetweenOrderByLastUpdatedAsc(portfolio.getId(), startDate, endDate);
     }
 
@@ -193,7 +195,7 @@ public class PortfolioService {
         return this.portfolioAssetRepository.findAllByPortfolioId(portfolioId);
     }
     //------------------------Get-Portfolio-Profit----------------------------
-    public double getPortfolioProfit(final Portfolio portfolio) {
+    public double getPortfolioProfit(final @NotNull Portfolio portfolio) {
         final PortfolioHistory initialPortfolioHistory = this.portfolioHistoryRepository.getFirstByPortfolioId(portfolio.getId());
         if (initialPortfolioHistory == null) {
             return 0;
@@ -202,7 +204,7 @@ public class PortfolioService {
         return profit;
     }
     //---------------------Get-Portfolio-Asset-Profit-------------------------
-    public double getPortfolioAssetProfit(final PortfolioAsset portfolioAsset) {
+    public double getPortfolioAssetProfit(final @NotNull PortfolioAsset portfolioAsset) {
         final PortfolioAssetHistory initialPortfolioAssetHistory = this.portfolioAssetHistoryRepository.getFirstByPortfolioAssetId(portfolioAsset.getId());
         if (initialPortfolioAssetHistory == null) {
             return 0;
@@ -211,20 +213,20 @@ public class PortfolioService {
         return profit;
     }
     //----------------Get-Portfolio-Asset-By-Currency-Name--------------------
-    public PortfolioAsset getPortfolioAssetByCurrencyName(final Portfolio portfolio, final String currencyName) {
+    public PortfolioAsset getPortfolioAssetByCurrencyName(final @NotNull Portfolio portfolio, final String currencyName) {
         return this.portfolioAssetRepository.getPortfolioAssetByPortfolioIdAndCurrencyName(portfolio.getId(), currencyName);
     }
 
-    public Optional<PortfolioAsset> getPortfolioAssetByHistory(final PortfolioAssetHistory portfolioAssetHistory) {
+    public @NotNull Optional<PortfolioAsset> getPortfolioAssetByHistory(final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         final Long portfolioAssetId = portfolioAssetHistory.getPortfolioAsset().getId();
         return this.portfolioAssetEntityService.findById(portfolioAssetId);
     }
 
-    public ProductUser getProductUserByAsset(final PortfolioAsset portfolioAsset) {
+    public ProductUser getProductUserByAsset(final @NotNull PortfolioAsset portfolioAsset) {
         return portfolioAsset.getPortfolio().getUser();
     }
 
-    public Portfolio getInitializedPortfolio(final Long userId) {
+    public @NotNull Portfolio getInitializedPortfolio(final Long userId) {
         final Portfolio portfolio = this.getPortfolioByUserId(userId);
 
         if (portfolio == null) {

@@ -1,6 +1,7 @@
 package org.cryptotrader.engine;
 
 import org.cryptotrader.health.library.model.CryptoTraderService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -82,7 +83,7 @@ public class CryptoTraderEngineApplication {
         private static final String DATA_CA_BUNDLE_ENV = "CT_HEALTH_CA_BUNDLE_DATA";
         private static final String DATA_CA_BUNDLE_PROPERTY = "ct.health.caBundle.data";
 
-        EngineStartupVerifier(final Environment environment) {
+        EngineStartupVerifier(final @NotNull Environment environment) {
             final String dataCaBundle = environment.getProperty(DATA_CA_BUNDLE_ENV);
             if (dataCaBundle != null && !dataCaBundle.isBlank()) {
                 System.setProperty(DATA_CA_BUNDLE_PROPERTY, dataCaBundle);

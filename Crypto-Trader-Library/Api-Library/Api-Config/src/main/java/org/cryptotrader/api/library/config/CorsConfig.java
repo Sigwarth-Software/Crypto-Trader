@@ -1,6 +1,7 @@
 package org.cryptotrader.api.library.config;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -53,7 +54,7 @@ public class CorsConfig implements WebMvcConfigurer {
      * Uses properties to set allowed origins/methods/headers and whether credentials are allowed.
      */
     @Override
-    public void addCorsMappings(final CorsRegistry registry) {
+    public void addCorsMappings(final @NotNull CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(this.allowedOrigins.toArray(String[]::new))
                 .allowedMethods(this.allowedMethods.toArray(String[]::new))
@@ -68,7 +69,7 @@ public class CorsConfig implements WebMvcConfigurer {
      */
     @Bean
     @ConditionalOnMissingBean(CorsConfigurationSource.class)
-    public CorsConfigurationSource corsConfigurationSource() {
+    public @NotNull CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(this.allowedOrigins);
         config.setAllowedMethods(this.allowedMethods);

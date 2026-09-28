@@ -5,6 +5,7 @@ import org.cryptotrader.logging.library.entity.ExecutionSpeedLog;
 import org.cryptotrader.logging.library.entity.ExecutionSpeedWarningLevel;
 import org.cryptotrader.logging.library.events.ExecutionSpeedLogEventPayload;
 import org.cryptotrader.logging.library.service.entity.ExecutionSpeedLogEntityService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class ExecutionSpeedLogService {
     }
 
     @Transactional
-    public void persist(final ExecutionSpeedLogEventPayload entry,
+    public void persist(final @NotNull ExecutionSpeedLogEventPayload entry,
                         final ExecutionSpeedWarningLevel warningLevel) {
         final ExecutionSpeedLog entity = new ExecutionSpeedLog(
             entry.getExecutionSpeed(),

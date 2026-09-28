@@ -6,6 +6,7 @@ import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
 import org.cryptotrader.data.library.model.http.ApiDataRetriever;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
         super(API_URL);
     }
     @TimeTracked(expectedMillis = 125, shouldPersist = true)
-    public Map<String ,Currency> getUpdatedCurrencies() {
+    public @NotNull Map<String ,Currency> getUpdatedCurrencies() {
         final Map<String, Double> currencyMap = this.getCurrencyMap();
         final Map<String, Currency> updatedCurrencyMap = new HashMap<>();
         for (final Map.Entry<String, Double> entry : currencyMap.entrySet()) {
@@ -43,7 +44,7 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
         }
         return filteredCurrencyMap;
     }
-    public Map<String, Double> getCurrencyMap() {
+    public @NotNull Map<String, Double> getCurrencyMap() {
         final Map<String, Double> currencyMap = new HashMap<>();
         this.fetchResponse();
         final ObjectMapper mapper = new ObjectMapper();

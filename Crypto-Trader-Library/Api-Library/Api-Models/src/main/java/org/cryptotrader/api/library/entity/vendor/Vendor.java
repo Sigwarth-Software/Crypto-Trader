@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class Vendor {
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
-        if (object instanceof final Vendor comparedVendor) {
+        if (object instanceof final @NotNull Vendor comparedVendor) {
             return this.name.equals(comparedVendor.getName());
         }
         return false;

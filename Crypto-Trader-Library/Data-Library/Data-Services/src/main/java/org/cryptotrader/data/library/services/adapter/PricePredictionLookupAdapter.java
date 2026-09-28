@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PricePredictionLookupAdapter implements PricePredictionLookup {
-    private final PricePredictionService pricePredictionService;
+    private final @NotNull PricePredictionService pricePredictionService;
 
     @Override
     public PricePrediction getById(@NotNull final Long id) {

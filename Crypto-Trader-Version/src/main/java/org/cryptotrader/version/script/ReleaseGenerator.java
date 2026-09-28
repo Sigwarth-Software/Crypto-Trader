@@ -4,15 +4,16 @@ import com.sigwarthsoftware.promo.github.commit.CommitRange;
 
 import com.sigwarthsoftware.changelog.ReleaseChangelogGenerator;
 import org.cryptotrader.version.library.model.module.ModuleLibrary;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ReleaseGenerator {
-    public static List<com.sigwarthsoftware.changelog.version.models.module.ModuleLibrary> getAllSigwarthModules() {
+    public static @NotNull List<com.sigwarthsoftware.changelog.version.models.module.ModuleLibrary> getAllSigwarthModules() {
         return ModuleLibrary.MODULES.stream().map(ReleaseGenerator::toSigwarthFormat).toList();
     }
 
-    public static com.sigwarthsoftware.changelog.version.models.module.ModuleLibrary toSigwarthFormat(final ModuleLibrary library) {
+    public static com.sigwarthsoftware.changelog.version.models.module.@NotNull ModuleLibrary toSigwarthFormat(final @NotNull ModuleLibrary library) {
         return new com.sigwarthsoftware.changelog.version.models.module.ModuleLibrary(library.getName());
     }
 

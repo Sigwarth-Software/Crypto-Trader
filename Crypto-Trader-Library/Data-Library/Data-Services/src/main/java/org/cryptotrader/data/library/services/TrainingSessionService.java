@@ -5,6 +5,7 @@ import org.cryptotrader.data.library.communication.request.TrainingSessionReques
 import org.cryptotrader.data.library.entity.training.TrainingSession;
 import org.cryptotrader.data.library.entity.training.builder.TrainingSessionBuilder;
 import org.cryptotrader.data.library.repository.TrainingSessionRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,12 @@ public class TrainingSessionService {
 
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
     @Transactional
-    public void saveTrainingSession(final TrainingSessionRequest request) {
+    public void saveTrainingSession(final @NotNull TrainingSessionRequest request) {
         final TrainingSession trainingSession = this.fromRequest(request);
         this.trainingSessionRepository.save(trainingSession);
     }
 
-    public TrainingSession fromRequest(final TrainingSessionRequest request) {
+    public TrainingSession fromRequest(final @NotNull TrainingSessionRequest request) {
         return this.trainingSessionBuilder
                 .currency(request.getCurrency())
                 .prediction(request.getPrediction())

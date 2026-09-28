@@ -3,6 +3,7 @@ package org.cryptotrader.data.library.entity.currency;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class SupportedCurrencies {
         loadCurrenciesFromJson(JSON_FILE_PATH);
     }
 
-    public static void loadCurrenciesFromJson(final String jsonPath) {
+    public static void loadCurrenciesFromJson(final @NotNull String jsonPath) {
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             final File jsonFile = new File(jsonPath);
@@ -60,7 +61,7 @@ public class SupportedCurrencies {
         }
     }
 
-    private static void loadCurrenciesFromJson(final ObjectMapper objectMapper, final File jsonFile) throws IOException {
+    private static void loadCurrenciesFromJson(final @NotNull ObjectMapper objectMapper, final File jsonFile) throws IOException {
         final List<Map<String, String>> currencyData = objectMapper.readValue(jsonFile, new TypeReference<>() {});
         for (final Map<String, String> entry : currencyData) {
             final String name = entry.get("name");

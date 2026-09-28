@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Index;
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +22,7 @@ public class BannedIpAddress extends IpAddress {
 
     @Builder.Default
     @Column(nullable = false, name = "occurred_at")
-    private LocalDateTime occurredAt = LocalDateTime.now();
+    private @NotNull LocalDateTime occurredAt = LocalDateTime.now();
 
     @Builder.Default
     @Column(nullable = false, name = "attempts")

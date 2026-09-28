@@ -6,6 +6,7 @@ import ch.qos.logback.core.read.ListAppender;
 import org.cryptotrader.logging.config.aspect.TimeTrackingAspect;
 import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
@@ -56,7 +57,7 @@ class TimeTrackingAspectTest {
         }
     }
 
-    private TrackedService proxy(final TrackedService target) {
+    private @NotNull TrackedService proxy(final @NotNull TrackedService target) {
         final AspectJProxyFactory proxyFactory = new AspectJProxyFactory(target);
         proxyFactory.addAspect(aspect);
         return (TrackedService) proxyFactory.getProxy();
@@ -64,12 +65,12 @@ class TimeTrackingAspectTest {
 
     static class TrackedService {
         @TimeTracked
-        public String logged() {
+        public @NotNull String logged() {
             return "tracked";
         }
 
         @TimeTracked(isLogged = false)
-        public String silent() {
+        public @NotNull String silent() {
             return "silent";
         }
     }

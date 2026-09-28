@@ -4,6 +4,8 @@ import org.cryptotrader.version.library.model.element.PomElement;
 import org.cryptotrader.version.library.model.element.PomPair;
 import org.cryptotrader.version.library.model.module.ModuleLibrary;
 import org.cryptotrader.version.library.model.module.type.Pom;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +15,7 @@ public class PomValidator {
     private static final List<PomPair> allPomPairs = getAllPomPairs();
 
 
-    public static List<PomPair> getAllPomPairs() {
+    public static @NotNull List<PomPair> getAllPomPairs() {
 
         final List<PomPair> pomPairs = allPoms.stream().map(pomElement -> {
             final String name = pomElement.getPom().getModuleDependency().getName();
@@ -32,7 +34,7 @@ public class PomValidator {
         return parentMatches(allPomPairs);
     }
 
-    public static boolean parentMatches(final List<PomPair> pomPairs) {
+    public static boolean parentMatches(final @NotNull List<PomPair> pomPairs) {
         final boolean allMatch = pomPairs.stream().allMatch(pomPair -> {
             final boolean parentMatches = parentMatches(pomPair.element(), pomPair.module());
             System.out.println(pomPair.module() + " parent matches: " + parentMatches);
@@ -41,7 +43,7 @@ public class PomValidator {
         return allMatch;
     }
 
-    private static PomElement getByModule(final ModuleLibrary module) {
+    private static @Nullable PomElement getByModule(final ModuleLibrary module) {
         final PomElement element = allPoms.stream()
                 .filter(pomElement -> pomElement.getPom().getModuleType().equals(module))
                 .filter(pomElement -> "pom".equalsIgnoreCase(pomElement.getPackaging()))
@@ -53,7 +55,7 @@ public class PomValidator {
         return element;
     }
 
-    public static boolean parentMatches(final PomElement topPom, final ModuleLibrary module) {
+    public static boolean parentMatches(final @Nullable PomElement topPom, final ModuleLibrary module) {
         if (topPom == null) {
             return false;
         }
@@ -75,7 +77,7 @@ public class PomValidator {
         return allMatch;
     }
 
-    private static String nullToEmpty(final String text) {
+    private static @NotNull String nullToEmpty(final @Nullable String text) {
         return text == null ? "" : text;
     }
 }

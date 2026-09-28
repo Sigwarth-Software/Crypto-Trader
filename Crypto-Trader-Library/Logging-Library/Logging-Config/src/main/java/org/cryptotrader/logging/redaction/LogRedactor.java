@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.cryptotrader.logging.properties.LogRedactionProperties;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -25,14 +26,14 @@ public class LogRedactor {
         this.properties = properties;
     }
 
-    public String redactHeader(@Nullable final String name, @Nullable final String value) {
+    public @org.jetbrains.annotations.Nullable String redactHeader(@Nullable final String name, @Nullable final String value) {
         if (!this.properties.isEnabled() || value == null) {
             return value;
         }
         return this.isSensitiveHeader(name) ? this.properties.getReplacement() : value;
     }
 
-    public String redactQueryString(@Nullable final String queryString) {
+    public @org.jetbrains.annotations.Nullable String redactQueryString(@Nullable final String queryString) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(queryString)) {
             return queryString;
         }
@@ -52,7 +53,7 @@ public class LogRedactor {
         return String.join("&", pairs);
     }
 
-    public String redactText(@Nullable final String text) {
+    public @org.jetbrains.annotations.Nullable String redactText(@Nullable final String text) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(text)) {
             return text;
         }
@@ -64,7 +65,7 @@ public class LogRedactor {
         return redacted;
     }
 
-    public JsonNode redact(final JsonNode node) {
+    public @org.jetbrains.annotations.Nullable JsonNode redact(final @org.jetbrains.annotations.Nullable JsonNode node) {
         if (!this.properties.isEnabled() || node == null) {
             return node;
         }
@@ -92,7 +93,7 @@ public class LogRedactor {
         return node;
     }
 
-    private String redactAssignment(final String text, final String field) {
+    private @NotNull String redactAssignment(final @NotNull String text, final @NotNull String field) {
         final Pattern pattern = Pattern.compile(
                 "(?i)([?&\\s,{\\[]?)(\"?" + Pattern.quote(field) + "\"?\\s*[:=]\\s*)(\"?)([^\"&\\s,}\\]]+)(\"?)"
         );

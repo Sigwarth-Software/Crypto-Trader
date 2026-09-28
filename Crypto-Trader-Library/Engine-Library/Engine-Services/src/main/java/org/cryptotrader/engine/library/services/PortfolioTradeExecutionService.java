@@ -14,6 +14,8 @@ import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.TradeEventService;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class PortfolioTradeExecutionService {
 
     @Transactional
     @TimeTracked(expectedMillis = 750, shouldPersist = true)
-    public void executeTrader(final Trader trader, final TradingEngine assetTrader) {
+    public void executeTrader(final @NotNull Trader trader, final @NotNull TradingEngine assetTrader) {
         final PortfolioAsset traderAsset = assetTrader.getAsset();
         this.entityManager.unwrap(Session.class).setReadOnly(traderAsset.getCurrency(), true);
         final PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
@@ -59,7 +61,7 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    public void triggerAllTraders(final List<Trader> traders) {
+    public void triggerAllTraders(final @NotNull List<Trader> traders) {
         for (final Trader trader : traders) {
             for (final TradingEngine assetTrader : trader.getAssetTraders()) {
                 this.executeTrader(trader, assetTrader);
@@ -67,7 +69,7 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    private void saveAssetChanges(final Trader trader, final PortfolioAsset traderAsset, final boolean tradeOccurred) {
+    private void saveAssetChanges(final @NotNull Trader trader, final @NotNull PortfolioAsset traderAsset, final boolean tradeOccurred) {
         final PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(traderAsset, tradeOccurred);
         final PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(traderAsset);
         final PortfolioAssetHistory previousWithShares = this.getLastPortfolioAssetWithSharesSinceTime(portfolioAssetHistory);
@@ -85,17 +87,17 @@ public class PortfolioTradeExecutionService {
         }
     }
 
-    private static boolean hasAssetChanged(final PortfolioAsset previousAsset, final PortfolioAsset traderAsset) {
+    private static boolean hasAssetChanged(final @NotNull PortfolioAsset previousAsset, final PortfolioAsset traderAsset) {
         return !previousAsset.equals(traderAsset);
     }
 
-    private static void updateTraders(final Trader trader, final TradingEngine assetTrader) {
+    private static void updateTraders(final @NotNull Trader trader, final @NotNull TradingEngine assetTrader) {
         assetTrader.getAsset().updateValues();
         trader.getPortfolio().updateValues();
     }
 
     @TimeTracked(expectedMillis = 100, shouldPersist = true)
-    private void saveTradeEvent(final PortfolioAssetHistory portfolioAssetHistory) {
+    private void saveTradeEvent(final @NotNull PortfolioAssetHistory portfolioAssetHistory) {
         final TradeType tradeType = TradeEvent.getTradeType(portfolioAssetHistory);
         final TradeEvent tradeEvent = new TradeEvent(portfolioAssetHistory,
             tradeType,
@@ -104,7 +106,7 @@ public class PortfolioTradeExecutionService {
         this.tradeEventService.saveTradeEvent(tradeEvent);
     }
 
-    private void setValueChange(final PortfolioHistory previousPortfolioHistory, final PortfolioHistory portfolioHistory) {
+    private void setValueChange(final @Nullable PortfolioHistory previousPortfolioHistory, final @NotNull PortfolioHistory portfolioHistory) {
         if (previousPortfolioHistory != null) {
             portfolioHistory.calculateValueChange(previousPortfolioHistory);
         } else {
@@ -117,10 +119,10 @@ public class PortfolioTradeExecutionService {
     }
 
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
-    private void saveAll(final PortfolioAsset traderAsset,
-                         final Portfolio traderPortfolio,
-                         final PortfolioAssetHistory portfolioAssetHistory,
-                         final PortfolioHistory portfolioHistory) {
+    private void saveAll(final @NotNull PortfolioAsset traderAsset,
+                         final @NotNull Portfolio traderPortfolio,
+                         final @NotNull PortfolioAssetHistory portfolioAssetHistory,
+                         final @NotNull PortfolioHistory portfolioHistory) {
         this.portfolioService.savePortfolioAsset(traderAsset);
         this.portfolioService.savePortfolio(traderPortfolio);
         this.portfolioService.savePortfolioAssetHistory(portfolioAssetHistory);

@@ -4,13 +4,14 @@ import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.entity.user.builder.models.AbstractProfilePicture;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** A factory builder for creating profile picture entities. */
 public class ProfilePictureBuilder extends AbstractProfilePicture {
     private String fileName;
     private String fileType;
     private byte[] fileData;
-    private ProductUser user;
+    private @Nullable ProductUser user;
 
     public ProfilePictureBuilder() {
         super();
@@ -20,7 +21,7 @@ public class ProfilePictureBuilder extends AbstractProfilePicture {
     }
 
     @Override
-    public @NotNull ProfilePictureBuilder fileName(final String fileName) {
+    public @NotNull ProfilePictureBuilder fileName(final @NotNull String fileName) {
         this.fileName = fileName;
         this.fileType = ProfilePicture.getFileType(fileName);
         return this;

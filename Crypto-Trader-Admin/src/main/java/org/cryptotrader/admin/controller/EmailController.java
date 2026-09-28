@@ -6,6 +6,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,7 +28,7 @@ public class EmailController extends VBox {
         this.webView.setMinSize(0, 0);
 
         final Parent webViewParent = this.webView.getParent();
-        if (webViewParent instanceof final Region parent) {
+        if (webViewParent instanceof final @NotNull Region parent) {
             this.webView.prefWidthProperty().bind(parent.widthProperty());
             this.webView.prefHeightProperty().bind(parent.heightProperty());
         }

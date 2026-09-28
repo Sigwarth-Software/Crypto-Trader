@@ -5,6 +5,7 @@ open module org.cryptotrader.security.library.models {
     requires transitive org.cryptotrader.api.library.models;
     requires org.cryptotrader.universal.library.models;
     requires org.hibernate.orm.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.security.library.entity.ip;
     exports org.cryptotrader.security.library.entity.key;

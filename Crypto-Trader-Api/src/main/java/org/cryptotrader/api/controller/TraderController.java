@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/trader")
 public class TraderController {
-    private final TraderService traderService;
-    private final AuthContextService authContextService;
+    private final @NotNull TraderService traderService;
+    private final @NotNull AuthContextService authContextService;
 
     @Autowired
     public TraderController(@NotNull final TraderService traderService,
@@ -48,7 +48,7 @@ public class TraderController {
     }
 
     @GetMapping(value = "/events/batch", params = {"offset", "limit"})
-    public ResponseEntity<TradeEventListResponse> getBatchEvents(
+    public @NotNull ResponseEntity<TradeEventListResponse> getBatchEvents(
         @RequestParam(value = "offset", defaultValue = "0") final int offset,
         @RequestParam(value = "limit", defaultValue = "10") final int limit
     ) {
@@ -70,7 +70,7 @@ public class TraderController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/events/exists")
-    public ResponseEntity<Boolean> hasEvents(
+    public @NotNull ResponseEntity<Boolean> hasEvents(
         @NotNull @AuthenticationPrincipal final ProductUser user
     ) {
         final boolean hasEvents = this.traderService.userHasTrades(user);

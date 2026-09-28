@@ -1,5 +1,6 @@
 package org.cryptotrader.universal.library.component;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class SpringContext implements ApplicationContextAware {
         return context;
     }
 
-    public static <T> T getBean(final Class<T> type) {
+    public static <T> @NotNull T getBean(final @NotNull Class<T> type) {
         return context.getBean(type);
     }
 }

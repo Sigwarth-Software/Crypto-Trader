@@ -2,6 +2,7 @@ package org.cryptotrader.api.library.communication.response;
 
 import lombok.Data;
 import org.cryptotrader.api.library.entity.vendor.Vendor;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,9 @@ public class TradeEventResponse {
                               final String currency,
                               final double valueChange,
                               final double sharesChange,
-                              final LocalDateTime tradeTime,
+                              final @NotNull LocalDateTime tradeTime,
                               final String tradeType,
-                              final Vendor vendor) {
+                              final @NotNull Vendor vendor) {
         this.id = id;
         this.currency = currency;
         this.valueChange = valueChange;

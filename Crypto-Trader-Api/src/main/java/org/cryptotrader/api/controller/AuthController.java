@@ -36,14 +36,14 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @PermitAll
 public class AuthController {
-    private final AuthService authService;
-    private final ProductUserService productUserService;
-    private final AuthContextService authContextService;
-    private final JwtTokenService jwtTokenService;
-    private final RefreshTokenService refreshTokenService;
-    private final DpopReplayCache replayCache;
-    private final DpopVerifierService dpopVerifier;
-    private final SecurityProperties securityProperties;
+    private final @NotNull AuthService authService;
+    private final @NotNull ProductUserService productUserService;
+    private final @NotNull AuthContextService authContextService;
+    private final @NotNull JwtTokenService jwtTokenService;
+    private final @NotNull RefreshTokenService refreshTokenService;
+    private final @NotNull DpopReplayCache replayCache;
+    private final @NotNull DpopVerifierService dpopVerifier;
+    private final @NotNull SecurityProperties securityProperties;
 
     @Autowired
     public AuthController(@NotNull final AuthService authService,
@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signup(
+    public @NotNull ResponseEntity<AuthResponse> signup(
         @NotNull @RequestBody final SignupRequest signupRequest,
         @Nullable @RequestHeader(value = "DPoP", required = false) final String dpopProof,
         @NotNull final HttpServletRequest request
@@ -120,7 +120,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(
+    public @NotNull ResponseEntity<AuthResponse> login(
         @NotNull @RequestBody final LoginRequest loginRequest,
         @Nullable @RequestHeader(value = "DPoP", required = false) final String dpopProof,
         @NotNull final HttpServletRequest request
@@ -187,7 +187,7 @@ public class AuthController {
      * - __Host-rt: Secure HttpOnly refresh token.
      */
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(
+    public @NotNull ResponseEntity<AuthResponse> refresh(
         @Nullable @RequestHeader(value = "DPoP", required = false) final String dpopProof,
         @NotNull final HttpServletRequest request
     ) {
@@ -266,7 +266,7 @@ public class AuthController {
     }
 
     @GetMapping("/logged-in")
-    public ResponseEntity<AuthResponse> isLoggedIn() {
+    public @NotNull ResponseEntity<AuthResponse> isLoggedIn() {
         final boolean authenticated = this.authContextService.isAuthenticated();
         final AuthResponse authResponse = new AuthResponse(authenticated);
         return ResponseEntity.ok(authResponse);
@@ -278,8 +278,8 @@ public class AuthController {
      * @param dpopProof Optional DPoP proof to validate the request origin.
      */
     @PostMapping("/logout")
-    public ResponseEntity<AuthResponse> logout(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
-                                               final HttpServletRequest request) {
+    public @NotNull ResponseEntity<AuthResponse> logout(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
+                                                        final @NotNull HttpServletRequest request) {
         // DPoP is optional for logout: if provided and valid, great; if missing/invalid, we still end the session.
         // Attempt to derive jkt only to validate the proof when present; ignore failures.
         final boolean isValidProof = this.dpopVerifier.isValidProof(dpopProof);
@@ -315,7 +315,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public ResponseEntity<AuthResponse> logoutGet(@RequestHeader(value = "DPoP", required = false) final String dpopProof,
-                                                  final HttpServletRequest request) {
+                                                  final @NotNull HttpServletRequest request) {
         return logout(dpopProof, request);
     }
 
@@ -331,11 +331,11 @@ public class AuthController {
      * @param expectedMethod The expected HTTP method of the request.
      * @return The jkt (thumbprint) if verification succeeds; otherwise null.
      */
-    private String deriveJwkThumbprintFromProof(final String dpopProof, final HttpServletRequest request, final RequestMethod expectedMethod) {
+    private @Nullable String deriveJwkThumbprintFromProof(final String dpopProof, final @Nullable HttpServletRequest request, final @NotNull RequestMethod expectedMethod) {
         try {
             // If the pre-JWT DPoPValidationFilter has already verified the proof, reuse its context
             final Object context = (request != null) ? request.getAttribute("dpop.proof") : null;
-            if (context instanceof final DpopProofContext proofContext) {
+            if (context instanceof final @NotNull DpopProofContext proofContext) {
                 return proofContext.getKeyThumbprint();
             }
             // Otherwise, verify here (including replay check)

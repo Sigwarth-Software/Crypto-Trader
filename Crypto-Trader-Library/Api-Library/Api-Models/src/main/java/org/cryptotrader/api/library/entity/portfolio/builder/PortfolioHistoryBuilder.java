@@ -16,7 +16,7 @@ public class PortfolioHistoryBuilder extends AbstractPortfolioHistory {
     private double totalWorth;
     private double valueChange;
     private boolean tradeOccurred;
-    private LocalDateTime lastUpdated;
+    private @Nullable LocalDateTime lastUpdated;
 
     public PortfolioHistoryBuilder() {
         this.dollarBalance = 0;

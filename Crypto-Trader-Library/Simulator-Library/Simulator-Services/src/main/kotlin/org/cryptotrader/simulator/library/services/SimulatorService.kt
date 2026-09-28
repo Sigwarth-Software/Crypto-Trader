@@ -92,37 +92,41 @@ class SimulatorService @Autowired constructor(
         startDate: LocalDateTime,
         portfolio: Portfolio
     ): List<PortfolioAsset> {
-        val portfolioAssets: List<PortfolioAsset> =
+        val portfolioAssets: List<PortfolioAsset?> =
             portfolioSimulationRequest.assetSimulationRequests.map {
                 val currency: Currency =
                     this.currencyService.getCurrencyByCurrencyCode(it.currencyCode)
-                val fuzzyTimeValue: TimeValueResponse =
+                val fuzzyTimeValue: TimeValueResponse? =
                     this.currencyService.getFuzzyCurrencyHistory(
                         it.currencyCode,
                         FuzzyTimeValueRequest(
                             startDate.toString(),
                         )
                     )
-                currency.value = fuzzyTimeValue.value
-                currency.lastUpdated =
-                    LocalDateTime.parse(fuzzyTimeValue.timestamp)
-                val currencyAtDate = CurrencyHistory(
-                    currency,
-                    fuzzyTimeValue.value,
-                    LocalDateTime.parse(fuzzyTimeValue.timestamp)
-                )
-                val portfolioAsset: PortfolioAsset = PortfolioAsset.builder()
-                    .portfolio(portfolio)
-                    .currency(Currency.fromHistory(currencyAtDate))
-                    .shares(it.numShares)
-                    .assetWalletDollars(it.numDollars)
-                    .build()
-                // Initialize targetPrice from currency value (Lombok @Builder bypasses constructors)
-                portfolioAsset.targetPrice = currencyAtDate.value
-                portfolioAsset.updateValues()
-                portfolioAsset
+                if (fuzzyTimeValue != null) {
+                    currency.value = fuzzyTimeValue.value
+                    currency.lastUpdated =
+                        LocalDateTime.parse(fuzzyTimeValue.timestamp)
+                    val currencyAtDate = CurrencyHistory(
+                        currency,
+                        fuzzyTimeValue.value,
+                        LocalDateTime.parse(fuzzyTimeValue.timestamp)
+                    )
+                    val portfolioAsset: PortfolioAsset = PortfolioAsset.builder()
+                        .portfolio(portfolio)
+                        .currency(Currency.fromHistory(currencyAtDate))
+                        .shares(it.numShares)
+                        .assetWalletDollars(it.numDollars)
+                        .build()
+                    // Initialize targetPrice from currency value (Lombok @Builder bypasses constructors)
+                    portfolioAsset.targetPrice = currencyAtDate.value
+                    portfolioAsset.updateValues()
+                    portfolioAsset
+                } else {
+                    null
+                }
             }
-        return portfolioAssets
+        return portfolioAssets.mapNotNull { it }
     }
 
 

@@ -32,7 +32,7 @@ import java.util.Map;
 @RestController
 @PermitAll
 public class JwksController {
-    private final RsaKeyService rsaKeyService;
+    private final @NotNull RsaKeyService rsaKeyService;
 
     public JwksController(@NotNull final RsaKeyService rsaKeyService) {
         this.rsaKeyService = rsaKeyService;

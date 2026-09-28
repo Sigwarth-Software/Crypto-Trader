@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -32,7 +34,7 @@ public class CurrencyJsonGenerator {
         this.objectMapper = objectMapper;
     }
 
-    private <T> T fetchJson(final String url, final ParameterizedTypeReference<T> typeRef) {
+    private <T> @Nullable T fetchJson(final @NotNull String url, final @NotNull ParameterizedTypeReference<T> typeRef) {
         return this.restTemplate.exchange(url, HttpMethod.GET, null, typeRef).getBody();
     }
 
@@ -50,7 +52,7 @@ public class CurrencyJsonGenerator {
         SupportedCurrencies.clearCurrencies();
     }
 
-    public List<Map<String, Object>> getCurrencies() {
+    public @NotNull List<Map<String, Object>> getCurrencies() {
         final List<Map<String, Object>> currencies = fetchJson(EXCHANGE_API_URL,
                 new ParameterizedTypeReference<>() { });
 
@@ -109,7 +111,7 @@ public class CurrencyJsonGenerator {
         }
     }
 
-    public List<String> getAllCurrencyCodes(final boolean useCache) {
+    public @NotNull List<String> getAllCurrencyCodes(final boolean useCache) {
         List<Map<String, Object>> currencies;
         if (useCache) {
             try {
@@ -140,21 +142,21 @@ public class CurrencyJsonGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> asMap(final Object object) {
+    private @NotNull Map<String, Object> asMap(final Object object) {
         if (object instanceof Map) {
             return (Map<String, Object>) object;
         }
         return Collections.emptyMap();
     }
 
-    private String asString(final Object object) {
+    private String asString(final @Nullable Object object) {
         if (object == null) {
             return null;
         }
         return String.valueOf(object);
     }
 
-    public static CurrencyJsonGenerator standalone() {
+    public static @NotNull CurrencyJsonGenerator standalone() {
         return new CurrencyJsonGenerator(new RestTemplate(), new ObjectMapper());
     }
 }

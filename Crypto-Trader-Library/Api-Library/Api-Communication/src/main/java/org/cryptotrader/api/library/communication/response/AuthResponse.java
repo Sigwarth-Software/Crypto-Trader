@@ -2,17 +2,18 @@ package org.cryptotrader.api.library.communication.response;
 
 import lombok.Data;
 import org.cryptotrader.universal.library.model.http.AuthStatus;
+import org.jetbrains.annotations.NotNull;
 
 @Data
 public class AuthResponse {
     private boolean authorized;
     private String token;
 
-    public AuthResponse(final AuthStatus authStatus) {
+    public AuthResponse(final @NotNull AuthStatus authStatus) {
         this.authorized = authStatus.isAuthorized;
     }
 
-    public AuthResponse(final AuthStatus authStatus, final String token) {
+    public AuthResponse(final @NotNull AuthStatus authStatus, final String token) {
         this.authorized = authStatus.isAuthorized;
         this.token = token;
     }

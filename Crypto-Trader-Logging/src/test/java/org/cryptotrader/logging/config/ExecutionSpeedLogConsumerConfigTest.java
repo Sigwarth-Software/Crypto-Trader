@@ -4,6 +4,7 @@ import org.cryptotrader.logging.library.entity.ExecutionSpeedWarningLevel;
 import org.cryptotrader.logging.library.events.ExecutionSpeedLogEventPayload;
 import org.cryptotrader.logging.library.service.ExecutionSpeedLogService;
 import org.cryptotrader.logging.properties.TimeTrackingProperties;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.support.GenericMessage;
 
@@ -26,7 +27,7 @@ class ExecutionSpeedLogConsumerConfigTest {
         verify(persistenceService).persist(payload, ExecutionSpeedWarningLevel.EXCEEDING);
     }
 
-    private ExecutionSpeedLogEventPayload payload(final long executionSpeed, final long expectedExecutionSpeed) {
+    private @NotNull ExecutionSpeedLogEventPayload payload(final long executionSpeed, final long expectedExecutionSpeed) {
         return new ExecutionSpeedLogEventPayload(
             executionSpeed,
             "org.cryptotrader.Example.execute",

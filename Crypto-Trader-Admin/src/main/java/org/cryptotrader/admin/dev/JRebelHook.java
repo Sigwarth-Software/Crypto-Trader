@@ -2,6 +2,8 @@
 package org.cryptotrader.admin.dev;
 
 import javafx.application.Platform;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -15,7 +17,7 @@ public final class JRebelHook {
 
     private JRebelHook() { }
 
-    public static void register(final Runnable reloadUiAction, final String... packagePrefixesToWatch) {
+    public static void register(final @NotNull Runnable reloadUiAction, final String @NotNull ... packagePrefixesToWatch) {
         try {
             final Class<?> reloaderFactory = tryLoad(JREBEL_FACTORY_OLD, JREBEL_FACTORY_NEW);
             final Class<?> classEventListener = tryLoad(JREBEL_LISTENER_OLD, JREBEL_LISTENER_NEW);
@@ -35,9 +37,9 @@ public final class JRebelHook {
         }
     }
 
-    private static Object createListenerProxy(final Class<?> listenerClass,
-                                              final Runnable reloadAction,
-                                              final String[] packagePrefixes) {
+    private static @NotNull Object createListenerProxy(final @NotNull Class<?> listenerClass,
+                                                       final @NotNull Runnable reloadAction,
+                                                       final String @NotNull [] packagePrefixes) {
         return Proxy.newProxyInstance(
                 listenerClass.getClassLoader(),
                 new Class<?>[]{listenerClass},
@@ -49,8 +51,8 @@ public final class JRebelHook {
         );
     }
 
-    private static Object handleProxyInvocation(final Object proxy, final Method method, final Object[] args,
-                                                final Runnable reloadAction, final String[] packagePrefixes) {
+    private static @Nullable Object handleProxyInvocation(final Object proxy, final @NotNull Method method, final Object[] args,
+                                                          final @NotNull Runnable reloadAction, final String @NotNull [] packagePrefixes) {
         final String methodName = method.getName();
 
         if (isPriorityMethod(method)) {
@@ -65,7 +67,7 @@ public final class JRebelHook {
         return null;
     }
 
-    private static boolean isPriorityMethod(final Method method) {
+    private static boolean isPriorityMethod(final @NotNull Method method) {
         return "priority".equals(method.getName())
                 && method.getParameterCount() == 0
                 && method.getReturnType() == int.class;
@@ -77,7 +79,7 @@ public final class JRebelHook {
                 || ("toString".equals(name) && paramCount == 0);
     }
 
-    private static Object handleObjectMethod(final String name, final Object proxy, final Object[] args) {
+    private static @NotNull Object handleObjectMethod(final String name, final Object proxy, final Object[] args) {
         if ("equals".equals(name)) {
             return proxy == args[0];
         }
@@ -87,14 +89,14 @@ public final class JRebelHook {
         return "JRebelHook$ListenerProxy";
     }
 
-    private static boolean isClassChangeEvent(final String name, final Object[] args) {
+    private static boolean isClassChangeEvent(final String name, final Object @Nullable [] args) {
         return "onClassEvent".equals(name)
                 && args != null
                 && args.length >= 2
                 && args[1] instanceof Class<?>;
     }
 
-    private static void handleClassChange(final Object changedClass, final Runnable reloadAction, final String[] packagePrefixes) {
+    private static void handleClassChange(final @NotNull Object changedClass, final @NotNull Runnable reloadAction, final String @NotNull [] packagePrefixes) {
         final String fullClassName = ((Class<?>) changedClass).getName();
         for (final String prefix : packagePrefixes) {
             if (fullClassName.startsWith(prefix)) {
@@ -110,12 +112,12 @@ public final class JRebelHook {
         }
     }
 
-    private static void registerReloadListener(final Object reloader, final Class<?> listenerClass, final Object listener) throws Exception {
+    private static void registerReloadListener(final @NotNull Object reloader, final Class<?> listenerClass, final Object listener) throws Exception {
         final Method addListener = reloader.getClass().getMethod("addClassReloadListener", listenerClass);
         addListener.invoke(reloader, listener);
     }
 
-    private static Class<?> tryLoad(final String... fullyQualifiedClassNames) {
+    private static @Nullable Class<?> tryLoad(final String @NotNull ... fullyQualifiedClassNames) {
         for (final String name : fullyQualifiedClassNames) {
             try {
                 return Class.forName(name);

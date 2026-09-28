@@ -33,9 +33,9 @@ import java.util.List;
 @PermitAll
 public class LoggingController {
     //============================-Variables-=================================
-    private final LogEventsPublisher logEventsPublisher;
-    private final ObjectMapper objectMapper;
-    private final AuthContextService authContextService;
+    private final @NotNull LogEventsPublisher logEventsPublisher;
+    private final @NotNull ObjectMapper objectMapper;
+    private final @NotNull AuthContextService authContextService;
     //===========================-Constructors-===============================
     @Autowired
     public LoggingController(@NotNull final LogEventsPublisher logEventsPublisher,
@@ -59,7 +59,7 @@ public class LoggingController {
         value = "/website",
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<FrontendLogResponse> receiveSingleLog(
+    public @NotNull ResponseEntity<FrontendLogResponse> receiveSingleLog(
         @NotNull @RequestBody final FrontendLogRequest logEntry,
         @NotNull final HttpServletRequest request
     ) {
@@ -80,7 +80,7 @@ public class LoggingController {
     }
 
     @PostMapping(value = "/website", consumes = "application/x-ndjson")
-    public ResponseEntity<FrontendLogResponse> receiveBatchLogs(
+    public @NotNull ResponseEntity<FrontendLogResponse> receiveBatchLogs(
         @NotNull @RequestBody final String ndjsonBody,
         @NotNull final HttpServletRequest request
     ) {
@@ -105,9 +105,9 @@ public class LoggingController {
     }
 
     // TODO: Add to service class.
-    private FrontendLogEvent mapToEvent(@NotNull final FrontendLogRequest dto,
-                                        @NotNull final HttpServletRequest request,
-                                        @Nullable final ProductUser user) {
+    private @NotNull FrontendLogEvent mapToEvent(@NotNull final FrontendLogRequest dto,
+                                                 @NotNull final HttpServletRequest request,
+                                                 @Nullable final ProductUser user) {
         final FrontendLogErrorRequest error = dto.getError();
         return new FrontendLogEvent(
             dto.getTimestamp(),

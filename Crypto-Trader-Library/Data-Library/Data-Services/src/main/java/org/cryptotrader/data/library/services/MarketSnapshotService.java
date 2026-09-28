@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     //============================-Constants-=================================
     private static final String[] DEFAULT_COLUMNS = { "last_updated" };
     //============================-Variables-=================================
-    private final JdbcTemplate jdbcTemplate;
+    private final @NotNull JdbcTemplate jdbcTemplate;
 
     private final Set<String> knownColumns = new ConcurrentSkipListSet<>();
 
@@ -49,7 +51,7 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     //---------------------------Save-Snapshot--------------------------------
     @TimeTracked(expectedMillis = 5, shouldPersist = true)
     @Transactional
-    public void saveSnapshot(final Map<String, Currency> currencies) {
+    public void saveSnapshot(final @NotNull Map<String, Currency> currencies) {
         if (!isValidCurrencyMap(currencies)) {
             log.warn("No valid currencies provided for a market snapshot.");
             return;
@@ -64,10 +66,10 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
         this.executeSnapshotQuery(currencies, columnList, questionMarks, params);
     }
     //-----------------------Execute-Snapshot-Query---------------------------
-    private void executeSnapshotQuery(final Map<String, Currency> currencies,
+    private void executeSnapshotQuery(final @NotNull Map<String, Currency> currencies,
                                       final String columnList,
                                       final String questionMarks,
-                                      final List<Object> params) {
+                                      final @NotNull List<Object> params) {
         final String query = """
                 INSERT INTO market_snapshots (%s) VALUES (%s)"""
                 .formatted(columnList, questionMarks);
@@ -80,13 +82,13 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
         }
     }
     //-------------------------Get-Question-Marks-----------------------------
-    private static String getQuestionMarks(final List<String> columns) {
+    private static @NotNull String getQuestionMarks(final @NotNull List<String> columns) {
         return columns.stream().map(currency -> "?").collect(Collectors.joining(", "));
     }
     //----------------------Load-Columns-And-Params---------------------------
-    private void loadColumnsAndParams(final Map<String, Currency> currencies,
-                                      final List<String> columns,
-                                      final List<Object> params) {
+    private void loadColumnsAndParams(final @NotNull Map<String, Currency> currencies,
+                                      final @NotNull List<String> columns,
+                                      final @NotNull List<Object> params) {
         currencies.forEach((code, currency) -> {
             final String priceColumn = toPriceColumn(code);
 
@@ -107,11 +109,11 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
         """.formatted(priceColumn));
     }
     //--------------------------To-Price-Column-------------------------------
-    private static String toPriceColumn(final String code) {
+    private static @NotNull String toPriceColumn(final @NotNull String code) {
         return code.toLowerCase() + "_price";
     }
     //-----------------------Is-Valid-Currency-Map----------------------------
-    private static boolean isValidCurrencyMap(final Map<String, Currency> currencies) {
+    private static boolean isValidCurrencyMap(final @Nullable Map<String, Currency> currencies) {
         return !(currencies == null || currencies.isEmpty());
     }
 }

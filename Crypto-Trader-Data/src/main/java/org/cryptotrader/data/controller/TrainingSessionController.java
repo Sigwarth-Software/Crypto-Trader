@@ -3,6 +3,8 @@ package org.cryptotrader.data.controller;
 import org.cryptotrader.data.library.services.TrainingSessionService;
 import org.cryptotrader.data.library.communication.request.TrainingSessionRequest;
 import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class TrainingSessionController {
 
 
     @RequestMapping("/add")
-    public ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody final TrainingSessionRequest request) {
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody final @Nullable TrainingSessionRequest request) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

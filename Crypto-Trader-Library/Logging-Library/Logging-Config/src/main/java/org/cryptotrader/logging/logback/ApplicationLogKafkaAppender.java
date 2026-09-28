@@ -10,6 +10,8 @@ import org.cryptotrader.logging.library.events.ApplicationLogEventPayload;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import org.cryptotrader.logging.properties.LogPersistenceMode;
 import org.cryptotrader.logging.redaction.LogRedactor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     };
 
     @Override
-    protected void append(final ILoggingEvent event) {
+    protected void append(final @NotNull ILoggingEvent event) {
         if (this.isRecursiveLoggerEvent(event)) {
             return;
         }
@@ -82,7 +84,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
         }
     }
 
-    private boolean isRecursiveLoggerEvent(final ILoggingEvent event) {
+    private boolean isRecursiveLoggerEvent(final @NotNull ILoggingEvent event) {
         final String loggerName = event.getLoggerName();
         for (final String prefix : RECURSIVE_LOGGER_PREFIXES) {
             if (loggerName.startsWith(prefix)) {
@@ -108,7 +110,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
         return defaultValue;
     }
 
-    private String redactText(final LogRedactor redactor, final String text) {
+    private @Nullable String redactText(final @Nullable LogRedactor redactor, final String text) {
         final String stripped = AnsiStripperConverter.stripEscapeCode(text);
         if (redactor != null) {
             return redactor.redactText(stripped);
@@ -116,7 +118,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
         return stripped;
     }
 
-    private Map<String, String> getMdcContext(final ILoggingEvent event) {
+    private @Nullable Map<String, String> getMdcContext(final @NotNull ILoggingEvent event) {
         final Map<String, String> mdcPropertyMap;
         try {
             mdcPropertyMap = event.getMDCPropertyMap();
@@ -127,7 +129,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     }
 
     // TODO: Move to Universal-Scripts.
-    private LocalDateTime toLocalDateTime(final long epochMillis) {
+    private @NotNull LocalDateTime toLocalDateTime(final long epochMillis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
     }
 }

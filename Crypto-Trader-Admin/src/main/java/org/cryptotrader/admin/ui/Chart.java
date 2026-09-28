@@ -17,6 +17,8 @@ import org.cryptotrader.admin.component.DataPointFetcher;
 import org.cryptotrader.admin.model.ChartDataPoint;
 import org.cryptotrader.desktop.library.component.ComponentLoader;
 import org.cryptotrader.desktop.library.component.config.SpringContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -41,10 +43,10 @@ public class Chart extends HBox {
 
     private List<ChartDataPoint<LocalDateTime, Double>> dataPoints;
 
-    private final NumberAxis xAxis;
-    private final NumberAxis yAxis;
-    private final AreaChart<Number, Number> areaChart;
-    private final XYChart.Series<Number, Number> series;
+    private final @NotNull NumberAxis xAxis;
+    private final @NotNull NumberAxis yAxis;
+    private final @NotNull AreaChart<Number, Number> areaChart;
+    private final XYChart.@NotNull Series<Number, Number> series;
 
 
     public Chart() {
@@ -64,12 +66,12 @@ public class Chart extends HBox {
         // Format X as time "HH:mm:ss" (adjust formatter as desired)
         final DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.xAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            @Override public String toString(final Number value) {
+            @Override public @NotNull String toString(final @NotNull Number value) {
                 final long epochMillis = value.longValue();
                 final LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
                 return timeFmt.format(ldt);
             }
-            @Override public Number fromString(final String string) { return 0L; }
+            @Override public @NotNull Number fromString(final String string) { return 0L; }
         });
 
         // Chart
@@ -94,7 +96,7 @@ public class Chart extends HBox {
         this.initGraph();
     }
 
-    public void setDataPoints(final List<ChartDataPoint<LocalDateTime, Double>> points) {
+    public void setDataPoints(final @Nullable List<ChartDataPoint<LocalDateTime, Double>> points) {
         this.dataPoints = points;
         final ObservableList<XYChart.Data<Number, Number>> items = FXCollections.observableArrayList();
         if (points != null && !points.isEmpty()) {
@@ -143,7 +145,7 @@ public class Chart extends HBox {
         this.setDataPoints(dataPoints);
     }
 
-    public Node getView() {
+    public @NotNull Node getView() {
         return this;
     }
 

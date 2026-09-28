@@ -1,5 +1,6 @@
 package org.cryptotrader.desktop.library.component.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,7 +15,7 @@ public class SpringContext implements ApplicationContextAware {
         SpringContext.context = applicationContext;
     }
 
-    public static <T> T getBean(final Class<T> type) {
+    public static <T> @NotNull T getBean(final @NotNull Class<T> type) {
         return context.getBean(type);
     }
 

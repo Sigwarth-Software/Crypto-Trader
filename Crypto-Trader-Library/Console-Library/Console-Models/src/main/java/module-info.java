@@ -6,6 +6,7 @@ open module org.cryptotrader.console.library.models {
     requires jakarta.annotation;
     requires static lombok;
     requires org.hibernate.orm.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.console.library.model;
     exports org.cryptotrader.console.library.model.exception;

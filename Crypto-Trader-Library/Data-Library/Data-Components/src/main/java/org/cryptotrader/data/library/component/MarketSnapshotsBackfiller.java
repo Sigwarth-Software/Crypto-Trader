@@ -3,6 +3,7 @@ package org.cryptotrader.data.library.component;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class MarketSnapshotsBackfiller {
     private static final int BATCH_SIZE = 10_000;
     private static final double NANO_TO_SECONDS = 1_000_000_000.0;
     //============================-Variables-=================================
-    private final JdbcTemplate jdbc;
+    private final @NotNull JdbcTemplate jdbc;
     //=============================-Methods-==================================
 
     //--------------------------Build-Snapshots-------------------------------
@@ -45,7 +46,7 @@ public class MarketSnapshotsBackfiller {
     }
     //---------------------Execute-Snapshot-Creation--------------------------
     private void executeSnapshotCreation(final boolean fullRefresh,
-                                         final List<String> codes,
+                                         final @NotNull List<String> codes,
                                          final long baseRows) {
         this.initTable();
         this.createBaseColumn();
@@ -65,8 +66,8 @@ public class MarketSnapshotsBackfiller {
         logBackfillCompletion(startedTimeNanos, numInserted, cores);
     }
     //---------------------------Await-Shutdown-------------------------------
-    private static void awaitShutdown(final ExecutorService pool,
-                                      final ScheduledExecutorService ticker) {
+    private static void awaitShutdown(final @NotNull ExecutorService pool,
+                                      final @NotNull ScheduledExecutorService ticker) {
         pool.shutdown();
         try {
             final boolean result = pool.awaitTermination(365, TimeUnit.DAYS);
@@ -81,7 +82,7 @@ public class MarketSnapshotsBackfiller {
         this.jdbc.execute("TRUNCATE TABLE market_snapshots;");
     }
     //--------------------------Add-Code-Columns------------------------------
-    private void addCodeColumns(final List<String> codes) {
+    private void addCodeColumns(final @Nullable List<String> codes) {
         if (codes == null || codes.isEmpty()) {
             log.warn("No currency codes provided for column addition.");
             return;
@@ -89,7 +90,7 @@ public class MarketSnapshotsBackfiller {
         codes.forEach(code -> this.jdbc.execute(addCodeColumn(code)));
     }
     //--------------------------Add-Code-Column-------------------------------
-    private static String addCodeColumn(final String code) {
+    private static @NotNull String addCodeColumn(final @NotNull String code) {
         return """
                     ALTER TABLE market_snapshots
                     ADD COLUMN IF NOT EXISTS %s NUMERIC(34,18);
@@ -104,7 +105,7 @@ public class MarketSnapshotsBackfiller {
     }
     //----------------------Log-Backfill-Completion---------------------------
     private static void logBackfillCompletion(final long startedTimeNanos,
-                                              final LongAdder inserted,
+                                              final @NotNull LongAdder inserted,
                                               final int cores) {
         final long nanosElapsed = System.nanoTime() - startedTimeNanos;
         final double sec = nanosElapsed / NANO_TO_SECONDS;
@@ -124,14 +125,14 @@ public class MarketSnapshotsBackfiller {
     """);
     }
     //---------------------------Get-Base-Rows--------------------------------
-    private Long getBaseRows() {
+    private @Nullable Long getBaseRows() {
         final String baseQuery = """
                 SELECT COUNT(*) FROM currency_history
                 WHERE  currency_code = ?""";
         return this.jdbc.queryForObject(baseQuery, Long.class, BASE_CODE);
     }
     //-------------------------Get-Currency-Codes-----------------------------
-    private List<String> getCurrencyCodes() {
+    private @NotNull List<String> getCurrencyCodes() {
         final String selectQuery = "SELECT DISTINCT currency_code " +
                              "FROM currencies WHERE currency_code <> ? " +
                              "ORDER BY 1";
@@ -139,9 +140,9 @@ public class MarketSnapshotsBackfiller {
     }
     //-------------------------Run-Insert-Threads-----------------------------
     private void runInsertThreads(final long baseRows,
-                                  final ExecutorService threadPool,
-                                  final List<String> codes,
-                                  final LongAdder numInserted) {
+                                  final @NotNull ExecutorService threadPool,
+                                  final @NotNull List<String> codes,
+                                  final @NotNull LongAdder numInserted) {
         final long batchCount = (baseRows + BATCH_SIZE - 1) / BATCH_SIZE;
         LongStream.range(0, batchCount)
                 .parallel()
@@ -152,8 +153,8 @@ public class MarketSnapshotsBackfiller {
                 }));
     }
     //--------------------------Run-Row-Tracker-------------------------------
-    private static void runRowTracker(final ScheduledExecutorService scheduler,
-                                      final LongAdder inserted,
+    private static void runRowTracker(final @NotNull ScheduledExecutorService scheduler,
+                                      final @NotNull LongAdder inserted,
                                       final long bootTimeNanos) {
         scheduler.scheduleAtFixedRate(new Runnable() {
             long lastCount = 0;
@@ -174,22 +175,22 @@ public class MarketSnapshotsBackfiller {
         }, 1, 1, TimeUnit.SECONDS);
     }
     //------------------------Process-Batch-Slice-----------------------------
-    private int processBatchSlice(final int offset, final List<String> codes) {
+    private int processBatchSlice(final int offset, final @NotNull List<String> codes) {
         final String sql = getSnapshotFillQuery(offset, codes);
         return this.jdbc.update(sql);
     }
     //----------------------Get-Snapshot-Fill-Query---------------------------
-    private static String getSnapshotFillQuery(final int offset, final List<String> codes) {
+    private static @NotNull String getSnapshotFillQuery(final int offset, final @NotNull List<String> codes) {
         final String insertCols = getInsertColumns(codes);
         final String selectCols = getCoalesceQueries(codes);
         final String lateralJoins = getLateralJoins(codes);
         return getInsertQuery(offset, insertCols, selectCols, lateralJoins);
     }
     //--------------------------Get-Insert-Query------------------------------
-    private static String getInsertQuery(final int offset,
-                                         final String insertCols,
-                                         final String selectCols,
-                                         final String lateralJoins) {
+    private static @NotNull String getInsertQuery(final int offset,
+                                                  final String insertCols,
+                                                  final String selectCols,
+                                                  final String lateralJoins) {
         return """
                 INSERT INTO market_snapshots (%s)
                 WITH btc_data AS (
@@ -212,13 +213,13 @@ public class MarketSnapshotsBackfiller {
                               selectCols, lateralJoins);
     }
     //-------------------------Get-Lateral-Joins------------------------------
-    private static String getLateralJoins(@NotNull final List<String> codes) {
+    private static @NotNull String getLateralJoins(@NotNull final List<String> codes) {
         return codes.stream()
                     .map(MarketSnapshotsBackfiller::getLateralJoin)
                     .collect(Collectors.joining("\n"));
     }
     //--------------------------Get-Lateral-Join------------------------------
-    private static String getLateralJoin(@NotNull final String code) {
+    private static @NotNull String getLateralJoin(@NotNull final String code) {
         return """
                 LEFT JOIN LATERAL (
                     SELECT currency_value
@@ -235,19 +236,19 @@ public class MarketSnapshotsBackfiller {
                               code.toLowerCase());
     }
     //------------------------Get-Coalesce-Queries----------------------------
-    private static String getCoalesceQueries(final List<String> codes) {
+    private static @NotNull String getCoalesceQueries(final @NotNull List<String> codes) {
         final String baseAlias = "btc.currency_value AS " + BASE_COLUMN + ",\n   ";
         return baseAlias + codes.stream()
                                 .map(MarketSnapshotsBackfiller::getCoalesceQuery)
                                 .collect(Collectors.joining(",\n  "));
     }
     //-------------------------Get-Coalesce-Query-----------------------------
-    private static String getCoalesceQuery(final String code) {
+    private static @NotNull String getCoalesceQuery(final @NotNull String code) {
         return "COALESCE(%s.currency_value, NULL) AS %s".formatted(code.toLowerCase(),
                                                                    toPriceColumn(code));
     }
     //-------------------------Get-Insert-Columns-----------------------------
-    private static String getInsertColumns(final List<String> codes) {
+    private static @NotNull String getInsertColumns(final @NotNull List<String> codes) {
         final String insertBase = "last_updated, " + BASE_COLUMN + ", ";
         return insertBase + codes.stream()
                                  .map(MarketSnapshotsBackfiller::toPriceColumn)
@@ -308,7 +309,7 @@ public class MarketSnapshotsBackfiller {
         """);
     }
     //--------------------------To-Price-Column-------------------------------
-    private static @NotNull String toPriceColumn(final String code) {
+    private static @NotNull String toPriceColumn(final @NotNull String code) {
         if (code == null || code.isBlank()) {
             throw new IllegalArgumentException("Currency code cannot be null or blank.");
         }

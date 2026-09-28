@@ -12,6 +12,7 @@ import org.cryptotrader.data.library.model.http.ApiDataRetriever;
 import org.cryptotrader.data.library.entity.currency.builder.CurrencyBuilder;
 import org.cryptotrader.universal.library.entity.Identifiable;
 import org.cryptotrader.universal.library.model.annotation.Loggable;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class Currency extends Identifiable<String> {
     private static final DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
-    public static String TESTING_URL = "test";
+    public static @NotNull String TESTING_URL = "test";
     //===========================-Constructors-===============================
     public Currency() {
         this.name = "";
@@ -80,7 +81,7 @@ public class Currency extends Identifiable<String> {
     }
     //=============================-Methods-==================================
 
-    public String getCoinbaseUrl() {
+    public @NotNull String getCoinbaseUrl() {
         return "https://api.coinbase.com/v2/prices/%s-USD/spot".formatted(this.currencyCode);
     }
     //----------------------------Update-Value--------------------------------
@@ -100,7 +101,7 @@ public class Currency extends Identifiable<String> {
         return this.getValueFromJson(currencyApiJson);
     }
     //----------------------------Format-Value--------------------------------
-    public String formatValue(final double value) {
+    public @NotNull String formatValue(final double value) {
         String reformattedValue = decimalFormat.format(value);
         if (reformattedValue == null) {
             reformattedValue = "";
@@ -113,7 +114,7 @@ public class Currency extends Identifiable<String> {
         return apiDataRetriever.getResponse();
     }
     //------------------------Get-Value-From-Json-----------------------------
-    public double getValueFromJson(final String json) {
+    public double getValueFromJson(final @NotNull String json) {
         final StringBuilder currencyJson = new StringBuilder(json);
         final String amountKey = "amount\":\"";
         final int amountLength = amountKey.length();
@@ -138,7 +139,7 @@ public class Currency extends Identifiable<String> {
         return this.value;
     }
 
-    public static Currency fromExisting(final String currencyCode) {
+    public static @NotNull Currency fromExisting(final String currencyCode) {
         final Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
         return currencies.stream()
             .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
@@ -146,7 +147,7 @@ public class Currency extends Identifiable<String> {
             .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
     }
 
-    public static Currency fromHistory(final CurrencyHistory currencyHistory) {
+    public static @NotNull Currency fromHistory(final @NotNull CurrencyHistory currencyHistory) {
         return Currency.builder()
             .name(currencyHistory.getName())
             .currencyCode(currencyHistory.getCurrency().getCurrencyCode())
@@ -155,7 +156,7 @@ public class Currency extends Identifiable<String> {
             .build();
     }
 
-    public static Currency from(final Currency currency) {
+    public static @NotNull Currency from(final @NotNull Currency currency) {
         final Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
             currency.getUrlPath(), currency.getValue(),
             currency.getLastUpdated());
@@ -169,7 +170,7 @@ public class Currency extends Identifiable<String> {
         if (this == object) {
             return true;
         }
-        if (object instanceof final Currency comparedCurrency) {
+        if (object instanceof final @NotNull Currency comparedCurrency) {
             final boolean sameName = this.name.equals(comparedCurrency.name);
             final boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);
             final boolean sameValue = this.value == comparedCurrency.value;
@@ -183,13 +184,13 @@ public class Currency extends Identifiable<String> {
 
     //------------------------------To-String---------------------------------
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         final String currencyString = """
                 %18s --- %5s - %16s""".formatted(this.name, this.currencyCode,
             "$" + decimalFormat.format(this.value));
         return currencyString;
     }
-    public static CurrencyBuilder builder() {
+    public static @NotNull CurrencyBuilder builder() {
         return new CurrencyBuilder();
     }
     //=============================-Getters-==================================

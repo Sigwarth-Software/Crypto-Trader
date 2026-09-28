@@ -5,6 +5,7 @@ import org.cryptotrader.health.library.entity.HealthStatus;
 import org.cryptotrader.health.library.model.CryptoTraderService;
 import org.cryptotrader.health.library.model.ServiceStatus;
 import org.cryptotrader.health.library.service.entity.HealthStatusEntityService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class HealthCheckService {
         this.healthStatusEntityService = healthStatusEntityService;
     }
 
-    public void checkAndPersist(final CryptoTraderService service) {
+    public void checkAndPersist(final @NotNull CryptoTraderService service) {
         if (service == CryptoTraderService.DATABASE) {
             this.checkDatabase();
             return;
@@ -96,7 +97,7 @@ public class HealthCheckService {
         log.info("Health check for {}: {}", CryptoTraderService.DATABASE, status);
     }
 
-    private String getHealthUrl(final CryptoTraderService service) {
+    private @NotNull String getHealthUrl(final @NotNull CryptoTraderService service) {
         if (service == CryptoTraderService.DOCS) {
             // TODO: Replace hardcoded URL.
             return "https://sigwarth-software.github.io/Crypto-Trader/";

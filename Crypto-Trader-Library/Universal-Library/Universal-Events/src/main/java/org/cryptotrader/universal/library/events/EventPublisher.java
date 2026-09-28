@@ -1,6 +1,7 @@
 package org.cryptotrader.universal.library.events;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -24,7 +25,7 @@ public class EventPublisher {
         this.streamBridge = streamBridge;
     }
 
-    public <T> boolean publish(final String bindingName, final T payload) {
+    public <T> boolean publish(final String bindingName, final @NotNull T payload) {
         final Message<T> message = MessageBuilder
                 .withPayload(payload)
                 .setHeader(MessageHeaders.CONTENT_TYPE, ENCRYPTED_JSON_CONTENT_TYPE)
@@ -35,7 +36,7 @@ public class EventPublisher {
         return this.streamBridge.send(bindingName, message);
     }
 
-    public <T> boolean publish(final String bindingName, final T payload, final Map<String, Object> headers) {
+    public <T> boolean publish(final String bindingName, final @NotNull T payload, final Map<String, Object> headers) {
         final Message<T> message = MessageBuilder
                 .withPayload(payload)
                 .copyHeaders(headers)

@@ -11,6 +11,7 @@ import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import org.cryptotrader.logging.library.entity.ExecutionSpeedWarningLevel;
 import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,8 @@ public class TimeTrackingAspect {
     }
 
     @Around("@annotation(timeTracked)")
-    public Object trackExecutionTime(final ProceedingJoinPoint joinPoint, final TimeTracked timeTracked) throws Throwable {
+    public Object trackExecutionTime(final @NotNull ProceedingJoinPoint joinPoint,
+                                     final @Nullable TimeTracked timeTracked) throws Throwable {
         if (timeTracked == null || !timeTracked.isLogged()) {
             return joinPoint.proceed();
         }
@@ -54,7 +56,7 @@ public class TimeTrackingAspect {
         }
     }
 
-    private static @NotNull String parseClassName(final String declaringTypeName) {
+    private static @NotNull String parseClassName(final @NotNull String declaringTypeName) {
         final int lastDotIndex = declaringTypeName.lastIndexOf('.');
         final String className = lastDotIndex >= 0 ? declaringTypeName.substring(lastDotIndex + 1) : declaringTypeName;
         return className;
@@ -62,9 +64,9 @@ public class TimeTrackingAspect {
 
     private void publishExecutionSpeedLog(final long elapsedMillis,
                                           final long configuredExpectedMillis,
-                                          final String fullMethodQualifiedName,
-                                          final String methodName,
-                                          final String className) {
+                                          final @NotNull String fullMethodQualifiedName,
+                                          final @NotNull String methodName,
+                                          final @NotNull String className) {
         if (this.logEventsPublisher == null) {
             log.warn("Execution speed logging is not enabled.");
             return;
@@ -85,7 +87,7 @@ public class TimeTrackingAspect {
         }
     }
 
-    private String getDurationString(final long elapsedMillis, final long expectedMillis) {
+    private @NotNull String getDurationString(final long elapsedMillis, final long expectedMillis) {
         final ExecutionSpeedWarningLevel warningLevel = ExecutionSpeedWarningLevel.from(
             elapsedMillis,
             expectedMillis,
@@ -104,7 +106,7 @@ public class TimeTrackingAspect {
         return duration;
     }
 
-    private static String getMethodName(final String className, final String methodName) {
+    private static @NotNull String getMethodName(final String className, final String methodName) {
         return "%s%s%s%s.%s%s%s()%s".formatted(Ansi.BOLD,
             className,
             Ansi.RESET,

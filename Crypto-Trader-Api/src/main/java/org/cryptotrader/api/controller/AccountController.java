@@ -33,9 +33,9 @@ import java.util.Optional;
 @RequestMapping("/api/account")
 public class AccountController {
     //============================-Variables-=================================
-    private final SessionService sessionService;
-    private final ProfilePictureOperations profilePictureService;
-    private final ProductUserService productUserService;
+    private final @NotNull SessionService sessionService;
+    private final @NotNull ProfilePictureOperations profilePictureService;
+    private final @NotNull ProductUserService productUserService;
     /**
      * REST endpoints for account management.
      *
@@ -73,7 +73,7 @@ public class AccountController {
      */
     //----------------------------Upload-Image--------------------------------
     @PostMapping("/image/upload")
-    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(
         @NotNull @RequestParam("file") final MultipartFile file,
         @NotNull final HttpSession session
     ) {
@@ -132,7 +132,7 @@ public class AccountController {
      * @see ProfilePictureOperations#existsByUserId(Long)
      */
     @GetMapping("/get/{id}/has-profile-picture")
-    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(
+    public @NotNull ResponseEntity<HasProfilePictureResponse> hasProfilePicture(
         @Nullable @PathVariable final String id
     ) {
         final long userId;
@@ -165,7 +165,7 @@ public class AccountController {
      */
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
-    public ResponseEntity<byte[]> getProfilePicture(@Nullable @PathVariable final String id) {
+    public @NotNull ResponseEntity<byte[]> getProfilePicture(@Nullable @PathVariable final String id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

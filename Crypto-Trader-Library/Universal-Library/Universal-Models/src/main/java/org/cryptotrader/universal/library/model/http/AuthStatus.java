@@ -1,5 +1,7 @@
 package org.cryptotrader.universal.library.model.http;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum AuthStatus {
     AUTHORIZED(true),
     UNAUTHORIZED(false);
@@ -7,7 +9,7 @@ public enum AuthStatus {
     AuthStatus(final boolean authorized) {
         this.isAuthorized = authorized;
     }
-    public static AuthStatus from(final boolean authorized) {
+    public static @NotNull AuthStatus from(final boolean authorized) {
         return authorized ? AUTHORIZED : UNAUTHORIZED;
     }
 }

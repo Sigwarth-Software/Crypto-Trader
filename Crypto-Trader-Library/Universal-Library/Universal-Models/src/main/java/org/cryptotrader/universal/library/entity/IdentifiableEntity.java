@@ -3,6 +3,7 @@ package org.cryptotrader.universal.library.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 @Getter
 @Setter
@@ -10,7 +11,7 @@ import lombok.Setter;
 public class IdentifiableEntity<T> extends Identifiable<T> {
     @Id
     @Column(name = "id")
-    protected T id;
+    protected @Nullable T id;
 
     public IdentifiableEntity() {
         this.id = null;

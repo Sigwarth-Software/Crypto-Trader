@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import org.cryptotrader.desktop.library.component.config.SpringContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Component
 public class ComponentLoader {
-    public void loadWithFxRoot(final Object controller, final Parent root) {
+    public void loadWithFxRoot(final @NotNull Object controller, final @NotNull Parent root) {
         final String fxmlPath = this.resolveFxmlPath(controller.getClass());
         final URL resource = Objects.requireNonNull(controller.getClass().getResource(fxmlPath), "FXML not found: " + fxmlPath);
 
@@ -36,7 +37,7 @@ public class ComponentLoader {
         }
     }
 
-    public Parent loadAsChild(final Object controller) {
+    public Parent loadAsChild(final @NotNull Object controller) {
         final String fxmlPath = this.resolveFxmlPath(controller.getClass());
         final URL resource = Objects.requireNonNull(controller.getClass().getResource(fxmlPath), "FXML not found: " + fxmlPath);
 
@@ -58,12 +59,12 @@ public class ComponentLoader {
         }
     }
 
-    public void loadIntoPane(final Object controller, final Pane container) {
+    public void loadIntoPane(final @NotNull Object controller, final @NotNull Pane container) {
         final Parent child = loadAsChild(controller);
         container.getChildren().setAll(child);
     }
 
-    private String resolveFxmlPath(final Class<?> componentClass) {
+    private @NotNull String resolveFxmlPath(final @NotNull Class<?> componentClass) {
         String packageName = componentClass.getPackageName();
         if (!packageName.contains(".ui")) {
             throw new IllegalArgumentException("Component must be in a '.ui' package: " + packageName);

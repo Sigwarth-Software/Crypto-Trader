@@ -35,6 +35,9 @@ abstract class BaseEventConsumer<Request, Response>(
                 handleError(exception)
             }
 
+            if (result == null) {
+                throw IllegalArgumentException("Failed to find result.")
+            }
             val responseMessageBuilder = MessageBuilder
                 .withPayload(result)
                 .setHeader("correlationId", correlationIdHeader)

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,7 +28,7 @@ public class CryptoTraderDocsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(OpenAPI.class)
-    public OpenAPI cryptoTraderOpenAPI(final Environment env) {
+    public OpenAPI cryptoTraderOpenAPI(final @NotNull Environment env) {
         final String title = env.getProperty("docs.openapi.title", "Crypto Trader");
         final String version = env.getProperty("docs.openapi.version", "v1");
         final String description = env.getProperty("docs.openapi.description", "Algorithmic trader for cryptocurrencies.");

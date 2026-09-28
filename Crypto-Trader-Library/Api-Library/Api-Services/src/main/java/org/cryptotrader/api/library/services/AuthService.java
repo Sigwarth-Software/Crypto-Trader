@@ -13,6 +13,7 @@ import org.cryptotrader.universal.library.model.http.AuthStatus;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.services.jwt.JwtTokenService;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,12 @@ public class AuthService {
         this.jwtService = jwtService;
     }
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
-    public PayloadStatusResponse<AuthResponse> signup(final SignupRequest signupRequest) {
+    public PayloadStatusResponse<AuthResponse> signup(final @NotNull SignupRequest signupRequest) {
         return signup(signupRequest, null);
     }
 
     @TimeTracked(expectedMillis = 500, shouldPersist = true)
-    public PayloadStatusResponse<AuthResponse> signup(final SignupRequest signupRequest, final String jwkThumbprint) {
+    public @NotNull PayloadStatusResponse<AuthResponse> signup(final @NotNull SignupRequest signupRequest, final String jwkThumbprint) {
         final String email = signupRequest.getEmail();
         final String password = signupRequest.getPassword();
         final boolean userExists = this.productUserService.userExistsByEmail(email);
@@ -64,18 +65,18 @@ public class AuthService {
         }
     }
 
-    private void publishUserRegistration(final ProductUser user) {
+    private void publishUserRegistration(final @NotNull ProductUser user) {
         final UserRegisteredEvent registerEvent = new UserRegisteredEvent(user, LocalDateTime.now());
         this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
     }
 
     @TimeTracked(expectedMillis = 300, shouldPersist = true)
-    public PayloadStatusResponse<AuthResponse> login(final LoginRequest loginRequest) {
+    public PayloadStatusResponse<AuthResponse> login(final @NotNull LoginRequest loginRequest) {
         return login(loginRequest, null);
     }
 
     @TimeTracked(expectedMillis = 300, shouldPersist = true)
-    public PayloadStatusResponse<AuthResponse> login(final LoginRequest loginRequest, final String jwkThumbprint) {
+    public @NotNull PayloadStatusResponse<AuthResponse> login(final @NotNull LoginRequest loginRequest, final String jwkThumbprint) {
         final String email = loginRequest.getEmail();
         final String password = loginRequest.getPassword();
         final User user = this.productUserService.getUserByEmail(email);

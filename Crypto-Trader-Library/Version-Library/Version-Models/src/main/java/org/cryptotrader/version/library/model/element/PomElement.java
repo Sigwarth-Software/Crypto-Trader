@@ -12,6 +12,8 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,7 +34,7 @@ public class PomElement {
         this.parent = resolveParent();
     }
 
-    public String textFromNamespace(final String name) {
+    public @NotNull String textFromNamespace(final String name) {
         Element child = this.baseElement.getChild(name, this.baseElement.getNamespace());
         if (child == null) {
             child = this.baseElement.getChild(name, MAVEN_NAMESPACE);
@@ -60,7 +62,7 @@ public class PomElement {
         return child == null ? "" : (child.getText() == null ? "" : child.getText());
     }
 
-    public PomDependency getParentDependency() {
+    public @Nullable PomDependency getParentDependency() {
         Element parentEl = this.baseElement.getChild("parent", this.baseElement.getNamespace());
         if (parentEl == null) parentEl = this.baseElement.getChild("parent", MAVEN_NAMESPACE);
         if (parentEl == null) parentEl = this.baseElement.getChild("parent");
@@ -72,7 +74,7 @@ public class PomElement {
         return new PomDependency(name, version, groupId, artifactId);
     }
 
-    public Pom getParentPomModel() {
+    public @Nullable Pom getParentPomModel() {
         final PomDependency coords = this.getParentDependency();
         if (coords == null) return null;
         final Optional<PomElement> possibleParent = this.getParent();
@@ -86,14 +88,14 @@ public class PomElement {
         return new Pom(module, modulePath, fileType, coords);
     }
 
-    private String getChildText(final Element element, final String name) {
+    private String getChildText(final @NotNull Element element, final String name) {
         Element child = element.getChild(name, element.getNamespace());
         if (child == null) child = element.getChild(name, MAVEN_NAMESPACE);
         if (child == null) child = element.getChild(name);
         return child == null ? "" : (child.getText() == null ? "" : child.getText());
     }
 
-    private Optional<PomElement> resolveParent() {
+    private @NotNull Optional<PomElement> resolveParent() {
         Element parentElement = this.baseElement.getChild("parent", this.baseElement.getNamespace());
         if (parentElement == null) parentElement = this.baseElement.getChild("parent", MAVEN_NAMESPACE);
         if (parentElement == null) parentElement = this.baseElement.getChild("parent");
@@ -135,7 +137,7 @@ public class PomElement {
         return this.directText("packaging");
     }
 
-    public Pom getPom() {
+    public @NotNull Pom getPom() {
         final ConfigFileType fileType = ConfigFileType.POM;
         final Path modulePath = Path.of(getModulePath());
         final String name = this.directText("name");
@@ -147,7 +149,7 @@ public class PomElement {
         return new Pom(module, modulePath, fileType, moduleDependency);
     }
 
-    public String getModulePath() {
+    public @NotNull String getModulePath() {
         String modulePath = this.path.toString();
         modulePath = modulePath.replace("..", System.getenv("REPO_NAME"));
         modulePath = modulePath.replace("\\pom.xml", "");

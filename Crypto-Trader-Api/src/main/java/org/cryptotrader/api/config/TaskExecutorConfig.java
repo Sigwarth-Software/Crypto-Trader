@@ -1,6 +1,7 @@
 package org.cryptotrader.api.config;
 
 //=================================-Imports-==================================
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -24,7 +25,7 @@ public class TaskExecutorConfig {
      * @return The default thread pool task executor.
      */
     @Bean(name = "taskExecutor")
-    public TaskExecutor threadPoolTaskExecutor() {
+    public @NotNull TaskExecutor threadPoolTaskExecutor() {
         final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // TODO: Make these configurable values.
         executor.setCorePoolSize(5);

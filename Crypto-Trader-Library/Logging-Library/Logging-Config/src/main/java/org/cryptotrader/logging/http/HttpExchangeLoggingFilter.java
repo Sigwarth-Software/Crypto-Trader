@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.redaction.LogRedactor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -99,9 +100,9 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void interceptStreamingLog(final HttpServletResponse response,
-                                       final FilterChain filterChain,
-                                       final ContentCachingRequestWrapper req) throws IOException, ServletException {
+    private void interceptStreamingLog(final @NotNull HttpServletResponse response,
+                                       final @NotNull FilterChain filterChain,
+                                       final @NotNull ContentCachingRequestWrapper req) throws IOException, ServletException {
         final long start = System.currentTimeMillis();
         Exception exception = null;
         try {
@@ -119,12 +120,12 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private boolean isStreamingRequest(final HttpServletRequest request) {
+    private boolean isStreamingRequest(final @NotNull HttpServletRequest request) {
         final String accept = request.getHeader(HttpHeaders.ACCEPT);
         return accept != null && accept.contains(MediaType.TEXT_EVENT_STREAM_VALUE);
     }
 
-    private void logExchange(final ContentCachingRequestWrapper req, final HttpServletResponse response, final long tookMs, @Nullable final Exception ex) {
+    private void logExchange(final @NotNull ContentCachingRequestWrapper req, final @NotNull HttpServletResponse response, final long tookMs, @Nullable final Exception ex) {
         final String scheme = req.getScheme();
         final String protocol = req.getProtocol(); // e.g., HTTP/1.1
         final String method = req.getMethod();
@@ -189,7 +190,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                   .append(color(payload, AnsiColor.WHITE));
             }
         }
-        if (this.includeResponsePayload && response instanceof final ContentCachingResponseWrapper res) {
+        if (this.includeResponsePayload && response instanceof final @NotNull ContentCachingResponseWrapper res) {
             final String payload = this.formatPayloadForLog(
                     getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), this.maxResponsePayloadLength),
                     response.getContentType()
@@ -209,7 +210,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void appendHeaders(final StringBuilder sb, final String title, final HttpServletRequest req) {
+    private void appendHeaders(final @NotNull StringBuilder sb, final String title, final @NotNull HttpServletRequest req) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
         for (final Enumeration<String> names = req.getHeaderNames(); names.hasMoreElements(); ) {
             final String name = names.nextElement();
@@ -221,7 +222,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void appendHeaders(final StringBuilder sb, final String title, final HttpServletResponse res) {
+    private void appendHeaders(final @NotNull StringBuilder sb, final String title, final @NotNull HttpServletResponse res) {
         sb.append(color(title + ":", AnsiColor.BRIGHT_BLACK)).append('\n');
         for (final String name : res.getHeaderNames()) {
             final String redactedValues = res.getHeaders(name).stream()
@@ -231,7 +232,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private String resolveIpAddress(final HttpServletRequest request) {
+    private String resolveIpAddress(final @NotNull HttpServletRequest request) {
         final String xForwardedFor = request.getHeader("X-Forwarded-For");
         if (xForwardedFor != null && !xForwardedFor.isBlank()) {
             return xForwardedFor.split(",")[0].trim();
@@ -239,12 +240,12 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return request.getRemoteAddr();
     }
 
-    private boolean isWebSocketUpgrade(final HttpServletRequest req) {
+    private boolean isWebSocketUpgrade(final @NotNull HttpServletRequest req) {
         final String upgrade = req.getHeader(HttpHeaders.UPGRADE);
         return upgrade != null && "websocket".equalsIgnoreCase(upgrade);
     }
 
-    private String getBody(final byte[] buf, @Nullable final String encoding, final int max) {
+    private @NotNull String getBody(final byte @org.jetbrains.annotations.Nullable [] buf, @Nullable final String encoding, final int max) {
         if (buf == null || buf.length == 0) return "";
         final int len = Math.min(buf.length, max);
         final Charset charset = Charset.forName(Objects.requireNonNullElse(encoding, Charset.defaultCharset().name()));
@@ -255,7 +256,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private String formatPayloadForLog(final String payload, @Nullable final String contentType) {
+    private @org.jetbrains.annotations.Nullable String formatPayloadForLog(final String payload, @Nullable final String contentType) {
         if (!StringUtils.hasText(payload)) {
             return payload;
         }
@@ -273,7 +274,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private AnsiColor durationColor(final long ms) {
+    private @NotNull AnsiColor durationColor(final long ms) {
         if (ms > 2000) return AnsiColor.RED;
         if (ms > 700) return AnsiColor.YELLOW;
         return AnsiColor.GREEN;

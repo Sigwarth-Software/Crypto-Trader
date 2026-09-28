@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.library.service.entity.FrontendLogEntityService;
 import org.cryptotrader.logging.library.entity.FrontendLog;
 import org.cryptotrader.logging.library.events.FrontendLogEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,7 @@ public class FrontendLogService {
     }
 
     @Transactional
-    public void persist(final List<FrontendLogEvent> entries, final LocalDateTime receivedAt) {
+    public void persist(final @NotNull List<FrontendLogEvent> entries, final LocalDateTime receivedAt) {
         final List<FrontendLog> entities = entries.stream()
                 .map(entry -> FrontendLog.builder()
                         .timestamp(entry.getTimestamp())
@@ -61,7 +63,7 @@ public class FrontendLogService {
         log.info("Persisted {} frontend log entries", entities.size());
     }
 
-    private String serializeMetadata(final Map<String, Object> metadata) {
+    private String serializeMetadata(final @Nullable Map<String, Object> metadata) {
         if (metadata == null) {
             return null;
         }

@@ -1,5 +1,6 @@
 package org.cryptotrader.data.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ public class DataSecurityConfig {
     private String trustedIp;
 
     @Bean
-    public SecurityFilterChain trustedHostFilterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain trustedHostFilterChain(final @NotNull HttpSecurity http) throws Exception {
         http.securityMatcher(isFromTrustedHost())
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .csrf(AbstractHttpConfigurer::disable);
@@ -25,7 +26,7 @@ public class DataSecurityConfig {
         return http.build();
     }
 
-    private RequestMatcher isFromTrustedHost() {
+    private @NotNull RequestMatcher isFromTrustedHost() {
         if (this.trustedIp == null || this.trustedIp.isEmpty()) {
             throw new IllegalStateException("Trusted IP address must be configured");
         }

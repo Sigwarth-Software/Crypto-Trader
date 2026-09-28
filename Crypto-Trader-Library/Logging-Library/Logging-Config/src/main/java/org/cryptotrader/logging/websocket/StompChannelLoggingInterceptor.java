@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.properties.CryptoTraderWebSocketLoggingProperties;
 import org.cryptotrader.logging.redaction.LogRedactor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
@@ -26,8 +27,8 @@ import static org.cryptotrader.logging.library.scripts.LoggingParsingScriptKt.si
 @RequiredArgsConstructor
 public class StompChannelLoggingInterceptor implements ChannelInterceptor {
 
-    private final CryptoTraderWebSocketLoggingProperties props;
-    private final LogRedactor logRedactor;
+    private final @NotNull CryptoTraderWebSocketLoggingProperties props;
+    private final @NotNull LogRedactor logRedactor;
 
     @Override
     public Message<?> preSend(final Message<?> message, final MessageChannel channel) {
@@ -39,7 +40,7 @@ public class StompChannelLoggingInterceptor implements ChannelInterceptor {
         return message;
     }
 
-    private void logMessage(final Message<?> message) {
+    private void logMessage(final @NotNull Message<?> message) {
         final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         if (accessor == null) return;
         final StompCommand cmd = accessor.getCommand();

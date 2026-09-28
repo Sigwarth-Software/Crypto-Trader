@@ -14,11 +14,11 @@ import java.util.List;
 
 /** A builder factory for portfolio entities. */
 public class PortfolioBuilder extends AbstractPortfolio {
-    private ProductUser user;
+    private @Nullable ProductUser user;
     private double dollarBalance;
     private double shareBalance;
     private double totalWorth;
-    private LocalDateTime lastUpdated;
+    private @Nullable LocalDateTime lastUpdated;
     private List<PortfolioAsset> assets;
     private List<PortfolioHistory> portfolioHistory;
 

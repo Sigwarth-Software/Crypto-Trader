@@ -17,6 +17,7 @@ module org.cryptotrader.universal.library.events {
     requires spring.messaging;
 
     requires org.cryptotrader.universal.library.models;
+    requires org.jetbrains.annotations;
     exports org.cryptotrader.universal.library.events;
     exports org.cryptotrader.universal.library.events.model;
     exports org.cryptotrader.universal.library.events.alias;
