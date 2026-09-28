@@ -1,6 +1,5 @@
 package org.cryptotrader.data.library.entity.news.builder
 
-import org.cryptotrader.data.library.entity.news.builder.NewsSentimentBuilder
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

@@ -1,7 +1,6 @@
 package org.cryptotrader.api.infrastructure
 
 import org.cryptotrader.api.service.HoneypotService
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName

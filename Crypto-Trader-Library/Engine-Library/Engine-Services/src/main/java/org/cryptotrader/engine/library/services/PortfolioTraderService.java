@@ -6,7 +6,6 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.model.trade.CryptoTrader;
 import org.cryptotrader.api.library.model.trade.Trader;
-import org.cryptotrader.api.library.model.trade.TradingEngine;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.jspecify.annotations.NonNull;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;

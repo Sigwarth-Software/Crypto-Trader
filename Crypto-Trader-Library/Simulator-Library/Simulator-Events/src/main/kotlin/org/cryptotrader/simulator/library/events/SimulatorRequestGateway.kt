@@ -4,7 +4,6 @@ import org.cryptotrader.simulator.library.communication.request.PortfolioSimulat
 import org.cryptotrader.simulator.library.communication.response.PortfolioSimulationResponse
 import org.cryptotrader.universal.library.events.EventPublisher
 import org.cryptotrader.universal.library.events.RequestGatewayController
-import org.cryptotrader.universal.library.events.model.EventBinding
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.Duration

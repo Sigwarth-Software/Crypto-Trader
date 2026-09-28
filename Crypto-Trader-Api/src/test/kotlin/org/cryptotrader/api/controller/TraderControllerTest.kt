@@ -1,7 +1,6 @@
 package org.cryptotrader.api.controller
 
 import org.cryptotrader.api.library.services.AuthContextService
-import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.api.library.services.TraderService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
