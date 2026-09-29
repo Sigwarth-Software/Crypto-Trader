@@ -54,7 +54,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                                      final boolean includeResponsePayload,
                                      final int maxResponsePayloadLength,
                                      final boolean colorEnabled,
-                                     final LogRedactor logRedactor) {
+                                     @NotNull final LogRedactor logRedactor) {
         this.includeQueryString = includeQueryString;
         this.includeRequestPayload = includeRequestPayload;
         this.maxRequestPayloadLength = maxRequestPayloadLength;
@@ -125,7 +125,10 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return accept != null && accept.contains(MediaType.TEXT_EVENT_STREAM_VALUE);
     }
 
-    private void logExchange(final @NotNull ContentCachingRequestWrapper req, final @NotNull HttpServletResponse response, final long tookMs, @Nullable final Exception ex) {
+    private void logExchange(final @NotNull ContentCachingRequestWrapper req,
+                             final @NotNull HttpServletResponse response,
+                             final long tookMs,
+                             @Nullable final Exception ex) {
         final String scheme = req.getScheme();
         final String protocol = req.getProtocol(); // e.g., HTTP/1.1
         final String method = req.getMethod();
@@ -245,7 +248,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return upgrade != null && "websocket".equalsIgnoreCase(upgrade);
     }
 
-    private @NotNull String getBody(final byte @org.jetbrains.annotations.Nullable [] buf, @Nullable final String encoding, final int max) {
+    private @NotNull String getBody(final byte[] buf, @Nullable final String encoding, final int max) {
         if (buf == null || buf.length == 0) return "";
         final int len = Math.min(buf.length, max);
         final Charset charset = Charset.forName(Objects.requireNonNullElse(encoding, Charset.defaultCharset().name()));
@@ -256,7 +259,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         return body;
     }
 
-    private @org.jetbrains.annotations.Nullable String formatPayloadForLog(final String payload, @Nullable final String contentType) {
+    private @Nullable String formatPayloadForLog(final String payload, @Nullable final String contentType) {
         if (!StringUtils.hasText(payload)) {
             return payload;
         }
