@@ -30,7 +30,7 @@ public class EmailController extends VBox {
 
         final Parent webViewParent = this.webView.getParent();
 
-        if (webViewParent instanceof final @NotNull Region parent) {
+        if (webViewParent instanceof @NotNull final Region parent) {
             this.webView.prefWidthProperty().bind(parent.widthProperty());
             this.webView.prefHeightProperty().bind(parent.heightProperty());
         }
