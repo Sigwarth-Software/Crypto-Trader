@@ -5,4 +5,5 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectPackages({"org.cryptotrader.data"})
-public class DataTestSuite { }
+public class DataTestSuite {
+}

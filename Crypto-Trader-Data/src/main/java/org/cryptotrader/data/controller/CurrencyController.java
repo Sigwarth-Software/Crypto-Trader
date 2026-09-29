@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/data/currency")
 public class CurrencyController {
     private final CurrencyService currencyService;
+
     @Autowired
     public CurrencyController(final CurrencyService currencyService) {
         this.currencyService = currencyService;

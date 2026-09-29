@@ -21,12 +21,14 @@ public class PricePredictionController {
     public PricePredictionController(final PricePredictionService pricePredictionService) {
         this.pricePredictionService = pricePredictionService;
     }
+
     @RequestMapping("/add")
     public @NotNull ResponseEntity<PredictionIdResponse> predictions(@RequestBody final @Nullable PricePredictionRequest pricePredictionRequest) {
         if (pricePredictionRequest == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         final Long predictionId = this.pricePredictionService.savePrediction(pricePredictionRequest).getId();
+
         if (predictionId == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
