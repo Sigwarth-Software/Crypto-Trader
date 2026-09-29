@@ -13,18 +13,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+/** Service for handling application exceptions. */
 @Slf4j
 @Service
 public class ApplicationExceptionService {
     private final ApplicationExceptionEntityService applicationExceptionEntityService;
 
     @Autowired
-    public ApplicationExceptionService(final ApplicationExceptionEntityService applicationExceptionEntityService) {
+    public ApplicationExceptionService(
+        @NotNull final ApplicationExceptionEntityService applicationExceptionEntityService
+    ) {
         this.applicationExceptionEntityService = applicationExceptionEntityService;
     }
 
+    /** Persists an application exception event payload.
+     *
+     * @param entry The application exception event payload.
+     * @param receivedAt The timestamp when the event was received.
+     */
     @Transactional
-    public void persist(final @NotNull ApplicationExceptionEventPayload entry, final LocalDateTime receivedAt) {
+    public void persist(@NotNull final ApplicationExceptionEventPayload entry,
+                        @NotNull final LocalDateTime receivedAt) {
         final ApplicationException entity = ApplicationException.builder()
                 .timestamp(entry.getTimestamp())
                 .module(LogModule.fromModuleName(entry.getModule()))
