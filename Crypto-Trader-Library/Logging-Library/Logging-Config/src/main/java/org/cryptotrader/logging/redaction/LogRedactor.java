@@ -17,43 +17,55 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/** Class that redacts sensitive information from log messages. */
 public class LogRedactor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final LogRedactionProperties properties;
 
-    public LogRedactor(final LogRedactionProperties properties) {
+    public LogRedactor(@NotNull final LogRedactionProperties properties) {
         this.properties = properties;
     }
 
-    public @org.jetbrains.annotations.Nullable String redactHeader(@Nullable final String name, @Nullable final String value) {
+    public @Nullable String redactHeader(@Nullable final String name,
+                                         @Nullable final String value) {
         if (!this.properties.isEnabled() || value == null) {
             return value;
         }
-        return this.isSensitiveHeader(name) ? this.properties.getReplacement() : value;
+
+        if (this.isSensitiveHeader(name)) {
+            return this.properties.getReplacement();
+        }
+        return value;
     }
 
-    public @org.jetbrains.annotations.Nullable String redactQueryString(@Nullable final String queryString) {
+    public @Nullable String redactQueryString(@Nullable final String queryString) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(queryString)) {
             return queryString;
         }
 
         final String[] pairs = queryString.split("&", -1);
+
         for (int index = 0; index < pairs.length; index++) {
             final int separatorIndex = pairs[index].indexOf('=');
+
             if (separatorIndex < 0) {
                 continue;
             }
             final String encodedName = pairs[index].substring(0, separatorIndex);
             final String name = URLDecoder.decode(encodedName, StandardCharsets.UTF_8);
+
             if (this.isSensitiveField(name)) {
-                pairs[index] = encodedName + "=" + URLEncoder.encode(this.properties.getReplacement(), StandardCharsets.UTF_8);
+                pairs[index] = encodedName + "=" + URLEncoder.encode(
+                    this.properties.getReplacement(),
+                    StandardCharsets.UTF_8
+                );
             }
         }
         return String.join("&", pairs);
     }
 
-    public @org.jetbrains.annotations.Nullable String redactText(@Nullable final String text) {
+    public @Nullable String redactText(@Nullable final String text) {
         if (!this.properties.isEnabled() || !StringUtils.hasText(text)) {
             return text;
         }
@@ -65,7 +77,7 @@ public class LogRedactor {
         return redacted;
     }
 
-    public @org.jetbrains.annotations.Nullable JsonNode redact(final @org.jetbrains.annotations.Nullable JsonNode node) {
+    public @Nullable JsonNode redact(final @Nullable JsonNode node) {
         if (!this.properties.isEnabled() || node == null) {
             return node;
         }
