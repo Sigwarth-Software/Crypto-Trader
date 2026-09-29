@@ -87,14 +87,14 @@ abstract class RequestGatewayController<Request, Response> :
         timeout: Duration,
         authorizationHeader: String?
     ): Response {
+        if (request == null) {
+            throw IllegalArgumentException("Request cannot be null")
+        }
         val correlationId: String = this.getCorrelationId()
         val future = this.getFutureResponse()
         this.setPendingResponse(correlationId, future)
         val headers = this.getInitialHeaders(correlationId, authorizationHeader)
 
-        if (request == null) {
-            throw IllegalArgumentException("Request cannot be null")
-        }
         this.eventPublisher.publish(binding.bindingName, request, headers)
 
         return try {
