@@ -21,9 +21,12 @@ public class ProfilePictureBuilder extends AbstractProfilePicture {
     }
 
     @Override
-    public @NotNull ProfilePictureBuilder fileName(final @NotNull String fileName) {
+    public @NotNull ProfilePictureBuilder fileName(final @Nullable String fileName) {
         this.fileName = fileName;
-        this.fileType = ProfilePicture.getFileType(fileName);
+
+        if (fileName != null) {
+            this.fileType = ProfilePicture.getFileType(fileName);
+        }
         return this;
     }
 
