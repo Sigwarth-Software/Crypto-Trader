@@ -22,6 +22,7 @@ import fr.brouillard.oss.cssfx.CSSFX;
 import java.io.IOException;
 import java.net.URL;
 
+/** The admin application boostrap. */
 public class AdminApplication extends Application {
     private static final String ROOT_APP_VIEW_PATH = "ui/view/app/AppView.fxml";
     private static final String ROOT_APP_STYLESHEET_PATH = "ui/view/app/AppView.css";
@@ -90,9 +91,13 @@ public class AdminApplication extends Application {
             // TODO: Add a property or profile which triggers ScenicView.
 //            ScenicView.show(newRoot);
             final int controllerIdentityHash = System.identityHashCode(reloadLoader.getController());
-            System.out.printf("[Hot Reload] scene root swapped, controller = %s @%d%n", reloadLoader.getController(), controllerIdentityHash);
-        } catch (final IOException ex) {
-            ex.printStackTrace();
+            System.out.printf(
+                "[Hot Reload] scene root swapped, controller = %s @%d%n",
+                reloadLoader.getController(),
+                controllerIdentityHash
+            );
+        } catch (@NotNull final IOException ioException) {
+            ioException.printStackTrace();
         }
     }
 
