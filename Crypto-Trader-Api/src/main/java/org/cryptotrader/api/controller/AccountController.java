@@ -36,6 +36,7 @@ public class AccountController {
     private final @NotNull SessionService sessionService;
     private final @NotNull ProfilePictureOperations profilePictureService;
     private final @NotNull ProductUserService productUserService;
+
     /**
      * REST endpoints for account management.
      *
@@ -135,6 +136,9 @@ public class AccountController {
     public @NotNull ResponseEntity<HasProfilePictureResponse> hasProfilePicture(
         @Nullable @PathVariable final String id
     ) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         final long userId;
 
         try {
@@ -143,9 +147,11 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         final boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
-        return ResponseEntity.ok(new HasProfilePictureResponse(
-            hasProfilePicture
-        ));
+        return ResponseEntity.ok(
+            new HasProfilePictureResponse(
+                hasProfilePicture
+            )
+        );
     }
 
     /**
@@ -165,7 +171,9 @@ public class AccountController {
      */
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
-    public @NotNull ResponseEntity<byte[]> getProfilePicture(@Nullable @PathVariable final String id) {
+    public @NotNull ResponseEntity<byte[]> getProfilePicture(
+        @Nullable @PathVariable final String id
+    ) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
