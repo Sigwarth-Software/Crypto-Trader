@@ -863,6 +863,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>universal-scripts</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-services</artifactId>
                 <version>0.1.0</version>
             </dependency>
