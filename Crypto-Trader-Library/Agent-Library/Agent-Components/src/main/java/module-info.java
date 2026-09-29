@@ -22,9 +22,6 @@ open module org.cryptotrader.agent.library.components {
     requires org.jsoup;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
-    // TODO: Investigate this, and whether this belongs in source. It's likely
-    //       it does not.
-    requires static org.junit.jupiter.api;
 
     exports org.cryptotrader.agent.library.component;
     exports org.cryptotrader.agent.library.component.config;
