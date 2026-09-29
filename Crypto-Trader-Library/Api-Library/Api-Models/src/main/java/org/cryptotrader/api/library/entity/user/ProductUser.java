@@ -18,11 +18,15 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/** The entity for a commercial user of the Crypto Trader app. */
 @Entity
 @Table(name = "product_users")
 @Getter
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 public class ProductUser extends User implements UserDetails {
     //============================-Variables-=================================
     @Loggable
@@ -37,8 +41,13 @@ public class ProductUser extends User implements UserDetails {
     private ProfilePicture profilePicture;
     @Loggable
     @Enumerated(EnumType.STRING)
-    @Column(name = "subscription_tier", nullable = false, columnDefinition = "varchar(255) default 'FREE'")
-    private SubscriptionTier subscriptionTier = SubscriptionTier.FREE;
+    @Column(
+        name = "subscription_tier",
+        nullable = false,
+        columnDefinition = "varchar(255) default 'FREE'"
+    )
+    private SubscriptionTier subscriptionTier;
+
     //===========================-Constructors-===============================
     public ProductUser() {
         super();
@@ -47,25 +56,40 @@ public class ProductUser extends User implements UserDetails {
         this.safePassword = null;
         this.portfolio = null;
         this.lastLogin = null;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
+
     public ProductUser(final String username, final String rawPassword) {
         super(username, rawPassword);
         this.email = null;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
-    public ProductUser(final String username, final String rawPassword, final String email) {
+
+    public ProductUser(final String username,
+                       final String rawPassword,
+                       final String email) {
         super(username, rawPassword);
         this.email = email;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
-    public ProductUser(final String username, final SafePassword encodedPassword) {
+
+    public ProductUser(final String username,
+                       final SafePassword encodedPassword) {
         super(username, encodedPassword);
         this.email = null;
         this.portfolio = new Portfolio(this);
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
-    public ProductUser(final String username, final String email, final SafePassword encodedPassword) {
+
+    public ProductUser(final String username,
+                       final String email,
+                       final SafePassword encodedPassword) {
         super(username, encodedPassword);
         this.email = email;
         this.portfolio = new Portfolio(this);
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
+
     public ProductUser(final String username,
                        final String email,
                        final SafePassword encodedPassword,
@@ -80,16 +104,25 @@ public class ProductUser extends User implements UserDetails {
         this.lastLogin = lastLogin;
         this.subscriptionTier = subscriptionTier;
     }
-    public ProductUser(final String username, final String rawPassword, final Portfolio portfolio) {
+
+    public ProductUser(final String username,
+                       final String rawPassword,
+                       final Portfolio portfolio) {
         super(username, rawPassword);
         this.email = null;
         this.portfolio = portfolio;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
-    public ProductUser(final String username, final String rawPassword, final Portfolio portfolio, final LocalDateTime lastLogin) {
+
+    public ProductUser(final String username,
+                       final String rawPassword,
+                       final Portfolio portfolio,
+                       final LocalDateTime lastLogin) {
         super(username, rawPassword);
         this.email = null;
         this.portfolio = portfolio;
         this.lastLogin = lastLogin;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
 
     public static @NotNull ProductUserBuilder builder() {
@@ -103,6 +136,9 @@ public class ProductUser extends User implements UserDetails {
 
     @Override
     public String getPassword() {
+        if (this.safePassword == null) {
+            return null;
+        }
         return this.safePassword.getEncodedPassword();
     }
 
