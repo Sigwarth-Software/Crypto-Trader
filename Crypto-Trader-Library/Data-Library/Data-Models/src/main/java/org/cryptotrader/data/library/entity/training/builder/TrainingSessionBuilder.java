@@ -124,7 +124,7 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
-    public @NotNull AbstractTrainingSession modelType(final ModelType modelType) {
+    public @NotNull AbstractTrainingSession modelType(final @NotNull ModelType modelType) {
         this.modelType = modelType;
         return this;
     }
@@ -136,7 +136,7 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
-    public @NotNull AbstractTrainingSession queryType(final TrainingQueryType queryType) {
+    public @NotNull AbstractTrainingSession queryType(final @NotNull TrainingQueryType queryType) {
         this.queryType = queryType;
         return this;
     }
@@ -214,7 +214,7 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
-    public @NotNull AbstractTrainingSession queryLoad(final QueryLoad queryLoad) {
+    public @NotNull AbstractTrainingSession queryLoad(final @NotNull QueryLoad queryLoad) {
         this.queryLoad = queryLoad;
         return this;
     }
@@ -232,7 +232,9 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
-    public @NotNull AbstractTrainingSession trainingDevice(final TrainingDevice trainingDevice) {
+    public @NotNull AbstractTrainingSession trainingDevice(
+        final @NotNull TrainingDevice trainingDevice
+    ) {
         this.trainingDevice = trainingDevice;
         return this;
     }
