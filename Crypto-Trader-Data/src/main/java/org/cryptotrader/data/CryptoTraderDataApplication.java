@@ -15,25 +15,25 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 @EntityScan(basePackages = {
-        "org.cryptotrader.api.library.entity",
-        "org.cryptotrader.data.library.entity"
+    "org.cryptotrader.api.library.entity",
+    "org.cryptotrader.data.library.entity"
 })
 @ComponentScan(basePackages = {
-        "org.cryptotrader.data",
-        "org.cryptotrader.api.library.component",
-        "org.cryptotrader.api.library",
-        "org.cryptotrader.data.library",
-        "org.cryptotrader.data.library.services",
-        "org.cryptotrader.data.library.component",
-        "org.cryptotrader.universal.library.events"
+    "org.cryptotrader.data",
+    "org.cryptotrader.api.library.component",
+    "org.cryptotrader.api.library",
+    "org.cryptotrader.data.library",
+    "org.cryptotrader.data.library.services",
+    "org.cryptotrader.data.library.component",
+    "org.cryptotrader.universal.library.events"
 })
 @EnableJpaRepositories(basePackages = {
-        "org.cryptotrader.api.library.repository",
-        "org.cryptotrader.data.library.repository"
+    "org.cryptotrader.api.library.repository",
+    "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderDataApplication {
-    public static void main(String[] args) {
-        boolean loadCurrencies = shouldLoadCurrencies();
+    public static void main(final String[] args) {
+        final boolean loadCurrencies = shouldLoadCurrencies();
         if (loadCurrencies) {
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
@@ -43,9 +43,9 @@ public class CryptoTraderDataApplication {
     }
 
     private static boolean shouldLoadCurrencies() {
-        String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
-        String loadCurrenciesSetting = System.getProperty("cryptotrader.load.currency", loadCurrenciesEnv);
-        boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
+        final String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
+        final String loadCurrenciesSetting = System.getProperty("cryptotrader.load.currency", loadCurrenciesEnv);
+        final boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
         return loadCurrencies;
     }
 

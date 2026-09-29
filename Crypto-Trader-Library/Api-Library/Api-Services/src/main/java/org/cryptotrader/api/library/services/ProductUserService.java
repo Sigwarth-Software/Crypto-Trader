@@ -6,6 +6,8 @@ import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.User;
 import org.cryptotrader.api.library.repository.ProductUserRepository;
 import org.cryptotrader.api.library.services.entity.user.ProductUserEntityService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,8 @@ public class ProductUserService {
     private final ProductUserEntityService productUserEntityService;
     //===========================-Constructors-===============================
     @Autowired
-    public ProductUserService(ProductUserRepository productUserRepository,
-                              ProductUserEntityService productUserEntityService) {
+    public ProductUserService(final ProductUserRepository productUserRepository,
+                              final ProductUserEntityService productUserEntityService) {
         this.productUserRepository = productUserRepository;
         this.productUserEntityService = productUserEntityService;
     }
@@ -37,7 +39,7 @@ public class ProductUserService {
      * @param username the username to check
      * @return true if a user record exists
      */
-    public boolean userExistsByUsername(String username) {
+    public boolean userExistsByUsername(final String username) {
         return this.productUserRepository.existsByUsername(username);
     }
 
@@ -46,7 +48,7 @@ public class ProductUserService {
      * @param email email address
      * @return matching ProductUser or null if none found
      */
-    public ProductUser getUserByEmail(String email) {
+    public ProductUser getUserByEmail(final String email) {
         return this.productUserRepository.getUserByEmail(email);
     }
 
@@ -55,7 +57,7 @@ public class ProductUserService {
      * @param email email address to test
      * @return true if a user with that email exists
      */
-    public boolean userExistsByEmail(String email) {
+    public boolean userExistsByEmail(final String email) {
         return this.productUserRepository.existsByEmail(email);
     }
     //------------------------Get-User-By-Username----------------------------
@@ -64,7 +66,7 @@ public class ProductUserService {
      * @param username username value
      * @return ProductUser or null if not found
      */
-    public ProductUser getUserByUsername(String username) {
+    public ProductUser getUserByUsername(final String username) {
         return this.productUserRepository.getUserByUsername(username);
     }
     //--------------------------Compare-Password------------------------------
@@ -74,8 +76,8 @@ public class ProductUserService {
      * @param password the plaintext password to verify
      * @return true when the password matches
      */
-    public boolean comparePassword(User user, String password) {
-        boolean passwordsMatch = user.getSafePassword().compareUnencodedPassword(password);
+    public boolean comparePassword(final @NotNull User user, final String password) {
+        final boolean passwordsMatch = user.getSafePassword().compareUnencodedPassword(password);
         return passwordsMatch;
     }
     //-----------------------------Save-User----------------------------------
@@ -83,7 +85,7 @@ public class ProductUserService {
      * Persist a ProductUser.
      * @param user the entity to save
      */
-    public void saveUser(ProductUser user) {
+    public void saveUser(final @NotNull ProductUser user) {
         log.info("Saving user: {}", user.getUsername());
 //        this.productUserRepository.save(user);
         this.productUserEntityService.save(user);
@@ -94,7 +96,7 @@ public class ProductUserService {
      * @param id numeric id
      * @return ProductUser or null if none
      */
-    public ProductUser getUserById(Long id) {
+    public @Nullable ProductUser getUserById(final @NotNull Long id) {
 //        return this.productUserRepository.getUserById(id);
         return this.productUserEntityService.findById(id).orElse(null);
     }

@@ -9,6 +9,7 @@ open module org.cryptotrader.desktop.library.components {
     requires spring.context;
     requires org.slf4j;
     requires kotlin.stdlib;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.desktop.library.component;
     exports org.cryptotrader.desktop.library.component.config;

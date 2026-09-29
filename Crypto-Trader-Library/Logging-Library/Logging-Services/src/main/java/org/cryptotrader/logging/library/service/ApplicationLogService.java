@@ -6,6 +6,8 @@ import org.cryptotrader.logging.library.entity.LogLevel;
 import org.cryptotrader.logging.library.entity.LogModule;
 import org.cryptotrader.logging.library.events.ApplicationLogEventPayload;
 import org.cryptotrader.logging.library.service.entity.ApplicationLogEntityService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +25,14 @@ public class ApplicationLogService {
     private final ApplicationLogEntityService applicationLogEntityService;
 
     @Autowired
-    public ApplicationLogService(ObjectMapper objectMapper, ApplicationLogEntityService applicationLogEntityService) {
+    public ApplicationLogService(final ObjectMapper objectMapper, final ApplicationLogEntityService applicationLogEntityService) {
         this.objectMapper = objectMapper;
         this.applicationLogEntityService = applicationLogEntityService;
     }
 
     @Transactional
-    public void persist(ApplicationLogEventPayload entry, LocalDateTime receivedAt) {
-        ApplicationLog entity = ApplicationLog.builder()
+    public void persist(final @NotNull ApplicationLogEventPayload entry, final LocalDateTime receivedAt) {
+        final ApplicationLog entity = ApplicationLog.builder()
                 .timestamp(entry.getTimestamp())
                 .level(LogLevel.fromLevelName(entry.getLevel()))
                 .logger(entry.getLogger())
@@ -46,13 +48,13 @@ public class ApplicationLogService {
         this.applicationLogEntityService.save(entity);
     }
 
-    private String serializeMetadata(Map<String, String> metadata) {
+    private String serializeMetadata(final @Nullable Map<String, String> metadata) {
         if (metadata == null) {
             return null;
         }
         try {
             return objectMapper.writeValueAsString(metadata);
-        } catch (JsonProcessingException jsonProcessingException) {
+        } catch (final JsonProcessingException jsonProcessingException) {
             log.warn("Failed to serialize metadata, falling back to toString()", jsonProcessingException);
             return "{}";
         }

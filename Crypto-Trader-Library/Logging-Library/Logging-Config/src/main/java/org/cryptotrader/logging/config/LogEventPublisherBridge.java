@@ -15,8 +15,8 @@ public class LogEventPublisherBridge {
     private final LogEventsPublisher logEventsPublisher;
     private final LogRedactor logRedactor;
 
-    public LogEventPublisherBridge(LogEventsPublisher logEventsPublisher,
-                                   @Autowired(required = false) LogRedactor logRedactor) {
+    public LogEventPublisherBridge(final LogEventsPublisher logEventsPublisher,
+                                   @Autowired(required = false) final LogRedactor logRedactor) {
         this.logEventsPublisher = logEventsPublisher;
         this.logRedactor = logRedactor;
     }

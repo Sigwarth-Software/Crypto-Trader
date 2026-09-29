@@ -26,29 +26,29 @@ public class TrainingSessionRequest {
     private Integer shortSequenceLength;
     private Integer mediumSequenceLength;
     private Integer longSequenceLength;
-    
-    public TrainingSessionRequest(String currency,
-                                  Long prediction,
-                                  int numRows,
-                                  int epochsTrained,
-                                  int maxEpochs,
-                                  double startingLoss,
-                                  double finalLoss,
-                                  String modelType,
-                                  String queryType,
-                                  String trainingStartTime,
-                                  String trainingEndTime,
-                                  String queryStartTime,
-                                  String queryEndTime,
-                                  int sequenceLength,
-                                  int batchSize,
-                                  int dimensionWidth,
-                                  String queryLoad,
-                                  Integer queryBatchSize,
-                                  String trainingDevice,
-                                  Integer shortSequenceLength,
-                                  Integer mediumSequenceLength,
-                                  Integer longSequenceLength) {
+
+    public TrainingSessionRequest(final String currency,
+                                  final Long prediction,
+                                  final int numRows,
+                                  final int epochsTrained,
+                                  final int maxEpochs,
+                                  final double startingLoss,
+                                  final double finalLoss,
+                                  final String modelType,
+                                  final String queryType,
+                                  final String trainingStartTime,
+                                  final String trainingEndTime,
+                                  final String queryStartTime,
+                                  final String queryEndTime,
+                                  final int sequenceLength,
+                                  final int batchSize,
+                                  final int dimensionWidth,
+                                  final String queryLoad,
+                                  final Integer queryBatchSize,
+                                  final String trainingDevice,
+                                  final Integer shortSequenceLength,
+                                  final Integer mediumSequenceLength,
+                                  final Integer longSequenceLength) {
         this.currency = currency;
         this.prediction = prediction;
         this.numRows = numRows;

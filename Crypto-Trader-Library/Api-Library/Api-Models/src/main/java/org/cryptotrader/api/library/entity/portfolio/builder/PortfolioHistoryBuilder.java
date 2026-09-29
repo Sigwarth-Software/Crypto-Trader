@@ -3,9 +3,12 @@ package org.cryptotrader.api.library.entity.portfolio.builder;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.api.library.entity.portfolio.builder.models.AbstractPortfolioHistory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 
+/** A builder factory for portfolio history entities. */
 public class PortfolioHistoryBuilder extends AbstractPortfolioHistory {
     private Portfolio portfolio;
     private double dollarBalance;
@@ -13,7 +16,7 @@ public class PortfolioHistoryBuilder extends AbstractPortfolioHistory {
     private double totalWorth;
     private double valueChange;
     private boolean tradeOccurred;
-    private LocalDateTime lastUpdated;
+    private @Nullable LocalDateTime lastUpdated;
 
     public PortfolioHistoryBuilder() {
         this.dollarBalance = 0;
@@ -23,7 +26,7 @@ public class PortfolioHistoryBuilder extends AbstractPortfolioHistory {
     }
 
     @Override
-    public AbstractPortfolioHistory portfolio(Portfolio portfolio) {
+    public @NotNull AbstractPortfolioHistory portfolio(@NotNull final Portfolio portfolio) {
         this.portfolio = portfolio;
         this.dollarBalance = portfolio.getDollarBalance();
         this.shareBalance = portfolio.getShareBalance();
@@ -33,43 +36,45 @@ public class PortfolioHistoryBuilder extends AbstractPortfolioHistory {
     }
 
     @Override
-    public AbstractPortfolioHistory dollarBalance(double dollarBalance) {
+    public @NotNull AbstractPortfolioHistory dollarBalance(final double dollarBalance) {
         this.dollarBalance = dollarBalance;
         return this;
     }
 
     @Override
-    public AbstractPortfolioHistory shareBalance(double shareBalance) {
+    public @NotNull AbstractPortfolioHistory shareBalance(final double shareBalance) {
         this.shareBalance = shareBalance;
         return this;
     }
 
     @Override
-    public AbstractPortfolioHistory totalWorth(double totalWorth) {
+    public @NotNull AbstractPortfolioHistory totalWorth(final double totalWorth) {
         this.totalWorth = totalWorth;
         return this;
     }
 
     @Override
-    public AbstractPortfolioHistory valueChange(double valueChange) {
+    public @NotNull AbstractPortfolioHistory valueChange(final double valueChange) {
         this.valueChange = valueChange;
         return this;
     }
 
     @Override
-    public AbstractPortfolioHistory tradeOccurred(boolean tradeOccurred) {
+    public @NotNull AbstractPortfolioHistory tradeOccurred(final boolean tradeOccurred) {
         this.tradeOccurred = tradeOccurred;
         return this;
     }
 
     @Override
-    public AbstractPortfolioHistory lastUpdated(LocalDateTime lastUpdated) {
+    public @NotNull AbstractPortfolioHistory lastUpdated(
+        @Nullable final LocalDateTime lastUpdated
+    ) {
         this.lastUpdated = lastUpdated;
         return this;
     }
 
     @Override
-    public PortfolioHistory build() {
+    public @NotNull PortfolioHistory build() {
         return new PortfolioHistory(this.portfolio,
                                     this.dollarBalance,
                                     this.shareBalance,

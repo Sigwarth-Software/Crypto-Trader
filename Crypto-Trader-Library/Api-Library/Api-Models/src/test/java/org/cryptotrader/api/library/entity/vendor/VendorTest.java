@@ -22,9 +22,9 @@ public class VendorTest extends CryptoTraderTest {
         @Test
         @DisplayName("Should adjust prices")
         public void testShouldAdjustPrices() {
-            double price = 100;
-            double expectedPrice = 110;
-            double actualPrice = testVendor.getAdjustedPrice(price);
+            final double price = 100;
+            final double expectedPrice = 110;
+            final double actualPrice = testVendor.getAdjustedPrice(price);
             assertEquals(expectedPrice, actualPrice);
         }
     }

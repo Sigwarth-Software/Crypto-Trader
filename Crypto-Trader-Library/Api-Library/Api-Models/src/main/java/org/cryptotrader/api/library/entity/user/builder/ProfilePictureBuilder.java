@@ -3,12 +3,16 @@ package org.cryptotrader.api.library.entity.user.builder;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.entity.user.builder.models.AbstractProfilePicture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+/** A factory builder for creating profile picture entities. */
 public class ProfilePictureBuilder extends AbstractProfilePicture {
     private String fileName;
     private String fileType;
     private byte[] fileData;
-    private ProductUser user;
+    private @Nullable ProductUser user;
+
     public ProfilePictureBuilder() {
         super();
         this.fileName = "";
@@ -17,32 +21,35 @@ public class ProfilePictureBuilder extends AbstractProfilePicture {
     }
 
     @Override
-    public ProfilePictureBuilder fileName(String fileName) {
+    public @NotNull ProfilePictureBuilder fileName(final @Nullable String fileName) {
         this.fileName = fileName;
-        this.fileType = ProfilePicture.getFileType(fileName);
+
+        if (fileName != null) {
+            this.fileType = ProfilePicture.getFileType(fileName);
+        }
         return this;
     }
 
     @Override
-    public AbstractProfilePicture fileType(String fileType) {
+    public @NotNull AbstractProfilePicture fileType(final String fileType) {
         this.fileType = fileType;
         return this;
     }
 
     @Override
-    public AbstractProfilePicture fileData(byte[] fileData) {
+    public @NotNull AbstractProfilePicture fileData(final byte[] fileData) {
         this.fileData = fileData;
         return this;
     }
 
     @Override
-    public AbstractProfilePicture user(ProductUser user) {
+    public @NotNull AbstractProfilePicture user(final ProductUser user) {
         this.user = user;
         return this;
     }
 
     @Override
-    public ProfilePicture build() {
+    public @NotNull ProfilePicture build() {
         return new ProfilePicture(this.fileName, this.fileData, this.user);
     }
 }

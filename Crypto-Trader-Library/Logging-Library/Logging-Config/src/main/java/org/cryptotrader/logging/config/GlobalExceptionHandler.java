@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
 
     //------------------------Handle-Any-Exception----------------------------
     @ExceptionHandler(value = {Exception.class})
-    public void handleAnyException(Exception exception) {
+    public void handleAnyException(final Exception exception) {
         log.error("An exception occurred: ", exception);
     }
 }

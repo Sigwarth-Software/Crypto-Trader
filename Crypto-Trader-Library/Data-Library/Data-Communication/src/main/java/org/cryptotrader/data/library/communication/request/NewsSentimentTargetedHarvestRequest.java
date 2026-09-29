@@ -10,10 +10,10 @@ public class NewsSentimentTargetedHarvestRequest {
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean includeForbes;
-    public NewsSentimentTargetedHarvestRequest(int numArticles,
-                                               LocalDate startDate,
-                                               LocalDate endDate,
-                                               boolean includeForbes) {
+    public NewsSentimentTargetedHarvestRequest(final int numArticles,
+                                               final LocalDate startDate,
+                                               final LocalDate endDate,
+                                               final boolean includeForbes) {
         this.numArticles = numArticles;
         this.startDate = startDate;
         this.endDate = endDate;

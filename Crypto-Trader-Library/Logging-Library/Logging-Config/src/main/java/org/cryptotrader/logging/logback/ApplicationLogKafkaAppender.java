@@ -10,14 +10,16 @@ import org.cryptotrader.logging.library.events.ApplicationLogEventPayload;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import org.cryptotrader.logging.properties.LogPersistenceMode;
 import org.cryptotrader.logging.redaction.LogRedactor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Map;
 
-public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
+import static org.cryptotrader.universal.library.scripts.DateTimeScriptKt.toLocalDateTime;
 
+/** Log appender for sending log events to Kafka. */
+public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
     private static final String[] RECURSIVE_LOGGER_PREFIXES = {
             "org.apache.kafka",
             "org.springframework.kafka",
@@ -27,7 +29,7 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     };
 
     @Override
-    protected void append(ILoggingEvent event) {
+    protected void append(final @NotNull ILoggingEvent event) {
         if (this.isRecursiveLoggerEvent(event)) {
             return;
         }
@@ -36,19 +38,37 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
             return;
         }
 
-        LogEventsPublisher publisher = LogEventPublisherBridge.publisher();
+        final LogEventsPublisher publisher = LogEventPublisherBridge.publisher();
         if (publisher == null) {
             return;
         }
 
-        LogRedactor redactor = LogEventPublisherBridge.redactor();
-        String module = this.getContextProperty("ct_app_name", "unknown-service");
-        LocalDateTime timestamp = this.toLocalDateTime(event.getTimeStamp());
+        final LogRedactor redactor = LogEventPublisherBridge.redactor();
+        final String module = this.getContextProperty(
+            "ct_app_name",
+            "unknown-service"
+        );
+        final LocalDateTime timestamp = toLocalDateTime(event.getTimeStamp());
 
-        String message = this.redactText(redactor, event.getFormattedMessage());
-        IThrowableProxy throwableProxy = event.getThrowableProxy();
+        final String message = this.redactText(redactor, event.getFormattedMessage());
 
-        publisher.publishApplicationLog(new ApplicationLogEventPayload(
+        if (message == null) {
+            return;
+        }
+
+        final IThrowableProxy throwableProxy = event.getThrowableProxy();
+
+        final String errorName =
+            throwableProxy != null ? throwableProxy.getClassName() : null;
+        final String errorMessage =
+            throwableProxy != null ? this.redactText(redactor, throwableProxy.getMessage()) : null;
+        final String errorStack =
+            throwableProxy != null ? this.redactText(
+                redactor,
+                ThrowableProxyUtil.asString(throwableProxy)
+            ) : null;
+        publisher.publishApplicationLog(
+            new ApplicationLogEventPayload(
                 timestamp,
                 event.getLevel().toString(),
                 event.getLoggerName(),
@@ -56,10 +76,11 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
                 event.getThreadName(),
                 message,
                 this.getMdcContext(event),
-                throwableProxy != null ? throwableProxy.getClassName() : null,
-                throwableProxy != null ? this.redactText(redactor, throwableProxy.getMessage()) : null,
-                throwableProxy != null ? this.redactText(redactor, ThrowableProxyUtil.asString(throwableProxy)) : null
-        ));
+                errorName,
+                errorMessage,
+                errorStack
+            )
+        );
 
         if (throwableProxy != null) {
             IThrowableProxy rootCause = throwableProxy.getCause();
@@ -67,7 +88,8 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
                 rootCause = rootCause.getCause();
             }
 
-            publisher.publishApplicationException(new ApplicationExceptionEventPayload(
+            publisher.publishApplicationException(
+                new ApplicationExceptionEventPayload(
                     timestamp,
                     module,
                     event.getLoggerName(),
@@ -78,13 +100,15 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
                     this.redactText(redactor, ThrowableProxyUtil.asString(throwableProxy)),
                     rootCause != null ? rootCause.getClassName() : null,
                     rootCause != null ? this.redactText(redactor, rootCause.getMessage()) : null
-            ));
+                )
+            );
         }
     }
 
-    private boolean isRecursiveLoggerEvent(ILoggingEvent event) {
-        String loggerName = event.getLoggerName();
-        for (String prefix : RECURSIVE_LOGGER_PREFIXES) {
+    private boolean isRecursiveLoggerEvent(final @NotNull ILoggingEvent event) {
+        final String loggerName = event.getLoggerName();
+
+        for (final String prefix : RECURSIVE_LOGGER_PREFIXES) {
             if (loggerName.startsWith(prefix)) {
                 return true;
             }
@@ -93,41 +117,47 @@ public class ApplicationLogKafkaAppender extends UnsynchronizedAppenderBase<ILog
     }
 
     private boolean isPersistenceEnabled() {
-        String mode = this.getContextProperty("ct_persistence_mode", LogPersistenceMode.DATABASE.name());
+        final String mode = this.getContextProperty(
+            "ct_persistence_mode", LogPersistenceMode.DATABASE.name()
+        );
         return !LogPersistenceMode.DISK.name().equalsIgnoreCase(mode);
     }
 
-    private String getContextProperty(String name, String defaultValue) {
+    private String getContextProperty(@NotNull final String name,
+                                      @NotNull final String defaultValue) {
         if (this.getContext() == null) {
             return defaultValue;
         }
-        String value = this.getContext().getProperty(name);
+        final String value = this.getContext().getProperty(name);
+
         if (value != null) {
             return value;
         }
         return defaultValue;
     }
 
-    private String redactText(LogRedactor redactor, String text) {
-        String stripped = AnsiStripperConverter.stripEscapeCode(text);
+    private @Nullable String redactText(final @Nullable LogRedactor redactor,
+                                        @NotNull final String text) {
+        final String stripped = AnsiStripperConverter.stripEscapeCode(text);
+
         if (redactor != null) {
             return redactor.redactText(stripped);
         }
         return stripped;
     }
 
-    private Map<String, String> getMdcContext(ILoggingEvent event) {
-        Map<String, String> mdcPropertyMap;
+    private @Nullable Map<String, String> getMdcContext(final @NotNull ILoggingEvent event) {
+        final Map<String, String> mdcPropertyMap;
+
         try {
             mdcPropertyMap = event.getMDCPropertyMap();
-        } catch (RuntimeException exception) {
+        } catch (@NotNull final RuntimeException exception) {
             return null;
         }
-        return (mdcPropertyMap == null || mdcPropertyMap.isEmpty()) ? null : mdcPropertyMap;
-    }
 
-    // TODO: Move to Universal-Scripts.
-    private LocalDateTime toLocalDateTime(long epochMillis) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
+        if (mdcPropertyMap == null || mdcPropertyMap.isEmpty()) {
+            return null;
+        }
+        return mdcPropertyMap;
     }
 }

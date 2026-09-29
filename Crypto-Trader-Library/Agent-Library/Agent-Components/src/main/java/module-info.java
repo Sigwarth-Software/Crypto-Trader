@@ -1,4 +1,4 @@
-module org.cryptotrader.agent.library.components {
+open module org.cryptotrader.agent.library.components {
     requires kotlin.stdlib;
     requires kotlin.reflect;
     requires spring.context;
@@ -25,6 +25,4 @@ module org.cryptotrader.agent.library.components {
 
     exports org.cryptotrader.agent.library.component;
     exports org.cryptotrader.agent.library.component.config;
-    opens org.cryptotrader.agent.library.component to spring.core, spring.beans, spring.context;
-    opens org.cryptotrader.agent.library.component.config;
 }

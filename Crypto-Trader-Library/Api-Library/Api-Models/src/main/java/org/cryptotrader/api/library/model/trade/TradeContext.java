@@ -6,7 +6,7 @@ public enum TradeContext {
 
     private final String contextType;
 
-    TradeContext(String contextType) {
+    TradeContext(final String contextType) {
         this.contextType = contextType;
     }
 

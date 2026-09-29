@@ -12,6 +12,7 @@ open module org.cryptotrader.logging.library.services {
     requires org.cryptotrader.logging.library.repositories;
     requires org.cryptotrader.universal.library.services;
     requires org.cryptotrader.universal.library.models;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.logging.library.service;
     exports org.cryptotrader.logging.library.service.entity;

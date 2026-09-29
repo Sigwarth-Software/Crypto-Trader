@@ -7,7 +7,7 @@ public enum TradeType {
 
     private final String name;
 
-    private TradeType(String name) {
+    private TradeType(final String name) {
         this.name = name;
     }
 

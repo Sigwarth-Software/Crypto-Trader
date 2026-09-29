@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,25 +28,25 @@ public class CryptoTraderDocsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(OpenAPI.class)
-    public OpenAPI cryptoTraderOpenAPI(Environment env) {
-        String title = env.getProperty("docs.openapi.title", "Crypto Trader");
-        String version = env.getProperty("docs.openapi.version", "v1");
-        String description = env.getProperty("docs.openapi.description", "Algorithmic trader for cryptocurrencies.");
-        String contactName = env.getProperty("docs.openapi.contact.name", "Sigwarth Software");
-        String contactUrl = env.getProperty("docs.openapi.contact.url", "https://sigwarthsoftware.com");
-        String serverUrl = env.getProperty("docs.openapi.server", "http://localhost:8080");
+    public OpenAPI cryptoTraderOpenAPI(final @NotNull Environment env) {
+        final String title = env.getProperty("docs.openapi.title", "Crypto Trader");
+        final String version = env.getProperty("docs.openapi.version", "v1");
+        final String description = env.getProperty("docs.openapi.description", "Algorithmic trader for cryptocurrencies.");
+        final String contactName = env.getProperty("docs.openapi.contact.name", "Sigwarth Software");
+        final String contactUrl = env.getProperty("docs.openapi.contact.url", "https://sigwarthsoftware.com");
+        final String serverUrl = env.getProperty("docs.openapi.server", "http://localhost:8080");
 
-        Contact contact = new Contact();
+        final Contact contact = new Contact();
         contact.setName(contactName);
         contact.setUrl(contactUrl);
 
-        Info info = new Info()
+        final Info info = new Info()
                 .title(title)
                 .version(version)
                 .description(description)
                 .contact(contact);
 
-        Server server = new Server().url(serverUrl);
+        final Server server = new Server().url(serverUrl);
 
         return new OpenAPI()
                 .info(info)

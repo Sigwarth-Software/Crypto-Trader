@@ -10,7 +10,7 @@ public abstract class TradeEngine implements TradingEngine {
         this(TradeContext.ACTUAL);
     }
 
-    public TradeEngine(TradeContext context) {
+    public TradeEngine(final TradeContext context) {
         this.context = context;
     }
 }

@@ -7,7 +7,7 @@ public class UserResponse {
     //============================-Variables-=================================
     private String message;
     //===========================-Constructors-===============================
-    public UserResponse(String message) {
+    public UserResponse(final String message) {
         this.message = message;
     }
 }

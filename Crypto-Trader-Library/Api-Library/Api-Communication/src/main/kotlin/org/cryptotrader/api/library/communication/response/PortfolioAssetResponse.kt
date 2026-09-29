@@ -15,7 +15,7 @@ data class PortfolioAssetResponse(
     val vendorName: String
 ) {
     constructor(portfolioAsset: PortfolioAsset) : this(
-        portfolioAsset.id,
+        portfolioAsset.id ?: 0,
         portfolioAsset.currency.name,
         portfolioAsset.currency.currencyCode,
         portfolioAsset.shares,

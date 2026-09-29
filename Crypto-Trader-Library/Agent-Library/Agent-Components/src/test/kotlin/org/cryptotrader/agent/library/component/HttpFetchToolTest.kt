@@ -1,11 +1,7 @@
 package org.cryptotrader.agent.library.component
 
-import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
-import org.apache.http.message.BasicHeader
-import org.apache.http.message.BasicStatusLine
-import org.apache.http.ProtocolVersion
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -13,9 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.mock
 
 class HttpFetchToolTest : CryptoTraderTest() {
     @Mock

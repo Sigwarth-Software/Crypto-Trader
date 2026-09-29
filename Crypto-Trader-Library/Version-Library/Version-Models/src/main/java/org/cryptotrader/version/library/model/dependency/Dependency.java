@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class Dependency {
     private String name;
     private String version;
-    
-    public Dependency(String name, String version) {
+
+    public Dependency(final String name, final String version) {
         this.name = name;
         this.version = version;
     }

@@ -11,6 +11,7 @@ open module org.cryptotrader.universal.library.models {
     requires spring.context;
     requires spring.security.crypto;
     requires org.hibernate.orm.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.universal.library.model;
     exports org.cryptotrader.universal.library.model.annotation;

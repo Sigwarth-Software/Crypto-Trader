@@ -6,8 +6,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+/** The view for Crypto Trader's email portal. */
 @Component
 public class EmailController extends VBox {
     // TODO: This should be a property. Not hardcoded.
@@ -27,7 +29,8 @@ public class EmailController extends VBox {
         this.webView.setMinSize(0, 0);
 
         final Parent webViewParent = this.webView.getParent();
-        if (webViewParent instanceof final Region parent) {
+
+        if (webViewParent instanceof @NotNull final Region parent) {
             this.webView.prefWidthProperty().bind(parent.widthProperty());
             this.webView.prefHeightProperty().bind(parent.heightProperty());
         }

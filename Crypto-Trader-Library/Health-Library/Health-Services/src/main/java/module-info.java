@@ -12,6 +12,7 @@ open module org.cryptotrader.health.library.services {
     requires org.cryptotrader.universal.library.services;
     requires spring.aop;
     requires spring.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.health.library.service;
 }

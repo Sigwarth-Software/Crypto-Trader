@@ -6,25 +6,35 @@ import org.cryptotrader.logging.library.entity.LogLevel;
 import org.cryptotrader.logging.library.entity.LogModule;
 import org.cryptotrader.logging.library.events.ApplicationExceptionEventPayload;
 import org.cryptotrader.logging.library.service.entity.ApplicationExceptionEntityService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+/** Service for handling application exceptions. */
 @Slf4j
 @Service
 public class ApplicationExceptionService {
     private final ApplicationExceptionEntityService applicationExceptionEntityService;
 
     @Autowired
-    public ApplicationExceptionService(ApplicationExceptionEntityService applicationExceptionEntityService) {
+    public ApplicationExceptionService(
+        @NotNull final ApplicationExceptionEntityService applicationExceptionEntityService
+    ) {
         this.applicationExceptionEntityService = applicationExceptionEntityService;
     }
 
+    /** Persists an application exception event payload.
+     *
+     * @param entry The application exception event payload.
+     * @param receivedAt The timestamp when the event was received.
+     */
     @Transactional
-    public void persist(ApplicationExceptionEventPayload entry, LocalDateTime receivedAt) {
-        ApplicationException entity = ApplicationException.builder()
+    public void persist(@NotNull final ApplicationExceptionEventPayload entry,
+                        @NotNull final LocalDateTime receivedAt) {
+        final ApplicationException entity = ApplicationException.builder()
                 .timestamp(entry.getTimestamp())
                 .module(LogModule.fromModuleName(entry.getModule()))
                 .logger(entry.getLogger())

@@ -13,7 +13,7 @@ data class PortfolioHistoryResponse(
     val lastUpdated: LocalDateTime
 ) {
     constructor(history: PortfolioHistory) : this(
-        history.id,
+        history.id ?: 0,
         history.dollarBalance,
         history.shareBalance,
         history.totalWorth,

@@ -23,6 +23,7 @@ open module org.cryptotrader.logging.library.config {
     requires org.jetbrains.annotations;
     requires org.cryptotrader.logging.library.scripts;
     requires jakarta.annotation;
+    requires org.cryptotrader.universal.library.scripts;
 
     exports org.cryptotrader.logging.config;
     exports org.cryptotrader.logging.http;

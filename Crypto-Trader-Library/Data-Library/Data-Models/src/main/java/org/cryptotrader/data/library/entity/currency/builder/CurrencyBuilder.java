@@ -2,9 +2,11 @@ package org.cryptotrader.data.library.entity.currency.builder;
 
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.builder.models.AbstractCurrency;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
+/** A builder factory for creating currency entities. */
 public class CurrencyBuilder extends AbstractCurrency {
     private String name;
     private String currencyCode;
@@ -20,32 +22,32 @@ public class CurrencyBuilder extends AbstractCurrency {
         this.lastUpdated = LocalDateTime.now();
     }
     @Override
-    public CurrencyBuilder name(String name) {
+    public @NotNull CurrencyBuilder name(final String name) {
         this.name = name;
         return this;
     }
     @Override
-    public CurrencyBuilder currencyCode(String currencyCode) {
+    public @NotNull CurrencyBuilder currencyCode(final String currencyCode) {
         this.currencyCode = currencyCode;
         return this;
     }
     @Override
-    public CurrencyBuilder urlPath(String urlPath) {
+    public @NotNull CurrencyBuilder urlPath(final String urlPath) {
         this.urlPath = urlPath;
         return this;
     }
     @Override
-    public CurrencyBuilder value(double value) {
+    public @NotNull CurrencyBuilder value(final double value) {
         this.value = value;
         return this;
     }
     @Override
-    public CurrencyBuilder lastUpdated(LocalDateTime lastUpdated) {
+    public @NotNull CurrencyBuilder lastUpdated(final LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
     }
     @Override
-    public Currency build() {
+    public @NotNull Currency build() {
         return new Currency(this.name,
                             this.currencyCode,
                             this.urlPath,

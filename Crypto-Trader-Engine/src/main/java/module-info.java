@@ -32,6 +32,7 @@ open module org.cryptotrader.engine {
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
     requires spring.tx;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.engine;
 }

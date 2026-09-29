@@ -2,9 +2,7 @@ package org.cryptotrader.api.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * Configuration properties for security-related settings.
- */
+/** Configuration properties for security-related settings. */
 @ConfigurationProperties(prefix = "security.refresh")
 public record SecurityProperties(
     String cookieSamesite,

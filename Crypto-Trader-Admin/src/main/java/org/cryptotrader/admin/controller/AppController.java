@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.desktop.library.component.ViewLoader;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.cryptotrader.admin.event.PageNavigationEvent;
 import org.cryptotrader.admin.route.AppPage;
 import org.cryptotrader.admin.ui.NavBar;
 
+/** The SPA view controller for Crypto-Trader-Admin. */
 @Slf4j
 @Component
 public class AppController extends BaseViewController {
@@ -22,7 +24,7 @@ public class AppController extends BaseViewController {
     private final ViewLoader viewLoader;
 
     @Autowired
-    public AppController(final ViewLoader viewLoader) {
+    public AppController(@NotNull final ViewLoader viewLoader) {
         this.viewLoader = viewLoader;
     }
 
@@ -31,10 +33,16 @@ public class AppController extends BaseViewController {
         this.onNavigate(new PageNavigationEvent(AppPage.AUTH));
     }
 
+    /**
+     * Handles the navigation event and view switching.
+     *
+     * @param event The navigation event.
+     */
     @EventListener
-    public void onNavigate(final PageNavigationEvent event) {
+    public void onNavigate(@NotNull final PageNavigationEvent event) {
         log.info("Navigation event received: {}", event.appPage());
         final Class<?> controllerClass;
+
         switch (event.appPage()) {
             case AppPage.ADMIN_USERS -> controllerClass = AdminUsersController.class;
             case AppPage.AUTH -> controllerClass = AuthController.class;

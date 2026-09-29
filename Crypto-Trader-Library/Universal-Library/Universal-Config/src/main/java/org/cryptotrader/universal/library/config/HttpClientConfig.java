@@ -3,6 +3,7 @@ package org.cryptotrader.universal.library.config;
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,7 @@ import java.time.Duration;
 public class HttpClientConfig {
     @Bean
     @ConditionalOnMissingBean(RestTemplate.class)
-    public RestTemplate restTemplate() {
+    public @NotNull RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
@@ -27,31 +28,31 @@ public class HttpClientConfig {
 
     @Bean
     @ConditionalOnMissingBean(HttpGet.class)
-    public HttpGet getHttpClient() {
+    public @NotNull HttpGet getHttpClient() {
         return new HttpGet();
     }
 
     @Bean
     @ConditionalOnMissingBean(HttpPost.class)
-    public HttpPost postHttpClient() {
+    public @NotNull HttpPost postHttpClient() {
         return new HttpPost();
     }
 
     @Bean
     @ConditionalOnMissingBean(HttpPut.class)
-    public HttpPut putHttpClient() {
+    public @NotNull HttpPut putHttpClient() {
         return new HttpPut();
     }
 
     @Bean
     @ConditionalOnMissingBean(HttpDelete.class)
-    public HttpDelete deleteHttpClient() {
+    public @NotNull HttpDelete deleteHttpClient() {
         return new HttpDelete();
     }
 
     @Bean
     @ConditionalOnMissingBean(HttpOptions.class)
-    public HttpOptions optionsHttpClient() {
+    public @NotNull HttpOptions optionsHttpClient() {
         return new HttpOptions();
     }
 

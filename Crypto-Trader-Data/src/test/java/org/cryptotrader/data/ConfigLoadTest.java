@@ -13,14 +13,14 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
-        classes = TestApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.NONE,
-        properties = {
-                "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration",
-                "docs.autoconfigure.enabled=false",
-                "spring.application.name=crypto-trader-data",
-                "server.port=8085"
-        }
+    classes = TestApplication.class,
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
+    properties = {
+        "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration",
+        "docs.autoconfigure.enabled=false",
+        "spring.application.name=crypto-trader-data",
+        "server.port=8085"
+    }
 )
 class ConfigLoadTest extends CryptoTraderTest {
 

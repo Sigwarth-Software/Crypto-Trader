@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 open class TradeService(
     private val authContextService: AuthContextService,
-    private val portfolioService: PortfolioService,
     private val currencyService: CurrencyService,
     private val productUserService: ProductUserService,
     private val portfolioEntityService: PortfolioEntityService,
@@ -28,8 +27,11 @@ open class TradeService(
         if (!isLoggedIn) {
             return false
         }
-        val authenticatedUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?: return false
-        val productUser: ProductUser = this.productUserService.getUserById(authenticatedUser.id) ?: return false
+        val authenticatedUser: ProductUser =
+            this.authContextService.getAuthenticatedProductUser() ?: return false
+        val productUser: ProductUser = this.productUserService.getUserById(
+            authenticatedUser.id ?: return false
+        ) ?: return false
 
         return if (this.isSharesCheckout(tradeRequest)) {
             this.sharesCheckout(tradeRequest, productUser)
@@ -46,12 +48,26 @@ open class TradeService(
         return tradeRequest.numDollars > 0
     }
 
-    private fun sharesCheckout(tradeRequest: TradeRequest, productUser: ProductUser): Boolean {
-        return this.sharesCheckout(tradeRequest, productUser, tradeRequest.numShares)
+    private fun sharesCheckout(
+        tradeRequest: TradeRequest,
+        productUser: ProductUser
+    ): Boolean {
+        return this.sharesCheckout(
+            tradeRequest,
+            productUser,
+            tradeRequest.numShares
+        )
     }
 
-    private fun sharesCheckout(tradeRequest: TradeRequest, productUser: ProductUser, numShares: Double): Boolean {
-        val currencyToBuy: Currency = this.currencyService.getCurrencyByCurrencyCode(tradeRequest.currencyCode) ?: return false
+    private fun sharesCheckout(
+        tradeRequest: TradeRequest,
+        productUser: ProductUser,
+        numShares: Double
+    ): Boolean {
+        val currencyToBuy: Currency =
+            this.currencyService.getCurrencyByCurrencyCode(
+                tradeRequest.currencyCode
+            ) ?: return false
         val userPortfolio: Portfolio = productUser.portfolio ?: Portfolio(productUser)
 
         Hibernate.initialize(userPortfolio.assets)
@@ -70,8 +86,14 @@ open class TradeService(
         return true
     }
 
-    private fun dollarsCheckout(tradeRequest: TradeRequest, productUser: ProductUser): Boolean {
-        val currencyToBuy: Currency = this.currencyService.getCurrencyByCurrencyCode(tradeRequest.currencyCode) ?: return false
+    private fun dollarsCheckout(
+        tradeRequest: TradeRequest,
+        productUser: ProductUser
+    ): Boolean {
+        val currencyToBuy: Currency =
+            this.currencyService.getCurrencyByCurrencyCode(
+                tradeRequest.currencyCode
+            ) ?: return false
         val numShares: Double = tradeRequest.numDollars / currencyToBuy.value
         return this.sharesCheckout(tradeRequest, productUser, numShares)
     }

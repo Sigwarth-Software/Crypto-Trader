@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.logging.library.service.entity.FrontendLogEntityService;
 import org.cryptotrader.logging.library.entity.FrontendLog;
 import org.cryptotrader.logging.library.events.FrontendLogEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +25,14 @@ public class FrontendLogService {
     private final FrontendLogEntityService frontendLogEntityService;
 
     @Autowired
-    public FrontendLogService(ObjectMapper objectMapper, FrontendLogEntityService frontendLogEntityService) {
+    public FrontendLogService(final ObjectMapper objectMapper, final FrontendLogEntityService frontendLogEntityService) {
         this.objectMapper = objectMapper;
         this.frontendLogEntityService = frontendLogEntityService;
     }
 
     @Transactional
-    public void persist(List<FrontendLogEvent> entries, LocalDateTime receivedAt) {
-        List<FrontendLog> entities = entries.stream()
+    public void persist(final @NotNull List<FrontendLogEvent> entries, final LocalDateTime receivedAt) {
+        final List<FrontendLog> entities = entries.stream()
                 .map(entry -> FrontendLog.builder()
                         .timestamp(entry.getTimestamp())
                         .level(entry.getLevel())
@@ -61,13 +63,13 @@ public class FrontendLogService {
         log.info("Persisted {} frontend log entries", entities.size());
     }
 
-    private String serializeMetadata(Map<String, Object> metadata) {
+    private String serializeMetadata(final @Nullable Map<String, Object> metadata) {
         if (metadata == null) {
             return null;
         }
         try {
             return objectMapper.writeValueAsString(metadata);
-        } catch (JsonProcessingException jsonProcessingException) {
+        } catch (final JsonProcessingException jsonProcessingException) {
             log.warn("Failed to serialize metadata, falling back to toString()", jsonProcessingException);
             return "{}";
         }

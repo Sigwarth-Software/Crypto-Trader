@@ -7,7 +7,6 @@ import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 
 @Tag("PortfolioController")
 @Tag("controller")
@@ -39,7 +37,7 @@ class PortfolioControllerTest : CryptoTraderTest() {
         this.testUser.id = 1L
         this.testUser.portfolio = this.testPortfolio
         this.testPortfolio.user = testUser
-        this.controller = PortfolioController(authContextService, portfolioService)
+        this.controller = PortfolioController(portfolioService)
     }
 
     @Nested

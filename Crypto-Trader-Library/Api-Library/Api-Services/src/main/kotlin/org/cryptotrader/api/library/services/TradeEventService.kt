@@ -25,15 +25,15 @@ class TradeEventService(
     }
 
     fun getAllByProductUser(productUser: ProductUser): List<TradeEvent> {
-        return this.tradeEventRepository.findAllByPortfolioId(productUser.portfolio.id)
+        return this.tradeEventRepository.findAllByPortfolioId(productUser.portfolio?.id)
     }
 
     fun getSelectionByProductUser(productUser: ProductUser, offset: Int, size: Int): List<TradeEvent> {
         val pageable: Pageable = Pageable.ofSize(size).withPage(offset / size)
-        return this.tradeEventRepository.findAllByPortfolioIdOrderByTradeTimeDesc(productUser.portfolio.id, pageable)
+        return this.tradeEventRepository.findAllByPortfolioIdOrderByTradeTimeDesc(productUser.portfolio?.id, pageable)
     }
 
     fun userHasTrades(productUser: ProductUser): Boolean {
-        return this.tradeEventRepository.existsTradeEventByPortfolioId(productUser.portfolio.id)
+        return this.tradeEventRepository.existsTradeEventByPortfolioId(productUser.portfolio?.id)
     }
 }

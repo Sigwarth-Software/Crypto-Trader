@@ -14,22 +14,22 @@ public class AssetTrader extends TradeEngine {
     protected double minProfitPercent;
     private static final double DEFAULT_MIN_PROFIT_PERCENT = 0.01;
     //===========================-Constructors-===============================
-    public AssetTrader(PortfolioAsset asset) {
+    public AssetTrader(final PortfolioAsset asset) {
         this(asset, DEFAULT_MIN_PROFIT_PERCENT);
     }
 
-    public AssetTrader(PortfolioAsset asset, TradeContext context) {
+    public AssetTrader(final PortfolioAsset asset, final TradeContext context) {
         super(context);
         this.asset = asset;
         this.minProfitPercent = DEFAULT_MIN_PROFIT_PERCENT;
     }
 
-    public AssetTrader(PortfolioAsset asset, double minProfitPercent) {
+    public AssetTrader(final PortfolioAsset asset, final double minProfitPercent) {
         this.asset = asset;
         this.minProfitPercent = minProfitPercent;
     }
 
-    public AssetTrader(PortfolioAsset asset, TradeContext context, double minProfitPercent) {
+    public AssetTrader(final PortfolioAsset asset, final TradeContext context, final double minProfitPercent) {
         super(context);
         this.asset = asset;
         this.minProfitPercent = minProfitPercent;
@@ -40,14 +40,14 @@ public class AssetTrader extends TradeEngine {
     //-------------------------------Trade------------------------------------
     @Override
     public boolean trade() {
-        double currentPrice = this.asset.getCurrency().getUpdatedValue();
+        final double currentPrice = this.asset.getCurrency().getUpdatedValue();
         return this.trade(currentPrice);
     }
     //-------------------------------Trade------------------------------------
     @Override
-    public boolean trade(double currentPrice) {
-        double targetPrice = this.asset.getTargetPrice();
-        double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+    public boolean trade(final double currentPrice) {
+        final double targetPrice = this.asset.getTargetPrice();
+        final double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
 
         if (priceChangePercent < this.minProfitPercent) {
             return false;
@@ -71,14 +71,14 @@ public class AssetTrader extends TradeEngine {
 
     @Override
     public boolean canTrade() {
-        double currentPrice = this.asset.getCurrency().getUpdatedValue();
+        final double currentPrice = this.asset.getCurrency().getUpdatedValue();
         return this.canTrade(currentPrice);
     }
 
     @Override
-    public boolean canTrade(double currentPrice) {
-        double targetPrice = this.asset.getTargetPrice();
-        double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+    public boolean canTrade(final double currentPrice) {
+        final double targetPrice = this.asset.getTargetPrice();
+        final double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
 
         if (priceChangePercent < this.minProfitPercent) {
             return false;
@@ -100,9 +100,9 @@ public class AssetTrader extends TradeEngine {
 
     //--------------------------------Sell------------------------------------
     @Override
-    public void sell(double currentPrice) {
-        double valueInDollars = this.asset.getShares() * currentPrice;
-        double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
+    public void sell(final double currentPrice) {
+        final double valueInDollars = this.asset.getShares() * currentPrice;
+        final double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
         this.asset.setAssetWalletDollars(walletDollars);
         this.asset.updateValues();
         log.info("[{}] Selling {} shares of {} for {} dollars.",
@@ -115,8 +115,8 @@ public class AssetTrader extends TradeEngine {
     }
     //---------------------------------Buy------------------------------------
     @Override
-    public void buy(double currentPrice) {
-        double shares = this.asset.getAssetWalletDollars() / currentPrice;
+    public void buy(final double currentPrice) {
+        final double shares = this.asset.getAssetWalletDollars() / currentPrice;
         this.asset.setShares(shares);
         this.asset.updateValues();
         log.info("[{}] Buying {} shares of {} for {} dollars.",

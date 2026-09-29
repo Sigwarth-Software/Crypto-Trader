@@ -18,19 +18,19 @@ import java.nio.file.Path;
 @Getter
 public class Pom extends ProgramModuleDescendent {
     private PomDependency moduleDependency;
-    public Pom(ModuleLibrary moduleType,
-               Path modulePath,
-               ConfigFileType configFileType,
-               PomDependency moduleDependency) {
+    public Pom(final ModuleLibrary moduleType,
+               final Path modulePath,
+               final ConfigFileType configFileType,
+               final PomDependency moduleDependency) {
         super(moduleType, modulePath, configFileType);
         this.moduleDependency = moduleDependency;
     }
-    public Pom(ModuleLibrary moduleType,
-               Path modulePath,
-               ConfigFileType configFileType,
-               PomDependency moduleDependency,
-               ProgramModule parent,
-               ProgramModule child) {
+    public Pom(final ModuleLibrary moduleType,
+               final Path modulePath,
+               final ConfigFileType configFileType,
+               final PomDependency moduleDependency,
+               final ProgramModule parent,
+               final ProgramModule child) {
         super(moduleType, modulePath, configFileType, parent, child);
         this.moduleDependency = moduleDependency;
     }

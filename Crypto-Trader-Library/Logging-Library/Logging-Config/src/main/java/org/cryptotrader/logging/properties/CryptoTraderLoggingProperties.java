@@ -2,6 +2,7 @@ package org.cryptotrader.logging.properties;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
@@ -11,10 +12,10 @@ public class CryptoTraderLoggingProperties {
     /**
      * The logging level for the file appender. Defaults to TRACE.
      */
-    private String file = "TRACE";
+    private @NotNull String file = "TRACE";
 
     /**
      * The logging level for the console appender. Defaults to INFO.
      */
-    private String console = "INFO";
+    private @NotNull String console = "INFO";
 }

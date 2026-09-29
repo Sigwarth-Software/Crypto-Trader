@@ -34,6 +34,7 @@ open module org.cryptotrader.data {
     requires org.apache.tomcat.embed.core;
     requires org.cryptotrader.data.library.repositories;
     requires org.cryptotrader.data.library.components;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.data;
     exports org.cryptotrader.data.config;

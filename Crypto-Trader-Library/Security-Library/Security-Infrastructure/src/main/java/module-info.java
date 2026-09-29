@@ -8,6 +8,7 @@ open module org.cryptotrader.security.library.infrastructure {
     requires org.apache.tomcat.embed.core;
     requires org.cryptotrader.security.library.services;
     requires org.slf4j;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.security.library.infrastructure;
     exports org.cryptotrader.security.library.infrastructure.config;

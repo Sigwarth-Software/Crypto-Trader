@@ -17,9 +17,9 @@ public class ProgramModule {
     private String name;
     private String version;
 
-    public ProgramModule(ModuleLibrary moduleType,
-                         Path modulePath,
-                         ConfigFileType configFileType) {
+    public ProgramModule(final ModuleLibrary moduleType,
+                         final Path modulePath,
+                         final ConfigFileType configFileType) {
         this.moduleType = moduleType;
         this.modulePath = modulePath;
         this.configFileType = configFileType;

@@ -9,7 +9,6 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 import java.net.URI
 import java.security.KeyStore
 import java.security.cert.Certificate

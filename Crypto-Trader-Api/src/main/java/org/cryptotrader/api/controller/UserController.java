@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.communication.response.SubscriptionTierRespo
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.ProductUserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.api.library.entity.user.User;
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,7 +23,7 @@ public class UserController {
     private final PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
-    public UserController(ProductUserService productUserService, PortfolioService portfolioService) {
+    public UserController(final ProductUserService productUserService, final PortfolioService portfolioService) {
         this.productUserService = productUserService;
         this.portfolioService = portfolioService;
     }
@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/tier")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal ProductUser user) {
+    public @NotNull ResponseEntity<SubscriptionTierResponse> getMySubscriptionTier(@AuthenticationPrincipal final @NotNull ProductUser user) {
         return ResponseEntity.ok(new SubscriptionTierResponse(user.getSubscriptionTier()));
     }
 
