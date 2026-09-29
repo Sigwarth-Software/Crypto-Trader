@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>
         <javafx.version>21.0.6</javafx.version>
-        <kotlin.version>2.2.0</kotlin.version>
+        <kotlin.version>2.4.20</kotlin.version>
         <dokka.skip>false</dokka.skip>
         <argLine/>
     </properties>

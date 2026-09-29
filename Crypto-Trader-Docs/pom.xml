@@ -1462,7 +1462,7 @@ This module aggregates documentation for child library modules. Select a sub-mod
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.4.20</version>
                 <executions>
                     <execution>
                         <id>kotlin-compile</id>
