@@ -5,10 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
 
+/** View for admin users. */
 @Component
 public class AdminUsersController extends VBox {
     @FXML
     private Label welcomeText;
+
     public AdminUsersController() {
 
     }
