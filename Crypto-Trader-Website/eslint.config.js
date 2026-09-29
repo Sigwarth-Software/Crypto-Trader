@@ -230,4 +230,10 @@ export default tseslint.config(
         },
     },
     prettierConfig,
+    {
+        files: ['**/*.ts'],
+        rules: {
+            curly: ['warn', 'all'],
+        },
+    },
 );
