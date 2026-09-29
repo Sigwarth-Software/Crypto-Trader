@@ -8,59 +8,85 @@ import org.cryptotrader.data.library.entity.training.specs.QueryLoad;
 import org.cryptotrader.data.library.entity.training.specs.TrainingDevice;
 import org.cryptotrader.data.library.entity.training.specs.TrainingQueryType;
 import org.cryptotrader.universal.library.model.BuilderFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
+/** Class definition for training session entity builder factory. */
 public abstract class AbstractTrainingSession implements BuilderFactory<TrainingSession> {
-    public abstract AbstractTrainingSession currency(Currency currency);
-    public abstract AbstractTrainingSession currency(String currencyCode);
+    public abstract @NotNull AbstractTrainingSession currency(final Currency currency);
 
-    public abstract AbstractTrainingSession prediction(PricePrediction prediction);
-    public abstract AbstractTrainingSession prediction(Long predictionId);
+    public abstract @NotNull AbstractTrainingSession currency(final String currencyCode);
 
-    public abstract AbstractTrainingSession numRows(int numRows);
+    public abstract @NotNull AbstractTrainingSession prediction(final PricePrediction prediction);
 
-    public abstract AbstractTrainingSession epochsTrained(int epochsTrained);
+    public abstract @NotNull AbstractTrainingSession prediction(final Long predictionId);
 
-    public abstract AbstractTrainingSession maxEpochs(int maxEpochs);
+    public abstract @NotNull AbstractTrainingSession numRows(final int numRows);
 
-    public abstract AbstractTrainingSession startingLoss(double startingLoss);
+    public abstract @NotNull AbstractTrainingSession epochsTrained(final int epochsTrained);
 
-    public abstract AbstractTrainingSession finalLoss(double finalLoss);
+    public abstract @NotNull AbstractTrainingSession maxEpochs(final int maxEpochs);
 
-    public abstract AbstractTrainingSession modelType(ModelType modelType);
-    public abstract AbstractTrainingSession modelType(String modelType);
+    public abstract @NotNull AbstractTrainingSession startingLoss(final double startingLoss);
 
-    public abstract AbstractTrainingSession queryType(TrainingQueryType queryType);
-    public abstract AbstractTrainingSession queryType(String queryType);
+    public abstract @NotNull AbstractTrainingSession finalLoss(final double finalLoss);
 
-    public abstract AbstractTrainingSession trainingStartTime(LocalDateTime startTime);
-    public abstract AbstractTrainingSession trainingStartTime(String startTime);
+    public abstract @NotNull AbstractTrainingSession modelType(final ModelType modelType);
 
-    public abstract AbstractTrainingSession trainingEndTime(LocalDateTime endTime);
-    public abstract AbstractTrainingSession trainingEndTime(String endTime);
+    public abstract @NotNull AbstractTrainingSession modelType(final String modelType);
 
-    public abstract AbstractTrainingSession queryStartTime(LocalDateTime startTime);
-    public abstract AbstractTrainingSession queryStartTime(String startTime);
+    public abstract @NotNull AbstractTrainingSession queryType(final TrainingQueryType queryType);
+    public abstract @NotNull AbstractTrainingSession queryType(final String queryType);
 
-    public abstract AbstractTrainingSession queryEndTime(LocalDateTime endTime);
-    public abstract AbstractTrainingSession queryEndTime(String endTime);
+    public abstract @NotNull AbstractTrainingSession trainingStartTime(
+        final LocalDateTime startTime
+    );
 
-    public abstract AbstractTrainingSession sequenceLength(int sequenceLength);
+    public abstract @NotNull AbstractTrainingSession trainingStartTime(final String startTime);
 
-    public abstract AbstractTrainingSession batchSize(int batchSize);
+    public abstract @NotNull AbstractTrainingSession trainingEndTime(final LocalDateTime endTime);
 
-    public abstract AbstractTrainingSession dimensionWidth(int dimensionWidth);
+    public abstract @NotNull AbstractTrainingSession trainingEndTime(final String endTime);
 
-    public abstract AbstractTrainingSession queryLoad(QueryLoad queryLoad);
-    public abstract AbstractTrainingSession queryLoad(String queryLoad);
+    public abstract @NotNull AbstractTrainingSession queryStartTime(final LocalDateTime startTime);
 
-    public abstract AbstractTrainingSession queryBatchSize(Integer queryBatchSize);
+    public abstract @NotNull AbstractTrainingSession queryStartTime(final String startTime);
 
-    public abstract AbstractTrainingSession trainingDevice(TrainingDevice trainingDevice);
-    public abstract AbstractTrainingSession trainingDevice(String trainingDevice);
+    public abstract @NotNull AbstractTrainingSession queryEndTime(final LocalDateTime endTime);
 
-    public abstract AbstractTrainingSession shortSequenceLength(Integer shortSequenceLength);
-    public abstract AbstractTrainingSession mediumSequenceLength(Integer mediumSequenceLength);
-    public abstract AbstractTrainingSession longSequenceLength(Integer longSequenceLength);
+    public abstract @NotNull AbstractTrainingSession queryEndTime(final String endTime);
+
+    public abstract @NotNull AbstractTrainingSession sequenceLength(final int sequenceLength);
+
+    public abstract @NotNull AbstractTrainingSession batchSize(final int batchSize);
+
+    public abstract @NotNull AbstractTrainingSession dimensionWidth(final int dimensionWidth);
+
+    public abstract @NotNull AbstractTrainingSession queryLoad(final QueryLoad queryLoad);
+
+    public abstract @NotNull AbstractTrainingSession queryLoad(final String queryLoad);
+
+    public abstract @NotNull AbstractTrainingSession queryBatchSize(
+        final Integer queryBatchSize
+    );
+
+    public abstract @NotNull AbstractTrainingSession trainingDevice(
+        final TrainingDevice trainingDevice
+    );
+
+    public abstract @NotNull AbstractTrainingSession trainingDevice(
+        final String trainingDevice
+    );
+
+    public abstract @NotNull AbstractTrainingSession shortSequenceLength(
+        final Integer shortSequenceLength
+    );
+    public abstract @NotNull AbstractTrainingSession mediumSequenceLength(
+        final Integer mediumSequenceLength
+    );
+
+    public abstract @NotNull AbstractTrainingSession longSequenceLength(
+        final Integer longSequenceLength
+    );
 }
