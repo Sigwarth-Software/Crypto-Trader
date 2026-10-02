@@ -2,6 +2,7 @@ package org.cryptotrader.agent.library.component.config
 
 import org.cryptotrader.agent.library.component.DatabaseReaderTool
 import org.cryptotrader.agent.library.component.FileReaderTool
+import org.cryptotrader.agent.library.component.GitHubIssueTool
 import org.cryptotrader.agent.library.component.HttpFetchTool
 import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
@@ -15,10 +16,16 @@ open class McpToolsConfiguration {
     fun toolCallbackProvider(
         safeFileReadTool: FileReaderTool,
         safeHttpFetchTool: HttpFetchTool,
-        safeDatabaseIntrospectionTool: DatabaseReaderTool
+        safeDatabaseIntrospectionTool: DatabaseReaderTool,
+        githubIssueTool: GitHubIssueTool
     ): ToolCallbackProvider {
         return MethodToolCallbackProvider.builder()
-            .toolObjects(safeFileReadTool, safeHttpFetchTool, safeDatabaseIntrospectionTool)
+            .toolObjects(
+                safeFileReadTool,
+                safeHttpFetchTool,
+                safeDatabaseIntrospectionTool,
+                githubIssueTool
+            )
             .build()
     }
 }
