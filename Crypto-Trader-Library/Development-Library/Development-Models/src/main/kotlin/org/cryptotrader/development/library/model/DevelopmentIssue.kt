@@ -17,7 +17,7 @@ open class DevelopmentIssue(
         if (hasExtraContent) {
             sections.add(this.extraContent!!)
         }
-        sections.add("Points: $this.points")
+        sections.add("Points: ${this.points}")
         sections.add(this.getGenerativeContentDisclaimer())
 
         return sections.joinToString(separator = "\n\n")
