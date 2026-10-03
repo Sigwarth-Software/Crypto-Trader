@@ -8,4 +8,4 @@ This folder historically contained helper scripts for ad‑hoc operational tasks
 - `repository-log-space-stats.kts`: Reports total file space used by files under `logs` directories, with extension, module, and logs-directory breakdowns.
 - `setup-data-https.kts`: Run on the Data computer to generate a certificate for its private LAN IPv4 address and export the public CA certificate that Engine must trust.
 - `setup-local-https.main.kts`: Generates shared trusted local certificates under repo-level `certs/` with `mkcert` and prints API, Data, Analysis, and Website HTTPS startup steps.
-- `verify-maven-publish.main.kts`: Benchmarks Maven publish pipeline bottlenecks by validating GitHub Packages endpoint resolution against a personal access token parameter and measuring standalone JVM startup overhead.
+- `verify-maven-publish.main.kts`: Benchmarks Maven publish pipeline bottlenecks by validating GitHub Packages endpoint resolution against a personal access token parameter using HTTP GET and measuring standalone JVM startup overhead.
