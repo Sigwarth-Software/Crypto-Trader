@@ -31,7 +31,7 @@ jobs:
       - name: Install build tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install build
+          python -m pip install build tomli
 
       - name: Build package
         working-directory: Crypto-Trader-Analysis
@@ -42,7 +42,14 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          V=$(python -c "import tomllib; d=tomllib.load(open('Crypto-Trader-Analysis/pyproject.toml','rb')); print(d['project']['version'])")
+          V=$(python -c "
+          try:
+              import tomllib as toml
+          except ImportError:
+              import tomli as toml
+          with open('Crypto-Trader-Analysis/pyproject.toml', 'rb') as f:
+              print(toml.load(f)['project']['version'])
+          ")
           echo "version=$V" >> "$GITHUB_OUTPUT"
 
       - name: Detect tag and compare to project version
