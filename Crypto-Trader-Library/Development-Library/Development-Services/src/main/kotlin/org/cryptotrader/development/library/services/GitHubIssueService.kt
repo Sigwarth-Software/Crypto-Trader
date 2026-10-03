@@ -74,7 +74,7 @@ class GitHubIssueService @Autowired constructor(
             Your template for the issue is as follows:
                 ${this.getIssueTemplate()}
 
-            You're available tags include:
+            You're available tags include (use all that apply):
                 ${availableLabels.joinToString(separator = "\n") { "- $it" }}
 
         """.trimIndent()
