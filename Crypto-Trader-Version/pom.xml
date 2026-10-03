@@ -30,7 +30,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Pin Kotlin libs to avoid dependency convergence conflicts (e.g., with kotlin-logging-jvm vs OkHttp/Okio) -->
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-common</artifactId>
@@ -39,7 +38,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>1.9.0</version>
+                <version>${kotlin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
