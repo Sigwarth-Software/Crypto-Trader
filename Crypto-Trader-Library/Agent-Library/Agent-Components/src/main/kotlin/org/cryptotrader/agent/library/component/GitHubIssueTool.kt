@@ -28,6 +28,8 @@ class GitHubIssueTool @Autowired constructor(
         private val POINTS_LINE_PATTERN: Regex = Regex("(?i)points\\s*:\\s*(\\d+)")
         private val LABELS_LINE_PATTERN: Regex = Regex("(?i)labels\\s*:\\s*(.+)")
         private val TITLE_LINE_PATTERN: Regex = Regex("(?i)^(?:title|issue)\\s*:\\s*(.+)$")
+        private val METADATA_LINE_PATTERN: Regex = Regex("(?i)^(?:name|about|assignees)\\s*:\\s*.*$")
+        private val HTML_COMMENT_PATTERN: Regex = Regex("(?s)<!--.*?-->")
     }
 
     private val proposedIssues: MutableMap<UUID, DevelopmentIssue> = mutableMapOf()
@@ -98,25 +100,38 @@ class GitHubIssueTool @Autowired constructor(
     }
 
     internal fun parseTicketRequest(ticketRequest: String): UserStoryIssue {
-        val lines: List<String> = ticketRequest.lines().map { it.trim() }
+        val sanitizedRequest: String = ticketRequest.replace(HTML_COMMENT_PATTERN, "")
+        val lines: List<String> = sanitizedRequest.lines().map { it.trim() }
 
         val tasks: List<String> = lines.mapNotNull { line -> TASK_LINE_PATTERN.find(line)?.groupValues?.get(1) }
         require(tasks.isNotEmpty()) { "Ticket request must contain at least one task checklist item." }
 
-        val titleLine: String = lines.firstOrNull { line ->
-            line.isNotBlank() && !TASK_LINE_PATTERN.matches(line) &&
-                !POINTS_LINE_PATTERN.containsMatchIn(line) && !LABELS_LINE_PATTERN.containsMatchIn(line)
+        val explicitTitleLine: String? = lines.firstOrNull { TITLE_LINE_PATTERN.matches(it) }
+        val rawTitle: String = if (explicitTitleLine != null) {
+            TITLE_LINE_PATTERN.find(explicitTitleLine)?.groupValues?.get(1)?.trim()
+        } else {
+            lines.firstOrNull { line ->
+                line.isNotBlank() &&
+                    line != "---" &&
+                    !METADATA_LINE_PATTERN.matches(line) &&
+                    !TASK_LINE_PATTERN.matches(line) &&
+                    !POINTS_LINE_PATTERN.containsMatchIn(line) &&
+                    !LABELS_LINE_PATTERN.containsMatchIn(line)
+            }
         } ?: throw IllegalArgumentException("Ticket request must contain a user story title line.")
 
-        val title: String = TITLE_LINE_PATTERN.find(titleLine)?.groupValues?.get(1)?.trim() ?: titleLine
+        val title: String = rawTitle.trim().removeSurrounding("\"").removeSurrounding("'")
 
         val points: Int = lines.firstNotNullOfOrNull { line -> POINTS_LINE_PATTERN.find(line) }
             ?.groupValues?.get(1)?.toIntOrNull() ?: 0
 
         val labels: List<String> = lines.firstNotNullOfOrNull { line -> LABELS_LINE_PATTERN.find(line) }
             ?.groupValues?.get(1)
+            ?.trim()
+            ?.removeSurrounding("\"")
+            ?.removeSurrounding("'")
             ?.split(",")
-            ?.map { it.trim() }
+            ?.map { it.trim().removeSurrounding("\"").removeSurrounding("'") }
             ?.filter { it.isNotEmpty() }
             ?: emptyList()
 
