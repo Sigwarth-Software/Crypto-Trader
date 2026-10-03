@@ -15,7 +15,8 @@ import kotlin.system.exitProcess
  * Maven Publish Inefficiency Verification Benchmark
  *
  * Validates GitHub Packages endpoint URL resolution against a personal access token
- * and benchmarks standalone single-module JVM startup overhead.
+ * using HTTP GET (matching production curl) and benchmarks standalone single-module
+ * JVM startup overhead.
  *
  * Usage:
  *   kotlin scripts/verify-maven-publish.main.kts <GITHUB_TOKEN>
@@ -73,13 +74,13 @@ fun testEndpoint(name: String, urlString: String): EndpointResult {
             .header("Authorization", authHeader)
             .header("User-Agent", "CryptoTrader-Publish-Verifier")
             .timeout(Duration.ofSeconds(10))
-            .method("HEAD", HttpRequest.BodyPublishers.noBody())
+            .GET()
             .build()
 
         val response: HttpResponse<Void> = httpClient.send(request, HttpResponse.BodyHandlers.discarding())
         val durationMs: Long = System.currentTimeMillis() - startTime
         val code: Int = response.statusCode()
-        val isResolved: Boolean = code in listOf(200, 301, 302, 401, 403)
+        val isResolved: Boolean = code in listOf(200, 301, 302)
         val statusText: String = when (code) {
             200 -> "OK"
             301 -> "Moved Permanently"
@@ -111,6 +112,8 @@ println("  * Corrected URL : HTTP ${resCorrected.statusCode} (${resCorrected.sta
 if (resCurrent.statusCode == 404 && resCorrected.isResolved) {
     println("  -> CONFIRMED: Current endpoint returns 404 (forces 100% false MISSING).")
     println("  -> CONFIRMED: Corrected endpoint resolves artifact successfully.")
+} else if (resCorrected.statusCode in listOf(401, 403)) {
+    println("  -> WARNING: Provided token returned HTTP ${resCorrected.statusCode} (${resCorrected.statusText}). Authentication failed.")
 } else {
     println("  -> Note: Review status codes above for exact endpoint response behavior.")
 }
@@ -122,7 +125,7 @@ println()
 println("[2/2] Benchmarking Single-Module JVM Startup & Evaluation Overhead...")
 println("  Running standalone Maven evaluation for :$artifactId (deploy dry-run)...")
 
-val isWindows: Boolean = System.getProperty("os.name").lowercase().contains("windows")
+val isWindows = System.getProperty("os.name").lowercase().contains("windows")
 val mvnExecutable = if (isWindows) "mvn.cmd" else "mvn"
 val projectRoot = File(".").absoluteFile.normalize()
 
@@ -141,8 +144,8 @@ try {
         .redirectError(ProcessBuilder.Redirect.DISCARD)
         .start()
     exitCode = process.waitFor()
-} catch (e: Exception) {
-    System.err.println("  Failed to execute Maven process: ${e.message}")
+} catch (exception: Exception) {
+    System.err.println("  Failed to execute Maven process: ${exception.message}")
 }
 val elapsedSeconds: Double = (System.nanoTime() - startTimeNano) / 1_000_000_000.0
 
@@ -163,8 +166,8 @@ println("=================================================================\n")
 val rowFormat = "%-33s %-20s %-30s"
 println(String.format(rowFormat, "Benchmark / Metric", "Value / Result", "Diagnosis"))
 println(String.format(rowFormat, "------------------", "--------------", "---------"))
-println(String.format(rowFormat, "Current Endpoint Status", "HTTP ${resCurrent.statusCode} (${resCurrent.statusText})", "Malformed URL (False 404)"))
-println(String.format(rowFormat, "Corrected Endpoint Status", "HTTP ${resCorrected.statusCode} (${resCorrected.statusText})", "Proper Endpoint Resolution"))
+println(String.format(rowFormat, "Current Endpoint Status", "HTTP ${resCurrent.statusCode} (${resCurrent.statusText})", if (resCurrent.statusCode == 404) "Malformed URL (False 404)" else "Response ${resCurrent.statusCode}"))
+println(String.format(rowFormat, "Corrected Endpoint Status", "HTTP ${resCorrected.statusCode} (${resCorrected.statusText})", if (resCorrected.isResolved) "Proper Endpoint Resolution" else "Unresolved (${resCorrected.statusText})"))
 println(String.format(rowFormat, "Single Module JVM Duration", "${singleModuleSeconds} s", "Cold JVM + Reactor Graph Parse"))
 println(String.format(rowFormat, "Sequential Runtime (~120 modules)", "$projectedMinutes min", "Matches ~60m CI Deploy Runtime"))
 println("\n=================================================================")
