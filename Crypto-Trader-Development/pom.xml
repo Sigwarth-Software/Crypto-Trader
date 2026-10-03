@@ -64,7 +64,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>MainKt</mainClass>
+                    <mainClass>org.cryptotrader.development.CryptoTraderDevelopmentApplicationKt</mainClass>
                 </configuration>
             </plugin>
         </plugins>
