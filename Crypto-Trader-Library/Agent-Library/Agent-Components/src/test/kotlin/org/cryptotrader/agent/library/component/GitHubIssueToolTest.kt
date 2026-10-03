@@ -116,6 +116,77 @@ class GitHubIssueToolTest : CryptoTraderTest() {
             val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
             assertEquals("As a developer, I want a sample feature.", issue.issueTitle)
         }
+
+        @Test
+        fun parsesTicketRequest_WithFullTemplateAndFrontMatter() {
+            val templateDraft = """
+                ---
+                name: Agile User Story
+                about: Create a concise user story with a task checklist and an hours-based point estimate
+                title: "As a trader, I want real-time order execution."
+                labels: "needs triage, user story"
+                assignees: ""
+                ---
+
+                <!--
+                Multi-line comment instructions
+                here
+                -->
+
+                As a trader, I want real-time order execution.
+
+                - [ ] Implement order routing service.
+                - [ ] Add unit tests for latency bounds.
+
+                Points: 8 (hours)
+            """.trimIndent()
+
+            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
+
+            assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
+            assertEquals(listOf("needs triage", "user story"), issue.labels)
+            assertEquals(8, issue.points)
+        }
+
+        @Test
+        fun parsesTicketRequest_WithFrontMatterWithoutExplicitTitle() {
+            val templateDraft = """
+                ---
+                name: Agile User Story
+                about: Create a concise user story with a task checklist and an hours-based point estimate
+                labels: "needs triage, user story"
+                assignees: ""
+                ---
+
+                <!-- Template drafting instructions -->
+
+                As a trader, I want real-time order execution.
+
+                - [ ] Implement order routing service.
+
+                Points: 4 (hours)
+            """.trimIndent()
+
+            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
+
+            assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
+            assertEquals(listOf("needs triage", "user story"), issue.labels)
+            assertEquals(4, issue.points)
+        }
+
+        @Test
+        fun unquotesLabelsCorrectly() {
+            val ticketRequest = """
+                As a developer, I want a sample feature.
+
+                - [ ] Task one.
+
+                Labels: "bug", 'user story', documentation
+                Points: 3 (hours)
+            """.trimIndent()
+            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
+            assertEquals(listOf("bug", "user story", "documentation"), issue.labels)
+        }
     }
 
     @Nested
