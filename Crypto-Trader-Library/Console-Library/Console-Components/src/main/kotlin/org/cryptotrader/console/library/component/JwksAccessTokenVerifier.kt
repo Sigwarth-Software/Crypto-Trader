@@ -113,7 +113,7 @@ class JwksAccessTokenVerifier(
         }
         this.refreshKeys()
         return this.keyCache[kid]
-            ?: throw IllegalStateException("Signing key with not found in JWKS at $this.jwksUri")
+            ?: throw IllegalStateException("Signing key with not found in JWKS at ${this.jwksUri}")
     }
 
     private fun getJwksResponse(): HttpResponse<String> {
@@ -124,7 +124,7 @@ class JwksAccessTokenVerifier(
             .build()
         val response: HttpResponse<String> = this.httpClient.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() !in 200..299) {
-            throw IllegalStateException("Failed to fetch JWKS ($this.jwksUri): HTTP ${'$'}{response.statusCode()}")
+            throw IllegalStateException("Failed to fetch JWKS (${this.jwksUri}): HTTP ${'$'}{response.statusCode()}")
         }
         return response
     }
@@ -166,7 +166,7 @@ class JwksAccessTokenVerifier(
                 }
             }
         }
-        throw IllegalStateException("Unable to refresh JWKS from $this.jwksUri after $maxAttempts attempts", lastEx)
+        throw IllegalStateException("Unable to refresh JWKS from ${this.jwksUri} after $maxAttempts attempts", lastEx)
     }
 
     private fun toRsaPublicKey(nB64Url: String, eB64Url: String): RSAPublicKey {

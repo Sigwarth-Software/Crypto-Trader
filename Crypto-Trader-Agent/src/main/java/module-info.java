@@ -8,6 +8,7 @@ module org.cryptotrader.agent {
     requires org.cryptotrader.agent.library.config;
     requires org.cryptotrader.universal.library.config;
     requires org.cryptotrader.security.library.config;
+    requires org.cryptotrader.development.library.config;
     requires java.net.http;
     requires jakarta.xml.bind;
     requires jakarta.activation;
