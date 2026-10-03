@@ -35,7 +35,7 @@ jobs:
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
       - name: Run Promo Bot
-        uses: theoliverlear/Sigwarth-Software-Suite@master
+        uses: Sigwarth-Software/Sigwarth-Software-Suite@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
