@@ -54,9 +54,15 @@ class GitHubIssueService @Autowired constructor(
 
     fun <T : DevelopmentIssue> presentIssue(issue: T): String {
         val issueDescription: String = issue.getDescription()
-        val prompt: String = "Does the following ticket properly represent the task or story you want to create? (Yes/No/Stop) (Y/N/S)"
+        val prompt = "Does the following ticket properly represent the task or story you want to create? (Yes/No/Stop) (Y/N/S)"
+        val labels = if (issue.labels.isNotEmpty()) "Labels: ${issue.labels.joinToString(", ")}" else "No labels specified."
+        return """
+            $prompt
 
-        return "$prompt\n\n$issueDescription"
+            $issueDescription
+
+            Non-visual labels: $labels
+            """.trimIndent()
     }
 
     fun getIssueCreationPrompt(prompt: String): String {
