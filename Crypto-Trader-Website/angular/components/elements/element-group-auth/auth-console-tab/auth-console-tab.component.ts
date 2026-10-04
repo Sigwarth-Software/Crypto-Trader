@@ -22,7 +22,7 @@ export class AuthConsoleTabComponent {
      * Apply active class when the tab is active.
      */
     @HostBinding('class.active')
-    get activeClass(): boolean {
+    public get activeClass(): boolean {
         return this.isActive
     }
 

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
 import {
     libraryModuleIcon,
     healthModuleIcon,
@@ -9,8 +9,12 @@ import {
     versionModuleIcon,
     assetsModuleIcon,
     docsModuleIcon,
-} from '@assets/image.assets';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+} from '@assets/image.assets'
+import { ModuleInfo } from '@models/module/ModuleInfo'
+
+/**
+ * A component for displaying an infrastructure promo.
+ */
 @Component({
     selector: 'infra-promo',
     standalone: false,
@@ -19,9 +23,6 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
 })
 export class InfraPromoComponent {
     constructor() {}
-
-
-    protected readonly TagType = TagType;
 
     // TODO: Move to assets file.
     protected readonly infraModules: ModuleInfo[] = [
@@ -89,5 +90,7 @@ export class InfraPromoComponent {
             features: [],
             techStack: ['MkDocs', 'GitHub Pages'],
         },
-    ];
+    ]
+
+    protected readonly TagType: typeof TagType = TagType
 }

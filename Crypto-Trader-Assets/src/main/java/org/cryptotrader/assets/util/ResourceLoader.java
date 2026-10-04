@@ -1,14 +1,17 @@
 package org.cryptotrader.assets.util;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.InputStream;
 import java.net.URL;
 
 public class ResourceLoader {
-    public InputStream asResourceStream(String url) {
+    public @Nullable InputStream asResourceStream(final @NotNull String url) {
         return this.getClass().getResourceAsStream(url);
     }
-    
-    public URL asResource(String url) {
+
+    public @Nullable URL asResource(final @NotNull String url) {
         return this.getClass().getResource(url);
     }
 }

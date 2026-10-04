@@ -1,1 +1,11 @@
 <!-- statistics.component.html -->
+<ng-container>
+    <page-title-stripe [titleStripe]="statisticsPageTitleStripe"/>
+    <div class="portfolio-history-statistic-chart">
+        @if (isLoadingPortfolioHistory()) {
+            <loading-wheel [size]="ElementSize.SMALL" [colorScheme]="LoadingWheelColorScheme.Frost"/>
+        } @else {
+            <line-chart [config]="chartConfig" [data]="chartData"/>
+        }
+    </div>
+</ng-container>

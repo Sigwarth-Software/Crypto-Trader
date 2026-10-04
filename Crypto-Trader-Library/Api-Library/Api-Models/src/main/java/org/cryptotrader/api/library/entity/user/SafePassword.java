@@ -5,6 +5,8 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
@@ -12,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Embeddable
 public class SafePassword {
     //============================-Variables-=================================
-    private String encodedPassword;
+    private @Nullable String encodedPassword;
     @Transient
     @JsonIgnore
     private BCryptPasswordEncoder encoder;
@@ -21,20 +23,20 @@ public class SafePassword {
         this.encoder = new BCryptPasswordEncoder();
         this.encodedPassword = null;
     }
-    public SafePassword(String unencodedPassword) {
+    public SafePassword(final String unencodedPassword) {
         this.encoder = new BCryptPasswordEncoder();
         this.encodedPassword = this.encodePassword(unencodedPassword);
     }
     //============================-Methods-===================================
 
     //--------------------------Encode-Password-------------------------------
-    public String encodePassword(String unencodedPassword) {
-        String encoded = this.encoder.encode(unencodedPassword);
+    public String encodePassword(final String unencodedPassword) {
+        final String encoded = this.encoder.encode(unencodedPassword);
         this.encodedPassword = encoded;
         return encoded;
     }
     //---------------------Compare-Unencoded-Password-------------------------
-    public boolean compareUnencodedPassword(String unencodedPassword) {
+    public boolean compareUnencodedPassword(final String unencodedPassword) {
         if (this.encodedPassword == null || this.encodedPassword.isBlank()) {
             return false;
         }
@@ -44,9 +46,9 @@ public class SafePassword {
 
     //------------------------------Equals------------------------------------
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) return true;
-        if (object instanceof SafePassword comparedSafePassword) {
+        if (object instanceof final @NotNull SafePassword comparedSafePassword) {
             return this.encodedPassword != null && this.encodedPassword.equals(comparedSafePassword.encodedPassword);
         }
         return false;

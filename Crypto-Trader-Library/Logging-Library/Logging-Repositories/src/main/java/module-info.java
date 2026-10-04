@@ -7,6 +7,7 @@ open module org.cryptotrader.logging.library.repositories {
     requires jakarta.persistence;
     requires static lombok;
     requires org.cryptotrader.logging.library.models;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.logging.library.repository;
 }

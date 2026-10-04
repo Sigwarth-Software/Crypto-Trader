@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
 import {
     personaBelieverIcon,
     personaStrategistIcon,
     personaEqualizerIcon,
     personaBuilderIcon,
-    personaTycoonIcon
-} from '@assets/image.assets';
-import { Persona } from './models/Persona';
+    personaTycoonIcon,
+} from '@assets/image.assets'
+import { Persona } from './models/Persona'
 
+/**
+ * A component that allows the user to select a persona.
+ */
 @Component({
     selector: 'persona-selector',
     standalone: false,
@@ -16,11 +19,9 @@ import { Persona } from './models/Persona';
     styleUrls: ['./persona-selector.component.scss'],
 })
 export class PersonaSelectorComponent {
-    protected readonly TagType = TagType;
-
-    activeIndex = 0;
+    protected activeIndex: number = 0
     // TODO: Move to assets file.
-    personas: Persona[] = [
+    protected personas: Persona[] = [
         {
             id: 'believer',
             name: 'The Believer',
@@ -37,7 +38,7 @@ export class PersonaSelectorComponent {
             name: 'The Strategist',
             tagline: 'Data over gut feeling. Always.',
             description:
-                'You don\'t gamble — you calculate. ML-powered price prediction, multi-timeframe analysis, and confidence-scored signals give you the edge that spreadsheets never could.',
+                "You don't gamble — you calculate. ML-powered price prediction, multi-timeframe analysis, and confidence-scored signals give you the edge that spreadsheets never could.",
             icon: personaStrategistIcon,
             accentColor: 'strategist',
             suggestedTier: 'Pro',
@@ -48,7 +49,7 @@ export class PersonaSelectorComponent {
             name: 'The Equalizer',
             tagline: 'Crypto is for everyone — and so is great trading software.',
             description:
-                'You believe financial tools shouldn\'t be locked behind six-figure minimums. Institutional-grade algorithms at zero profit margin — because the value belongs to you, not us.',
+                "You believe financial tools shouldn't be locked behind six-figure minimums. Institutional-grade algorithms at zero profit margin — because the value belongs to you, not us.",
             icon: personaEqualizerIcon,
             accentColor: 'equalizer',
             suggestedTier: 'Pro',
@@ -59,7 +60,7 @@ export class PersonaSelectorComponent {
             name: 'The Builder',
             tagline: 'If I can read the code, I can trust the code.',
             description:
-                'Open-source isn\'t a feature for you — it\'s a requirement. You want to inspect every algorithm, fork the repository, extend modules, and know exactly how your money is being managed.',
+                "Open-source isn't a feature for you — it's a requirement. You want to inspect every algorithm, fork the repository, extend modules, and know exactly how your money is being managed.",
             icon: personaBuilderIcon,
             accentColor: 'builder',
             suggestedTier: 'Pro',
@@ -70,19 +71,30 @@ export class PersonaSelectorComponent {
             name: 'The Tycoon',
             tagline: 'Only the best trades. Only the best tools.',
             description:
-                'You trade at volume and demand every edge. Beast Mode execution on 16 threads, AI Chat for real-time analysis, news sentiment, and custom strategies — the full arsenal, no compromises.',
+                'You trade at volume and demand every edge. Beast Mode execution on many threads, AI Chat for real-time analysis, news sentiment, and custom strategies — the full arsenal, no compromises.',
             icon: personaTycoonIcon,
             accentColor: 'tycoon',
             suggestedTier: 'Ultimate',
             traits: ['Beast Mode', 'AI Chat', 'High-volume', 'Full arsenal'],
         },
-    ];
+    ]
 
-    get active(): Persona {
-        return this.personas[this.activeIndex];
+    /**
+     * Gets the currently active persona.
+     * @returns The currently active persona.
+     */
+    public get active(): Persona {
+        return this.personas[this.activeIndex]
     }
 
-    select(index: number): void {
-        this.activeIndex = index;
+    /**
+     * Selects a persona by index.
+     *
+     * @param index
+     */
+    public select(index: number): void {
+        this.activeIndex = index
     }
+
+    protected readonly TagType: typeof TagType = TagType
 }

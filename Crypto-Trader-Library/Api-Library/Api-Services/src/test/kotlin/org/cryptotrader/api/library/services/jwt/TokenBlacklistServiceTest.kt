@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
-import org.springframework.test.util.AssertionErrors.assertFalse
-import java.time.LocalDateTime
-import java.util.Date
-import kotlin.time.Instant
 
 @Tag("TokenBlacklistService")
 @Tag("service")

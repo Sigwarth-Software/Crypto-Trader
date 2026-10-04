@@ -19,6 +19,19 @@ spring:
     aws:
       region:
         static: us-east-1
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
 ct:
   health:

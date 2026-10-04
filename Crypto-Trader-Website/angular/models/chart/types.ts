@@ -1,6 +1,5 @@
-import * as d3 from 'd3'
-
 import { type HistoryPoint } from '../currency/types'
+import { ScaleLinear, ScaleTime } from 'd3'
 
 export type SparkPoint = {
     date: Date | string | number
@@ -16,10 +15,13 @@ export type Margin = {
 
 export type ChartDataPoint = SparkPoint | HistoryPoint
 
-export type SeriesType = 'line' | 'area'
+export enum ChartSeriesType {
+    Line = 'line',
+    Area = 'area',
+}
 
 export type SeriesConfig = {
-    type: SeriesType
+    type: ChartSeriesType
     stroke: string
     strokeWidth: number
     fill?: string
@@ -47,7 +49,6 @@ export type ChartDimensions = {
 }
 
 export type ChartConfig = {
-    data: ChartDataPoint[]
     dimensions: ChartDimensions
     series: SeriesConfig
     axes: AxisConfig
@@ -55,8 +56,8 @@ export type ChartConfig = {
 }
 
 export type ChartScales = {
-    x: d3.ScaleTime<number, number>
-    y: d3.ScaleLinear<number, number>
+    x: ScaleTime<number, number>
+    y: ScaleLinear<number, number>
     width: number
     height: number
 }

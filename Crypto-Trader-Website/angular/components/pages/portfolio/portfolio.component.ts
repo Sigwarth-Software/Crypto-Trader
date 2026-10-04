@@ -8,6 +8,7 @@ import { Portfolio } from '@models/portfolio/types';
 
 import { PortfolioSectionArrowType } from '../../elements/element-group-portfolio/portfolio-section-arrow/models/PortfolioSectionArrowType';
 import {LoggerContext} from "@models/logging/LoggerContext";
+import { portfolioPageTitleStripe } from '@assets/page-title-stripe.assets'
 
 @Component({
     selector: 'portfolio',
@@ -44,4 +45,5 @@ export class PortfolioComponent implements OnInit {
 
     protected readonly TagType = TagType;
     protected readonly PortfolioSectionArrowType = PortfolioSectionArrowType;
+    protected readonly portfolioPageTitleStripe = portfolioPageTitleStripe
 }

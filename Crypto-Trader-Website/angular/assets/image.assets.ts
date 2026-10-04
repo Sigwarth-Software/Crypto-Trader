@@ -95,6 +95,11 @@ export const defaultCurrencyIcon: ImageAsset = {
     alt: 'Default Currency Icon',
 }
 
+export const whiteUpArrowIcon: ImageAsset = {
+    src: getIconImagePath('white_up_arrow_icon.svg'),
+    alt: 'White Up Arrow Icon',
+}
+
 export const upArrowIcon: ImageAsset = {
     src: getIconImagePath('up_arrow_icon.svg'),
     alt: 'Up Arrow Icon',

@@ -4,17 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.cryptotrader.data.library.entity.prediction.PricePrediction;
 import org.cryptotrader.data.library.entity.prediction.PricePredictionLookup;
 import org.cryptotrader.data.library.services.PricePredictionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class PricePredictionLookupAdapter implements PricePredictionLookup {
-    @Autowired
-    private final PricePredictionService pricePredictionService;
+    private final @NotNull PricePredictionService pricePredictionService;
 
     @Override
-    public PricePrediction getById(Long id) {
+    public PricePrediction getById(@NotNull final Long id) {
         return this.pricePredictionService.getById(id);
     }
 }

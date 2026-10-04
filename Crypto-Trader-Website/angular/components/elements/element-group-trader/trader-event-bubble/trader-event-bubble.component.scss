@@ -12,7 +12,7 @@ trader-event-bubble {
     background-color: vars.$air-blue;
     margin: vars.$half-percent 0;
     min-width: vars.$twenty-five-percent;
-
+    max-width: vars.$thirty-percent;
     ss-title {
         // width: 100%;
     }
@@ -78,7 +78,7 @@ trader-event-bubble {
             @extend %softer-border-radius;
             background-color: vars.$pure-white;
             padding: calc(#{vars.$half-percent} * 0.75) vars.$one-half-percent
-                calc(#{vars.$half-percent} * 0.75) vars.$one-percent;
+            calc(#{vars.$half-percent} * 0.75) vars.$one-percent;
 
             ss-title h4 {
                 color: gray;
@@ -88,7 +88,7 @@ trader-event-bubble {
 
             ss-img {
                 padding: calc(#{vars.$quarter-percent} * 1.25)
-                    calc(#{vars.$quarter-percent} * 1.65);
+                calc(#{vars.$quarter-percent} * 1.65);
                 margin-right: vars.$half-percent;
 
                 @include mixins.square-size(vars.$two-percent);
@@ -108,5 +108,11 @@ trader-event-bubble {
 
     accordion {
         width: 100%;
+        max-width: 100%;
+            p.title-text-div {
+                text-align: left;
+                white-space: pre-line
+            }
+
     }
 }

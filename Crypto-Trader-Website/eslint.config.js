@@ -150,7 +150,25 @@ export default tseslint.config(
                 'warn',
                 {
                     min: 3,
-                    exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db'],
+                    exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db', 'vh', 'vw'],
+                },
+            ],
+            'padding-line-between-statements': [
+                'warn',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                },
+                {
+                    blankLine: 'any',
+                    prev: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
+                },
+                {
+                    blankLine: 'never',
+                    prev: 'block-like',
+                    next: ['if', 'for', 'while', 'do', 'switch', 'try'],
                 },
             ],
         },
@@ -212,4 +230,10 @@ export default tseslint.config(
         },
     },
     prettierConfig,
+    {
+        files: ['**/*.ts'],
+        rules: {
+            curly: ['warn', 'all'],
+        },
+    },
 );

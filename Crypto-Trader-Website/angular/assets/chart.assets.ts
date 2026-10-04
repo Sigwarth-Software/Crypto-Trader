@@ -1,10 +1,10 @@
 import {
     type AxisConfig,
     type ChartConfig,
-    type ChartDisplayProperties,
     type ChartDimensions,
     type ChartTheme,
     type SeriesConfig,
+    ChartSeriesType,
 } from '@models/chart/types'
 
 export const DASHBOARD_THEME: ChartTheme = {
@@ -24,13 +24,13 @@ export const SPARK_THEME: ChartTheme = {
 }
 
 export const defaultLineSeries: SeriesConfig = {
-    type: 'line',
+    type: ChartSeriesType.Line,
     stroke: '#ffffff',
     strokeWidth: 2.0,
 }
 
 export const defaultSparklineSeries: SeriesConfig = {
-    type: 'line',
+    type: ChartSeriesType.Line,
     stroke: '#4caf50',
     strokeWidth: 2.0,
 }
@@ -62,7 +62,6 @@ export const sparklineAxes: AxisConfig = {
 }
 
 export const defaultChartConfig: ChartConfig = {
-    data: [{ date: new Date(), value: 0 }],
     dimensions: { ...defaultDimensions },
     series: { ...defaultLineSeries },
     axes: { ...defaultAxes },
@@ -70,29 +69,16 @@ export const defaultChartConfig: ChartConfig = {
 }
 
 export const defaultSparklineConfig: ChartConfig = {
-    data: [],
     dimensions: { ...defaultSparklineDimensions },
     series: { ...defaultSparklineSeries },
     axes: { ...sparklineAxes },
     theme: { ...SPARK_THEME },
 }
 
-export function createSparklineConfig(data: Partial<ChartConfig> = {}): ChartConfig {
-    return { ...defaultSparklineConfig, ...data }
+export function createChartConfig(config: Partial<ChartConfig> = {}): ChartConfig {
+    return { ...defaultChartConfig, ...config }
 }
 
-/** @deprecated Use {@link defaultChartConfig} instead. */
-export const defaultChartProperties: ChartDisplayProperties = {
-    data: [{ date: new Date(), value: 0 }],
-    width: 500,
-    height: 175,
-    margin: {
-        top: 20,
-        right: 20,
-        bottom: 30,
-        left: 40,
-    },
-    stroke: '#ffffff',
-    strokeWidth: 2.0,
-    textColor: '#979797',
+export function createSparklineConfig(config: Partial<ChartConfig> = {}): ChartConfig {
+    return { ...defaultSparklineConfig, ...config }
 }

@@ -6,8 +6,9 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.model.trade.CryptoTrader;
 import org.cryptotrader.api.library.model.trade.Trader;
-import org.cryptotrader.api.library.model.trade.TradingEngine;
 import org.cryptotrader.api.library.services.PortfolioService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,10 @@ public class PortfolioTraderService {
     private final PortfolioTradeExecutionService portfolioTradeExecutionService;
 
     @Autowired
-    public PortfolioTraderService(PortfolioService portfolioService,
-                                  CryptoTrader cryptoTrader,
-                                  PlatformTransactionManager transactionManager,
-                                  PortfolioTradeExecutionService portfolioTradeExecutionService) {
+    public PortfolioTraderService(final PortfolioService portfolioService,
+                                  final CryptoTrader cryptoTrader,
+                                  final PlatformTransactionManager transactionManager,
+                                  final PortfolioTradeExecutionService portfolioTradeExecutionService) {
         this.portfolioService = portfolioService;
         this.cryptoTrader = cryptoTrader;
         this.transactionManager = transactionManager;
@@ -52,7 +53,7 @@ public class PortfolioTraderService {
     }
 
     private void initCryptoTrader() {
-        for (Portfolio portfolio : this.allUsersPortfolios) {
+        for (final Portfolio portfolio : this.allUsersPortfolios) {
             this.cryptoTrader.addTrader(new Trader(portfolio));
         }
     }
@@ -65,7 +66,7 @@ public class PortfolioTraderService {
     }
 
     //--------------------------Trade-Portfolios------------------------------
-    public void tradePortfolios(List<Portfolio> portfolios, SubscriptionTier subscriptionTier) {
+    public void tradePortfolios(final @Nullable List<Portfolio> portfolios, final @NotNull SubscriptionTier subscriptionTier) {
         final String logPrefix = getLogPrefix(subscriptionTier);
         if (portfolios == null || portfolios.isEmpty()) {
             log.info("{} No traders found. No trades will be made.", logPrefix);
@@ -76,7 +77,7 @@ public class PortfolioTraderService {
         this.triggerAllTraders(this.cryptoTrader.getTradersBySubscriptionTier(subscriptionTier));
     }
 
-    static @NonNull String getLogPrefix(SubscriptionTier subscriptionTier) {
+    static @NonNull String getLogPrefix(final @NotNull SubscriptionTier subscriptionTier) {
         final String resetAnsi = "\u001B[0m";
         final String purpleAnsi = "\u001B[35m";
         final String greenAnsi = "\u001B[32m";
@@ -94,7 +95,7 @@ public class PortfolioTraderService {
     @Scheduled(fixedRate = 30_000)
     public void tradeFreePortfolios() {
         this.fillPortfolioList();
-        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.FREE);
+        final List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.FREE);
         this.tradePortfolios(portfolios, SubscriptionTier.FREE);
     }
 
@@ -102,7 +103,7 @@ public class PortfolioTraderService {
     @Scheduled(fixedRate = 10_000)
     public void tradeProPortfolios() {
         this.fillPortfolioList();
-        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.PRO);
+        final List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.PRO);
         this.tradePortfolios(portfolios, SubscriptionTier.PRO);
     }
 
@@ -110,12 +111,12 @@ public class PortfolioTraderService {
     @Scheduled(fixedRate = 5000)
     public void tradeUltimatePortfolios() {
         this.fillPortfolioList();
-        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ULTIMATE);
+        final List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ULTIMATE);
         this.tradePortfolios(portfolios, SubscriptionTier.ULTIMATE);
     }
 
-    public List<Portfolio> filterBySubscriptionTier(List<Portfolio> portfolios, SubscriptionTier tier) {
-        List<Portfolio> portfoliosByTier = portfolios.stream()
+    public @NotNull List<Portfolio> filterBySubscriptionTier(final @NotNull List<Portfolio> portfolios, final SubscriptionTier tier) {
+        final List<Portfolio> portfoliosByTier = portfolios.stream()
                 .filter(portfolio -> portfolio.getUser().getSubscriptionTier() == tier)
                 .toList();
         return portfoliosByTier;
@@ -133,12 +134,12 @@ public class PortfolioTraderService {
     }
 
     @TimeTracked(expectedMillis = 2000, shouldPersist = true)
-    public void triggerAllTraders(List<Trader> traders) {
+    public void triggerAllTraders(final @NotNull List<Trader> traders) {
         this.portfolioTradeExecutionService.triggerAllTraders(traders);
     }
 
     //----------------------Add-Portfolio-To-Traders--------------------------
-    public void addPortfolioToTraders(Portfolio portfolio) {
+    public void addPortfolioToTraders(final Portfolio portfolio) {
         this.cryptoTrader.addTrader(new Trader(portfolio));
     }
 }

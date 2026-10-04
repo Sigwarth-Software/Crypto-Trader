@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>engine-services</artifactId>
     <name>Engine-Services</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <description>
         Trading engine services — provides the core trading logic, strategy execution, and portfolio management.
     </description>
@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-        <kotlin.version>2.2.0</kotlin.version>
+        <kotlin.version>2.4.20</kotlin.version>
     </properties>
 
     <repositories>

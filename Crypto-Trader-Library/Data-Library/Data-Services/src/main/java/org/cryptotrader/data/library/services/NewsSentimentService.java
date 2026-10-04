@@ -5,6 +5,7 @@ import org.cryptotrader.data.library.communication.request.NewsSentimentRequest;
 import org.cryptotrader.data.library.component.NewsSentimentHarvesterClient;
 import org.cryptotrader.data.library.entity.news.NewsSentiment;
 import org.cryptotrader.data.library.repository.NewsSentimentRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,15 @@ public class NewsSentimentService {
     private final NewsSentimentHarvesterClient sentimentHarvesterClient;
 
     @Autowired
-    public NewsSentimentService(NewsSentimentRepository newsSentimentRepository,
-                                NewsSentimentHarvesterClient sentimentHarvesterClient) {
+    public NewsSentimentService(final NewsSentimentRepository newsSentimentRepository,
+                                final NewsSentimentHarvesterClient sentimentHarvesterClient) {
         this.newsSentimentRepository = newsSentimentRepository;
         this.sentimentHarvesterClient = sentimentHarvesterClient;
     }
-    
-    public void saveFromRequest(NewsSentimentRequest request) {
+
+    public void saveFromRequest(final @NotNull NewsSentimentRequest request) {
         log.info("Saving news sentiment from request: \"{}\"", request.getTitle());
-        NewsSentiment newsSentiment = NewsSentiment.builder()
+        final NewsSentiment newsSentiment = NewsSentiment.builder()
                                                    .articleId(request.getArticleId())
                                                    .title(request.getTitle())
                                                    .publishedDate(request.getPublishDate())

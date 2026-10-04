@@ -4,9 +4,11 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
+import org.cryptotrader.api.library.model.dpop.DpopVerificationResult
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.RequestMethod
 import java.math.BigInteger
 import java.net.URI
 import java.nio.charset.StandardCharsets
@@ -34,15 +36,26 @@ import kotlin.math.abs
 class DpopVerifierService(
     @Value("\${security.auth.dpop.allowed-algs:ES256}") private val allowedAlgos: String
 ) {
-    data class VerificationResult(
-        val jwkThumbprint: String,
-        val jwtId: String?
-    )
-
     private val allowedAlgSet: Set<String> = this.allowedAlgos.split(",")
         .map { it.trim().uppercase(Locale.ROOT) }
         .filter { it.isNotEmpty() }
         .toSet()
+
+    fun verify(
+        dpopJwt: String?,
+        requestMethod: RequestMethod,
+        requestUri: String,
+        accessTokenForAth: String? = null,
+        skewToleranceSeconds: Long = 20
+    ): DpopVerificationResult? {
+        return this.verify(
+            dpopJwt,
+            requestMethod.name,
+            requestUri,
+            accessTokenForAth,
+            skewToleranceSeconds
+        )
+    }
 
     /**
      * Verify a DPoP proof and extract its key fingerprint and nonce.
@@ -64,7 +77,7 @@ class DpopVerifierService(
         requestUri: String,
         accessTokenForAth: String? = null,
         skewToleranceSeconds: Long = 20
-    ): VerificationResult? {
+    ): DpopVerificationResult? {
         if (dpopJwt.isNullOrBlank()) return null
         try {
             val decoded: DecodedJWT = JWT.decode(dpopJwt)
@@ -118,7 +131,7 @@ class DpopVerifierService(
 
             val jwtId: String? = verified.getClaim("jti").asString()
             val jwtThumbprint: String = this.computeJwkThumbprint(jwkMap) ?: return null
-            return VerificationResult(jwtThumbprint, jwtId)
+            return DpopVerificationResult(jwtThumbprint, jwtId)
         } catch (ex: Exception) {
             log.debug("DPoP verification failed", ex)
             return null

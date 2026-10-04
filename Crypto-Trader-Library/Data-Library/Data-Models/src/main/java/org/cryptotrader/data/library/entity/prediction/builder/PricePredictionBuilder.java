@@ -3,9 +3,11 @@ package org.cryptotrader.data.library.entity.prediction.builder;
 import org.cryptotrader.data.library.entity.prediction.ModelType;
 import org.cryptotrader.data.library.entity.prediction.PricePrediction;
 import org.cryptotrader.data.library.entity.prediction.builder.models.AbstractPricePrediction;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
+/** A builder factory for creating price prediction entities. */
 public class PricePredictionBuilder extends AbstractPricePrediction {
     private String currencyCode;
     private String currencyName;
@@ -29,67 +31,67 @@ public class PricePredictionBuilder extends AbstractPricePrediction {
     }
 
     @Override
-    public AbstractPricePrediction currencyCode(String currencyCode) {
+    public @NotNull AbstractPricePrediction currencyCode(final String currencyCode) {
         this.currencyCode = currencyCode;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction currencyName(String currencyName) {
+    public @NotNull AbstractPricePrediction currencyName(final String currencyName) {
         this.currencyName = currencyName;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction predictedPrice(double predictedPrice) {
+    public @NotNull AbstractPricePrediction predictedPrice(final double predictedPrice) {
         this.predictedPrice = predictedPrice;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction actualPrice(double actualPrice) {
+    public @NotNull AbstractPricePrediction actualPrice(final double actualPrice) {
         this.actualPrice = actualPrice;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction priceDifference(double priceDifference) {
+    public @NotNull AbstractPricePrediction priceDifference(final double priceDifference) {
         this.priceDifference = priceDifference;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction percentDifference(double percentDifference) {
+    public @NotNull AbstractPricePrediction percentDifference(final double percentDifference) {
         this.percentDifference = percentDifference;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction lastUpdated(LocalDateTime lastUpdated) {
+    public @NotNull AbstractPricePrediction lastUpdated(final LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction numRows(int numRows) {
+    public @NotNull AbstractPricePrediction numRows(final int numRows) {
         this.numRows = numRows;
         return this;
     }
 
     @Override
-    public AbstractPricePrediction modelType(String modelType) {
+    public @NotNull AbstractPricePrediction modelType(@NotNull final String modelType) {
         this.modelType = ModelType.from(modelType);
         return this;
     }
 
     @Override
-    public AbstractPricePrediction modelType(ModelType modelType) {
+    public @NotNull AbstractPricePrediction modelType(@NotNull final ModelType modelType) {
         this.modelType = modelType;
         return this;
     }
 
     @Override
-    public PricePrediction build() {
+    public @NotNull PricePrediction build() {
         return new PricePrediction(this.currencyCode,
                                    this.currencyName,
                                    this.predictedPrice,

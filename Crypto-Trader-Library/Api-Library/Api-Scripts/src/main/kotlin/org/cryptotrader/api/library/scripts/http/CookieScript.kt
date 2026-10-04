@@ -5,10 +5,6 @@ import java.time.Duration
 import java.time.Instant
 
 /**
- * Helper functions for building and clearing HttpOnly refresh cookies.
- */
-
-/**
  * Build a refresh cookie with optional environment-specific flags.
  *
  * @param name cookie name (e.g., __Host-rt)
@@ -25,7 +21,7 @@ fun buildRefreshCookie(
     secure: Boolean = true,
     sameSite: String = "Strict"
 ): ResponseCookie {
-    val maxAge = Duration.between(Instant.now(), expiresAt).seconds.coerceAtLeast(0)
+    val maxAge: Long = Duration.between(Instant.now(), expiresAt).seconds.coerceAtLeast(0)
     return ResponseCookie.from(name, value)
         .httpOnly(true)
         .secure(secure)

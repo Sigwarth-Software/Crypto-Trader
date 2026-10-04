@@ -6,7 +6,7 @@ import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logge
 import { LoginCredentials } from '@models/auth/LoginCredentials'
 
 import { AuthInputType } from '../auth-input/models/AuthInputType'
-import {LoggerContext} from "@models/logging/LoggerContext";
+import { LoggerContext } from '@models/logging/LoggerContext'
 
 /** A section for login in the auth console.
  *

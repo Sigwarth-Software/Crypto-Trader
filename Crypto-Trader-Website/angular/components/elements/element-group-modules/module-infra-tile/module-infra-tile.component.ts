@@ -1,7 +1,10 @@
 // module-infra-tile.component.ts
-import { Component, Input } from '@angular/core';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+import { Component, Input } from '@angular/core'
+import { ModuleInfo } from '@models/module/ModuleInfo'
 
+/**
+ * A component that displays a tile for a module's infrastructure.
+ */
 @Component({
     selector: 'module-infra-tile',
     standalone: false,
@@ -9,6 +12,6 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
     styleUrls: ['./module-infra-tile.component.scss'],
 })
 export class ModuleInfraTileComponent {
-    // Remove the non-null assertion.
-    @Input() public module!: ModuleInfo;
+    // TODO: Remove the non-null assertion.
+    @Input() public module!: ModuleInfo
 }

@@ -6,6 +6,7 @@ import ch.qos.logback.core.read.ListAppender;
 import org.cryptotrader.logging.config.aspect.TimeTrackingAspect;
 import org.cryptotrader.logging.properties.TimeTrackingProperties;
 import org.cryptotrader.universal.library.model.annotation.TimeTracked;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
@@ -18,13 +19,13 @@ class TimeTrackingAspectTest {
 
     @Test
     void logsExecutionTimeByDefault() {
-        Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        final Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
+        final ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
         logger.addAppender(appender);
 
         try {
-            TrackedService proxy = proxy(new TrackedService());
+            final TrackedService proxy = proxy(new TrackedService());
 
             assertThat(proxy.logged()).isEqualTo("tracked");
             assertThat(appender.list)
@@ -41,13 +42,13 @@ class TimeTrackingAspectTest {
 
     @Test
     void skipsLoggingWhenDisabled() {
-        Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
-        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        final Logger logger = (Logger) LoggerFactory.getLogger(TimeTrackingAspect.class);
+        final ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
         logger.addAppender(appender);
 
         try {
-            TrackedService proxy = proxy(new TrackedService());
+            final TrackedService proxy = proxy(new TrackedService());
 
             assertThat(proxy.silent()).isEqualTo("silent");
             assertThat(appender.list).isEmpty();
@@ -56,20 +57,20 @@ class TimeTrackingAspectTest {
         }
     }
 
-    private TrackedService proxy(TrackedService target) {
-        AspectJProxyFactory proxyFactory = new AspectJProxyFactory(target);
+    private @NotNull TrackedService proxy(final @NotNull TrackedService target) {
+        final AspectJProxyFactory proxyFactory = new AspectJProxyFactory(target);
         proxyFactory.addAspect(aspect);
         return (TrackedService) proxyFactory.getProxy();
     }
 
     static class TrackedService {
         @TimeTracked
-        public String logged() {
+        public @NotNull String logged() {
             return "tracked";
         }
 
         @TimeTracked(isLogged = false)
-        public String silent() {
+        public @NotNull String silent() {
             return "silent";
         }
     }

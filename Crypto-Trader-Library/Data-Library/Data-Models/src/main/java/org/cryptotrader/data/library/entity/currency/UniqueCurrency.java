@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cryptotrader.universal.library.entity.Identifiable;
 import org.cryptotrader.universal.library.model.annotation.Loggable;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +39,7 @@ public class UniqueCurrency extends Identifiable<String> {
     @Transient
     private Currency associatedCurrency;
 
-    public UniqueCurrency(Currency currency) {
+    public UniqueCurrency(final @NotNull Currency currency) {
         this.name = currency.getName();
         this.currency = currency.getCurrencyCode();
         this.urlPath = currency.getUrlPath();
@@ -53,7 +54,7 @@ public class UniqueCurrency extends Identifiable<String> {
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(final String id) {
         this.currency = id;
     }
 }

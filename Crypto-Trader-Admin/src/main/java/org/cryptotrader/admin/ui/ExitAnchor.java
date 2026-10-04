@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class ExitAnchor extends HBox {
     @FXML
-    ImageView anchorImage;
-    
+    private ImageView anchorImage;
+
     public ExitAnchor() {
         SpringContext.getBean(ComponentLoader.class).loadWithFxRoot(this, this);
     }
-    
+
     @FXML
     void initialize() {
         this.anchorImage.setImage(IconImageAssets.EXIT_DOOR_SVG);
@@ -31,7 +31,7 @@ public class ExitAnchor extends HBox {
         this.anchorImage.setFitWidth(80);
         this.anchorImage.setFitHeight(80);
     }
-    
+
     @FXML
     private void exit() {
         log.info("Exiting application");

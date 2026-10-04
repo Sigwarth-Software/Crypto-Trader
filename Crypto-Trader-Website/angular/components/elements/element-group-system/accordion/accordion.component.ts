@@ -1,8 +1,8 @@
 // accordion.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core'
 
-/** A popout accordion with hidden content.
- *
+/**
+ * A popout accordion with hidden content.
  */
 @Component({
     selector: 'accordion',
@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
     standalone: false,
 })
 export class AccordionComponent {
-    @Input() public title: string = '';
-    @Input() public description: string = '';
+    @Input() public title: string = ''
+    @Input() public description: string = ''
     constructor() {}
 }

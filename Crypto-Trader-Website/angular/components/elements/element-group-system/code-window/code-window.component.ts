@@ -1,7 +1,10 @@
 // code-window.component.ts
-import { Component, Input } from '@angular/core';
-import { CodeWindow } from '@models/promo/types';
+import { Component, Input } from '@angular/core'
+import { CodeWindow } from '@models/promo/types'
 
+/**
+ * A component for displaying a code window.
+ */
 @Component({
     selector: 'code-window',
     standalone: false,
@@ -9,5 +12,5 @@ import { CodeWindow } from '@models/promo/types';
     styleUrls: ['./code-window.component.scss'],
 })
 export class CodeWindowComponent {
-    @Input() public codeWindow: CodeWindow;
+    @Input() public codeWindow: CodeWindow
 }

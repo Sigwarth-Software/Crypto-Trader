@@ -8,45 +8,49 @@ import {
     OnDestroy,
     SimpleChanges,
     ViewChild,
-} from '@angular/core';
-import * as d3 from 'd3';
-import { Subject } from 'rxjs';
+} from '@angular/core'
+import * as d3 from 'd3'
+import { Subject } from 'rxjs'
 
-import { ChartService } from '@ui/chart.service';
-import { CurrencyFormatterService } from '@ui/currency-formatter.service';
+import { ChartService } from '@ui/chart.service'
+import { CurrencyFormatterService } from '@ui/currency-formatter.service'
 import {
     type ChartConfig,
+    type ChartDataPoint,
     type ChartScales,
     type ParsedPoint,
-} from '@models/chart/types';
+} from '@models/chart/types'
+import { DataLoader } from '@models/async/DataLoader'
 
 /** Abstract base for all chart components. Owns the shared SVG lifecycle
  *  (clear → dimension → scale → draw) and delegates series/label rendering
  *  to concrete subclasses.
  */
 @Directive()
-export abstract class BaseChartComponent
-    implements OnChanges, AfterViewInit, OnDestroy
+export abstract class BaseChartComponent<T extends ChartDataPoint = ChartDataPoint>
+    implements OnChanges, AfterViewInit, OnDestroy, DataLoader
 {
-    @Input() public config!: ChartConfig;
+    @Input() public config!: ChartConfig
+    @Input() public data: T[] = []
 
     @ViewChild('svgElement', { static: true })
-    protected svgRef!: ElementRef<SVGSVGElement>;
+    protected svgRef!: ElementRef<SVGSVGElement>
 
-    protected readonly destroy$: Subject<void> = new Subject<void>();
+    protected readonly destroy$: Subject<void> = new Subject<void>()
 
     constructor(
         protected readonly engine: ChartService,
-        protected readonly currencyFormatter: CurrencyFormatterService,
+        public readonly currencyFormatter: CurrencyFormatterService,
     ) {}
+    public isDataLoading: boolean
 
-    /** Re-render when the config input changes.
+    /** Re-render when the config or data input changes.
      *
      * @param changes
      */
     public ngOnChanges(changes: SimpleChanges): void {
-        if ('config' in changes) {
-            this.render();
+        if ('config' in changes || 'data' in changes) {
+            this.render()
         }
     }
 
@@ -54,59 +58,50 @@ export abstract class BaseChartComponent
      *
      */
     public ngAfterViewInit(): void {
-        this.render();
+        this.render()
     }
 
     /** Clean up subscriptions on destroy.
      *
      */
     public ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+        this.destroy$.next()
+        this.destroy$.complete()
     }
 
     /** Main render pipeline: clear SVG, set dimensions, parse data,
      *  create scales, then delegate to subclass hooks.
      */
     protected render(): void {
-        const svg: SVGSVGElement = this.svgRef?.nativeElement;
+        const svg: SVGSVGElement = this.svgRef?.nativeElement
         if (!svg) {
-            return;
+            return
         }
-        this.resetSVG(svg);
-        this.setDimensions(svg);
+        this.resetSVG(svg)
+        this.setDimensions(svg)
 
-        const { dimensions } = this.config;
-        const width: number =
-            dimensions.width - dimensions.margin.left - dimensions.margin.right;
-        const height: number =
-            dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
+        const { dimensions } = this.config
+        const width: number = dimensions.width - dimensions.margin.left - dimensions.margin.right
+        const height: number = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
 
         const graphic: d3.Selection<SVGGElement, unknown, null, undefined> = d3
             .select(svg)
             .append('g')
-            .attr(
-                'transform',
-                `translate(${dimensions.margin.left},${dimensions.margin.top})`,
-            );
+            .attr('transform', `translate(${dimensions.margin.left},${dimensions.margin.top})`)
 
-        if (!this.config.data || this.config.data.length === 0) {
-            return;
+        if (!this.data || this.data.length === 0) {
+            return
         }
 
-        const parsed: ParsedPoint[] = this.engine.parseData(this.config.data);
+        const parsed: ParsedPoint[] = this.engine.parseData(this.data)
         if (parsed.length === 0) {
-            return;
+            return
         }
 
-        const scales: ChartScales = this.engine.createScales(
-            parsed,
-            width,
-            height,
-        );
+        const scales: ChartScales = this.engine.createScales(parsed, width, height)
 
-        this.drawSeries(graphic, parsed, scales);
-        this.drawLabels(graphic, scales);
+        this.drawSeries(graphic, parsed, scales)
+        this.drawLabels(graphic, scales)
     }
 
     /** Draw the data series (line, area, etc.). Implemented by subclasses.
@@ -119,7 +114,7 @@ export abstract class BaseChartComponent
         graphic: d3.Selection<SVGGElement, unknown, null, undefined>,
         data: ParsedPoint[],
         scales: ChartScales,
-    ): void;
+    ): void
 
     /** Draw axis labels (price, time, etc.). Implemented by subclasses.
      *
@@ -129,16 +124,16 @@ export abstract class BaseChartComponent
     protected abstract drawLabels(
         graphic: d3.Selection<SVGGElement, unknown, null, undefined>,
         scales: ChartScales,
-    ): void;
+    ): void
 
     private setDimensions(svg: SVGSVGElement): void {
-        svg.setAttribute('width', String(this.config.dimensions.width));
-        svg.setAttribute('height', String(this.config.dimensions.height));
+        svg.setAttribute('width', String(this.config.dimensions.width))
+        svg.setAttribute('height', String(this.config.dimensions.height))
     }
 
     private resetSVG(svg: SVGSVGElement): void {
         while (svg.firstChild) {
-            svg.removeChild(svg.firstChild);
+            svg.removeChild(svg.firstChild)
         }
     }
 }

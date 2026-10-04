@@ -1,6 +1,9 @@
 // statistics.component.scss
 @use '../../../styles/global-variables' as vars;
+@use '../../../styles/global-mixins' as mixins;
 
 statistics {
-
+    .portfolio-history-statistic-chart {
+        @include mixins.flex(center, center, row)
+    }
 }

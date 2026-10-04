@@ -1,7 +1,6 @@
 // sparkline-chart.component.ts
+import { Selection } from 'd3'
 import { Component } from '@angular/core'
-import * as d3 from 'd3'
-
 import { BaseChartComponent } from '@components/elements/element-group-chart/base-chart/base-chart.component'
 import { ChartService } from '@ui/chart.service'
 import { CurrencyFormatterService } from '@ui/currency-formatter.service'
@@ -17,10 +16,7 @@ import { type ChartScales, type ParsedPoint } from '@models/chart/types'
     standalone: false,
 })
 export class SparklineComponent extends BaseChartComponent {
-    constructor(
-        engine: ChartService,
-        currencyFormatter: CurrencyFormatterService,
-    ) {
+    constructor(engine: ChartService, currencyFormatter: CurrencyFormatterService) {
         super(engine, currencyFormatter)
     }
 
@@ -31,7 +27,7 @@ export class SparklineComponent extends BaseChartComponent {
      * @param scales
      */
     protected drawSeries(
-        graphic: d3.Selection<SVGGElement, unknown, null, undefined>,
+        graphic: Selection<SVGGElement, unknown, null, undefined>,
         data: ParsedPoint[],
         scales: ChartScales,
     ): void {
@@ -50,7 +46,7 @@ export class SparklineComponent extends BaseChartComponent {
      * @param scales
      */
     protected drawLabels(
-        graphic: d3.Selection<SVGGElement, unknown, null, undefined>,
+        graphic: Selection<SVGGElement, unknown, null, undefined>,
         scales: ChartScales,
     ): void {
         if (!this.config.axes.showPriceLabels) {

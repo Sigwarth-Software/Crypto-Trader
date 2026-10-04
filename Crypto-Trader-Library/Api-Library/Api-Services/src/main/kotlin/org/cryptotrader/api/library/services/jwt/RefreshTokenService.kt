@@ -1,5 +1,8 @@
 package org.cryptotrader.api.library.services.jwt
 
+import org.cryptotrader.api.library.model.jwt.RefreshTokenIssue
+import org.cryptotrader.api.library.model.jwt.RefreshTokenRecord
+import org.cryptotrader.api.library.model.jwt.RotationResult
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -149,42 +152,6 @@ class RefreshTokenService(
     fun revokeByTokenId(id: String) {
         val record = this.records[id] ?: return
         this.revokeFamily(record.familyId)
-    }
-
-    /**
-     * Info needed to set the refresh cookie on the response.
-     * id goes into the cookie value; expiresAt is used to compute Max-Age; familyId groups a session.
-     */
-    data class RefreshTokenIssue(val id: String, val expiresAt: Instant, val familyId: String)
-
-    /**
-     * Result of trying to use a refresh token.
-     * - newRecord is present when rotation succeeded and should be set as the new cookie value.
-     * - reuseDetected=true signals we saw an old/invalid token and revoked the session family.
-     */
-    data class RotationResult(val newRecord: RefreshTokenRecord?, val reuseDetected: Boolean)
-
-    /**
-     * Server-side record for one refresh token in a family. This is not exposed to the browser.
-     * Fields:
-     * - id: opaque token identifier placed in the cookie
-     * - familyId: groups a user’s session across rotations
-     * - userId: owner of this session
-     * - jkt: browser key fingerprint this session is tied to (null for legacy)
-     * - expiresAt: natural expiry time
-     * - used: set to true once rotated to prevent reuse
-     * - revoked: set to true when the session is invalidated
-     */
-    data class RefreshTokenRecord(
-        val id: String,
-        val familyId: String,
-        val userId: Long,
-        val jkt: String?,
-        val expiresAt: Instant,
-        var used: Boolean,
-        var revoked: Boolean
-    ) {
-        fun isExpired(): Boolean = Instant.now().isAfter(this.expiresAt)
     }
 
     companion object {

@@ -13,14 +13,14 @@ public class VendorAssetTrader extends AssetTrader {
     private double vendorPrice;
     private double fee;
 
-    public VendorAssetTrader(PortfolioAsset asset) {
+    public VendorAssetTrader(final PortfolioAsset asset) {
         super(asset);
     }
 
     @Override
     public boolean trade() {
-        double currentPrice = this.asset.getCurrency().getUpdatedValue();
-        double vendorPrice = this.asset.getVendor().getAdjustedPrice(currentPrice);
+        final double currentPrice = this.asset.getCurrency().getUpdatedValue();
+        final double vendorPrice = this.asset.getVendor().getAdjustedPrice(currentPrice);
         this.currencyPrice = currentPrice;
         this.vendorPrice = vendorPrice;
         this.fee = this.vendorPrice - this.currencyPrice;
@@ -28,8 +28,8 @@ public class VendorAssetTrader extends AssetTrader {
     }
 
     @Override
-    public boolean trade(double vendorPrice) {
-        double targetPrice = this.asset.getTargetPrice();
+    public boolean trade(final double vendorPrice) {
+        final double targetPrice = this.asset.getTargetPrice();
         if (vendorPrice > targetPrice) {
             if (this.asset.canSell()) {
                 this.asset.setTargetPrice(vendorPrice);
@@ -47,9 +47,9 @@ public class VendorAssetTrader extends AssetTrader {
     }
 
     @Override
-    public void sell(double currentPrice) {
-        double valueInDollars = this.asset.getShares() * this.currencyPrice;
-        double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
+    public void sell(final double currentPrice) {
+        final double valueInDollars = this.asset.getShares() * this.currencyPrice;
+        final double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
         this.asset.setAssetWalletDollars(walletDollars);
         this.asset.updateValues();
         log.info("[{}] Selling {} shares of {} for {} dollars. Vendor, {}, had a fee of {} dollars.",
@@ -64,8 +64,8 @@ public class VendorAssetTrader extends AssetTrader {
     }
 
     @Override
-    public void buy(double currentPrice) {
-        double shares = this.asset.getAssetWalletDollars() / this.currencyPrice;
+    public void buy(final double currentPrice) {
+        final double shares = this.asset.getAssetWalletDollars() / this.currencyPrice;
         this.asset.setShares(shares);
         this.asset.updateValues();
         log.info("[{}] Buying {} shares of {} for {} dollars. Vendor, {}, had a fee of {} dollars.",

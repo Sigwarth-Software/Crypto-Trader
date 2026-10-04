@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Logger as TsLogger } from 'tslog';
-import { LogLayer, type LogLayerPlugin } from 'loglayer';
+import { LogLayer } from 'loglayer';
 import { TsLogTransport } from '@loglayer/transport-tslog';
-import { HttpTransport } from '@loglayer/transport-http';
+import { HttpPayloadTemplateParams, HttpTransport } from '@loglayer/transport-http'
 import { redactionPlugin } from '@loglayer/plugin-redaction';
 import { serializeError } from 'serialize-error';
 import { environment } from '@environments/environment';
@@ -21,7 +21,7 @@ function formatTimestamp(date: Date): string {
         hour12: false,
     };
     const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(date);
-    const get = (type: string) => parts.find((p) => p.type === type)!.value;
+    const get = (type: string): string => parts.find((p): boolean => p.type === type)!.value;
     return `${get('month')}/${get('day')}/${get('year')} - ${get('hour')}:${get('minute')}:${get('second')}`;
 }
 
@@ -63,8 +63,8 @@ const prettyLogger = new TsLogger({
  */
 @Injectable({ providedIn: 'root' })
 export class CryptoTraderLoggerService {
-    private readonly logger: LogLayer;
-    private context: string = 'System';
+    private readonly logger: LogLayer
+    private context: string = LoggerContext.System
 
     constructor() {
         this.logger = new LogLayer({
@@ -75,11 +75,16 @@ export class CryptoTraderLoggerService {
                 }),
                 new HttpTransport({
                     url: environment.logging.serverLoggingUrl || '/api/logs/website',
-                    headers: () => ({
+                    headers: (): Record<string, string> => ({
                         'content-type': 'application/json',
                         'x-client-app': 'crypto-trader-website',
                     }),
-                    payloadTemplate: ({ logLevel, message, data, error }) =>
+                    payloadTemplate: ({
+                        logLevel,
+                        message,
+                        data,
+                        error,
+                    }: HttpPayloadTemplateParams): string =>
                         JSON.stringify({
                             timestamp: formatTimestamp(new Date()),
                             level: logLevel,
@@ -105,26 +110,25 @@ export class CryptoTraderLoggerService {
             plugins: [
                 redactionPlugin({
                     paths: ['password', 'token', 'authorization', 'cookie'],
-                }) as LogLayerPlugin,
+                }),
             ],
-        });
+        })
     }
 
-    // TODO: Make an enum.
     /** Sets the context of the logger.
      *
      * @param context
      */
     public setContext(context: LoggerContext): void {
-        this.context = context;
-        prettyLogger.settings.name = context;
+        this.context = context
+        prettyLogger.settings.name = context
     }
 
     /** Gets the context of the logger.
      *
      */
     public getContext(): string {
-        return this.context;
+        return this.context
     }
 
     /** Logs a trace message.
@@ -132,8 +136,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public trace(message: string, metadataOrContext?: Record<string, unknown> | string): void {
-        this.getChain(this.getMetadata(metadataOrContext)).trace(message);
+    public trace(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
+        }
+        this.getChain(this.getMetadata(metadataOrContext)).trace(message)
     }
 
     /** Logs a debug message.
@@ -141,8 +151,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public debug(message: string, metadataOrContext?: Record<string, unknown> | string): void {
-        this.getChain(this.getMetadata(metadataOrContext)).debug(message);
+    public debug(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
+        }
+        this.getChain(this.getMetadata(metadataOrContext)).debug(message)
     }
 
     /** Logs an info message.
@@ -150,8 +166,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public info(message: string, metadataOrContext?: Record<string, unknown> | string): void {
-        this.getChain(this.getMetadata(metadataOrContext)).info(message);
+    public info(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
+        }
+        this.getChain(this.getMetadata(metadataOrContext)).info(message)
     }
 
     /** Logs a log message.
@@ -159,8 +181,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public log(message: string, metadataOrContext?: Record<string, unknown> | string): void {
-        this.getChain(this.getMetadata(metadataOrContext)).info(message);
+    public log(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
+        }
+        this.getChain(this.getMetadata(metadataOrContext)).info(message)
     }
 
     /** Logs a warning message.
@@ -168,8 +196,14 @@ export class CryptoTraderLoggerService {
      * @param message
      * @param metadataOrContext
      */
-    public warn(message: string, metadataOrContext?: Record<string, unknown> | string): void {
-        this.getChain(this.getMetadata(metadataOrContext)).warn(message);
+    public warn(
+        message: string | object,
+        metadataOrContext?: Record<string, unknown> | string,
+    ): void {
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
+        }
+        this.getChain(this.getMetadata(metadataOrContext)).warn(message)
     }
 
     /** Logs an error message.
@@ -179,15 +213,21 @@ export class CryptoTraderLoggerService {
      * @param metadataOrContext
      */
     public error(
-        message: string,
-        error?: Error,
+        message: string | object,
+        error?: Error | string,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
-        let chain: any = this.getChain(this.getMetadata(metadataOrContext));
-        if (error) {
-            chain = chain.withError(error);
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
         }
-        chain.error(message);
+        if (error && typeof error === 'string') {
+            error = new Error(error)
+        }
+        let chain: any = this.getChain(this.getMetadata(metadataOrContext))
+        if (error) {
+            chain = chain.withError(error)
+        }
+        chain.error(message)
     }
 
     /** Logs a fatal error message.
@@ -197,32 +237,38 @@ export class CryptoTraderLoggerService {
      * @param metadataOrContext
      */
     public fatal(
-        message: string,
-        error?: Error,
+        message: string | object,
+        error?: Error | string,
         metadataOrContext?: Record<string, unknown> | string,
     ): void {
-        let chain: any = this.getChain(this.getMetadata(metadataOrContext));
-        if (error) {
-            chain = chain.withError(error);
+        if (typeof message === 'object') {
+            message = JSON.stringify(message, null, 2)
         }
-        chain.fatal(message);
+        if (error && typeof error === 'string') {
+            error = new Error(error)
+        }
+        let chain: any = this.getChain(this.getMetadata(metadataOrContext))
+        if (error) {
+            chain = chain.withError(error)
+        }
+        chain.fatal(message)
     }
 
     private getMetadata(
         metadataOrContext?: Record<string, unknown> | string,
     ): Record<string, unknown> | undefined {
         if (typeof metadataOrContext === 'string') {
-            return { context: metadataOrContext };
+            return { context: metadataOrContext }
         }
-        return metadataOrContext;
+        return metadataOrContext
     }
 
     // TODO: Call with generic instead of any.
     private getChain(metadata?: Record<string, unknown>): any {
-        let chain: any = this.logger;
+        let chain: any = this.logger
         if (metadata) {
-            chain = chain.withMetadata(metadata);
+            chain = chain.withMetadata(metadata)
         }
-        return chain;
+        return chain
     }
 }

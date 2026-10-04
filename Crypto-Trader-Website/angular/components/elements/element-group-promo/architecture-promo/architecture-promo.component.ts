@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
-import { ArchitectureLayer } from '@components/elements/element-group-modules/module-architecture-map/module-architecture-map.component';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
+import { ArchitectureLayer } from '@components/elements/element-group-modules/module-architecture-map/module-architecture-map.component'
+
+/**
+ * A component for displaying an architecture promo.
+ */
 @Component({
     selector: 'architecture-promo',
     standalone: false,
@@ -9,9 +13,6 @@ import { ArchitectureLayer } from '@components/elements/element-group-modules/mo
 })
 export class ArchitecturePromoComponent {
     constructor() {}
-
-
-    protected readonly TagType = TagType;
 
     // TODO: Move to assets.
     protected readonly allModuleNames: string[] = [
@@ -34,7 +35,7 @@ export class ArchitecturePromoComponent {
         'Version',
         'Assets',
         'Docs',
-    ];
+    ]
 
     // TODO: Move to assets.
     protected readonly architectureLayers: ArchitectureLayer[] = [
@@ -77,5 +78,7 @@ export class ArchitecturePromoComponent {
                 { name: 'Docs', small: true },
             ],
         },
-    ];
+    ]
+
+    protected readonly TagType: typeof TagType = TagType
 }

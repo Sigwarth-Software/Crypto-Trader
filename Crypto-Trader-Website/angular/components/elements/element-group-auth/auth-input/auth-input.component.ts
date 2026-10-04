@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { InputType, TagType } from '@theoliverlear/angular-suite'
 
 import { AuthInputType } from './models/AuthInputType'
-import {PossibleString} from "@models/types"
+import { PossibleString } from '@models/types'
 
 /** A text input for authentication.
  *

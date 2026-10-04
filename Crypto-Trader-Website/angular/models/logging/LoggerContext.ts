@@ -1,3 +1,7 @@
+/**
+ * The context of a logger, used to categorize log messages or identify the
+ * source of log messages.
+ */
 export enum LoggerContext {
     Account = 'Account',
     Auth = 'Auth',
@@ -11,6 +15,7 @@ export enum LoggerContext {
     Home = 'Home',
     Navigation = 'Navigation',
     Portfolio = 'Portfolio',
+    Promo = 'Promo',
     Simulator = 'Simulator',
     Statistics = 'Statistics',
     System = 'System',

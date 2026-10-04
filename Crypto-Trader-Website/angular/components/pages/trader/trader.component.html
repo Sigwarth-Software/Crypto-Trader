@@ -1,9 +1,6 @@
 <!-- trader.component.html -->
 <ng-container>
-    <page-title-stripe
-        [pageTitle]="'Trader'"
-        [pageSubtitle]="'Browse and Filter Your Trade History.'"
-    />
+    <page-title-stripe [titleStripe]="traderPageTitleStripe"/>
     <!--    TODO: Put this on the left. If thin, then on top.-->
     <trader-event-filter-bar />
     @if (hasTradeEvents !== undefined && !hasTradeEvents) {

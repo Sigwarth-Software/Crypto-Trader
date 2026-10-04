@@ -39,7 +39,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.simulator.library.config",
 })
 public class CryptoTraderApiApplication {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SystemScripts.blockCurrencyLoading();
         SystemScripts.blockCurrencyHarvesting();
         SpringApplication.run(CryptoTraderApiApplication.class, args);

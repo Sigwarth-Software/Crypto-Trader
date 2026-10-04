@@ -19,28 +19,28 @@ public class LoggingTestWatcher implements TestWatcher {
     private static final String BOLD = "\u001B[1m";
 
     @Override
-    public void testSuccessful(ExtensionContext context) {
+    public void testSuccessful(final @NotNull ExtensionContext context) {
         logTestContext(context);
         log.info("{}[PASS]{}: {}.{}()", GREEN, RESET, getClassName(context), getMethodName(context));
         logSeparator();
     }
 
     @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
+    public void testFailed(final @NotNull ExtensionContext context, final Throwable cause) {
         logTestContext(context);
         log.error("{}[FAIL]{}: {}.{}() - {}", RED, RESET, getClassName(context), getMethodName(context), cause);
         logSeparator();
     }
 
     @Override
-    public void testDisabled(ExtensionContext context, Optional<String> reason) {
+    public void testDisabled(final @NotNull ExtensionContext context, final @NotNull Optional<String> reason) {
         logTestContext(context);
         log.warn("{}[DISABLED]{}: {}.{}() - {}", YELLOW, RESET, getClassName(context), getMethodName(context), reason.orElse("no reason"));
         logSeparator();
     }
 
     @Override
-    public void testAborted(ExtensionContext context, Throwable cause) {
+    public void testAborted(final @NotNull ExtensionContext context, final Throwable cause) {
         logTestContext(context);
         log.warn("{}[ABORTED]{}: {}.{}() - {}", BLUE, RESET, getClassName(context), getMethodName(context), cause);
         logSeparator();
@@ -50,15 +50,15 @@ public class LoggingTestWatcher implements TestWatcher {
         log.info("-".repeat(55));
     }
 
-    private static void logTestContext(ExtensionContext context) {
+    private static void logTestContext(final @NotNull ExtensionContext context) {
         log.info("{}{} - {}{}{}", BOLD, getClassName(context), UNDERLINE, context.getDisplayName(), RESET);
     }
 
-    private static @NotNull String getMethodName(ExtensionContext context) {
+    private static @NotNull String getMethodName(final @NotNull ExtensionContext context) {
         return context.getRequiredTestMethod().getName();
     }
 
-    private static @NotNull String getClassName(ExtensionContext context) {
+    private static @NotNull String getClassName(final @NotNull ExtensionContext context) {
         return context.getRequiredTestClass().getSimpleName();
     }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-library</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <name>Data-Library</name>
     <description>
         Parent library for data-related modules — core data access, persistence, and storage components.

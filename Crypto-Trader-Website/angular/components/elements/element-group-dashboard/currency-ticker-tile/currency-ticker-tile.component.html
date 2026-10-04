@@ -1,8 +1,7 @@
 <ng-container>
     <div class="currency-tile" (click)="onClick()">
-        <img
-            [src]="currency.logoUrl"
-            [alt]="currency.currencyName"
+        <ss-img
+            [imageAsset]="imageAsset"
             class="currency-logo"
         />
         <div class="currency-info">
@@ -12,7 +11,7 @@
         <div class="currency-performance">
             <performance-arrow
                 [performance]="performance"
-                [includePercent]="true"
+                [imageColor]="ImageColorVariation.Black"
             />
         </div>
     </div>

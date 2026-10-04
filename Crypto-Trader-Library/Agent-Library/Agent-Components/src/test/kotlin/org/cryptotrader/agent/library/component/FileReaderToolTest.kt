@@ -82,6 +82,17 @@ class FileReaderToolTest : CryptoTraderTest() {
                 fileReaderTool.readFile("../outside.txt")
             }
         }
+
+        @Test
+        @DisplayName("should throw security exception if attempting super-admin privileged access as a non-super-admin")
+        fun shouldThrowSecurityExceptionForSensitiveNonSuperAdminAccess() {
+            `when`(properties.sensitiveFilePatterns).thenReturn(setOf("*.sensitive"))
+            val sensitiveFile = tempDir.resolve("secret.sensitive")
+            sensitiveFile.writeText("top secret content")
+            assertThrows(SecurityException::class.java) {
+                fileReaderTool.readFile(sensitiveFile.toString())
+            }
+        }
     }
 
     @Nested

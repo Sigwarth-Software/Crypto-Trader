@@ -33,6 +33,7 @@ import { Portfolio, PortfolioAsset } from '@models/portfolio/types';
 import { DisplayCurrency, PerformanceRating } from '@models/currency/types';
 import { TradeEvent } from '@models/trader/types';
 import {LoggerContext} from "@models/logging/LoggerContext";
+import { dashboardPageTitleStripe } from '@assets/page-title-stripe.assets'
 
 export interface DashboardCard {
     label: string;
@@ -252,6 +253,10 @@ export class DashboardComponent implements OnInit {
         this.allTradeEventsService.getAllTradeEvents().subscribe({
             next: (response): void => {
                 this.log.info(`Fetched ${response.events.length} trade events`)
+                response.events = response.events.sort(
+                    (a: TradeEvent, b: TradeEvent): number =>
+                        new Date(b.tradeTime).getTime() - new Date(a.tradeTime).getTime(),
+                )
                 this.recentTrades = response.events.slice(0, 5)
                 this.isFetchingTrades = false
             },
@@ -409,4 +414,5 @@ export class DashboardComponent implements OnInit {
     }
 
     protected readonly TagType: typeof TagType = TagType
+    protected readonly dashboardPageTitleStripe = dashboardPageTitleStripe
 }

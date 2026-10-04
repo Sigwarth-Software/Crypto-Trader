@@ -9,37 +9,41 @@ import org.cryptotrader.data.library.entity.training.builder.models.AbstractTrai
 import org.cryptotrader.data.library.entity.training.specs.QueryLoad;
 import org.cryptotrader.data.library.entity.training.specs.TrainingDevice;
 import org.cryptotrader.data.library.entity.training.specs.TrainingQueryType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 
 public class TrainingSessionBuilder extends AbstractTrainingSession {
-    private Currency currency;
-    private PricePrediction prediction;
+    private @Nullable Currency currency;
+    private @Nullable PricePrediction prediction;
     private int numRows;
     private int epochsTrained;
     private int maxEpochs;
     private double startingLoss;
     private double finalLoss;
-    private ModelType modelType;
-    private TrainingQueryType queryType;
-    private LocalDateTime trainingStartTime;
-    private LocalDateTime trainingEndTime;
-    private LocalDateTime queryStartTime;
-    private LocalDateTime queryEndTime;
+    private @Nullable ModelType modelType;
+    private @Nullable TrainingQueryType queryType;
+    private @Nullable LocalDateTime trainingStartTime;
+    private @Nullable LocalDateTime trainingEndTime;
+    private @Nullable LocalDateTime queryStartTime;
+    private @Nullable LocalDateTime queryEndTime;
     private int sequenceLength;
     private int batchSize;
     private int dimensionWidth;
-    private QueryLoad queryLoad;
-    private Integer queryBatchSize;
-    private TrainingDevice trainingDevice;
-    private Integer shortSequenceLength;
-    private Integer mediumSequenceLength;
-    private Integer longSequenceLength;
+    private @Nullable QueryLoad queryLoad;
+    private @Nullable Integer queryBatchSize;
+    private @Nullable TrainingDevice trainingDevice;
+    private @Nullable Integer shortSequenceLength;
+    private @Nullable Integer mediumSequenceLength;
+    private @Nullable Integer longSequenceLength;
 
 
-    private final PricePredictionLookup pricePredictionLookup;
+    private final @NotNull PricePredictionLookup pricePredictionLookup;
 
-    public TrainingSessionBuilder(PricePredictionLookup pricePredictionLookup) {
+    public TrainingSessionBuilder(
+        @NotNull final PricePredictionLookup pricePredictionLookup
+    ) {
         this.currency = null;
         this.prediction = null;
         this.numRows = 0;
@@ -66,199 +70,201 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
-    public AbstractTrainingSession currency(Currency currency) {
+    public @NotNull AbstractTrainingSession currency(final Currency currency) {
         this.currency = currency;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession currency(String currencyCode) {
+    public @NotNull AbstractTrainingSession currency(final String currencyCode) {
         this.currency = Currency.fromExisting(currencyCode);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession prediction(PricePrediction prediction) {
+    public @NotNull AbstractTrainingSession prediction(final PricePrediction prediction) {
         this.prediction = prediction;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession prediction(Long predictionId) {
+    public @NotNull AbstractTrainingSession prediction(final @NotNull Long predictionId) {
         this.prediction = this.pricePredictionLookup.getById(predictionId);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession numRows(int numRows) {
+    public @NotNull AbstractTrainingSession numRows(final int numRows) {
         this.numRows = numRows;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession epochsTrained(int epochsTrained) {
+    public @NotNull AbstractTrainingSession epochsTrained(final int epochsTrained) {
         this.epochsTrained = epochsTrained;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession maxEpochs(int maxEpochs) {
+    public @NotNull AbstractTrainingSession maxEpochs(final int maxEpochs) {
         this.maxEpochs = maxEpochs;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession startingLoss(double startingLoss) {
+    public @NotNull AbstractTrainingSession startingLoss(final double startingLoss) {
         this.startingLoss = startingLoss;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession finalLoss(double finalLoss) {
+    public @NotNull AbstractTrainingSession finalLoss(final double finalLoss) {
         this.finalLoss = finalLoss;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession modelType(ModelType modelType) {
+    public @NotNull AbstractTrainingSession modelType(final @NotNull ModelType modelType) {
         this.modelType = modelType;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession modelType(String modelType) {
+    public @NotNull AbstractTrainingSession modelType(final @NotNull String modelType) {
         this.modelType = ModelType.from(modelType);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryType(TrainingQueryType queryType) {
+    public @NotNull AbstractTrainingSession queryType(final @NotNull TrainingQueryType queryType) {
         this.queryType = queryType;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryType(String queryType) {
+    public @NotNull AbstractTrainingSession queryType(final @NotNull String queryType) {
         this.queryType = TrainingQueryType.from(queryType);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingStartTime(LocalDateTime startTime) {
+    public @NotNull AbstractTrainingSession trainingStartTime(final LocalDateTime startTime) {
         this.trainingStartTime = startTime;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingStartTime(String startTime) {
+    public @NotNull AbstractTrainingSession trainingStartTime(final @NotNull String startTime) {
         this.trainingStartTime = LocalDateTime.parse(startTime);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingEndTime(LocalDateTime endTime) {
+    public @NotNull AbstractTrainingSession trainingEndTime(final LocalDateTime endTime) {
         this.trainingEndTime = endTime;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingEndTime(String endTime) {
+    public @NotNull AbstractTrainingSession trainingEndTime(final @NotNull String endTime) {
         this.trainingEndTime = LocalDateTime.parse(endTime);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryStartTime(LocalDateTime startTime) {
+    public @NotNull AbstractTrainingSession queryStartTime(final LocalDateTime startTime) {
         this.queryStartTime = startTime;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryStartTime(String startTime) {
+    public @NotNull AbstractTrainingSession queryStartTime(final @NotNull String startTime) {
         this.queryStartTime = LocalDateTime.parse(startTime);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryEndTime(LocalDateTime endTime) {
+    public @NotNull AbstractTrainingSession queryEndTime(final LocalDateTime endTime) {
         this.queryEndTime = endTime;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryEndTime(String endTime) {
+    public @NotNull AbstractTrainingSession queryEndTime(final @NotNull String endTime) {
         this.queryEndTime = LocalDateTime.parse(endTime);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession sequenceLength(int sequenceLength) {
+    public @NotNull AbstractTrainingSession sequenceLength(final int sequenceLength) {
         this.sequenceLength = sequenceLength;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession batchSize(int batchSize) {
+    public @NotNull AbstractTrainingSession batchSize(final int batchSize) {
         this.batchSize = batchSize;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession dimensionWidth(int dimensionWidth) {
+    public @NotNull AbstractTrainingSession dimensionWidth(final int dimensionWidth) {
         this.dimensionWidth = dimensionWidth;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryLoad(QueryLoad queryLoad) {
+    public @NotNull AbstractTrainingSession queryLoad(final @NotNull QueryLoad queryLoad) {
         this.queryLoad = queryLoad;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryLoad(String queryLoad) {
+    public @NotNull AbstractTrainingSession queryLoad(final @NotNull String queryLoad) {
         this.queryLoad = QueryLoad.from(queryLoad);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession queryBatchSize(Integer queryBatchSize) {
+    public @NotNull AbstractTrainingSession queryBatchSize(final Integer queryBatchSize) {
         this.queryBatchSize = queryBatchSize;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingDevice(TrainingDevice trainingDevice) {
+    public @NotNull AbstractTrainingSession trainingDevice(
+        final @NotNull TrainingDevice trainingDevice
+    ) {
         this.trainingDevice = trainingDevice;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession trainingDevice(String trainingDevice) {
+    public @NotNull AbstractTrainingSession trainingDevice(final @NotNull String trainingDevice) {
         this.trainingDevice = TrainingDevice.from(trainingDevice);
         return this;
     }
 
     @Override
-    public AbstractTrainingSession shortSequenceLength(Integer shortSequenceLength) {
+    public @NotNull AbstractTrainingSession shortSequenceLength(final Integer shortSequenceLength) {
         this.shortSequenceLength = shortSequenceLength;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession mediumSequenceLength(Integer mediumSequenceLength) {
+    public @NotNull AbstractTrainingSession mediumSequenceLength(final Integer mediumSequenceLength) {
         this.mediumSequenceLength = mediumSequenceLength;
         return this;
     }
 
     @Override
-    public AbstractTrainingSession longSequenceLength(Integer longSequenceLength) {
+    public @NotNull AbstractTrainingSession longSequenceLength(final Integer longSequenceLength) {
         this.longSequenceLength = longSequenceLength;
         return this;
     }
 
     @Override
-    public TrainingSession build() {
+    public @NotNull TrainingSession build() {
         return new TrainingSession(this.currency,
                                    this.prediction,
                                    this.numRows,

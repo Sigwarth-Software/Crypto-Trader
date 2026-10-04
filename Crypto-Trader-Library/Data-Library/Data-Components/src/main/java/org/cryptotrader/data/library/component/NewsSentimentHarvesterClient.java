@@ -8,6 +8,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.cryptotrader.data.library.communication.request.NewsSentimentHarvestRequest;
 import org.cryptotrader.data.library.communication.request.NewsSentimentTargetedHarvestRequest;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,13 +30,13 @@ public class NewsSentimentHarvesterClient {
     private final HttpPost httpPost;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
-    private final String analysisBaseUrl;
+    private final @NotNull String analysisBaseUrl;
 
     @Autowired
-    public NewsSentimentHarvesterClient(HttpPost httpPost,
-                                        ObjectMapper objectMapper,
-                                        CloseableHttpClient httpClient,
-                                        @Value("${cryptotrader.analysis.base-url:https://localhost:8000}") String analysisBaseUrl) {
+    public NewsSentimentHarvesterClient(final HttpPost httpPost,
+                                        final ObjectMapper objectMapper,
+                                        final CloseableHttpClient httpClient,
+                                        @Value("${cryptotrader.analysis.base-url:https://localhost:8000}") final String analysisBaseUrl) {
         this.httpPost = httpPost;
         this.initHeaders();
         this.analysisBaseUrl = normalizeBaseUrl(analysisBaseUrl);
@@ -53,53 +55,53 @@ public class NewsSentimentHarvesterClient {
         this.triggerHarvest(DEFAULT_REQUEST);
     }
 
-    public <T> String requestToJson(T request) {
+    public <T> @Nullable String requestToJson(final T request) {
         try {
             return this.objectMapper.writeValueAsString(request);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.error("Error converting request to JSON.", ex);
             return null;
         }
     }
 
-    public void triggerHarvest(NewsSentimentHarvestRequest request) {
+    public void triggerHarvest(final NewsSentimentHarvestRequest request) {
         this.httpPost.setURI(URI.create(this.getAnalysisUrl(DAILY_HARVEST_PATH)));
         log.info("Sending harvest request...");
-        String json = this.requestToJson(request);
+        final String json = this.requestToJson(request);
         try {
             this.httpPost.setEntity(new StringEntity(json));
-            CloseableHttpResponse response = this.httpClient.execute(this.httpPost);
+            final CloseableHttpResponse response = this.httpClient.execute(this.httpPost);
             log.info("Harvest request sent. Response status: {}", response.getStatusLine().getStatusCode());
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             log.error("Failed to set request entity.", exception);
         }
     }
 
-    public void triggerHarvest(NewsSentimentTargetedHarvestRequest request) {
+    public void triggerHarvest(final NewsSentimentTargetedHarvestRequest request) {
         this.httpPost.setURI(URI.create(this.getAnalysisUrl(TARGETED_HARVEST_PATH)));
         log.info("Sending targeted harvest request...");
-        String json = this.requestToJson(request);
+        final String json = this.requestToJson(request);
         try {
             this.httpPost.setEntity(new StringEntity(json));
-            CloseableHttpResponse response = this.httpClient.execute(this.httpPost);
+            final CloseableHttpResponse response = this.httpClient.execute(this.httpPost);
             log.info("Targeted harvest request sent. Response status: {}", response.getStatusLine().getStatusCode());
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             log.error("Failed to set request entity.", exception);
         }
     }
 
-    public static NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(LocalDate startDate,
-                                                                                LocalDate endDate) {
+    public static @NotNull NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(final LocalDate startDate,
+                                                                                         final LocalDate endDate) {
         return new NewsSentimentTargetedHarvestRequest(100, startDate, endDate, true);
     }
 
-    public void triggerTargetedHarvest(LocalDate startDate, LocalDate endDate) {
-        NewsSentimentTargetedHarvestRequest request = getTargetedHarvestRequest(startDate, endDate);
+    public void triggerTargetedHarvest(final LocalDate startDate, final LocalDate endDate) {
+        final NewsSentimentTargetedHarvestRequest request = getTargetedHarvestRequest(startDate, endDate);
         this.triggerHarvest(request);
     }
 
     public void backFillMonthly() {
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
         LocalDate startMonth = today;
         LocalDate endMonth = today.minusMonths(1);
         while (endMonth.isAfter(START_DATE)) {
@@ -110,7 +112,7 @@ public class NewsSentimentHarvesterClient {
     }
 
     public void backFillWeekly() {
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
         LocalDate startWeek = today;
         LocalDate endWeek = today.minusWeeks(1);
         while (endWeek.isAfter(START_DATE)) {
@@ -121,7 +123,7 @@ public class NewsSentimentHarvesterClient {
     }
 
     public void backFillDaily() {
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
         LocalDate startDay = today;
         LocalDate endDay = today.minusDays(1);
         while (endDay.isAfter(START_DATE)) {
@@ -131,11 +133,11 @@ public class NewsSentimentHarvesterClient {
         }
     }
 
-    private String getAnalysisUrl(String path) {
+    private @NotNull String getAnalysisUrl(final String path) {
         return this.analysisBaseUrl + path;
     }
 
-    private static String normalizeBaseUrl(String baseUrl) {
+    private static @NotNull String normalizeBaseUrl(final @Nullable String baseUrl) {
         if (baseUrl == null || baseUrl.isBlank()) {
             return "https://localhost:8000";
         }

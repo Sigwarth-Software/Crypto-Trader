@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-docs</artifactId>
     <name>Crypto-Trader-Docs</name>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <description>
         Documentation tooling — generates OpenAPI specs from running services and bundles the project docs site.
     </description>
@@ -1462,7 +1462,7 @@ This module aggregates documentation for child library modules. Select a sub-mod
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.4.20</version>
                 <executions>
                     <execution>
                         <id>kotlin-compile</id>

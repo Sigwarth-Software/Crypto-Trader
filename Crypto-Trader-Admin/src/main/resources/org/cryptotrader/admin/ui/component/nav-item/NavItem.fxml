@@ -10,5 +10,5 @@
 <fx:root type="HBox" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.cryptotrader.admin.ui.NavItem">
-    <Button onAction="#go" fx:id="actionButton"/>
+    <Button onAction="#navigate" fx:id="actionButton"/>
 </fx:root>

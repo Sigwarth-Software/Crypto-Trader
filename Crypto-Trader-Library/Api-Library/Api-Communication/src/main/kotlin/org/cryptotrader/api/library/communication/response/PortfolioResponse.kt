@@ -11,7 +11,7 @@ data class PortfolioResponse(
     val assets: List<PortfolioAssetResponse>
 ) {
     constructor(portfolio: Portfolio) : this(
-        portfolio.id,
+        portfolio.id ?: 0,
         portfolio.dollarBalance,
         portfolio.shareBalance,
         portfolio.totalWorth,

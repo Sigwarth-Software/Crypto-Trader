@@ -19,9 +19,13 @@ import { CurrencyDayPerformanceService } from '@http/currency/currency-day-perfo
 import { CurrencyHistoryService } from '@http/currency/currency-history.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { NumberTweenService } from '@ui/number-tween.service';
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { type ChartConfig, type SparkPoint } from '@models/chart/types';
 import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/currency/types';
+import { CurrencyImageService } from '@ui/currency-image.service'
+import { LoggerContext } from '@models/logging/LoggerContext'
+import {
+    BaseLoggingElementComponent
+} from '@components/elements/element-group-system/base-logging-element/base-logging-element.component'
 
 /** Displays a currency's price and performance.
  *
@@ -34,26 +38,31 @@ import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/curren
     providers: [CurrencyValueWsService],
 })
 export class DisplayCurrencyComponent
+    extends BaseLoggingElementComponent
     implements OnChanges, OnInit, AfterViewInit, OnDestroy, WebSocketCapable
 {
-    @Input() public currency: DisplayCurrency;
-    protected imageAsset: ImageAsset = defaultCurrencyIcon;
-    protected history: HistoryPoint[] = [];
+    @Input() public currency: DisplayCurrency
+    protected imageAsset: ImageAsset = defaultCurrencyIcon
+    protected history: HistoryPoint[] = []
+    protected chartData: SparkPoint[] = []
     protected performance: PerformanceRating = {
         rating: 'neutral',
         changePercent: '0%',
-    };
-    protected currencyPrice: string = '';
-    protected chartConfig: ChartConfig = { ...defaultChartConfig, dimensions: { ...defaultChartConfig.dimensions } };
-    private currentNumericPrice: number = 0;
-    private priceAnimationSub: Subscription | null = null;
+    }
+    protected currencyPrice: string = ''
+    protected chartConfig: ChartConfig = {
+        ...defaultChartConfig,
+        dimensions: { ...defaultChartConfig.dimensions },
+    }
+    private currentNumericPrice: number = 0
+    private priceAnimationSub: Subscription | null = null
 
     /** On upward ratings, point arrow upwards.
      * @returns {boolean} true if upward performance, false otherwise.
      */
     @HostBinding('class.up-performance')
     public get isUpPerformance(): boolean {
-        return this.performance.rating === 'up';
+        return this.performance.rating === 'up'
     }
 
     /** On downward ratings, point arrow downwards.
@@ -61,7 +70,7 @@ export class DisplayCurrencyComponent
      */
     @HostBinding('class.down-performance')
     public get isDownPerformance(): boolean {
-        return this.performance.rating === 'down';
+        return this.performance.rating === 'down'
     }
 
     constructor(
@@ -70,75 +79,81 @@ export class DisplayCurrencyComponent
         private readonly dayPerformance: CurrencyDayPerformanceService,
         private readonly currencyValueWebSocket: CurrencyValueWsService,
         private readonly numberTween: NumberTweenService,
-        private readonly logger: CryptoTraderLoggerService,
-    ) {}
+        private readonly currencyImageService: CurrencyImageService,
+    ) {
+        super()
+        this.loggerContext = LoggerContext.Currencies
+    }
 
-    public webSocketSubscriptions: Record<string, Subscription> = {};
+    public webSocketSubscriptions: Record<string, Subscription> = {}
     /** Initialize web sockets for currency value updates.
      *
      */
     public initializeWebSockets(): void {
-        this.logger.debug(`Initializing WebSockets for ${this.currency?.currencyCode}`, 'DisplayCurrency');
-        this.currencyValueWebSocket.connect();
+        this.log.debug(
+            `Initializing WebSockets for ${this.currency?.currencyCode}`,
+            'DisplayCurrency',
+        )
+        this.currencyValueWebSocket.connect()
         this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket
             .getMessages()
             .subscribe({
                 next: (message: string): void => {
-                    const numeric: number = Number(message);
+                    const numeric: number = Number(message)
                     if (!isFinite(numeric)) {
-                        this.logger.warn(`Received non-numeric price update: ${message}`, 'DisplayCurrency');
-                        return;
+                        this.log.warn(`Received non-numeric price update: ${message}`)
+                        return
                     }
-                    this.setCurrencyNumericPrice(numeric);
+                    this.setCurrencyNumericPrice(numeric)
                 },
                 error: (error: unknown): void => {
-                    this.logger.error(`WebSocket error for ${this.currency?.currencyCode}: ${error}`, undefined, 'DisplayCurrency');
+                    const errorToSave: Error =
+                        error instanceof Error ? error : new Error(String(error))
+                    this.log.error(
+                        `WebSocket error for ${this.currency?.currencyCode}: ${error}`,
+                        errorToSave,
+                    )
                 },
-            });
+            })
     }
 
-    /** Sets the chart properties based on historical data.
+    /** Sets the chart data based on historical data.
      *
      */
-    private setChartProperties(): void {
-        const prices: SparkPoint[] = this.history.map(
+    private setChartData(): void {
+        this.chartData = this.history.map(
             (point: HistoryPoint): SparkPoint => ({
                 date: point.date,
                 value: point.value,
             }),
-        );
-        this.chartConfig = {
-            ...defaultChartConfig,
-            dimensions: { ...defaultChartConfig.dimensions, margin: { ...defaultChartConfig.dimensions.margin } },
-            data: prices,
-        };
+        )
     }
 
     /** Initialize WebSockets on component initialization.
      *
      */
     public ngOnInit(): void {
-        this.logger.info(`DisplayCurrencyComponent initialized for ${this.currency?.currencyCode}`, 'DisplayCurrency');
-        this.initializeWebSockets();
+        this.log.info(`DisplayCurrencyComponent initialized for ${this.currency?.currencyCode}`)
+        this.initializeWebSockets()
     }
 
-    private readonly destroy$: Subject<void> = new Subject<void>();
+    private readonly destroy$: Subject<void> = new Subject<void>()
 
     /** Continuously update the currency price every 5 seconds via WebSocket.
      *
      */
     private continuouslyUpdatePrice(): void {
-        this.currencyValueWebSocket.sendMessage(this.currency.currencyCode);
+        this.currencyValueWebSocket.sendMessage(this.currency.currencyCode)
         interval(5000)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((): void => this.updatePrice());
+            .subscribe((): void => this.updatePrice())
     }
 
     /** Update price via WebSocket.
      *
      */
     private updatePrice(): void {
-        this.currencyValueWebSocket.sendMessage(this.currency.currencyCode);
+        this.currencyValueWebSocket.sendMessage(this.currency.currencyCode)
     }
 
     /** Update the currency price and numeric value.
@@ -147,12 +162,12 @@ export class DisplayCurrencyComponent
      */
     private setCurrencyPrice(price: string): void {
         if (this.currencyPrice === price) {
-            return;
+            return
         }
-        this.currencyPrice = price;
-        const numeric: number = this.parseNumeric(price);
+        this.currencyPrice = price
+        const numeric: number = this.parseNumeric(price)
         if (isFinite(numeric)) {
-            this.currentNumericPrice = numeric;
+            this.currentNumericPrice = numeric
         }
     }
 
@@ -162,43 +177,43 @@ export class DisplayCurrencyComponent
      * @param durationMs
      */
     private setCurrencyNumericPrice(nextPrice: number, durationMs: number = 500): void {
-        const from: number = this.getCurrentDisplayedNumeric();
+        const from: number = this.getCurrentDisplayedNumeric()
         if (!isFinite(from) || from === 0) {
-            this.currencyPrice = this.currencyFormatter.formatCurrency(nextPrice);
-            this.currentNumericPrice = nextPrice;
-            return;
+            this.currencyPrice = this.currencyFormatter.formatCurrency(nextPrice)
+            this.currentNumericPrice = nextPrice
+            return
         }
         if (nextPrice === from) {
-            return;
+            return
         }
 
         if (this.priceAnimationSub) {
-            this.priceAnimationSub.unsubscribe();
-            this.priceAnimationSub = null;
+            this.priceAnimationSub.unsubscribe()
+            this.priceAnimationSub = null
         }
-        this.currentNumericPrice = nextPrice;
+        this.currentNumericPrice = nextPrice
         this.priceAnimationSub = this.numberTween
             .animate(from, nextPrice, durationMs)
             .subscribe((value: number): void => {
-                this.currencyPrice = this.currencyFormatter.formatCurrency(value);
-            });
+                this.currencyPrice = this.currencyFormatter.formatCurrency(value)
+            })
     }
 
     private getCurrentDisplayedNumeric(): number {
         if (this.currencyPrice) {
-            const parsed: number = this.parseNumeric(this.currencyPrice);
-            if (isFinite(parsed)) return parsed;
+            const parsed: number = this.parseNumeric(this.currencyPrice)
+            if (isFinite(parsed)) return parsed
         }
 
         if (isFinite(this.currentNumericPrice) && this.currentNumericPrice !== 0) {
-            return this.currentNumericPrice;
+            return this.currentNumericPrice
         }
-        return this.currency ? Number(this.currency.value) : 0;
+        return this.currency ? Number(this.currency.value) : 0
     }
 
     private parseNumeric(formatted: string): number {
-        const cleanedValue: string = formatted.replace(/[^0-9.+-]/g, '');
-        return Number(cleanedValue);
+        const cleanedValue: string = formatted.replace(/[^0-9.+-]/g, '')
+        return Number(cleanedValue)
     }
 
     /** Get the currency price as a formatted string.
@@ -206,9 +221,9 @@ export class DisplayCurrencyComponent
      */
     protected getCurrencyPrice(): string {
         if (this.currency) {
-            return this.currencyFormatter.formatCurrency(this.currency.value);
+            return this.currencyFormatter.formatCurrency(this.currency.value)
         } else {
-            return this.currencyFormatter.formatCurrency(0);
+            return this.currencyFormatter.formatCurrency(0)
         }
     }
 
@@ -218,20 +233,20 @@ export class DisplayCurrencyComponent
      */
     public ngOnChanges(changes: SimpleChanges): void {
         if ('currency' in changes) {
-            void this.resolveImageAsset();
-            this.fetchHistory();
-            const initValue: string = this.getCurrencyPrice();
-            this.currencyPrice = initValue;
-            const initNumericValue: number = this.parseNumeric(initValue);
+            void this.resolveImageAsset()
+            this.fetchHistory()
+            const initValue: string = this.getCurrencyPrice()
+            this.currencyPrice = initValue
+            const initNumericValue: number = this.parseNumeric(initValue)
             if (isFinite(initNumericValue)) {
-                this.currentNumericPrice = initNumericValue;
+                this.currentNumericPrice = initNumericValue
             }
         }
-        if ('history' in changes) {
-            this.setChartProperties();
+        if ('history' in changes || 'chartData' in changes) {
+            this.setChartData()
         }
         if ('performance' in changes) {
-            this.updatePerformance();
+            this.updatePerformance()
         }
     }
 
@@ -239,32 +254,34 @@ export class DisplayCurrencyComponent
      *
      */
     public ngAfterViewInit(): void {
-        void this.resolveImageAsset();
-        this.updatePerformance();
-        this.continuouslyUpdatePrice();
-        // this.setChartProperties();
+        void this.resolveImageAsset()
+        this.updatePerformance()
+        this.continuouslyUpdatePrice()
     }
 
     /** Clean up subscriptions and WebSocket connections on component destruction.
      *
      */
     public ngOnDestroy(): void {
-        this.logger.debug(`Destroying DisplayCurrencyComponent for ${this.currency?.currencyCode}`, 'DisplayCurrency');
-        this.destroy$.next();
-        this.destroy$.complete();
+        this.log.debug(
+            `Destroying DisplayCurrencyComponent for ${this.currency?.currencyCode}`
+        )
+        this.destroy$.next()
+        this.destroy$.complete()
 
         Object.values(this.webSocketSubscriptions).forEach((sub: Subscription): void =>
             sub?.unsubscribe(),
-        );
-        this.webSocketSubscriptions = {};
+        )
+        this.webSocketSubscriptions = {}
         if (this.priceAnimationSub) {
-            this.priceAnimationSub.unsubscribe();
-            this.priceAnimationSub = null;
+            this.priceAnimationSub.unsubscribe()
+            this.priceAnimationSub = null
         }
         try {
-            this.currencyValueWebSocket.disconnect();
+            this.currencyValueWebSocket.disconnect()
         } catch (error) {
-            console.error('Failed to disconnect from WebSocket', error);
+            const errorToSave: Error = error instanceof Error ? error : new Error(String(error))
+            this.log.error('Failed to disconnect from WebSocket', errorToSave)
         }
     }
 
@@ -275,9 +292,11 @@ export class DisplayCurrencyComponent
         this.dayPerformance
             .getCurrencyDayPerformance(this.currency.currencyCode)
             .subscribe((performance: PerformanceRating): void => {
-                this.logger.debug(`Performance updated for ${this.currency.currencyCode}: ${performance.changePercent}`, 'DisplayCurrency');
-                this.performance = performance;
-            });
+                this.log.debug(
+                    `Performance updated for ${this.currency.currencyCode}: ${performance.changePercent}`,
+                )
+                this.performance = performance
+            })
     }
 
     /** Fetch the currency's historical price data if the currency is valid.
@@ -285,62 +304,38 @@ export class DisplayCurrencyComponent
      */
     protected fetchHistory(): void {
         if (!this.isCurrencyInvalid()) {
-            void this.listenForCurrencyHistory();
+            void this.listenForCurrencyHistory()
         }
     }
 
     private listenForCurrencyHistory(): void {
-        this.logger.debug(`Fetching history for ${this.currency.currencyCode}`, 'DisplayCurrency');
+        this.log.debug(`Fetching history for ${this.currency.currencyCode}`)
         this.historyService
             .getHistory(this.currency.currencyCode, 24, 60)
             .subscribe((points: HistoryPoint[]): void => {
-                this.logger.debug(`History received for ${this.currency.currencyCode}: ${points.length} points`, 'DisplayCurrency');
-                this.history = points;
-                this.setChartProperties();
-            });
+                this.log.debug(
+                    `History received for ${this.currency.currencyCode}: ${points.length} points`,
+                )
+                this.history = points
+                this.setChartData()
+            })
     }
 
     private isCurrencyInvalid(): boolean {
-        return !this.currency || !this.currency.currencyCode;
-    }
-
-    // TODO: Use service method to get image.
-    /** Get the currency's image asset.
-     *
-     */
-    protected async resolveImageAsset(): Promise<void> {
-        if (!this.currency) {
-            return;
-        }
-        const imageAsset: ImageAsset = {
-            src: this.currency.logoUrl,
-            alt: this.currency.currencyName + ' logo',
-        };
-        const imageLoads: boolean = await this.imageLoads(imageAsset.src);
-        if (imageLoads) {
-            this.imageAsset = imageAsset;
-        } else {
-            this.imageAsset = defaultCurrencyIcon;
-        }
+        return !this.currency || !this.currency.currencyCode
     }
 
     /**
-     *
-     * @param src
+     * Sets the currency's image asset.
      */
-    protected async imageLoads(src: string): Promise<boolean> {
-        return new Promise<boolean>((resolve): void => {
-            const image = new Image();
-            image.onload = (): void => {
-                resolve(true);
-            };
-            image.onerror = (): void => {
-                resolve(false);
-            };
-            image.src = src;
-        });
+    protected async resolveImageAsset(): Promise<void> {
+        if (!this.currency) {
+            this.imageAsset = defaultCurrencyIcon
+            return
+        }
+        this.imageAsset = await this.currencyImageService.resolveImageAsset(this.currency)
     }
 
-    protected readonly TagType: typeof TagType = TagType;
-    protected readonly ElementSize: typeof ElementSize = ElementSize;
+    protected readonly TagType: typeof TagType = TagType
+    protected readonly ElementSize: typeof ElementSize = ElementSize
 }

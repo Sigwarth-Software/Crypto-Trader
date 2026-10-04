@@ -9,7 +9,6 @@ import org.cryptotrader.console.library.communication.response.ConsoleCommandRes
 import org.cryptotrader.console.library.infrastructure.annotation.CommandHelp
 import org.cryptotrader.console.library.model.command.PortfolioCommand
 import org.cryptotrader.console.library.services.models.BaseConsoleCommandRunner
-import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

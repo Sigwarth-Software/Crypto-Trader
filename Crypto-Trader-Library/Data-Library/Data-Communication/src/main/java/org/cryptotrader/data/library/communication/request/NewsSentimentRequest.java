@@ -15,17 +15,17 @@ public class NewsSentimentRequest {
     private double compositeScore;
     private double cryptoRelevance;
     private String lastUpdated;
-    public NewsSentimentRequest(Long articleId,
-                                String title,
-                                String publishDate,
-                                String source,
-                                String url,
-                                double positiveScore,
-                                double neutralScore,
-                                double negativeScore,
-                                double compositeScore,
-                                double cryptoRelevance,
-                                String lastUpdated) {
+    public NewsSentimentRequest(final Long articleId,
+                                final String title,
+                                final String publishDate,
+                                final String source,
+                                final String url,
+                                final double positiveScore,
+                                final double neutralScore,
+                                final double negativeScore,
+                                final double compositeScore,
+                                final double cryptoRelevance,
+                                final String lastUpdated) {
         this.articleId = articleId;
         this.title = title;
         this.publishDate = publishDate;

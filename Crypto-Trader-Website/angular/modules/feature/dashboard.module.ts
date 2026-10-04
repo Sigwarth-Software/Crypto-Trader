@@ -10,6 +10,7 @@ import { CurrencyTickerTileComponent } from '@components/elements/element-group-
 import { QuickActionCardComponent } from '@components/elements/element-group-dashboard/quick-action-card/quick-action-card.component';
 import { TradeRowComponent } from '@components/elements/element-group-dashboard/trade-row/trade-row.component';
 import { DashboardComponent } from '@components/pages/dashboard/dashboard.component';
+import {CurrencyModule} from "@modules/feature/currency.module";
 
 const dashboardComponents = [
     AllocationBadgeComponent,
@@ -27,6 +28,7 @@ const dashboardComponents = [
         BaseChartDirective,
         AngularSuiteModule,
         UniversalModule,
+        CurrencyModule,
     ],
     exports: [...dashboardComponents],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

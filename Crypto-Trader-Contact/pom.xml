@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
     </parent>
 
     <artifactId>crypto-trader-contact</artifactId>
     <name>Crypto-Trader-Contact</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Notification and messaging microservice — email, SMS, and in-app alerts with templating, delivery, and tracking.
     </description>
@@ -302,7 +302,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.4.20</version>
                 <executions>
                     <execution>
                         <id>kotlin-compile</id>

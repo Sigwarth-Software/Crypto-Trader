@@ -23,7 +23,7 @@ android {
     }
 
     buildFeatures { compose = true }
-    composeOptions { kotlinCompilerExtensionVersion = "1.5.15" }
+    composeOptions { kotlinCompilerExtensionVersion = "1.5.16" }
 
     packaging {
         resources {
@@ -66,8 +66,8 @@ val vicoVersion = "2.0.0"
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     // Shared library modules
-    implementation("org.cryptotrader:api-communication:0.0.6")
-    testImplementation("org.cryptotrader:testing-infrastructure:0.0.1")
+    implementation("org.cryptotrader:api-communication:0.0.8")
+    testImplementation("org.cryptotrader:testing-infrastructure:0.0.3")
     // Compose BOM and core UI
     implementation(platform("androidx.compose:compose-bom:2024.09.01"))
     implementation("androidx.activity:activity-compose:1.9.2")

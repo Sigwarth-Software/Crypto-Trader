@@ -4,6 +4,7 @@ module org.cryptotrader.version.library.model {
     requires org.slf4j;
     requires java.xml;
     requires kotlin.stdlib;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.version.library.model.config;
     exports org.cryptotrader.version.library.model.dependency;

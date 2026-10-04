@@ -38,8 +38,8 @@ public class TinkKeyset extends Identifiable<String> {
         this(null, null);
     }
 
-    public TinkKeyset(String id, String keysetJson) {
-        Instant now = Instant.now();
+    public TinkKeyset(final String id, final String keysetJson) {
+        final Instant now = Instant.now();
         this.id = id;
         this.keysetJson = keysetJson;
         this.createdAt = now;
@@ -52,7 +52,7 @@ public class TinkKeyset extends Identifiable<String> {
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 }

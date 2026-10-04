@@ -3,10 +3,7 @@
 <!--    TODO: Extract components.-->
 
     <!-- ── 1. Page Header ── -->
-    <page-title-stripe
-        [pageTitle]="'Dashboard'"
-        [pageSubtitle]="'Your Crypto Trader hub — everything in one place.'"
-    />
+    <page-title-stripe [titleStripe]="dashboardPageTitleStripe"/>
 
     <!-- ── 2. Portfolio Snapshot Strip ── -->
     @if (isFetching) {

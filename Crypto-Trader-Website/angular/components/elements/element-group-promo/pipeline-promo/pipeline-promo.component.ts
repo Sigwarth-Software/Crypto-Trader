@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
-import { analysisCodeSnippet, analysisCodeWindow } from '@assets/code-window.assets';
-import {
-    engineModuleIcon,
-    analysisModuleIcon,
-    dataModuleIcon,
-} from '@assets/image.assets';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
+import { analysisCodeSnippet, analysisCodeWindow } from '@assets/code-window.assets'
+import { engineModuleIcon, analysisModuleIcon, dataModuleIcon } from '@assets/image.assets'
+import { ModuleInfo } from '@models/module/ModuleInfo'
+import { CodeWindow } from '@models/promo/types'
+
+/**
+ * A component for displaying a pipeline promo.
+ */
 @Component({
     selector: 'pipeline-promo',
     standalone: false,
@@ -15,10 +16,6 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
 })
 export class PipelinePromoComponent {
     constructor() {}
-
-
-    protected readonly TagType = TagType;
-    protected readonly analysisCodeSnippet = analysisCodeSnippet;
 
     // TODO: Move to assets.
     protected readonly pipelineModules: ModuleInfo[] = [
@@ -64,6 +61,9 @@ export class PipelinePromoComponent {
             ],
             techStack: ['Django', 'PostgreSQL', 'REST API'],
         },
-    ];
-    protected readonly analysisCodeWindow = analysisCodeWindow;
+    ]
+
+    protected readonly analysisCodeWindow: CodeWindow = analysisCodeWindow
+    protected readonly TagType: typeof TagType = TagType
+    protected readonly analysisCodeSnippet: string = analysisCodeSnippet
 }

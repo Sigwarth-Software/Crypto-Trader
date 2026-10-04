@@ -2,14 +2,14 @@
 @if (isVisible) {
     <ng-container>
         <div class="chat-fab" (click)="toggle()">
-            <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-fab-icon" />
+            <ss-img [imageAsset]="chatIcon" class="chat-fab-icon" />
         </div>
     </ng-container>
     @if (isOpen) {
         <ng-container>
             <div class="chat-overlay-panel">
                 <div class="chat-overlay-header">
-                    <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-overlay-header-icon" />
+                    <ss-img [imageAsset]="chatIcon" class="chat-overlay-header-icon" />
                     <eyebrow-label [text]="'QUICK CHAT'" />
                     <button class="chat-overlay-close" (click)="toggle()">
                         <i class="fa-solid fa-xmark"></i>
@@ -20,7 +20,9 @@
                         <chat-bubble [message]="message" />
                     }
                     @if (isLoading) {
-                        <loading-wheel />
+                        <loading-wheel
+                            [colorScheme]="LoadingWheelColorScheme.TERMINAL"
+                            [size]="ElementSize.SMALL"/>
                     }
                 </div>
                 <chat-input

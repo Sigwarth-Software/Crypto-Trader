@@ -2,6 +2,7 @@ package org.cryptotrader.security.library.infrastructure.config;
 
 import org.cryptotrader.security.library.infrastructure.IpBanFilter;
 import org.cryptotrader.security.library.service.model.IpBanManager;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -15,8 +16,8 @@ public class IpBanAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public IpBanFilter ipBanFilter(IpBanManager ipBanService,
-                                   @Value("${security.ip-ban.block-status:429}") int blockStatus) {
+    public @NotNull IpBanFilter ipBanFilter(final @NotNull IpBanManager ipBanService,
+                                            @Value("${security.ip-ban.block-status:429}") final int blockStatus) {
         return new IpBanFilter(ipBanService, blockStatus);
     }
 }

@@ -11,7 +11,7 @@ public class NamedTimeValueResponse extends TimeValueResponse {
         this.name = "";
     }
 
-    public NamedTimeValueResponse(String name, String timestamp, double value) {
+    public NamedTimeValueResponse(final String name, final String timestamp, final double value) {
         super(timestamp, value);
         this.name = name;
     }

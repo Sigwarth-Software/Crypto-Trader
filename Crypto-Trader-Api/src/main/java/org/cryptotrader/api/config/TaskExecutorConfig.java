@@ -1,5 +1,7 @@
 package org.cryptotrader.api.config;
+
 //=================================-Imports-==================================
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -7,19 +9,28 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+/** Configuration for the default task executor. */
 @Configuration
 @EnableAsync
 @Profile("!beast")
 public class TaskExecutorConfig {
+    private static final String THREAD_NAME_PREFIX = "Default-";
     //==============================-Beans-===================================
 
     //---------------------Thread-Pool-Task-Executor--------------------------
+
+    /**
+     * Bean for the default thread pool task executor.
+     *
+     * @return The default thread pool task executor.
+     */
     @Bean(name = "taskExecutor")
-    public TaskExecutor threadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    public @NotNull TaskExecutor threadPoolTaskExecutor() {
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // TODO: Make these configurable values.
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
-        executor.setThreadNamePrefix("default_task_executor_thread");
+        executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
         executor.initialize();
         return executor;
     }

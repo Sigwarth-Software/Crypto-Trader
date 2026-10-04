@@ -13,26 +13,28 @@ on:
 jobs:
   publish-desktop-styles:
     if: ${{ github.event_name == 'release' || github.event.inputs.package == 'all' || github.event.inputs.package == 'desktop-styles' || github.event.inputs.package == '' }}
-    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
+    uses: Sigwarth-Software/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
     permissions:
       contents: read
       packages: write
     with:
       package_name: '@Sigwarth-Software/desktop-styles'
       package_dir: 'Crypto-Trader-Library/Desktop-Library/Desktop-Styles'
+      scope: '@Sigwarth-Software'
       scss_package: true
       node_version: '20'
     secrets: inherit
 
   publish-crypto-trader-website:
     if: ${{ github.event_name == 'release' || github.event.inputs.package == 'all' || github.event.inputs.package == 'crypto-trader-website' }}
-    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
+    uses: Sigwarth-Software/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
     permissions:
       contents: read
       packages: write
     with:
       package_name: '@Sigwarth-Software/crypto-trader-website'
       package_dir: 'Crypto-Trader-Website'
+      scope: '@Sigwarth-Software'
       scss_package: false
       build_script: 'npm run build'
       dist_dir: 'dist'

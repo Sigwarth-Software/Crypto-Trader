@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -15,13 +15,13 @@
     <description>
         Reusable and injectable JavaFX components for Crypto Trader desktop applications.
     </description>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>
         <javafx.version>21.0.6</javafx.version>
-        <kotlin.version>2.2.0</kotlin.version>
+        <kotlin.version>2.4.20</kotlin.version>
         <dokka.skip>false</dokka.skip>
         <argLine/>
     </properties>

@@ -10,6 +10,8 @@
     <springProperty scope="context" name="ct_file_pattern" source="cryptotrader.logging.file-pattern"/>
     <springProperty scope="context" name="ct_error_file_pattern" source="cryptotrader.logging.error-file-pattern"/>
     <springProperty scope="context" name="ct_exception_word" source="cryptotrader.logging.exception-conversion-word"/>
+    <springProperty scope="context" name="ct_app_name" source="spring.application.name" defaultValue="unknown-service"/>
+    <springProperty scope="context" name="ct_persistence_mode" source="cryptotrader.logging.persistence.mode" defaultValue="DATABASE"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -50,6 +52,13 @@
         </filter>
     </appender>
 
+    <appender name="APPLICATION_LOG_KAFKA" class="org.cryptotrader.logging.logback.ApplicationLogKafkaAppender"/>
+
+    <appender name="ASYNC_APPLICATION_LOG_KAFKA" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="APPLICATION_LOG_KAFKA"/>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
     <logger name="org.apache.kafka" level="WARN"/>
     <logger name="org.apache.kafka.clients" level="WARN"/>
     <logger name="org.apache.kafka.common.metrics" level="WARN"/>
@@ -65,5 +74,6 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ALL_LOGS"/>
         <appender-ref ref="BUGS_LOGS"/>
+        <appender-ref ref="ASYNC_APPLICATION_LOG_KAFKA"/>
     </logger>
 </configuration>

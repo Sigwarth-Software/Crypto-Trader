@@ -2,9 +2,10 @@
  * The color scheme of the loading wheel by SCSS class.
  */
 export enum LoadingWheelColorScheme {
-    OCEAN = 'color-ocean',
-    SUNSET = 'color-sunset',
-    GOLDEN = 'color-golden',
-    EMERALD = 'color-emerald',
-    FROST = 'color-frost',
+    Ocean = 'color-ocean',
+    Sunset = 'color-sunset',
+    Golden = 'color-golden',
+    Terminal = 'color-terminal',
+    Emerald = 'color-emerald',
+    Frost = 'color-frost',
 }

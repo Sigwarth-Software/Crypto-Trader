@@ -4,7 +4,9 @@ import org.cryptotrader.contact.library.entity.CryptoTraderMailer;
 import org.cryptotrader.contact.library.entity.Email;
 import org.cryptotrader.contact.library.entity.EmailType;
 import org.cryptotrader.contact.library.entity.builder.models.AbstractEmail;
+import org.jetbrains.annotations.NotNull;
 
+/** A builder factory for creating email entities. */
 public class EmailBuilder extends AbstractEmail {
     private CryptoTraderMailer mailer;
     private String toAddress;
@@ -18,46 +20,54 @@ public class EmailBuilder extends AbstractEmail {
     }
 
     @Override
-    public AbstractEmail cryptoTraderMailer(CryptoTraderMailer mailer) {
+    public @NotNull AbstractEmail cryptoTraderMailer(@NotNull final CryptoTraderMailer mailer) {
         this.mailer = mailer;
         return this;
     }
 
     @Override
-    public AbstractEmail toAddress(String toAddress) {
+    public @NotNull AbstractEmail toAddress(final String toAddress) {
         this.toAddress = toAddress;
         return this;
     }
 
     @Override
-    public AbstractEmail subject(String subject) {
+    public @NotNull AbstractEmail subject(final String subject) {
         this.subject = subject;
         return this;
     }
 
     @Override
-    public AbstractEmail body(String body) {
+    public @NotNull AbstractEmail body(final String body) {
         this.body = body;
         return this;
     }
 
     @Override
-    public AbstractEmail type(EmailType type) {
+    public @NotNull AbstractEmail type(@NotNull final EmailType type) {
         this.type = type;
         return this;
     }
 
     @Override
-    public Email build() {
+    public @NotNull Email build() {
         if (this.toAddress == null || this.toAddress.isEmpty()) {
             throw new IllegalStateException("Recipient address must be provided");
         }
+
         if (this.subject == null || this.subject.isEmpty()) {
             throw new IllegalStateException("Subject must be provided");
         }
+
         if (this.body == null || this.body.isEmpty()) {
             throw new IllegalStateException("Body must be provided");
         }
-        return new Email(this.mailer, this.toAddress, this.subject, this.body, this.type);
+        return new Email(
+            this.mailer,
+            this.toAddress,
+            this.subject,
+            this.body,
+            this.type
+        );
     }
 }

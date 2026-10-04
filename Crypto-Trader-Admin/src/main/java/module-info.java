@@ -47,6 +47,7 @@ open module org.cryptotrader.admin {
     requires org.cryptotrader.security.library.config;
     requires spring.data.jpa;
     requires org.apache.tomcat.embed.core;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.admin;
     exports org.cryptotrader.admin.controller;

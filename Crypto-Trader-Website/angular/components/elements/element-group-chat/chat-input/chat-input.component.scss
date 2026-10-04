@@ -5,44 +5,51 @@
 
 chat-input {
     display: block;
-    padding: vars.$three-quarter-percent vars.$one-percent;
+    padding: 0.55rem 0.65rem 0.65rem;
+    background-color: funcs.add-alpha(vars.$absolute-black, 0.16);
+    border-top: 1px solid funcs.add-alpha(vars.$sunbeam-yellow, 0.14);
 
     .chat-input-wrap {
         @include mixins.flex(center, center, row);
-        gap: vars.$half-percent;
+        gap: 0.45rem;
 
         .chat-textarea {
             flex: 1;
-            background: funcs.add-alpha(vars.$pure-white, 0.06);
-            border: 1px solid funcs.add-alpha(vars.$pure-white, 0.12);
-            border-radius: vars.$half-percent;
+            min-height: 2.35rem;
+            max-height: 4.5rem;
+            background: funcs.add-alpha(vars.$absolute-black, 0.2);
+            border: 1px solid funcs.add-alpha(vars.$soft-grey, 0.22);
+            border-radius: 0.4rem;
             color: vars.$alabaster-stone;
-            padding: vars.$half-percent vars.$three-quarter-percent;
-            font-size: 0.95rem;
+            padding: 0.5rem 0.6rem;
+            font-size: 0.84rem;
             font-family: inherit;
             resize: none;
             outline: none;
-            transition: border-color 200ms ease;
+            transition:
+                background-color 200ms ease,
+                border-color 200ms ease;
 
             &::placeholder {
-                color: funcs.add-alpha(vars.$pure-white, 0.35);
+                color: funcs.add-alpha(vars.$soft-grey, 0.62);
             }
 
             &:focus {
-                border-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.5);
+                background-color: funcs.add-alpha(vars.$absolute-black, 0.3);
+                border-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.58);
             }
         }
 
         .chat-send-button {
             @include mixins.flex(center, center, row);
             background-color: vars.$sunbeam-yellow;
-            color: vars.$midnight-navy;
-            border: none;
-            border-radius: vars.$half-percent;
-            width: 2.5rem;
-            height: 2.5rem;
+            color: vars.$absolute-black;
+            border: 1px solid funcs.add-alpha(vars.$absolute-black, 0.4);
+            border-radius: 0.4rem;
+            width: 2.35rem;
+            height: 2.35rem;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition:
                 box-shadow 200ms ease,
                 transform 200ms ease;
@@ -55,7 +62,7 @@ chat-input {
 
             &:active {
                 box-shadow: none;
-                $offset: funcs.simplest-calc(0.25);
+                $offset: funcs.simplest-calc(0.18);
                 transform: translate($offset, $offset);
             }
         }

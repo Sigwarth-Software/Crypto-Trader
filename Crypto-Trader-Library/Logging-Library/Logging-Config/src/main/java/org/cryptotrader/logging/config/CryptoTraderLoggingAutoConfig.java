@@ -6,8 +6,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.cryptotrader.logging.config.aspect.TimeTrackingAspect;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
 import org.cryptotrader.logging.properties.CryptoTraderLoggingProperties;
+import org.cryptotrader.logging.properties.LogPersistenceProperties;
 import org.cryptotrader.logging.properties.TimeTrackingProperties;
+import org.cryptotrader.logging.redaction.LogRedactor;
 import org.cryptotrader.universal.library.events.EventPublisher;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -20,13 +23,13 @@ import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 @ConditionalOnClass({Aspect.class, ProceedingJoinPoint.class, Logger.class})
-@EnableConfigurationProperties({CryptoTraderLoggingProperties.class, TimeTrackingProperties.class})
+@EnableConfigurationProperties({CryptoTraderLoggingProperties.class, TimeTrackingProperties.class, LogPersistenceProperties.class})
 public class CryptoTraderLoggingAutoConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "globalExceptionHandler")
     @ConditionalOnProperty(prefix = "cryptotrader.exceptions", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public GlobalExceptionHandler globalExceptionHandler() {
+    public @NotNull GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
 
@@ -34,20 +37,27 @@ public class CryptoTraderLoggingAutoConfig {
     @ConditionalOnMissingBean
     @ConditionalOnClass(StreamBridge.class)
     @ConditionalOnBean(StreamBridge.class)
-    public EventPublisher eventPublisher(StreamBridge streamBridge) {
+    public @NotNull EventPublisher eventPublisher(final StreamBridge streamBridge) {
         return new EventPublisher(streamBridge);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public LogEventsPublisher logEventsPublisher(@Autowired(required = false) EventPublisher eventPublisher) {
+    public @NotNull LogEventsPublisher logEventsPublisher(@Autowired(required = false) final EventPublisher eventPublisher) {
         return new LogEventsPublisher(eventPublisher);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) LogEventsPublisher logEventsPublisher,
-                                                 TimeTrackingProperties timeTrackingProperties) {
+    public @NotNull TimeTrackingAspect timeTrackingAspect(@Autowired(required = false) final LogEventsPublisher logEventsPublisher,
+                                                          final TimeTrackingProperties timeTrackingProperties) {
         return new TimeTrackingAspect(logEventsPublisher, timeTrackingProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public @NotNull LogEventPublisherBridge logEventPublisherBridge(final LogEventsPublisher logEventsPublisher,
+                                                                    @Autowired(required = false) final LogRedactor logRedactor) {
+        return new LogEventPublisherBridge(logEventsPublisher, logRedactor);
     }
 }

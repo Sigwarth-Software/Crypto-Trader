@@ -28,6 +28,19 @@ spring:
     aws:
       region:
         static: us-east-1
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   ai:
     mcp:
       server:
@@ -52,6 +65,10 @@ security:
     tink:
       keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
       generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
+
+github:
+  token: ${GH_TOKEN}
+  repository: ${GITHUB_REPOSITORY:Sigwarth-Software/Crypto-Trader}
 
 logging:
   level:

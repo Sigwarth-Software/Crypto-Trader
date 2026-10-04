@@ -1,9 +1,9 @@
-/** The direction of a UI arrow by SCSS class.
- *
+/**
+ * The direction of a UI arrow by SCSS class.
  */
 export enum ArrowDirection {
-    UP = 'arrow-up',
-    DOWN = 'arrow-down',
-    LEFT = 'arrow-left',
-    RIGHT = 'arrow-right',
+    Up = 'arrow-up',
+    Down = 'arrow-down',
+    Left = 'arrow-left',
+    Right = 'arrow-right',
 }

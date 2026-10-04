@@ -17,7 +17,7 @@ public class Trader {
     private Portfolio portfolio;
     private List<TradingEngine> assetTraders;
     //===========================-Constructors-===============================
-    public Trader(Portfolio portfolio) {
+    public Trader(final Portfolio portfolio) {
         this.portfolio = portfolio;
         this.assetTraders = new ArrayList<>();
         this.initializeTraders();
@@ -26,7 +26,7 @@ public class Trader {
 
     //----------------------Initialize-Asset-Traders--------------------------
     public void initializeTraders() {
-        for (PortfolioAsset asset : this.portfolio.getAssets()) {
+        for (final PortfolioAsset asset : this.portfolio.getAssets()) {
             if (asset.getVendor().equals(SupportedVendors.PAPER_MODE)) {
                 this.assetTraders.add(new AssetTrader(asset));
             } else {
@@ -36,7 +36,7 @@ public class Trader {
     }
     //--------------------------Trade-All-Assets------------------------------
     public void tradeAllAssets() {
-        for (TradingEngine assetTrader : this.assetTraders) {
+        for (final TradingEngine assetTrader : this.assetTraders) {
             assetTrader.trade();
         }
     }

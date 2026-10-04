@@ -3,6 +3,7 @@ package org.cryptotrader.logging.properties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
@@ -22,5 +23,5 @@ public class CryptoTraderHttpLoggingProperties {
     private boolean colorEnabled = true;
 
     // Kept for backward compatibility (not used by the new filter)
-    private String afterMessagePrefix = "REQUEST -> ";
+    private @NotNull String afterMessagePrefix = "REQUEST -> ";
 }

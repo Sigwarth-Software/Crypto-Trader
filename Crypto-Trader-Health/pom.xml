@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
     </parent>
 
     <artifactId>crypto-trader-health</artifactId>
     <name>Crypto-Trader-Health</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <description>
         Health monitoring application — liveness/readiness probes, dependency checks, and uptime metrics.
     </description>
@@ -89,7 +89,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.4.20</version>
                 <executions>
                     <execution>
                         <id>kotlin-compile</id>

@@ -8,29 +8,31 @@ chat-bubble {
     width: 100%;
 
     .chat-bubble {
-        max-width: 75%;
-        padding: vars.$half-percent vars.$three-quarter-percent;
-        border-radius: vars.$half-percent;
+        max-width: 82%;
+        padding: 0.45rem 0.55rem;
+        border-radius: 0.4rem;
         word-wrap: break-word;
+        border: 1px solid transparent;
 
         .chat-bubble-role {
-            font-size: 0.7rem;
+            font-size: 0.62rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+            letter-spacing: 0;
+            margin-bottom: 0.18rem;
             display: block;
         }
 
         .chat-bubble-content {
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 0.82rem;
+            line-height: 1.38;
             margin: 0;
         }
 
         &.user {
             margin-left: auto;
-            background-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.15);
+            background-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.16);
+            border-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.24);
             color: vars.$alabaster-stone;
 
             .chat-bubble-role {
@@ -40,11 +42,12 @@ chat-bubble {
 
         &.assistant {
             margin-right: auto;
-            background-color: funcs.add-alpha(vars.$pure-white, 0.06);
+            background-color: funcs.add-alpha(vars.$absolute-black, 0.2);
+            border-color: funcs.add-alpha(vars.$soft-grey, 0.12);
             color: vars.$alabaster-stone;
 
             .chat-bubble-role {
-                color: funcs.add-alpha(vars.$pure-white, 0.5);
+                color: funcs.add-alpha(vars.$soft-grey, 0.78);
             }
         }
     }

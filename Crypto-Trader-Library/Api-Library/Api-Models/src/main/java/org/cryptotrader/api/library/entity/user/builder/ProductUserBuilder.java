@@ -6,17 +6,21 @@ import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.entity.user.builder.models.AbstractProductUser;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 
+/** A builder factory for product user entities. */
 public class ProductUserBuilder extends AbstractProductUser {
-    private String username;
-    private String email;
-    private SafePassword safePassword;
-    private Portfolio portfolio;
+    private @Nullable String username;
+    private @Nullable String email;
+    private @Nullable SafePassword safePassword;
+    private @Nullable Portfolio portfolio;
     private ProfilePicture profilePicture;
-    private LocalDateTime lastLogin;
+    private @Nullable LocalDateTime lastLogin;
     private SubscriptionTier subscriptionTier;
+
     public ProductUserBuilder() {
         this.username = null;
         this.email = null;
@@ -27,55 +31,57 @@ public class ProductUserBuilder extends AbstractProductUser {
     }
 
     @Override
-    public AbstractProductUser username(String username) {
+    public @NotNull AbstractProductUser username(final String username) {
         this.username = username;
         return this;
     }
 
     @Override
-    public AbstractProductUser email(String email) {
+    public @NotNull AbstractProductUser email(final String email) {
         this.email = email;
         return this;
     }
 
     @Override
-    public AbstractProductUser safePassword(SafePassword safePassword) {
+    public @NotNull AbstractProductUser safePassword(@NotNull final SafePassword safePassword) {
         this.safePassword = safePassword;
         return this;
     }
 
     @Override
-    public AbstractProductUser safePassword(String rawPassword) {
+    public @NotNull AbstractProductUser safePassword(@NotNull final String rawPassword) {
         this.safePassword = new SafePassword(rawPassword);
         return this;
     }
 
     @Override
-    public AbstractProductUser portfolio(Portfolio portfolio) {
+    public @NotNull AbstractProductUser portfolio(final Portfolio portfolio) {
         this.portfolio = portfolio;
         return this;
     }
 
     @Override
-    public AbstractProductUser profilePicture(ProfilePicture profilePicture) {
+    public @NotNull AbstractProductUser profilePicture(final ProfilePicture profilePicture) {
         this.profilePicture = profilePicture;
         return this;
     }
 
     @Override
-    public AbstractProductUser lastLogin(LocalDateTime lastLogin) {
+    public @NotNull AbstractProductUser lastLogin(final LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
         return this;
     }
 
     @Override
-    public AbstractProductUser subscriptionTier(SubscriptionTier subscriptionTier) {
+    public @NotNull AbstractProductUser subscriptionTier(
+        @NotNull final SubscriptionTier subscriptionTier
+    ) {
         this.subscriptionTier = subscriptionTier;
         return this;
     }
 
     @Override
-    public ProductUser build() {
+    public @NotNull ProductUser build() {
         return new ProductUser(this.username,
                         this.email,
                         this.safePassword,

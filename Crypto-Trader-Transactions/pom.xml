@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
     </parent>
 
     <name>Crypto-Trader-Transactions</name>
     <artifactId>crypto-trader-transactions</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>
         Transaction management service for Crypto Trader — handles order execution, historical records, and financial auditing.
     </description>

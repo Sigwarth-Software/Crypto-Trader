@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.0</version>
+            <version>0.5.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -49,6 +49,10 @@
         <module>Data-Library/Data-Repositories</module>
         <module>Data-Library/Data-Communication</module>
         <module>Data-Library/Data-Components</module>
+        <module>Development-Library</module>
+        <module>Development-Library/Development-Models</module>
+        <module>Development-Library/Development-Config</module>
+        <module>Development-Library/Development-Services</module>
         <module>Universal-Library</module>
         <module>Universal-Library/Universal-Communication</module>
         <module>Universal-Library/Universal-Config</module>
@@ -56,6 +60,7 @@
         <module>Universal-Library/Universal-Extensions</module>
         <module>Universal-Library/Universal-Components</module>
         <module>Universal-Library/Universal-Events</module>
+        <module>Universal-Library/Universal-Scripts</module>
         <module>Universal-Library/Universal-Services</module>
         <module>Console-Library</module>
         <module>Console-Library/Console-Models</module>
@@ -117,7 +122,7 @@
     <description>
         Shared libraries for Crypto Trader, including models, components, communication, and repositories.
     </description>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

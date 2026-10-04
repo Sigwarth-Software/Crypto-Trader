@@ -1,9 +1,12 @@
 package org.cryptotrader.api.controller;
+
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
 import org.cryptotrader.api.library.services.ProductUserService;
 import org.cryptotrader.api.library.services.models.ProfilePictureOperations;
 import org.cryptotrader.api.library.services.SessionService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,28 +28,27 @@ import java.util.Optional;
  * @see ProfilePictureOperations
  * @see ProductUserService
  * @see SessionService
- * @author Oliver Lear Sigwarth
  */
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
     //============================-Variables-=================================
-    private final SessionService sessionService;
-    private final ProfilePictureOperations profilePictureService;
-    private final ProductUserService productUserService;
+    private final @NotNull SessionService sessionService;
+    private final @NotNull ProfilePictureOperations profilePictureService;
+    private final @NotNull ProductUserService productUserService;
+
     /**
      * REST endpoints for account management.
      *
      * @see ProfilePictureOperations
      * @see ProductUserService
      * @see SessionService
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     //===========================-Constructors-===============================
     @Autowired
-    public AccountController(SessionService sessionService,
-                             ProfilePictureOperations profilePictureService,
-                             ProductUserService productUserService) {
+    public AccountController(@NotNull final SessionService sessionService,
+                             @NotNull final ProfilePictureOperations profilePictureService,
+                             @NotNull final ProductUserService productUserService) {
         this.sessionService = sessionService;
         this.profilePictureService = profilePictureService;
         this.productUserService = productUserService;
@@ -69,25 +71,36 @@ public class AccountController {
      * @see SessionService#userInSession(HttpSession)
      * @see ProfilePictureOperations#saveProfilePicture(ProfilePicture)
      * @see ProductUserService#saveUser(ProductUser)
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     //----------------------------Upload-Image--------------------------------
     @PostMapping("/image/upload")
-    public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") MultipartFile file,
-                                                                            HttpSession session) {
-        boolean userInSession = this.sessionService.userInSession(session);
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(
+        @NotNull @RequestParam("file") final MultipartFile file,
+        @NotNull final HttpSession session
+    ) {
+        final boolean userInSession = this.sessionService.userInSession(session);
+
         if (!userInSession) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.UNAUTHORIZED
+            );
         }
-        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
+        final Optional<ProductUser> possibleSessionUser =
+            this.sessionService.getUserFromSession(session);
+
         if (possibleSessionUser.isEmpty()) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.UNAUTHORIZED
+            );
         }
-        ProductUser sessionUser = possibleSessionUser.get();
-        String fileName = file.getOriginalFilename();
+        final ProductUser sessionUser = possibleSessionUser.get();
+        final String fileName = file.getOriginalFilename();
+
         try {
-            byte[] fileData = file.getBytes();
-            ProfilePicture profilePicture = ProfilePicture.builder()
+            final byte[] fileData = file.getBytes();
+            final ProfilePicture profilePicture = ProfilePicture.builder()
                                                           .fileName(fileName)
                                                           .fileData(fileData)
                                                           .user(sessionUser)
@@ -97,12 +110,15 @@ public class AccountController {
             this.profilePictureService.saveProfilePicture(profilePicture);
             this.productUserService.saveUser(sessionUser);
             return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
-        } catch (IOException ex) {
-            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (@NotNull final IOException ioException) {
+            return new ResponseEntity<>(
+                new OperationSuccessfulResponse(false),
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    
+
     /**
      * Verifies if a user has a profile picture based on their ID.
      *
@@ -115,21 +131,29 @@ public class AccountController {
      * @see HasProfilePictureResponse
      * @see ResponseEntity
      * @see ProfilePictureOperations#existsByUserId(Long)
-     * @author Oliver Lear Sigwarth (theoliverlear)
      */
     @GetMapping("/get/{id}/has-profile-picture")
-    public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(@PathVariable String id) {
-        long userId;
-        try {
-            userId = Long.parseLong(id);
-        } catch (NumberFormatException ex) {
+    public @NotNull ResponseEntity<HasProfilePictureResponse> hasProfilePicture(
+        @Nullable @PathVariable final String id
+    ) {
+        if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
-        return ResponseEntity.ok(new HasProfilePictureResponse(hasProfilePicture));
+        final long userId;
+
+        try {
+            userId = Long.parseLong(id);
+        } catch (@NotNull final NumberFormatException numberFormatException) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
+        return ResponseEntity.ok(
+            new HasProfilePictureResponse(
+                hasProfilePicture
+            )
+        );
     }
-    
-    
+
     /**
      * Retrieves the profile picture for a user given their ID.
      * If no profile picture is found for the user, a 404 (NOT_FOUND) response
@@ -147,16 +171,25 @@ public class AccountController {
      */
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
-    public ResponseEntity<byte[]> getProfilePicture(@PathVariable String id) {
-        long userId = Long.parseLong(id);
-        Optional<ProfilePicture> possibleProfilePicture = this.profilePictureService.findByUserId(userId);
+    public @NotNull ResponseEntity<byte[]> getProfilePicture(
+        @Nullable @PathVariable final String id
+    ) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        final long userId = Long.parseLong(id);
+        final Optional<ProfilePicture> possibleProfilePicture =
+            this.profilePictureService.findByUserId(userId);
+
         if (possibleProfilePicture.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            ProfilePicture profilePicture = possibleProfilePicture.get();
-            byte[] imageData = profilePicture.getFileData();
-            String fileType = profilePicture.getFileType();
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType(fileType)).body(imageData);
+            final ProfilePicture profilePicture = possibleProfilePicture.get();
+            final byte[] imageData = profilePicture.getFileData();
+            final String fileType = profilePicture.getFileType();
+            return ResponseEntity.ok().contentType(
+                MediaType.parseMediaType(fileType)
+            ).body(imageData);
         }
     }
 }

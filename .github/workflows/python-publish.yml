@@ -18,7 +18,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      packages: write
 
     steps:
       - name: Check out repository
@@ -32,7 +31,7 @@ jobs:
       - name: Install build tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install build
+          python -m pip install build tomli
 
       - name: Build package
         working-directory: Crypto-Trader-Analysis
@@ -43,7 +42,14 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          V=$(python -c "import tomllib; d=tomllib.load(open('Crypto-Trader-Analysis/pyproject.toml','rb')); print(d['project']['version'])")
+          V=$(python -c "
+          try:
+              import tomllib as toml
+          except ImportError:
+              import tomli as toml
+          with open('Crypto-Trader-Analysis/pyproject.toml', 'rb') as f:
+              print(toml.load(f)['project']['version'])
+          ")
           echo "version=$V" >> "$GITHUB_OUTPUT"
 
       - name: Detect tag and compare to project version
@@ -114,46 +120,3 @@ jobs:
         run: |
           echo "Skipping publish: No PYPI_API_TOKEN configured and this run is not on a tag (github.ref=${GITHUB_REF})."
           echo "To use Trusted Publishing (OIDC), configure a Trusted Publisher for this project on PyPI and trigger this workflow from a tag or release."
-
-      - name: Check for GitHub Packages token
-        id: has_gh_packages_token
-        shell: bash
-        env:
-          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-        run: |
-          if [ -n "$GH_PACKAGES_TOKEN" ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
-
-      - name: Publish to GitHub Packages (Python registry via GH_PACKAGES_TOKEN)
-        id: publish_ghp_pat
-        continue-on-error: true
-        if: steps.has_gh_packages_token.outputs.present == 'true'
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_PACKAGES_TOKEN }}
-          repository-url: https://pypi.pkg.github.com/${{ github.repository }}/
-          packages-dir: Crypto-Trader-Analysis/dist
-          skip-existing: true
-          attestations: false
-
-      - name: Publish to GitHub Packages (Python registry via GITHUB_TOKEN)
-        if: always() && (steps.has_gh_packages_token.outputs.present != 'true' || steps.publish_ghp_pat.conclusion == 'failure')
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          repository-url: https://pypi.pkg.github.com/${{ github.repository }}/
-          packages-dir: Crypto-Trader-Analysis/dist
-          skip-existing: true
-          attestations: false
-
-      - name: Debug upload to GitHub Packages with twine (verbose)
-        if: always() && env.DEBUG_GH_PACKAGES == '1'
-        env:
-          TWINE_USERNAME: ${{ github.repository_owner }}
-          TWINE_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN }}
-        run: |
-          python -m pip install --upgrade twine
-          python -m twine upload --verbose \
-            --repository-url https://pypi.pkg.github.com/${{ github.repository_owner }}/ \
-            Crypto-Trader-Analysis/dist/*

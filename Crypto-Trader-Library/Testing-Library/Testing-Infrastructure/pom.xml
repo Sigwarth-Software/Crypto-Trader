@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.1</version>
+            <version>0.2.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>testing-infrastructure</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>Testing-Infrastructure</name>
     <description>Reusable JUnit 5 infrastructure shared by Crypto Trader module tests.</description>
 
@@ -97,7 +97,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.4.20</version>
                 <executions>
                     <execution>
                         <id>kotlin-compile</id>

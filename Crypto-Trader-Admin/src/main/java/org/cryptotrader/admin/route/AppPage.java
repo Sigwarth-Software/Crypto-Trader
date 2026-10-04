@@ -10,7 +10,7 @@ public enum AppPage {
     TABLE_BAN_OFFENSES("Ban Offenses Table"),
     TABLE_WARN_OFFENSES("Warn Offenses Table");
     public final String pageName;
-    AppPage(String pageName) {
+    AppPage(final String pageName) {
         this.pageName = pageName;
     }
 }

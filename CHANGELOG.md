@@ -21,6 +21,7 @@
 | Crypto-Trader-Contact      | v.v.v   |
 | Crypto-Trader-Coverage     | v.v.v   |
 | Crypto-Trader-Data         | v.v.v   |
+| Crypto-Trader-Development  | v.v.v   |
 | Crypto-Trader-Docs         | v.v.v   |
 | Crypto-Trader-Engine       | v.v.v   |
 | Crypto-Trader-Health       | v.v.v   |
@@ -71,7 +72,10 @@
 | Console-Communication   | v.v.v   |
 | Console-Components      | v.v.v   |
 | Console-Events          | v.v.v   |
+| Console-Infrastructure  | v.v.v   |
 | Console-Models          | v.v.v   |
+| Console-Repositories    | v.v.v   |
+| Console-Scripts         | v.v.v   |
 | Console-Services        | v.v.v   |
 | Contact-Library         | v.v.v   |
 | Contact-Events          | v.v.v   |
@@ -86,7 +90,12 @@
 | Desktop-Library         | v.v.v   |
 | Desktop-Components      | v.v.v   |
 | Desktop-Styles          | v.v.v   |
+| Development-Library     | v.v.v   |
+| Development-Config      | v.v.v   |
+| Development-Models      | v.v.v   |
+| Development-Services    | v.v.v   |
 | Engine-Library          | v.v.v   |
+| Engine-Models           | v.v.v   |
 | Engine-Services         | v.v.v   |
 | Externals-Library       | v.v.v   |
 | Health-Library          | v.v.v   |
@@ -112,6 +121,14 @@
 | Security-Models         | v.v.v   |
 | Security-Repositories   | v.v.v   |
 | Security-Services       | v.v.v   |
+| Simulator-Library       | v.v.v   |
+| Simulator-Communication | v.v.v   |
+| Simulator-Config        | v.v.v   |
+| Simulator-Events        | v.v.v   |
+| Simulator-Models        | v.v.v   |
+| Simulator-Repositories  | v.v.v   |
+| Simulator-Scripts       | v.v.v   |
+| Simulator-Services      | v.v.v   |
 | Testing-Library         | v.v.v   |
 | Testing-Infrastructure  | v.v.v   |
 | Testing-Scripts         | v.v.v   |
@@ -122,6 +139,7 @@
 | Universal-Events        | v.v.v   |
 | Universal-Extensions    | v.v.v   |
 | Universal-Models        | v.v.v   |
+| Universal-Scripts       | v.v.v   |
 | Universal-Services      | v.v.v   |
 | Version-Library         | v.v.v   |
 | Version-Models          | v.v.v   |
@@ -189,6 +207,11 @@
 - Bullet
 
 ### [Crypto Trader Data](Crypto-Trader-Data)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Development](Crypto-Trader-Development)
 - Bullet
 - Bullet
 - Bullet
@@ -415,7 +438,22 @@
 - Bullet
 - Bullet
 
+### [Console Infrastructure](Crypto-Trader-Library/Console-Library/Console-Infrastructure)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Console Models](Crypto-Trader-Library/Console-Library/Console-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Console Repositories](Crypto-Trader-Library/Console-Library/Console-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Console Scripts](Crypto-Trader-Library/Console-Library/Console-Scripts)
 - Bullet
 - Bullet
 - Bullet
@@ -490,7 +528,32 @@
 - Bullet
 - Bullet
 
+### [Development Library](Crypto-Trader-Library/Development-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Development Config](Crypto-Trader-Library/Development-Library/Development-Config)
+- Bullet
+- Bullet
+- Bullet
+
+### [Development Models](Crypto-Trader-Library/Development-Library/Development-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Development Services](Crypto-Trader-Library/Development-Library/Development-Services)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Engine Library](Crypto-Trader-Library/Engine-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Engine Models](Crypto-Trader-Library/Engine-Library/Engine-Models)
 - Bullet
 - Bullet
 - Bullet
@@ -615,7 +678,67 @@
 - Bullet
 - Bullet
 
+### [Simulator Library](Crypto-Trader-Library/Simulator-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Communication](Crypto-Trader-Library/Simulator-Library/Simulator-Communication)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Config](Crypto-Trader-Library/Simulator-Library/Simulator-Config)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Events](Crypto-Trader-Library/Simulator-Library/Simulator-Events)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Models](Crypto-Trader-Library/Simulator-Library/Simulator-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Repositories](Crypto-Trader-Library/Simulator-Library/Simulator-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Scripts](Crypto-Trader-Library/Simulator-Library/Simulator-Scripts)
+- Bullet
+- Bullet
+- Bullet
+
+### [Simulator Services](Crypto-Trader-Library/Simulator-Library/Simulator-Services)
+- Bullet
+- Bullet
+- Bullet
+
+### [Testing Library](Crypto-Trader-Library/Testing-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Testing Infrastructure](Crypto-Trader-Library/Testing-Library/Testing-Infrastructure)
+- Bullet
+- Bullet
+- Bullet
+
+### [Testing Scripts](Crypto-Trader-Library/Testing-Library/Testing-Scripts)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Universal Library](Crypto-Trader-Library/Universal-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Communication](Crypto-Trader-Library/Universal-Library/Universal-Communication)
 - Bullet
 - Bullet
 - Bullet
@@ -630,12 +753,27 @@
 - Bullet
 - Bullet
 
+### [Universal Events](Crypto-Trader-Library/Universal-Library/Universal-Events)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Universal Extensions](Crypto-Trader-Library/Universal-Library/Universal-Extensions)
 - Bullet
 - Bullet
 - Bullet
 
 ### [Universal Models](Crypto-Trader-Library/Universal-Library/Universal-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Scripts](Crypto-Trader-Library/Universal-Library/Universal-Scripts)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Services](Crypto-Trader-Library/Universal-Library/Universal-Services)
 - Bullet
 - Bullet
 - Bullet

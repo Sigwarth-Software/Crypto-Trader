@@ -1,9 +1,13 @@
 // home-anchor.component.ts
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-import { homeElementLink, navBarHomeLink } from '@assets/element-link.assets';
-import { transparentLogo } from '@assets/image.assets';
+import { homeElementLink } from '@assets/element-link.assets'
+import { ImageAsset, transparentLogo } from '@assets/image.assets'
+import { ElementLink } from '@theoliverlear/angular-suite'
 
+/**
+ * A component that displays an anchor to the home page.
+ */
 @Component({
     selector: 'home-anchor',
     templateUrl: './home-anchor.component.html',
@@ -13,6 +17,6 @@ import { transparentLogo } from '@assets/image.assets';
 export class HomeAnchorComponent {
     constructor() {}
 
-    protected readonly transparentLogo = transparentLogo;
-    protected readonly homeElementLink = homeElementLink;
+    protected readonly transparentLogo: ImageAsset = transparentLogo
+    protected readonly homeElementLink: ElementLink = homeElementLink
 }

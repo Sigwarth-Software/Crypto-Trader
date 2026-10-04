@@ -16,9 +16,9 @@ public class NewsSentimentHarvesterService {
     private final NewsSentimentRepository newsSentimentRepository;
     private final NewsSentimentHarvesterClient sentimentHarvesterClient;
     private final NewsSentimentService newsSentimentService;
-    public NewsSentimentHarvesterService(NewsSentimentRepository newsSentimentRepository,
-                                         NewsSentimentHarvesterClient sentimentHarvesterClient,
-                                         NewsSentimentService newsSentimentService) {
+    public NewsSentimentHarvesterService(final NewsSentimentRepository newsSentimentRepository,
+                                         final NewsSentimentHarvesterClient sentimentHarvesterClient,
+                                         final NewsSentimentService newsSentimentService) {
         this.newsSentimentRepository = newsSentimentRepository;
         this.sentimentHarvesterClient = sentimentHarvesterClient;
         this.newsSentimentService = newsSentimentService;
@@ -50,12 +50,12 @@ public class NewsSentimentHarvesterService {
     }
 
     public boolean shouldHarvest() {
-        LocalDateTime now = LocalDateTime.now();
-        NewsSentiment lastInserted = this.newsSentimentRepository.getLastInserted();
+        final LocalDateTime now = LocalDateTime.now();
+        final NewsSentiment lastInserted = this.newsSentimentRepository.getLastInserted();
         if (lastInserted == null) {
             return true;
         }
-        LocalDateTime lastHarvest = lastInserted.getLastUpdated();
+        final LocalDateTime lastHarvest = lastInserted.getLastUpdated();
         return now.isAfter(lastHarvest.plusHours(1));
     }
 

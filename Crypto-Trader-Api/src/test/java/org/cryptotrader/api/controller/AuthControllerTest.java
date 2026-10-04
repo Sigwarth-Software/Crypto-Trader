@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.AuthContextService;
 import org.cryptotrader.api.library.services.AuthService;
@@ -21,9 +22,10 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Auth Controller")
 public class AuthControllerTest extends CryptoTraderTest {
@@ -44,11 +46,17 @@ public class AuthControllerTest extends CryptoTraderTest {
 
     private SignupRequest signupRequest;
     private LoginRequest loginRequest;
+    private String mockDpopProof;
+    private HttpServletRequest mockHttpServletRequest;
 
     @BeforeEach
     void setup() {
         this.signupRequest = new SignupRequest("ollie@ollie.com", "password");
         this.loginRequest = new LoginRequest("ollie@ollie.com", "password");
+        // Something that looks like a DPoP proof, but is just random chars
+        // for testing.
+        this.mockDpopProof = UUID.randomUUID().toString();
+        this.mockHttpServletRequest = mock(HttpServletRequest.class);
     }
 
     @Nested
@@ -58,10 +66,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @DisplayName("Should not sign up users in session")
         public void signup_NotSignUp_UsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(true);
-            ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest);
+            final ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest, mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+            final AuthResponse expectedResponse = new AuthResponse(false);
             assertEquals(expectedStatus, signupResponse.getStatusCode());
             assertEquals(expectedResponse, signupResponse.getBody());
         }
@@ -73,11 +81,11 @@ public class AuthControllerTest extends CryptoTraderTest {
             when(authContextService.isAuthenticated()).thenReturn(false);
             when(authService.signup(signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
             when(productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
-            ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest);
+            final ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest, mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
             verify(authService).signup(signupRequest);
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(true);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(true);
             assertEquals(expectedStatus, signupResponse.getStatusCode());
             assertEquals(expectedResponse, signupResponse.getBody());
         }
@@ -90,10 +98,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @DisplayName("Should not login users in session")
         public void login_NotLogin_UsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(true);
-            ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest);
+            final ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest, mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+            final AuthResponse expectedResponse = new AuthResponse(false);
             assertEquals(expectedStatus, loginResponse.getStatusCode());
             assertEquals(expectedResponse, loginResponse.getBody());
         }
@@ -104,11 +112,11 @@ public class AuthControllerTest extends CryptoTraderTest {
         public void login_Login_UsersNotInSession() {
             when(authContextService.isAuthenticated()).thenReturn(false);
             when(authService.login(loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-            ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest);
+            final ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest, mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
             verify(authService).login(loginRequest);
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(true);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(true);
             assertEquals(expectedStatus, loginResponse.getStatusCode());
             assertEquals(expectedResponse, loginResponse.getBody());
         }
@@ -122,10 +130,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @Disabled
         public void logout_Logout_UsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(true);
-            ResponseEntity<AuthResponse> logoutResponse = authController.logout();
+            final ResponseEntity<AuthResponse> logoutResponse = authController.logout(mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(false);
             assertEquals(expectedStatus, logoutResponse.getStatusCode());
             assertEquals(expectedResponse, logoutResponse.getBody());
         }
@@ -135,10 +143,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @Disabled
         public void logout_NotLogout_UsersNotInSession() {
             when(authContextService.isAuthenticated()).thenReturn(false);
-            ResponseEntity<AuthResponse> logoutResponse = authController.logout();
+            final ResponseEntity<AuthResponse> logoutResponse = authController.logout(mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(false);
             assertEquals(expectedStatus, logoutResponse.getStatusCode());
             assertEquals(expectedResponse, logoutResponse.getBody());
         }
@@ -151,10 +159,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @DisplayName("Should count session users as logged in")
         public void isLoggedIn_LoggedIn_UsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(true);
-            ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
+            final ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(true);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(true);
             assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
             assertEquals(expectedResponse, isLoggedInResponse.getBody());
         }
@@ -163,10 +171,10 @@ public class AuthControllerTest extends CryptoTraderTest {
         @DisplayName("Should not count unauthorized session users as logged in")
         public void isLoggedIn_NotLoggedIn_UsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(false);
-            ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
+            final ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
             verify(authContextService).isAuthenticated();
-            HttpStatus expectedStatus = HttpStatus.OK;
-            AuthResponse expectedResponse = new AuthResponse(false);
+            final HttpStatus expectedStatus = HttpStatus.OK;
+            final AuthResponse expectedResponse = new AuthResponse(false);
             assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
             assertEquals(expectedResponse, isLoggedInResponse.getBody());
         }

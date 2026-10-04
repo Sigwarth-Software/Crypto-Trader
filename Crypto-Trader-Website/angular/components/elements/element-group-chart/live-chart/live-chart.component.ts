@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core'
 
-import { ChartType } from './models/ChartType';
+import { ChartType } from './models/ChartType'
 
 /** A live chart that updates in real time.
  *
@@ -12,8 +12,8 @@ import { ChartType } from './models/ChartType';
     styleUrls: ['./live-chart.component.scss'],
 })
 export class LiveChartComponent<ChartSchema> implements OnInit {
-    protected chart: ChartSchema | null = null;
-    @Input() public chartType: ChartType;
+    protected chart: ChartSchema | null = null
+    @Input() public chartType: ChartType
     constructor(private readonly element: ElementRef) {}
     /** Loads the chart.
      *
@@ -22,6 +22,6 @@ export class LiveChartComponent<ChartSchema> implements OnInit {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const canvas: CanvasRenderingContext2D | null = (this.element.nativeElement as HTMLElement)
             .querySelector('canvas')
-            ?.getContext('2d') as CanvasRenderingContext2D;
+            ?.getContext('2d') as CanvasRenderingContext2D
     }
 }

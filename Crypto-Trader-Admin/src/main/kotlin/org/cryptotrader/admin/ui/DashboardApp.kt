@@ -22,11 +22,11 @@ class DashboardApp : VBox() {
 
     @FXML
     fun initialize() {
-        appLabel.textProperty().bind(
+        this.appLabel.textProperty().bind(
             Bindings.createStringBinding(
-                { 
-                    page.get()?.name ?: "" 
-                }, page)
+                {
+                    this.page.get()?.name ?: ""
+                }, this.page)
         )
     }
 }

@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { TagType } from '@theoliverlear/angular-suite';
+import { Component } from '@angular/core'
+import { TagType } from '@theoliverlear/angular-suite'
 import {
     apiModuleIcon,
     securityModuleIcon,
     contactModuleIcon,
     chatModuleIcon,
-} from '@assets/image.assets';
-import { ModuleInfo } from '@models/module/ModuleInfo';
+} from '@assets/image.assets'
+import { ModuleInfo } from '@models/module/ModuleInfo'
+
+/**
+ * A promo component for displaying service modules.
+ */
 @Component({
     selector: 'services-promo',
     standalone: false,
@@ -15,9 +19,6 @@ import { ModuleInfo } from '@models/module/ModuleInfo';
 })
 export class ServicesPromoComponent {
     constructor() {}
-
-
-    protected readonly TagType = TagType;
 
     // TODO: Move to assets file.
     protected readonly serviceModules: ModuleInfo[] = [
@@ -77,5 +78,7 @@ export class ServicesPromoComponent {
             techStack: ['LLM', 'OpenAI', 'MCP'],
             accentColor: 'mint-green',
         },
-    ];
+    ]
+
+    protected readonly TagType: typeof TagType = TagType
 }

@@ -1,6 +1,6 @@
 ﻿{
   "name": "@Sigwarth-Software/desktop-styles",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A set of JavaFX styles easily imported with SCSS.",
   "keywords": [
     "javafx",

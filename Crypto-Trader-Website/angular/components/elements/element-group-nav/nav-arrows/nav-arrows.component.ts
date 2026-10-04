@@ -1,8 +1,8 @@
 // nav-arrows.component.ts
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-/** Arrows for navigating between elements.
- *
+/**
+ * Arrows for navigating between elements.
  */
 @Component({
     selector: 'nav-arrows',

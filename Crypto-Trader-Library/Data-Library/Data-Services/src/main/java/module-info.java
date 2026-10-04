@@ -35,6 +35,7 @@ open module org.cryptotrader.data.library.services {
     requires org.cryptotrader.logging.library.events;
     requires org.cryptotrader.universal.library.events;
     requires spring.cloud.stream;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.data.library.services;
     exports org.cryptotrader.data.library.services.entity;

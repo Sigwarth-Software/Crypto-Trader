@@ -1,0 +1,52 @@
+server:
+  port: ${SERVER_PORT:8099}
+
+spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  application:
+    name: crypto-trader-development
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_USER}
+    password: ${PSQL_PW}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+    stream:
+      defaultBinder: kafka
+      bindings:
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+logging:
+  level:
+    org:
+      springframework: INFO
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
+
+github:
+  token: ${GH_TOKEN}
+  repository: ${GITHUB_REPOSITORY:Sigwarth-Software/Crypto-Trader}
+
+management:
+  endpoints.web.exposure.include: health,info

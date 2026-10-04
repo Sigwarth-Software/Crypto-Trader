@@ -1,11 +1,11 @@
 // portfolio-assets-report.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core'
 
-import { TagType } from '@theoliverlear/angular-suite';
-import { Portfolio } from '@models/portfolio/types';
+import { TagType } from '@theoliverlear/angular-suite'
+import { Portfolio } from '@models/portfolio/types'
 
-/** A report of the assets in a portfolio.
- *
+/**
+ * A report of the assets in a portfolio.
  */
 @Component({
     selector: 'portfolio-assets-report',
@@ -14,12 +14,12 @@ import { Portfolio } from '@models/portfolio/types';
     standalone: false,
 })
 export class PortfolioAssetsReportComponent {
-    @Input() public portfolio: Portfolio;
+    @Input() public portfolio: Portfolio
     constructor() {}
 
     protected hasCurrencies(): boolean {
-        return this.portfolio.assets.length > 0;
+        return this.portfolio.assets.length > 0
     }
 
-    protected readonly TagType: typeof TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType
 }

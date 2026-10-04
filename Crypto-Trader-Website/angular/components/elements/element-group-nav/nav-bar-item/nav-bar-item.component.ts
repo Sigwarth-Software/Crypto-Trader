@@ -13,8 +13,8 @@ import { ImageAsset } from '@assets/image.assets'
 
 import { NavBarItemOption } from './models/NavBarItemOption'
 
-/** A nav bar item that can be clicked to navigate to a different page.
- *
+/**
+ * A nav bar item that can be clicked to navigate to a different page.
  */
 @Component({
     selector: 'nav-bar-item',
@@ -29,8 +29,8 @@ export class NavBarItemComponent implements OnInit, OnChanges {
     @ViewChild(SsAnchorComponent) protected anchorComponent: SsAnchorComponent | undefined
     constructor() {}
 
-    /** WIP
-     *
+    /**
+     * WIP
      */
     public ngOnInit(): void {
         if (this.elementLink) {
@@ -38,8 +38,8 @@ export class NavBarItemComponent implements OnInit, OnChanges {
         }
     }
 
-    /** On nav bar item changes, load their links and images.
-     *
+    /**
+     * On nav bar item changes, load their links and images.
      * @param changes
      */
     public ngOnChanges(changes: SimpleChanges): void {
@@ -49,8 +49,8 @@ export class NavBarItemComponent implements OnInit, OnChanges {
         }
     }
 
-    /** On click, click the child anchor component.
-     *
+    /**
+     * On click, click the child anchor component.
      */
     @HostListener('click')
     public onClick(): void {

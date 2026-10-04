@@ -9,6 +9,7 @@ module org.cryptotrader.contact.library.models {
     requires spring.beans;
     requires spring.context;
     requires org.cryptotrader.universal.library.models;
+    requires org.jetbrains.annotations;
 
     exports org.cryptotrader.contact.library.entity;
     exports org.cryptotrader.contact.library.entity.builder;
