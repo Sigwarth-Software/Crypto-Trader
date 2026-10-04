@@ -14,6 +14,9 @@ open module org.cryptotrader.api.library.infrastructure {
     requires org.cryptotrader.api.library.scripts;
     requires org.cryptotrader.api.library.components;
     requires org.cryptotrader.universal.library.models;
+    requires org.cryptotrader.universal.library.events;
+    requires org.cryptotrader.security.library.events;
+    requires spring.security.core;
     requires com.auth0.jwt;
 
     exports org.cryptotrader.api.library.infrastructure;
