@@ -70,6 +70,10 @@ spring:
           destination: ct.console.requests
           contentType: application/vnd.cryptotrader.encrypted+json
 
+        userIpDetection-out-0:
+          destination: ct.security.requests
+          contentType: application/vnd.cryptotrader.encrypted+json
+
         consoleResponsesConsumer-in-0:
           destination: ct.console.responses
           group: crypto-trader-api-console-responses
