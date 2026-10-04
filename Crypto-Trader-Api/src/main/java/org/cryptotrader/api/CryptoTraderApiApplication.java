@@ -30,6 +30,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.data.library.services.harvest",
         "org.cryptotrader.data.library.component",
         "org.cryptotrader.security.library.service",
+        "org.cryptotrader.security.library.event",
         "org.cryptotrader.console.library.component",
         "org.cryptotrader.universal.library.component",
         "org.cryptotrader.universal.library.events",
