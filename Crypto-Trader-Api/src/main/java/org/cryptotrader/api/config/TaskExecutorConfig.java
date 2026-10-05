@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /** Configuration for the default task executor. */
 @Configuration
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @Profile("!beast")
 public class TaskExecutorConfig {
     private static final String THREAD_NAME_PREFIX = "Default-";
