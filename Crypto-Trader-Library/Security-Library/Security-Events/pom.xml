@@ -283,11 +283,19 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>api-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>security-models</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>security-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
     </dependencies>
 
