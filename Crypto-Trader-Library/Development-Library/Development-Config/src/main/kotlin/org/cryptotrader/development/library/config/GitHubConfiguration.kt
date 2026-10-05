@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @EnableConfigurationProperties(GitHubProperties::class)
-@Configuration
+@Configuration(proxyBeanMethods = false)
 open class GitHubConfiguration {
     @Bean
     open fun github(
