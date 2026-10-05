@@ -1,7 +1,9 @@
 package org.cryptotrader.api.library.infrastructure.config
 
+import org.cryptotrader.api.library.infrastructure.ClientIpFilter
 import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.api.library.infrastructure.alias.BindingEnforcementFilterBean
+import org.cryptotrader.api.library.infrastructure.alias.ClientIpFilterBean
 import org.cryptotrader.api.library.infrastructure.alias.DpopValidationFilterBean
 import org.cryptotrader.api.library.infrastructure.alias.JwtAuthenticationFilterBean
 import org.cryptotrader.api.library.infrastructure.dpop.BindingEnforcementFilter
@@ -11,7 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * Registers the HTTP filter chain for API authentication.
+ * Registers the HTTP filter chain for API authentication and tracking.
  *
  * Filter order summary (low number runs first):
  * 10. DpopValidationFilter — Verifies the per‑request DPoP proof, checks replay (jti), and exposes the
@@ -20,6 +22,7 @@ import org.springframework.context.annotation.Configuration
  *     an authenticated principal in the Spring Security context when valid.
  * 30. BindingEnforcementFilter — Enforces sender‑constrained tokens by comparing token.cnf.jkt with
  *     the DPoP proof jkt captured in step 10. Rejects on mismatch.
+ * 40. ClientIpFilter — Captures authenticated user IP address and publishes UserIpDetectionEvent for tracking.
  *
  * All filters are registered for all URL patterns (all paths). This class only wires order; business logic lives
  * inside the individual filter implementations.
@@ -61,6 +64,19 @@ open class SecurityFilterConfig {
     open fun bindingEnforcementFilterRegistration(filter: BindingEnforcementFilter): BindingEnforcementFilterBean {
         val registration = FilterRegistrationBean(filter)
         registration.order = 30 // post-JWT
+        registration.addUrlPatterns("/*")
+        registration.isEnabled = true
+        return registration
+    }
+
+    /**
+     * Register the Client IP detection filter to run after authentication.
+     * Order 40 ensures authenticated user context is populated.
+     */
+    @Bean
+    open fun clientIpFilterRegistration(filter: ClientIpFilter): ClientIpFilterBean {
+        val registration = FilterRegistrationBean(filter)
+        registration.order = 40 // post-auth IP tracking
         registration.addUrlPatterns("/*")
         registration.isEnabled = true
         return registration
