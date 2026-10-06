@@ -1,5 +1,6 @@
 package org.cryptotrader.security.library.config
 
+import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.security.library.event.UserIpDetectionEvent
 import org.cryptotrader.security.library.service.entity.UserIpAddressEntityService
 import org.slf4j.LoggerFactory
@@ -25,11 +26,12 @@ open class UserIpDetectionConsumerConfig @Autowired constructor(
     open fun userIpDetection(): Consumer<Message<UserIpDetectionEvent>> {
         return Consumer { message ->
             val event = message.payload
-            log.debug("Received UserIpDetectionEvent for user {} with IP {}", event.productUser?.id, event.ip)
+            log.debug("Received UserIpDetectionEvent for user {} with IP {}",
+                event.productUser.id, event.ip)
             try {
-                val user = event.productUser
-                val ip = event.ip
-                if (user != null && ip.isNotBlank()) {
+                val user: ProductUser = event.productUser
+                val ip: String = event.ip
+                if (ip.isNotBlank()) {
                     this.userIpAddressEntityService.recordUserIp(user, ip)
                 }
             } catch (ex: Exception) {
