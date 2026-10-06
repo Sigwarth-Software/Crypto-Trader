@@ -33,26 +33,33 @@ class ClientIpFilter @Autowired constructor(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val clientIp: String = request.remoteAddr
-        val authentication: Authentication? = SecurityContextHolder.getContext()?.authentication
-        val clientUser: ProductUser? = authentication?.principal as? ProductUser
-        // If checked within the last minute, we skip publishing.
-        val isWithinLastMinute: Boolean =
-            clientUser?.lastIpCheckTimestamp == null || (clientUser.lastIpCheckTimestamp?.plusMinutes(
-                1
-                // Minium time will never be after now, so it forces a check.
-            ) ?: LocalDateTime.MIN) > LocalDateTime.now()
+        try {
+            val clientIp: String = request.remoteAddr
+            val authentication: Authentication? =
+                SecurityContextHolder.getContext()?.authentication
+            val clientUser: ProductUser? =
+                authentication?.principal as? ProductUser
+            // If checked within the last minute, we skip publishing.
+            val isNewUser: Boolean = clientUser?.lastIpCheckTimestamp == null
+            val isWithinLastMinute: Boolean =
+                !isNewUser && (clientUser.lastIpCheckTimestamp?.plusMinutes(
+                    1
+                    // Minium time will never be after now, so it forces a check.
+                ) ?: LocalDateTime.MIN) > LocalDateTime.now()
 
-        if (clientUser != null && clientIp.isNotBlank() && !isWithinLastMinute) {
-            clientUser.lastIpCheckTimestamp = LocalDateTime.now()
-            this.userService.saveUser(clientUser)
+            if (clientUser != null && clientIp.isNotBlank() && (isNewUser || !isWithinLastMinute)) {
+                clientUser.lastIpCheckTimestamp = LocalDateTime.now()
+                this.userService.saveUser(clientUser)
 
-            this.securityEventsPublisher.publish(
-                UserIpDetectionEvent(
-                    clientIp,
-                    clientUser
+                this.securityEventsPublisher.publish(
+                    UserIpDetectionEvent(
+                        clientIp,
+                        clientUser
+                    )
                 )
-            )
+            }
+        } catch (ex: Exception) {
+            log.warn("Failed to publish UserIpDetectionEvent: {}", ex.toString(), ex)
         }
 
         filterChain.doFilter(request, response)
