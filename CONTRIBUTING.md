@@ -112,3 +112,16 @@ Within the body should be a relevant context for the reviewers to understand
 your changes. Try your best to preempt any obvious questions but adding it to
 the description. Then, there should be a bullet point list of the changes
 made.
+### Compilation Check
+
+Every pull request targeting `main` or `development` must pass the
+`Compile / Compile` status check (`.github/workflows/compile-check.yml`),
+which runs `mvn clean compile test-compile -B`. Pull requests that do not
+compile cannot be merged. Run this command locally before opening a PR.
+
+The check is skipped for draft pull requests. It runs once the PR is marked
+"Ready for review", so keep a PR in draft while work is in progress.
+
+Repository admins must configure branch protection rules for `main` and
+`development` to require the `Compile / Compile` status check to pass before
+merging.
