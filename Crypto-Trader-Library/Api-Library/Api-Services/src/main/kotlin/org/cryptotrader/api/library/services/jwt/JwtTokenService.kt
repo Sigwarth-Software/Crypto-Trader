@@ -56,7 +56,7 @@ class JwtTokenService(
      * @return the signed JWT as a compact string
      */
     @JvmOverloads
-    @TimeTracked(expectedMillis = 200, shouldPersist = true)
+    @TimeTracked(expectedMillis = 15, shouldPersist = true)
     fun generateToken(subject: String, email: String, jwkThumbprint: String? = null): String {
         val now: Instant = Instant.now()
         val expiresAt: Instant = now.plusSeconds(this.ttlSeconds)
@@ -88,7 +88,7 @@ class JwtTokenService(
      * @return a simple Kotlin data object with the claims we care about
      * @throws com.auth0.jwt.exceptions.JWTVerificationException if the token is invalid/expired
      */
-    @TimeTracked(expectedMillis = 200, shouldPersist = true)
+    @TimeTracked(expectedMillis = 5, shouldPersist = true)
     fun validateAndParse(token: String): JwtClaims {
         val verifierBuilder: Verification = JWT.require(this.verifyAlgorithm)
                                                .withIssuer(this.issuer)

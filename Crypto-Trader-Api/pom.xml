@@ -314,6 +314,10 @@
             <artifactId>spring-instrument</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-events</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

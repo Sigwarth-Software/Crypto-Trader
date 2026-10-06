@@ -1,9 +1,7 @@
 package org.cryptotrader.data.library.entity.currency;
 //=================================-Imports-==================================
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +20,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "currencies")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
 public class Currency extends Identifiable<String> {
     //============================-Variables-=================================
     @Column(name = "currency_name")

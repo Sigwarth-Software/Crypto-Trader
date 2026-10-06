@@ -28,7 +28,7 @@ spring:
       ddl-auto: update
     show-sql: false
   aop:
-    proxy-target-class: false
+    proxy-target-class: true
 
 logging:
   level:

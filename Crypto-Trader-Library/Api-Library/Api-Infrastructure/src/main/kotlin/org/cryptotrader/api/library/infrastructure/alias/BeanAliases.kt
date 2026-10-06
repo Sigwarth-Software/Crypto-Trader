@@ -1,5 +1,6 @@
 package org.cryptotrader.api.library.infrastructure.alias
 
+import org.cryptotrader.api.library.infrastructure.ClientIpFilter
 import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.api.library.infrastructure.dpop.BindingEnforcementFilter
 import org.cryptotrader.api.library.infrastructure.dpop.DpopValidationFilter
@@ -19,3 +20,8 @@ typealias JwtAuthenticationFilterBean = FilterRegistrationBean<JwtAuthentication
  * FilterRegistrationBean for BindingEnforcementFilter (DPoP cnf.jkt vs proof jkt enforcement, post-JWT).
  */
 typealias BindingEnforcementFilterBean = FilterRegistrationBean<BindingEnforcementFilter>
+
+/**
+ * FilterRegistrationBean for ClientIpFilter (post-auth IP address tracking).
+ */
+typealias ClientIpFilterBean = FilterRegistrationBean<ClientIpFilter>

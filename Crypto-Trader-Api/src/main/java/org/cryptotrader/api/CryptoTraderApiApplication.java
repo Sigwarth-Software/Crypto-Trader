@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @EnableScheduling
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 @ConfigurationPropertiesScan
@@ -30,6 +30,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.data.library.services.harvest",
         "org.cryptotrader.data.library.component",
         "org.cryptotrader.security.library.service",
+        "org.cryptotrader.security.library.event",
         "org.cryptotrader.console.library.component",
         "org.cryptotrader.universal.library.component",
         "org.cryptotrader.universal.library.events",
@@ -37,6 +38,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.simulator.library.events",
         "org.cryptotrader.simulator.library.services",
         "org.cryptotrader.simulator.library.config",
+        "org.cryptotrader.security.library.config",
 })
 public class CryptoTraderApiApplication {
     public static void main(final String[] args) {

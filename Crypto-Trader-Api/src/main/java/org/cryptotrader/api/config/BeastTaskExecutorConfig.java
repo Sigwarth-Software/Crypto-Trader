@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /** Configuration for the beast task executor. */
 @Configuration
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @Profile("beast")
 public class BeastTaskExecutorConfig {
     private static final String THREAD_NAME_PREFIX = "Beast-";

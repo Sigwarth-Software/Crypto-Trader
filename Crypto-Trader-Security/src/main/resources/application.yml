@@ -13,6 +13,8 @@ spring:
     aws:
       region:
         static: us-east-1
+    function:
+      definition: userIpDetection
     stream:
       enabled: true
       defaultBinder: kafka
@@ -22,6 +24,10 @@ spring:
           contentType: application/vnd.cryptotrader.encrypted+json
         applicationExceptions-out-0:
           destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        userIpDetection-in-0:
+          destination: ct.security.requests
+          group: crypto-trader-security
           contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
