@@ -9,6 +9,8 @@ from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Dense
 from keras.saving.save import load_model
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.base_model import BaseModel
+from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
+    RichTrainingLogger
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
@@ -75,6 +77,7 @@ class ComplexLstmModel(BaseModel):
         checkpoint_path = os.path.join(checkpoint_dir,
                                        f"{self.target_currency}_checkpoint.keras")
         monitor = "val_loss" if val_dataset is not None else "loss"
+        training_logger = RichTrainingLogger(title=f"Complex LSTM • {self.target_currency}")
         callbacks = [
             EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
@@ -82,16 +85,18 @@ class ComplexLstmModel(BaseModel):
                             save_best_only=True),
             ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
                               min_lr=1e-6),
-            ComplexLstmModel.get_tensorboard_callback(self.target_currency)
+            ComplexLstmModel.get_tensorboard_callback(self.target_currency),
+            training_logger
         ]
         for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               verbose=1,
+                               verbose=0,
                                validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
+                training_logger.close()
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
@@ -108,7 +113,7 @@ class ComplexLstmModel(BaseModel):
 
     @override
     def predict(self, training_data, target_scaler):
-        scaled_pred = self.model.predict(training_data)
+        scaled_pred = self.model.predict(training_data, verbose=0)
         real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
         return real_price
 

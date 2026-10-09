@@ -1,6 +1,7 @@
 # train_model.py
 import logging
 import os
+import time
 
 import sys
 os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
@@ -23,6 +24,9 @@ from src.crypto_trader_analysis.apps.learning.models.database.query_type import 
 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import get_model, model_exists
 from src.crypto_trader_analysis.apps.learning.models.training.training_type import TrainingType
 from src.crypto_trader_analysis.apps.learning.models.currency_json_generator import get_all_currency_codes
+from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import print_training_header, \
+    print_training_summary
+from src.crypto_trader_analysis.core.logger import setup_logging as core_setup_logging
 
 
 SMALL_DATASET_SIZE = 1
@@ -30,27 +34,21 @@ SMALL_DATASET_SIZE = 1
 
 #--------------------------------Setup-Logging--------------------------------
 def setup_logging():
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='[%(asctime)s] [%(levelname)s] %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        handlers=[logging.StreamHandler(sys.stdout)]
-    )
-    logging.debug("Logging setup complete: Debug mode is enabled.")
+    core_setup_logging()
 
 #----------------------------Configure-Concurrency----------------------------
 def configure_concurrency():
     os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
 
 #----------------------------Setup-Tensorflow-Env-----------------------------
 def setup_tensorflow_env():
     configure_concurrency()
     if tf.config.optimizer.get_jit():
-        print("XLA JIT is enabled")
+        logging.debug("XLA JIT is enabled")
     else:
-        print("XLA JIT is NOT enabled")
+        logging.debug("XLA JIT is NOT enabled")
 
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
@@ -77,22 +75,15 @@ def train_new_models(currency_codes: list[str] = None,
                      training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
                      model_type: ModelType = ModelType.LSTM,
                      gpu_id: int = 0):
-    for currency in get_untrained_models():
-        if currency_codes:
-            if currency in currency_codes:
-                logging.info(f"Training model for {currency}...")
-                train_model(target_currency=currency,
-                            training_type=training_type,
-                            model_type=model_type,
-                            gpu_id=gpu_id)
-                logging.info(f"Model for {currency} trained and saved.")
-        else:
-            logging.info(f"Training model for {currency}...")
-            train_model(target_currency=currency,
-                        training_type=training_type,
-                        model_type=model_type,
-                        gpu_id=gpu_id)
-            logging.info(f"Model for {currency} trained and saved.")
+    currencies = [currency for currency in get_untrained_models()
+                  if not currency_codes or currency in currency_codes]
+    logging.info(f"Found {len(currencies)} untrained model(s).")
+    for index, currency in enumerate(currencies, start=1):
+        print_training_header(currency, model_type, index, len(currencies), gpu_id)
+        train_model(target_currency=currency,
+                    training_type=training_type,
+                    model_type=model_type,
+                    gpu_id=gpu_id)
 
 #---------------------------Train-Inaccurate-Models---------------------------
 def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
@@ -106,13 +97,12 @@ def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_
         inaccurate_models.reverse()
     logging.info(f"Found {len(inaccurate_models)} inaccurate models.")
 
-    for currency in inaccurate_models:
-        logging.info(f"Retraining model for {currency}...")
+    for index, currency in enumerate(inaccurate_models, start=1):
+        print_training_header(currency, model_type, index, len(inaccurate_models), gpu_id)
         train_model(target_currency=currency,
                     training_type=training_type,
                     model_type=model_type,
                     gpu_id=gpu_id)
-        logging.info(f"Model for {currency} retrained and saved.")
 
 #--------------------------------Get-Dataframe--------------------------------
 def get_dataframe(target_currency: str = 'BTC',
@@ -204,6 +194,7 @@ def train_model(target_currency: str = 'BTC',
                 gpu_id: int = 0,
                 use_previous_model: bool = True,
                 dataframe: DataFrame = None):
+    start_time = time.monotonic()
     logging.info("Getting data frame...")
     if dataframe is None:
         dataframe = get_dataframe(target_currency, limit=training_type.value.max_rows, query_type=training_type.value.query_type or QueryType.HISTORICAL_PRICE)
@@ -250,6 +241,12 @@ def train_model(target_currency: str = 'BTC',
     predicted_price = model.predict(last_sequence, target_scaler)
     logging.debug(f"Predicted Next {target_currency} Price: {predicted_price}")
     logging.info(f"Actual vs Predicted for {target_currency}: predicted={predicted_price}, model_type={model_type}")
+    print_training_summary(target_currency,
+                           model_type=model_type,
+                           rows=len(dataframe),
+                           model_path=model_path,
+                           predicted_price=predicted_price,
+                           elapsed=time.monotonic() - start_time)
 
 #-----------------------------Get-Currency-Prices-----------------------------
 def get_currency_prices(dataframe, target_currency):
@@ -266,8 +263,8 @@ def train_all_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_
                      gpu_id: int = 0,
                      in_batches: bool = False,
                      batch_size: int = 10000):
-    for currency_code in currency_codes:
-        logging.debug(f"Training model for {currency_code}...")
+    for index, currency_code in enumerate(currency_codes, start=1):
+        print_training_header(currency_code, model_type, index, len(currency_codes), gpu_id)
         if model_type == ModelType.LSTM or model_type == ModelType.COMPLEX_LSTM:
             if in_batches:
                 train_model_in_batches(currency_code,
@@ -366,6 +363,7 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
     from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
 
+    start_time = time.monotonic()
     logging.info(f"Fetching data frame for {target_currency}")
     if dataframe is None:
         dataframe = get_dataframe(target_currency,
@@ -424,6 +422,12 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     predicted_price = model.predict([last_short, last_medium, last_long],
                                     target_scaler=target_scaler)
     logging.info(f"Actual vs Predicted for {target_currency}: predicted={predicted_price}")
+    print_training_summary(target_currency,
+                           model_type=model_type,
+                           rows=len(dataframe),
+                           model_path=model_path,
+                           predicted_price=predicted_price,
+                           elapsed=time.monotonic() - start_time)
 
 # TODO: Create a training log API to display when a model was trained and any
 #       details about the training.

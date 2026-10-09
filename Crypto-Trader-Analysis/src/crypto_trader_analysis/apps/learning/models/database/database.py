@@ -29,6 +29,7 @@ class Database:
 
     #---------------------------Attrs-Post-Init-------------------------------
     def __attrs_post_init__(self):
+        logging.debug("Connecting to Crypto Trader's database...")
         connection_url: str = self.get_connection_url()
         self.engine: Engine = (
             create_engine(
@@ -106,12 +107,12 @@ class Database:
                    query_type: QueryType = QueryType.HISTORICAL_PRICE,
                    rows_per_log: int = 10_000,
                    in_bulk: bool = True) -> pd.DataFrame:
-        logging.info("Fetching data from database...")
+        logging.info(f"Fetching {target_currency} data from database.")
         params, query = self.build_query(limit, query_type, target_currency)
         next_mark: int = 0
         start_time: float = time.time()
         try:
-            logging.debug(f"Executing query...")
+            logging.debug(f"Beginning query execution limited to {limit} rows.")
             return self.execute_query(next_mark, params, query,
                                       rows_per_log, start_time, limit,
                                       rows_per_log, in_bulk)
@@ -278,15 +279,15 @@ class Database:
         query: str = ""
         params: dict = {"target_currency": target_currency}
         if query_type == QueryType.CURRENT_PRICE:
-            logging.info("Fetching current price...")
+            logging.info(f"Fetching current price for {target_currency}.")
             query = f"SELECT * FROM currencies WHERE currency_code = :target_currency;"
         elif query_type == QueryType.HISTORICAL_PRICE:
-            logging.info("Fetching historical price...")
+            logging.info(f"Fetching historical prices limited to {limit} rows.")
             query = self._get_market_snapshot_query()
-            logging.info("Fetched history query.")
+            logging.debug("Fetched history query.")
             params = {"target_currency": target_currency, "limit": limit}
         elif query_type == QueryType.HISTORICAL_PRICE_SPACED:
-            logging.info("Fetching spaced historical price...")
+            logging.info(f"Fetching spaced historical price data limited to {limit} rows.")
             query = self._get_market_snapshot_spaced_query()
             params = {"target_currency": target_currency, "limit": limit}
         return params, query
