@@ -104,7 +104,7 @@
         <!-- Centralized JavaFX version for all desktop modules -->
         <javafx.version>21.0.6</javafx.version>
         <kotlin.version>2.4.20</kotlin.version>
-        <spring-ai.version>1.1.4</spring-ai.version>
+        <spring-ai.version>1.1.8</spring-ai.version>
         <swagger-annotations.version>2.2.38</swagger-annotations.version>
         <jsoup.version>1.18.3</jsoup.version>
     </properties>
@@ -1399,17 +1399,6 @@
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>jetbrains-dokka</id>
-            <name>JetBrains Dokka Repository</name>
-            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
         </repository>
     </repositories>
     <profiles>
