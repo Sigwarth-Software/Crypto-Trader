@@ -12,6 +12,8 @@ from keras.saving.save import load_model
 from sklearn.preprocessing import MinMaxScaler
 
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
+from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
+    RichTrainingLogger
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
@@ -88,6 +90,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
                                        f"{self.target_currency}_checkpoint.keras")
 
         monitor = "val_loss" if val_dataset is not None else "loss"
+        training_logger = RichTrainingLogger(title=f"Multi-Layer LSTM • {self.target_currency}")
         callbacks = [
             EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
@@ -95,16 +98,18 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
                             save_best_only=True),
             ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
                               min_lr=1e-6),
-            MultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
+            MultiLayerLstmModel.get_tensorboard_callback(self.target_currency),
+            training_logger
         ]
         for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               verbose=1,
+                               verbose=0,
                                validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
+                training_logger.close()
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
@@ -121,7 +126,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
                     raise
 
     def predict(self, input_data_list, target_scaler: MinMaxScaler):
-        pred_scaled = self.model.predict(input_data_list)
+        pred_scaled = self.model.predict(input_data_list, verbose=0)
         real_price = target_scaler.inverse_transform(pred_scaled)[0][0]
         return real_price
 
