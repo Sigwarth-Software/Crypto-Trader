@@ -69,7 +69,7 @@ class TrainingSession:
             self._long_seq_len = self.training_model.long_seq_length
 
     def _get_dataframe(self) -> pd.DataFrame:
-        logging.info("Getting dataframe...")
+        logging.info(f"Query started for {self.target_currency}. Getting dataframe.")
         self._query_start_time = datetime.now()
         dataframe: pd.DataFrame = self._database.fetch_data(self.target_currency,
                                                             self.training_model.max_rows,
@@ -88,7 +88,7 @@ class TrainingSession:
         return dataframe
 
     def _get_batched_dataframe(self) -> list[pd.DataFrame]:
-        logging.info("Getting batched dataframe...")
+        logging.info(f"Query started for {self.target_currency}. Getting batched dataframe.")
         self._query_load = QueryLoad.BATCHES
         batch_size: int = self.training_model.max_rows // 10
         if self.is_complex_model():
@@ -102,6 +102,7 @@ class TrainingSession:
         self._query_end_time = datetime.now()
         batches = [batch.dropna(subset=[f"{self.target_currency.lower()}_price"]) for batch in batches]
         self._actual_rows = sum(len(batch) for batch in batches)
+        logging.info(f"Loaded {len(batches)} batches totaling {self._actual_rows:,} rows.")
         return batches
 
     def is_complex_model(self) -> bool:
@@ -118,7 +119,8 @@ class TrainingSession:
         if in_batches or self.is_complex_model():
             self._train_in_batches()
             return
-        logging.info(f"Training model for {self.target_currency}...")
+        logging.info(f"Training model for {self.target_currency}" +
+                     f"{str(self)}")
         if dataframe is None:
             dataframe: pd.DataFrame = self._get_dataframe()
         if dataframe.empty:
@@ -169,7 +171,7 @@ class TrainingSession:
         if in_batches or self.is_complex_model():
             self._train_multi_layer_in_batches()
             return
-        logging.info(f"Training multi-layer model for {self.target_currency}...")
+        logging.info(f"Training multi-layer model for {self.target_currency}.")
         if dataframe is None:
             dataframe: pd.DataFrame = self._get_dataframe()
         if dataframe.empty:
@@ -188,7 +190,7 @@ class TrainingSession:
                                         epochs=self.training_model.epochs,
                                         patience=self.training_model.patience)
         self._training_end_time = datetime.now()
-        logging.info(f"Training completed for {self.target_currency}.")
+        logging.info(f"Training {self.training_model} completed for {self.target_currency}.")
         self._save_model()
         self._capture_prediction()
         self._capture_history_data(history)
@@ -196,7 +198,11 @@ class TrainingSession:
 
     def _train_multi_layer_in_batches(self):
         batched_dataframes: list[pd.DataFrame] = self._get_batched_dataframe()
-        for dataframe in batched_dataframes:
+        for idx, dataframe in enumerate(batched_dataframes):
+            logging.info(
+                f"Training batch {idx + 1}/{len(batched_dataframes)} "
+                f"({len(dataframe):,} rows) for {self.target_currency}."
+            )
             self._train_multi_layer(dataframe, in_batches=False)
 
     def _capture_history_data(self, history):
@@ -235,26 +241,30 @@ class TrainingSession:
         return predicted_price
 
     def _save_model(self) -> None:
-        logging.info(f"Saving model for {self.target_currency}...")
+        logging.info(f"Saving {self.training_model} model for {self.target_currency}.")
         model_path: str = self._model.get_model_path(self.target_currency)
         self._model.save_model(model_path)
 
     def _train_in_batches(self) -> None:
         batched_dataframes: list[pd.DataFrame] = self._get_batched_dataframe()
-        for dataframe in batched_dataframes:
+        for idx, dataframe in enumerate(batched_dataframes):
+            logging.info(
+                f"Training batch {idx + 1}/{len(batched_dataframes)} "
+                f"({len(dataframe):,} rows) for {self.target_currency}."
+            )
             self.train(dataframe, in_batches=False)
 
     def _transform_to_dataset(self, dataframe: pd.DataFrame) -> tuple[tf.data.Dataset, tf.data.Dataset, MinMaxScaler, Any]:
-        logging.info("Transforming data...")
+        logging.info(f"Transforming data for {len(dataframe):,} samples for {self.target_currency}.")
         preprocessor: Preprocessor = Preprocessor(sequence_length=self.training_model.sequence_length)
         historical_prices, future_prices_unscaled, input_scaler = (
             preprocessor.transform(dataframe, self.target_currency))
         self._dimension_width = historical_prices.shape[-1]
-        logging.info("Scaling target values...")
+        logging.info("Scaling target values.")
         target_scaler: MinMaxScaler = MinMaxScaler(feature_range=(0, 1))
-        logging.info("Fitting target scaler on actual y labels...")
+        logging.info("Fitting target scaler on actual y labels.")
         target_scaler.fit(self._rescale_future_prices(future_prices_unscaled))
-        logging.info("Scaling future prices...")
+        logging.info("Scaling future prices.")
         future_prices_scaled = target_scaler.transform(
             self._rescale_future_prices(future_prices_unscaled)).ravel()
         train_ds, val_ds = self._scaled_as_dataset(historical_prices, future_prices_scaled)
@@ -264,7 +274,7 @@ class TrainingSession:
         return train_ds, val_ds, target_scaler, historical_prices
 
     def _scaled_as_dataset(self, historical_prices, future_prices_scaled) -> tuple[tf.data.Dataset, tf.data.Dataset]:
-        logging.info("Creating TensorFlow dataset...")
+        logging.info(f"Creating TensorFlow dataset for a {self.model_type} model.")
         total = len(future_prices_scaled)
         val_size = max(1, int(total * 0.1))
         train_size = total - val_size
@@ -279,19 +289,20 @@ class TrainingSession:
             (historical_prices[train_size:], future_prices_scaled[train_size:]))
         val_ds = val_ds.batch(self.training_model.batch_size) \
                        .prefetch(tf.data.AUTOTUNE)
+        logging.info(f"Dataset: {train_size:,} training and {val_size:,} validation examples.")
         return train_ds, val_ds
 
     def _transform_multi_layer_to_dataset(self, dataframe: pd.DataFrame) -> tuple[tf.data.Dataset, tf.data.Dataset, MinMaxScaler, Any, Any, Any]:
-        logging.info("Transforming multi-layer data...")
+        logging.info("Transforming multi-layer data.")
         preprocessor: Preprocessor = Preprocessor(sequence_length=self.training_model.sequence_length)
         short_data, med_data, long_data, future_prices_unscaled, input_scaler = (
             preprocessor.transform_multi_scale_with_weights(dataframe, self.target_currency))
         self._dimension_width = short_data.shape[-1]
-        logging.info("Scaling target values...")
+        logging.info(f"Scaling target values for {self._dimension_width} dimensions.")
         target_scaler: MinMaxScaler = MinMaxScaler(feature_range=(0, 1))
-        logging.info("Fitting target scaler on actual y labels...")
+        logging.info("Fitting target scaler on actual y labels.")
         target_scaler.fit(self._rescale_future_prices(future_prices_unscaled))
-        logging.info("Scaling future prices...")
+        logging.info(f"Scaling future prices for {self._dimension_width} dimensions.")
         future_prices_scaled = target_scaler.transform(
             self._rescale_future_prices(future_prices_unscaled)).ravel()
         train_ds, val_ds = self._scaled_multi_layer_as_dataset(short_data, med_data, long_data, future_prices_scaled)
@@ -323,7 +334,8 @@ class TrainingSession:
         return train_ds, val_ds
 
     def _get_model(self, historical_prices: DataFrame, use_previous_model: bool = True):
-        logging.info("Getting model...")
+        logging.info(f"Getting {self.model_type} model, "
+                     f"{'using previous model' if use_previous_model else 'not using previous model'}.")
         if self.model_type == ModelType.LSTM:
             model_path: str = LstmModel.get_model_path(self.target_currency)
             model = get_model(LstmModel,
@@ -364,6 +376,7 @@ class TrainingSession:
         return ModelType.from_instance(self._model)
 
     def to_json(self) -> dict:
+        logging.debug(f"Converting {self.training_model} training session for {self.target_currency} to JSON.")
         date_format: str = "%Y-%m-%dT%H:%M:%S"
         json = {
             "currency": self.target_currency,
@@ -393,7 +406,7 @@ class TrainingSession:
 
     def _send_to_server(self):
         payload: dict = self.to_json()
-        logging.info("Sending training session to server...")
+        logging.info("Sending training session to server.")
         try:
             response = post_json(
                 settings.CT_DATA_BASE_URL,
@@ -403,9 +416,32 @@ class TrainingSession:
             if response.status_code != 200:
                 logging.error(f"Failed to send training session to server. Status code: {response.status_code}")
                 return
-            logging.info("Training session sent successfully.")
-        except Exception as e:
-            logging.error(f"Failed to send training session to server. Error: {e}")
+            logging.info(f"Training session sent successfully at {datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}.")
+        except Exception as exception:
+            logging.error(f"Failed to send training session to server. Error: {exception}")
+
+    def __str__(self) -> str:
+        return f"""
+        Training Session:
+            Target Currency: {self.target_currency}
+            Training Model: {self.training_model}
+            Prediction Training Model: {self.prediction_training_model}
+            Model Type: {self.model_type}
+            Actual Rows: {self._actual_rows}
+            Epochs Trained: {self._epochs_trained}
+            Starting Loss: {self._starting_loss}
+            Final Loss: {self._final_loss}
+            Training Start Time: {self._training_start_time}
+            Training End Time: {self._training_end_time}
+            Query Start Time: {self._query_start_time}
+            Query End Time: {self._query_end_time}
+            Query Load: {self._query_load}
+            Query Batch Size: {self._query_batch_size}
+            Short Sequence Length: {self._short_seq_len if self.is_multi_layer() else 'N/A'}
+            Medium Sequence Length: {self._medium_seq_len if self.is_multi_layer() else 'N/A'}
+            Long Sequence Length: {self._long_seq_len if self.is_multi_layer() else 'N/A'}
+            Dimension Width: {self._dimension_width}
+        """
 
 
     @staticmethod
