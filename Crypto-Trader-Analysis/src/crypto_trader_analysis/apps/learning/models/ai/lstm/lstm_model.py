@@ -7,6 +7,9 @@ from attrs import define
 from keras import Sequential, Input
 from keras.layers import LSTM, Dropout, Dense
 from keras.saving.save import load_model
+
+from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
+    RichTrainingLogger
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.base_model import BaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
@@ -59,6 +62,7 @@ class LstmModel(BaseModel):
                                        f"{self.target_currency}_checkpoint.keras")
 
         monitor = "val_loss" if val_dataset is not None else "loss"
+        training_logger = RichTrainingLogger(title=f"LSTM • {self.target_currency}")
         callbacks = [
             EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
@@ -66,16 +70,18 @@ class LstmModel(BaseModel):
                             save_best_only=True),
             LstmModel.get_tensorboard_callback(self.target_currency),
             ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
-                              min_lr=1e-6)
+                              min_lr=1e-6),
+            training_logger
         ]
         for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               verbose=1,
+                               verbose=0,
                                validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
+                training_logger.close()
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import delete_model, \
                     model_exists
@@ -94,7 +100,7 @@ class LstmModel(BaseModel):
 
     @override
     def predict(self, training_data, target_scaler):
-        scaled_pred = self.model.predict(training_data)
+        scaled_pred = self.model.predict(training_data, verbose=0)
         real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
         return real_price
 
