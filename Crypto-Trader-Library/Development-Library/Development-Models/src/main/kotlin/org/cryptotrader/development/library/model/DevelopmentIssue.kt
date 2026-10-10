@@ -2,13 +2,21 @@ package org.cryptotrader.development.library.model
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import org.cryptotrader.development.library.model.project.GitHubProjectModules
+import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueType
+import org.cryptotrader.development.library.model.project.IssueUrgency
 
 open class DevelopmentIssue(
     val issueTitle: String,
     val issueDescription: String,
     val labels: List<String>,
     val points: Int,
-    val extraContent: String? = null
+    val extraContent: String? = null,
+    val urgency: IssueUrgency? = null,
+    val modules: GitHubProjectModules? = null,
+    val priority: IssuePriority? = null,
+    val type: IssueType? = null
 ) : IssueDescriptive, GenerativeContentDisclaimer {
     override fun getDescription(): String {
         val hasExtraContent: Boolean = !this.extraContent.isNullOrBlank()
@@ -16,6 +24,15 @@ open class DevelopmentIssue(
         val sections: MutableList<String> = mutableListOf(this.issueTitle, this.issueDescription)
         if (hasExtraContent) {
             sections.add(this.extraContent!!)
+        }
+        val metadata = listOfNotNull(
+            this.urgency?.let { "Urgency: ${it.urgencyLevel}" },
+            this.modules?.let { "Modules: ${it.moduleName}" },
+            this.priority?.let { "Priority: ${it.priorityName}" },
+            this.type?.let { "Type: ${it.typeName}" }
+        )
+        if (metadata.isNotEmpty()) {
+            sections.add(metadata.joinToString("\n"))
         }
         sections.add("Points: ${this.points}")
         sections.add(this.getGenerativeContentDisclaimer())
