@@ -1,0 +1,1212 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.1.4",
+    "title": "GitHub v3 REST API",
+    "description": "GitHub's v3 REST API.",
+    "license": {
+      "name": "MIT",
+      "url": "https://spdx.org/licenses/MIT"
+    },
+    "termsOfService": "https://docs.github.com/articles/github-terms-of-service",
+    "contact": {
+      "name": "Support",
+      "url": "https://support.github.com/contact?tags=dotcom-rest-api"
+    },
+    "x-github-plan": "api.github.com"
+  },
+  "servers": [
+    {
+      "url": "https://api.github.com"
+    }
+  ],
+  "externalDocs": {
+    "description": "GitHub v3 REST API",
+    "url": "https://docs.github.com/rest/"
+  },
+  "paths": {
+    "/orgs/{org}/projectsV2": {
+      "get": {
+        "summary": "List projects for organization",
+        "description": "List all projects owned by a specific organization accessible by the authenticated user.",
+        "tags": [
+          "projects"
+        ],
+        "operationId": "projects/list-for-org",
+        "externalDocs": {
+          "description": "API method documentation",
+          "url": "https://docs.github.com/rest/projects/projects#list-projects-for-organization"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/org"
+          },
+          {
+            "name": "q",
+            "description": "Limit results to projects of the specified type.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/pagination-before"
+          },
+          {
+            "$ref": "#/components/parameters/pagination-after"
+          },
+          {
+            "$ref": "#/components/parameters/per-page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/projects-v2"
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/projects-v2"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Link": {
+                "$ref": "#/components/headers/link"
+              }
+            }
+          },
+          "304": {
+            "$ref": "#/components/responses/not_modified"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "401": {
+            "$ref": "#/components/responses/requires_authentication"
+          }
+        },
+        "x-github": {
+          "githubCloudOnly": false,
+          "enabledForGitHubApps": true,
+          "category": "projects",
+          "subcategory": "projects"
+        }
+      }
+    },
+    "/orgs/{org}/projectsV2/{project_number}": {
+      "get": {
+        "summary": "Get project for organization",
+        "description": "Get a specific organization-owned project.",
+        "tags": [
+          "projects"
+        ],
+        "operationId": "projects/get-for-org",
+        "externalDocs": {
+          "description": "API method documentation",
+          "url": "https://docs.github.com/rest/projects/projects#get-project-for-organization"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/project-number"
+          },
+          {
+            "$ref": "#/components/parameters/org"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projects-v2"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/projects-v2"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Link": {
+                "$ref": "#/components/headers/link"
+              }
+            }
+          },
+          "304": {
+            "$ref": "#/components/responses/not_modified"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "401": {
+            "$ref": "#/components/responses/requires_authentication"
+          }
+        },
+        "x-github": {
+          "githubCloudOnly": false,
+          "enabledForGitHubApps": true,
+          "category": "projects",
+          "subcategory": "projects"
+        }
+      }
+    },
+    "/orgs/{org}/projectsV2/{project_number}/fields": {
+      "get": {
+        "summary": "List project fields for organization",
+        "description": "List all fields for a specific organization-owned project.",
+        "tags": [
+          "projects"
+        ],
+        "operationId": "projects/list-fields-for-org",
+        "externalDocs": {
+          "description": "API method documentation",
+          "url": "https://docs.github.com/rest/projects/fields#list-project-fields-for-organization"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/project-number"
+          },
+          {
+            "$ref": "#/components/parameters/org"
+          },
+          {
+            "$ref": "#/components/parameters/per-page"
+          },
+          {
+            "$ref": "#/components/parameters/pagination-before"
+          },
+          {
+            "$ref": "#/components/parameters/pagination-after"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/projects-v2-field"
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/projects-v2-field-items"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Link": {
+                "$ref": "#/components/headers/link"
+              }
+            }
+          },
+          "304": {
+            "$ref": "#/components/responses/not_modified"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "401": {
+            "$ref": "#/components/responses/requires_authentication"
+          }
+        },
+        "x-github": {
+          "githubCloudOnly": false,
+          "enabledForGitHubApps": true,
+          "category": "projects",
+          "subcategory": "fields"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "projects",
+      "description": "Endpoints to manage Projects using the REST API."
+    }
+  ],
+  "components": {
+    "parameters": {
+      "org": {
+        "name": "org",
+        "description": "The organization name. The name is not case sensitive.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "pagination-before": {
+        "name": "before",
+        "description": "A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results before this cursor. For more information, see \"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\"",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "pagination-after": {
+        "name": "after",
+        "description": "A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results after this cursor. For more information, see \"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\"",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "per-page": {
+        "name": "per_page",
+        "description": "The number of results per page (max 100). For more information, see \"[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api).\"",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "default": 30
+        }
+      },
+      "project-number": {
+        "name": "project_number",
+        "description": "The project's number.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "schemas": {
+      "projects-v2": {
+        "title": "Projects v2 Project",
+        "description": "A projects v2 project",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The unique identifier of the project."
+          },
+          "node_id": {
+            "type": "string",
+            "description": "The node ID of the project."
+          },
+          "owner": {
+            "$ref": "#/components/schemas/simple-user"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/simple-user"
+          },
+          "title": {
+            "type": "string",
+            "description": "The project title."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "A short description of the project."
+          },
+          "public": {
+            "type": "boolean",
+            "description": "Whether the project is visible to anyone with access to the owner."
+          },
+          "closed_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "nullable": true,
+            "description": "The time when the project was closed."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the project was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the project was last updated."
+          },
+          "number": {
+            "type": "integer",
+            "description": "The project number."
+          },
+          "short_description": {
+            "type": "string",
+            "nullable": true,
+            "description": "A concise summary of the project."
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "nullable": true,
+            "description": "The time when the project was deleted."
+          },
+          "deleted_by": {
+            "$ref": "#/components/schemas/nullable-simple-user"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "description": "The current state of the project."
+          },
+          "latest_status_update": {
+            "$ref": "#/components/schemas/nullable-projects-v2-status-update"
+          },
+          "is_template": {
+            "type": "boolean",
+            "description": "Whether this project is a template"
+          }
+        },
+        "required": [
+          "id",
+          "node_id",
+          "owner",
+          "creator",
+          "title",
+          "description",
+          "public",
+          "closed_at",
+          "created_at",
+          "updated_at",
+          "number",
+          "short_description",
+          "deleted_at",
+          "deleted_by"
+        ]
+      },
+      "projects-v2-field": {
+        "title": "Projects v2 Field",
+        "description": "A field inside a projects v2 project",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier of the field."
+          },
+          "issue_field_id": {
+            "type": "integer",
+            "description": "The ID of the issue field."
+          },
+          "node_id": {
+            "type": "string",
+            "description": "The node ID of the field."
+          },
+          "project_url": {
+            "type": "string",
+            "description": "The API URL of the project that contains the field.",
+            "example": "https://api.github.com/projects/1"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the field."
+          },
+          "data_type": {
+            "type": "string",
+            "description": "The field's data type.",
+            "enum": [
+              "assignees",
+              "linked_pull_requests",
+              "reviewers",
+              "labels",
+              "milestone",
+              "repository",
+              "title",
+              "text",
+              "single_select",
+              "number",
+              "date",
+              "iteration",
+              "issue_type",
+              "parent_issue",
+              "sub_issues_progress"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "description": "The options available for single select fields.",
+            "items": {
+              "$ref": "#/components/schemas/projects-v2-single-select-options"
+            }
+          },
+          "configuration": {
+            "type": "object",
+            "description": "Configuration for iteration fields.",
+            "properties": {
+              "start_day": {
+                "type": "integer",
+                "description": "The day of the week when the iteration starts."
+              },
+              "duration": {
+                "type": "integer",
+                "description": "The duration of the iteration in days."
+              },
+              "iterations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/projects-v2-iteration-settings"
+                }
+              }
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the field was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the field was last updated."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "data_type",
+          "created_at",
+          "updated_at",
+          "project_url"
+        ]
+      },
+      "simple-user": {
+        "title": "Simple User",
+        "description": "A GitHub user.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "login": {
+            "type": "string",
+            "example": "octocat"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "node_id": {
+            "type": "string",
+            "example": "MDQ6VXNlcjE="
+          },
+          "avatar_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://github.com/images/error/octocat_happy.gif"
+          },
+          "gravatar_id": {
+            "type": "string",
+            "example": "41d064eb2195891e12d0413f63227ea7",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat"
+          },
+          "html_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://github.com/octocat"
+          },
+          "followers_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/followers"
+          },
+          "following_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/following{/other_user}"
+          },
+          "gists_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/gists{/gist_id}"
+          },
+          "starred_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/starred{/owner}{/repo}"
+          },
+          "subscriptions_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/subscriptions"
+          },
+          "organizations_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/orgs"
+          },
+          "repos_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/repos"
+          },
+          "events_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/events{/privacy}"
+          },
+          "received_events_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/received_events"
+          },
+          "type": {
+            "type": "string",
+            "example": "User"
+          },
+          "site_admin": {
+            "type": "boolean"
+          },
+          "starred_at": {
+            "type": "string",
+            "example": "\"2020-07-09T00:17:55Z\""
+          },
+          "user_view_type": {
+            "type": "string",
+            "example": "public"
+          }
+        },
+        "required": [
+          "avatar_url",
+          "events_url",
+          "followers_url",
+          "following_url",
+          "gists_url",
+          "gravatar_id",
+          "html_url",
+          "id",
+          "node_id",
+          "login",
+          "organizations_url",
+          "received_events_url",
+          "repos_url",
+          "site_admin",
+          "starred_url",
+          "subscriptions_url",
+          "type",
+          "url"
+        ]
+      },
+      "nullable-simple-user": {
+        "title": "Simple User",
+        "description": "A GitHub user.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "email": {
+            "nullable": true,
+            "type": "string"
+          },
+          "login": {
+            "type": "string",
+            "example": "octocat"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "node_id": {
+            "type": "string",
+            "example": "MDQ6VXNlcjE="
+          },
+          "avatar_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://github.com/images/error/octocat_happy.gif"
+          },
+          "gravatar_id": {
+            "type": "string",
+            "example": "41d064eb2195891e12d0413f63227ea7",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat"
+          },
+          "html_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://github.com/octocat"
+          },
+          "followers_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/followers"
+          },
+          "following_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/following{/other_user}"
+          },
+          "gists_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/gists{/gist_id}"
+          },
+          "starred_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/starred{/owner}{/repo}"
+          },
+          "subscriptions_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/subscriptions"
+          },
+          "organizations_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/orgs"
+          },
+          "repos_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/repos"
+          },
+          "events_url": {
+            "type": "string",
+            "example": "https://api.github.com/users/octocat/events{/privacy}"
+          },
+          "received_events_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://api.github.com/users/octocat/received_events"
+          },
+          "type": {
+            "type": "string",
+            "example": "User"
+          },
+          "site_admin": {
+            "type": "boolean"
+          },
+          "starred_at": {
+            "type": "string",
+            "example": "\"2020-07-09T00:17:55Z\""
+          },
+          "user_view_type": {
+            "type": "string",
+            "example": "public"
+          }
+        },
+        "required": [
+          "avatar_url",
+          "events_url",
+          "followers_url",
+          "following_url",
+          "gists_url",
+          "gravatar_id",
+          "html_url",
+          "id",
+          "node_id",
+          "login",
+          "organizations_url",
+          "received_events_url",
+          "repos_url",
+          "site_admin",
+          "starred_url",
+          "subscriptions_url",
+          "type",
+          "url"
+        ],
+        "nullable": true
+      },
+      "nullable-projects-v2-status-update": {
+        "title": "Projects v2 Status Update",
+        "description": "An status update belonging to a project",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The unique identifier of the status update."
+          },
+          "node_id": {
+            "type": "string",
+            "description": "The node ID of the status update."
+          },
+          "project_node_id": {
+            "type": "string",
+            "description": "The node ID of the project that this status update belongs to."
+          },
+          "creator": {
+            "$ref": "#/components/schemas/simple-user"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the status update was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-04-28T12:00:00Z",
+            "description": "The time when the status update was last updated."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "INACTIVE",
+              "ON_TRACK",
+              "AT_RISK",
+              "OFF_TRACK",
+              "COMPLETE"
+            ],
+            "nullable": true,
+            "description": "The current status."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2022-04-28",
+            "description": "The start date of the period covered by the update."
+          },
+          "target_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2022-04-28",
+            "description": "The target date associated with the update."
+          },
+          "body": {
+            "description": "Body of the status update",
+            "example": "The project is off to a great start!",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "node_id",
+          "created_at",
+          "updated_at"
+        ],
+        "nullable": true
+      },
+      "basic-error": {
+        "title": "Basic Error",
+        "description": "Basic Error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "documentation_url": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "projects-v2-single-select-options": {
+        "title": "Projects v2 Single Select Option",
+        "description": "An option for a single select field",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the option."
+          },
+          "name": {
+            "type": "object",
+            "description": "The display name of the option, in raw text and HTML formats.",
+            "properties": {
+              "raw": {
+                "type": "string"
+              },
+              "html": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "raw",
+              "html"
+            ]
+          },
+          "description": {
+            "type": "object",
+            "description": "The description of the option, in raw text and HTML formats.",
+            "properties": {
+              "raw": {
+                "type": "string"
+              },
+              "html": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "raw",
+              "html"
+            ]
+          },
+          "color": {
+            "type": "string",
+            "description": "The color associated with the option."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "color"
+        ]
+      },
+      "projects-v2-iteration-settings": {
+        "title": "Projects v2 Iteration Setting",
+        "description": "An iteration setting for an iteration field",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the iteration setting."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the iteration."
+          },
+          "duration": {
+            "type": "integer",
+            "description": "The duration of the iteration in days."
+          },
+          "title": {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string"
+              },
+              "html": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "raw",
+              "html"
+            ],
+            "description": "The iteration title, in raw text and HTML formats."
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Whether the iteration has been completed."
+          }
+        },
+        "required": [
+          "id",
+          "start_date",
+          "duration",
+          "title",
+          "completed"
+        ]
+      }
+    },
+    "examples": {
+      "projects-v2": {
+        "value": {
+          "id": 2,
+          "node_id": "MDc6UHJvamVjdDEwMDI2MDM=",
+          "owner": {
+            "login": "octocat",
+            "id": 1,
+            "node_id": "MDQ6VXNlcjE=",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/octocat",
+            "html_url": "https://github.com/octocat",
+            "followers_url": "https://api.github.com/users/octocat/followers",
+            "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+            "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+            "organizations_url": "https://api.github.com/users/octocat/orgs",
+            "repos_url": "https://api.github.com/users/octocat/repos",
+            "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/octocat/received_events",
+            "type": "User",
+            "site_admin": false
+          },
+          "creator": {
+            "login": "octocat",
+            "id": 1,
+            "node_id": "MDQ6VXNlcjE=",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/octocat",
+            "html_url": "https://github.com/octocat",
+            "followers_url": "https://api.github.com/users/octocat/followers",
+            "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+            "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+            "organizations_url": "https://api.github.com/users/octocat/orgs",
+            "repos_url": "https://api.github.com/users/octocat/repos",
+            "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/octocat/received_events",
+            "type": "User",
+            "site_admin": false
+          },
+          "title": "My Projects",
+          "description": "A board to manage my personal projects.",
+          "public": true,
+          "closed_at": null,
+          "created_at": "2011-04-10T20:09:31Z",
+          "updated_at": "2014-03-03T18:58:10Z",
+          "number": 2,
+          "short_description": null,
+          "deleted_at": null,
+          "deleted_by": null,
+          "state": "open",
+          "latest_status_update": {
+            "id": 3,
+            "node_id": "PVTSU_lAECAQM",
+            "creator": {
+              "login": "hubot",
+              "id": 2,
+              "node_id": "MDQ6VXNlcjI=",
+              "avatar_url": "https://github.com/images/error/hubot_happy.gif",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/hubot",
+              "html_url": "https://github.com/hubot",
+              "followers_url": "https://api.github.com/users/hubot/followers",
+              "following_url": "https://api.github.com/users/hubot/following{/other_user}",
+              "gists_url": "https://api.github.com/users/hubot/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/hubot/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/hubot/subscriptions",
+              "organizations_url": "https://api.github.com/users/hubot/orgs",
+              "repos_url": "https://api.github.com/users/hubot/repos",
+              "events_url": "https://api.github.com/users/hubot/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/hubot/received_events",
+              "type": "User",
+              "site_admin": false
+            },
+            "body": "DONE",
+            "start_date": "2025-07-23",
+            "target_date": "2025-07-26",
+            "status": "COMPLETE",
+            "created_at": "2025-07-11T16:19:28Z",
+            "updated_at": "2025-07-11T16:19:28Z"
+          },
+          "is_template": true
+        }
+      },
+      "projects-v2-field-items": {
+        "value": [
+          {
+            "id": 12345,
+            "node_id": "PVTF_lADOABCD1234567890",
+            "name": "Priority",
+            "data_type": "single_select",
+            "project_url": "https://api.github.com/projects/67890",
+            "options": [
+              {
+                "id": "option_1",
+                "name": {
+                  "html": "Low",
+                  "raw": "Low"
+                },
+                "color": "GREEN",
+                "description": {
+                  "html": "Low priority items",
+                  "raw": "Low priority items"
+                }
+              },
+              {
+                "id": "option_2",
+                "name": {
+                  "html": "Medium",
+                  "raw": "Medium"
+                },
+                "color": "YELLOW",
+                "description": {
+                  "html": "Medium priority items",
+                  "raw": "Medium priority items"
+                }
+              },
+              {
+                "id": "option_3",
+                "name": {
+                  "html": "High",
+                  "raw": "High"
+                },
+                "color": "RED",
+                "description": {
+                  "html": "High priority items",
+                  "raw": "High priority items"
+                }
+              }
+            ],
+            "created_at": "2022-04-28T12:00:00Z",
+            "updated_at": "2022-04-28T12:00:00Z"
+          },
+          {
+            "id": 67891,
+            "node_id": "PVTF_lADOABCD9876543210",
+            "name": "Status",
+            "data_type": "single_select",
+            "project_url": "https://api.github.com/projects/67890",
+            "options": [
+              {
+                "id": "option_4",
+                "name": {
+                  "html": "Todo",
+                  "raw": "Todo"
+                },
+                "color": "GRAY",
+                "description": {
+                  "html": "Items to be worked on",
+                  "raw": "Items to be worked on"
+                }
+              },
+              {
+                "id": "option_5",
+                "name": {
+                  "html": "In Progress",
+                  "raw": "In Progress"
+                },
+                "color": "BLUE",
+                "description": {
+                  "html": "Items currently being worked on",
+                  "raw": "Items currently being worked on"
+                }
+              },
+              {
+                "id": "option_6",
+                "name": {
+                  "html": "Done",
+                  "raw": "Done"
+                },
+                "color": "GREEN",
+                "description": {
+                  "html": "Completed items",
+                  "raw": "Completed items"
+                }
+              }
+            ],
+            "created_at": "2022-04-29T10:30:00Z",
+            "updated_at": "2022-04-29T10:30:00Z"
+          },
+          {
+            "id": 24680,
+            "node_id": "PVTF_lADOABCD2468024680",
+            "name": "Team notes",
+            "data_type": "text",
+            "project_url": "https://api.github.com/projects/67890",
+            "created_at": "2022-05-15T08:00:00Z",
+            "updated_at": "2022-05-15T08:00:00Z"
+          },
+          {
+            "id": 13579,
+            "node_id": "PVTF_lADOABCD1357913579",
+            "name": "Story points",
+            "data_type": "number",
+            "project_url": "https://api.github.com/projects/67890",
+            "created_at": "2022-06-01T14:30:00Z",
+            "updated_at": "2022-06-01T14:30:00Z"
+          },
+          {
+            "id": 98765,
+            "node_id": "PVTF_lADOABCD9876598765",
+            "name": "Due date",
+            "data_type": "date",
+            "project_url": "https://api.github.com/projects/67890",
+            "created_at": "2022-06-10T09:15:00Z",
+            "updated_at": "2022-06-10T09:15:00Z"
+          },
+          {
+            "id": 11223,
+            "node_id": "PVTF_lADOABCD1122311223",
+            "name": "Sprint",
+            "data_type": "iteration",
+            "project_url": "https://api.github.com/projects/67890",
+            "configuration": {
+              "duration": 14,
+              "start_day": 1,
+              "iterations": [
+                {
+                  "id": "iter_1",
+                  "title": {
+                    "html": "Sprint 1",
+                    "raw": "Sprint 1"
+                  },
+                  "start_date": "2022-07-01",
+                  "duration": 14
+                },
+                {
+                  "id": "iter_2",
+                  "title": {
+                    "html": "Sprint 2",
+                    "raw": "Sprint 2"
+                  },
+                  "start_date": "2022-07-15",
+                  "duration": 14
+                }
+              ]
+            },
+            "created_at": "2022-06-20T16:45:00Z",
+            "updated_at": "2022-06-20T16:45:00Z"
+          }
+        ]
+      }
+    },
+    "headers": {
+      "link": {
+        "example": "<https://api.github.com/resource?page=2>; rel=\"next\", <https://api.github.com/resource?page=5>; rel=\"last\"",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "not_modified": {
+        "description": "Not modified"
+      },
+      "forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/basic-error"
+            }
+          }
+        }
+      },
+      "requires_authentication": {
+        "description": "Requires authentication",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/basic-error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
