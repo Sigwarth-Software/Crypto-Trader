@@ -5,5 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties(prefix = "github")
 data class GitHubProperties(
     val token: String,
-    val repository: String
+    val repository: String,
+    val organization: String,
+    val projectNumber: Int
 )
