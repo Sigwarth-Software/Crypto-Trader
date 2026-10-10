@@ -3,6 +3,10 @@ package org.cryptotrader.agent.library.component
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.development.library.model.DevelopmentIssue
 import org.cryptotrader.development.library.model.UserStoryIssue
+import org.cryptotrader.development.library.model.project.GitHubProjectModules
+import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueType
+import org.cryptotrader.development.library.model.project.IssueUrgency
 import org.cryptotrader.development.library.services.GitHubIssueService
 import org.cryptotrader.security.library.infrastructure.annotation.UserRestricted
 import org.springaicommunity.mcp.annotation.McpToolParam
@@ -27,8 +31,12 @@ class GitHubIssueTool @Autowired constructor(
         private val TASK_LINE_PATTERN: Regex = Regex("^-\\s*\\[[ xX]]\\s*(.+)$")
         private val POINTS_LINE_PATTERN: Regex = Regex("(?i)points\\s*:\\s*(\\d+)")
         private val LABELS_LINE_PATTERN: Regex = Regex("(?i)labels\\s*:\\s*(.+)")
+        private val URGENCY_LINE_PATTERN: Regex = Regex("(?i)^urgency\\s*:\\s*(.+)$")
+        private val MODULES_LINE_PATTERN: Regex = Regex("(?i)^modules?\\s*:\\s*(.+)$")
+        private val PRIORITY_LINE_PATTERN: Regex = Regex("(?i)^priority\\s*:\\s*(.+)$")
+        private val TYPE_LINE_PATTERN: Regex = Regex("(?i)^type\\s*:\\s*(.+)$")
         private val TITLE_LINE_PATTERN: Regex = Regex("(?i)^(?:title|issue)\\s*:\\s*(.+)$")
-        private val METADATA_LINE_PATTERN: Regex = Regex("(?i)^(?:name|about|assignees)\\s*:\\s*.*$")
+        private val METADATA_LINE_PATTERN: Regex = Regex("(?i)^(?:name|about|assignees|urgency|modules?|priority|type)\\s*:\\s*.*$")
         private val HTML_COMMENT_PATTERN: Regex = Regex("(?s)<!--.*?-->")
     }
 
@@ -49,7 +57,7 @@ class GitHubIssueTool @Autowired constructor(
     }
 
     @Tool(description = "Propose a new GitHub issue from a user story written following the issue template " +
-        "(title line, task checklist, and an hours-based points estimate). Returns the proposed issue for " +
+        "(title line, task checklist, hours-based points estimate, urgency, modules, priority, and type). Returns the proposed issue for " +
         "review along with an issue ID to pass to confirmIssue.")
     @UserRestricted
     fun createIssue(
@@ -139,7 +147,11 @@ class GitHubIssueTool @Autowired constructor(
             issueTitle = title,
             tasks = tasks,
             labels = labels,
-            points = points
+            points = points,
+            urgency = parseMetadata(metadataValue(URGENCY_LINE_PATTERN, "Urgency", lines), "urgency", IssueUrgency::from),
+            modules = parseMetadata(metadataValue(MODULES_LINE_PATTERN, "Modules", lines), "module", GitHubProjectModules::from),
+            priority = parseMetadata(metadataValue(PRIORITY_LINE_PATTERN, "Priority", lines), "priority", IssuePriority::from),
+            type = parseMetadata(metadataValue(TYPE_LINE_PATTERN, "Type", lines), "type", IssueType::from)
         )
     }
 
@@ -149,5 +161,19 @@ class GitHubIssueTool @Autowired constructor(
         if (matchedPattern != null) {
             throw SecurityException("Ticket request appears to contain sensitive data and cannot be processed.")
         }
+    }
+
+    fun <T> parseMetadata(value: String?, field: String, parser: (String) -> T?): T? {
+        if (value == null) {
+            return null
+        }
+        return parser(value) ?: throw IllegalArgumentException("Unknown $field: $value")
+    }
+
+    fun metadataValue(pattern: Regex, field: String, lines: List<String>): String? {
+        return lines.firstNotNullOfOrNull { line ->
+            pattern.matchEntire(line)?.groupValues?.get(1)?.trim()
+                ?.takeIf { it.isNotEmpty() }
+        }?.also { require(it.isNotBlank()) { "$field must not be blank." } }
     }
 }
