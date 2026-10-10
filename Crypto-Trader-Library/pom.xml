@@ -50,8 +50,9 @@
         <module>Data-Library/Data-Communication</module>
         <module>Data-Library/Data-Components</module>
         <module>Development-Library</module>
-        <module>Development-Library/Development-Models</module>
+        <module>Development-Library/Development-Communication</module>
         <module>Development-Library/Development-Config</module>
+        <module>Development-Library/Development-Models</module>
         <module>Development-Library/Development-Services</module>
         <module>Universal-Library</module>
         <module>Universal-Library/Universal-Communication</module>
