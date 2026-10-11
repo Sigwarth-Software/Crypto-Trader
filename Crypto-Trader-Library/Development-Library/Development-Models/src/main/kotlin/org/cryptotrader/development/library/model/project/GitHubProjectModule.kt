@@ -1,6 +1,6 @@
 package org.cryptotrader.development.library.model.project
 
-enum class GitHubProjectModules(val moduleName: String) {
+enum class GitHubProjectModule(val moduleName: String) {
     CRYPTO_TRADER("Crypto-Trader"),
     CRYPTO_TRADER_ADMIN("Crypto-Trader-Admin"),
     CRYPTO_TRADER_AGENT("Crypto-Trader-Agent"),
@@ -26,7 +26,7 @@ enum class GitHubProjectModules(val moduleName: String) {
     CRYPTO_TRADER_WEBSITE("Crypto-Trader-Website");
 
     companion object {
-        fun from(moduleName: String): GitHubProjectModules? {
+        fun from(moduleName: String): GitHubProjectModule? {
             return entries.find { it.moduleName.equals(moduleName, ignoreCase = true) }
         }
     }
