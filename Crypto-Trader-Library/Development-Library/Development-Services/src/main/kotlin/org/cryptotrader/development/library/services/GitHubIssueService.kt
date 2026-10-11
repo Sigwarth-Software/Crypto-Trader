@@ -1,10 +1,12 @@
 package org.cryptotrader.development.library.services
 
 import org.cryptotrader.development.library.model.DevelopmentIssue
-import org.cryptotrader.development.library.model.project.GitHubProjectModules
+import org.cryptotrader.development.library.model.project.GitHubProjectModule
+import org.cryptotrader.development.library.model.project.IssueEffort
 import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueSize
+import org.cryptotrader.development.library.model.project.ProjectIssuePriority
 import org.cryptotrader.development.library.model.project.IssueType
-import org.cryptotrader.development.library.model.project.IssueUrgency
 import org.kohsuke.github.GHIssue
 import org.kohsuke.github.GHIssueBuilder
 import org.kohsuke.github.GHRepository
@@ -40,8 +42,8 @@ class GitHubIssueService @Autowired constructor(
         val createdIssue: GHIssue = builder.create()
         log.info("Published issue #${createdIssue.number} at ${createdIssue.htmlUrl}")
 
-        this.gitHubProjectService.addIssueToProject(createdIssue.id)
-        this.gitHubProjectService.addTypeToIssue(createdIssue)
+        val projectId = this.gitHubProjectService.addIssueToProject(createdIssue.id)
+        this.gitHubProjectService.addAllFieldsToIssue(createdIssue, issue, projectId)
         return createdIssue.htmlUrl.toString()
     }
 
@@ -88,18 +90,24 @@ class GitHubIssueService @Autowired constructor(
                 ${this.getIssueTemplate()}
 
             Add one metadata line for each field below, using exactly one available value:
-                Urgency: <value>
-                Modules: <value>
-                Priority: <value>
                 Type: <value>
+                Priority: <value>
+                Project Priority: <value>
+                Effort: <value>
+                Size: <value>
+                Modules: <value>
 
-            ${this.getUrgencyPrompt()}
-
-            ${this.getModulesPrompt()}
+            ${this.getTypePrompt()}
 
             ${this.getPriorityPrompt()}
 
-            ${this.getTypePrompt()}
+            ${this.getProjectPriorityPrompt()}
+
+            ${this.getEffortPrompt()}
+
+            ${this.getSizePrompt()}
+
+            ${this.getModulesPrompt()}
 
             You're available tags include (use all that apply):
                 ${availableLabels.joinToString(separator = "\n") { "- $it" }}
@@ -126,7 +134,7 @@ class GitHubIssueService @Autowired constructor(
     }
 
     fun getModulesPrompt(): String {
-        val moduleValues: List<String> = GitHubProjectModules.entries.map { it.moduleName }
+        val moduleValues: List<String> = GitHubProjectModule.entries.map { it.moduleName }
 
         return """
             The following are the available modules for the project. Select exactly one module that best represents the context of the issue you are creating.
@@ -136,22 +144,22 @@ class GitHubIssueService @Autowired constructor(
         """.trimIndent()
     }
 
-    fun getPriorityPrompt(): String {
-        val priorityValues: List<String> = IssuePriority.entries.map { it.priorityName }
+    fun getProjectPriorityPrompt(): String {
+        val priorityValues: List<String> = ProjectIssuePriority.entries.map { it.priorityName }
 
         return """
-            The following are the available priorities for the issue. Select exactly one priority that best represents the urgency of the issue you are creating.
+            The following are the available project priorities for the issue. Select exactly one project priority that best represents the urgency of the issue you are creating for the project.
 
             Available priorities:
                 ${priorityValues.joinToString(separator = "\n") { "- $it" }}
         """.trimIndent()
     }
 
-    fun getUrgencyPrompt(): String {
-        val urgencyValues: List<String> = IssueUrgency.entries.map { it.urgencyLevel }
+    fun getPriorityPrompt(): String {
+        val urgencyValues: List<String> = IssuePriority.entries.map { it.priorityName }
 
         return """
-            The following are the available urgencies for the issue. Select exactly one urgency that best represents the urgency of the issue you are creating.
+            The following are the available priorities for the issue. Select exactly one priority that best represents the urgency of the issue you are creating.
 
             Available urgencies:
                 ${urgencyValues.joinToString(separator = "\n") { "- $it" }}
@@ -166,6 +174,28 @@ class GitHubIssueService @Autowired constructor(
 
             Available types:
                 ${typeValues.joinToString(separator = "\n") { "- $it" }}
+        """.trimIndent()
+    }
+
+    fun getEffortPrompt(): String {
+        val effortValues: List<String> = IssueEffort.entries.map { it.effortName }
+
+        return """
+            The following are the available issue efforts. Select exactly one effort that best represents the effort required to complete the issue you are creating.
+
+            Available efforts:
+                ${effortValues.joinToString(separator = "\n") { "- $it" }}
+        """.trimIndent()
+    }
+
+    fun getSizePrompt(): String {
+        val sizeValues: List<String> = IssueSize.entries.map { it.sizeName }
+
+        return """
+            The following are the available issue sizes. Select exactly one size that best represents the size of the issue you are creating.
+
+            Available sizes:
+                ${sizeValues.joinToString(separator = "\n") { "- $it" }}
         """.trimIndent()
     }
 
