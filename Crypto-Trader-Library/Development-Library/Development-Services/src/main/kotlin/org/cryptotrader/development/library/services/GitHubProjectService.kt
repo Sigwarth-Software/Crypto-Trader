@@ -149,78 +149,78 @@ open class GitHubProjectService(
                     "issue_field_values" to issueFieldValues
                 )
             )
-
-            val fields: List<ProjectsV2Field> = this.gitHubProjectExchange.getFields(
-                this.organization,
-                this.projectNumber
-            )
-            val projectFieldMap: MutableMap<ProjectItemType, Map<Int, String>> = mutableMapOf()
-
-            fields.forEach { field ->
-                if (field.name.equals(ProjectItemType.ISSUE_PRIORITY.typeName, ignoreCase = true)) {
-                    issueModel.projectPriority?.let { priority ->
-                        val option = field.options!!.first {
-                            it.name.raw.equals(priority.priorityName, ignoreCase = true)
-                        }
-
-                        projectFieldMap[ProjectItemType.ISSUE_PRIORITY] = mapOf(
-                            field.id to option.id
-                        )
-                    }
-                }
-
-                if (field.name.equals(ProjectItemType.MODULE.typeName, ignoreCase = true)) {
-                    issueModel.module?.let { module ->
-                        val option = field.options!!.first {
-                            it.name.raw.equals(module.moduleName, ignoreCase = true)
-                        }
-
-                        projectFieldMap[ProjectItemType.MODULE] = mapOf(
-                            field.id to option.id
-                        )
-                    }
-                }
-
-                if (field.name.equals(ProjectItemType.SIZE.typeName, ignoreCase = true)) {
-                    issueModel.size?.let { size ->
-                        val option = field.options!!.first {
-                            it.name.raw.equals(size.sizeName, ignoreCase = true)
-                        }
-
-                        projectFieldMap[ProjectItemType.SIZE] = mapOf(
-                            field.id to option.id
-                        )
-                    }
-                }
-            }
-
-            val projectFields: Map<Int, String> = projectFieldMap.flatMap { (_, fieldIdValueMap) ->
-                fieldIdValueMap.map { (fieldId, value) ->
-                    fieldId to value
-                }
-            }.toMap()
-
-            if (projectFields.isNotEmpty()) {
-                this.gitHubProjectExchange.updateItem(
-                    this.organization,
-                    this.projectNumber,
-                    projectItemId,
-                    requestBody = mapOf(
-                        "fields" to projectFields.map { (fieldId, value) ->
-                            mapOf(
-                                "id" to fieldId,
-                                "value" to value
-                            )
-                        }
-                    )
-                )
-            }
-
-            issueModel.type?.let { type ->
-                this.addTypeToIssue(createdIssue, type)
-            }
         } else {
             log.info("No fields to update for issue #${createdIssue.number}. Skipping field update.")
+        }
+        issueModel.type?.let { type ->
+            this.addTypeToIssue(createdIssue, type)
+        }
+        val fields: List<ProjectsV2Field> = this.gitHubProjectExchange.getFields(
+            this.organization,
+            this.projectNumber
+        )
+        val projectFieldMap: MutableMap<ProjectItemType, Map<Int, String>> = mutableMapOf()
+
+        fields.forEach { field ->
+            if (field.name.equals(ProjectItemType.ISSUE_PRIORITY.typeName, ignoreCase = true)) {
+                issueModel.projectPriority?.let { priority ->
+                    val option = field.options!!.first {
+                        it.name.raw.equals(priority.priorityName, ignoreCase = true)
+                    }
+
+                    projectFieldMap[ProjectItemType.ISSUE_PRIORITY] = mapOf(
+                        field.id to option.id
+                    )
+                }
+            }
+
+            if (field.name.equals(ProjectItemType.MODULE.typeName, ignoreCase = true)) {
+                issueModel.module?.let { module ->
+                    val option = field.options!!.first {
+                        it.name.raw.equals(module.moduleName, ignoreCase = true)
+                    }
+
+                    projectFieldMap[ProjectItemType.MODULE] = mapOf(
+                        field.id to option.id
+                    )
+                }
+            }
+
+            if (field.name.equals(ProjectItemType.SIZE.typeName, ignoreCase = true)) {
+                issueModel.size?.let { size ->
+                    val option = field.options!!.first {
+                        it.name.raw.equals(size.sizeName, ignoreCase = true)
+                    }
+
+                    projectFieldMap[ProjectItemType.SIZE] = mapOf(
+                        field.id to option.id
+                    )
+                }
+            }
+        }
+
+        val projectFields: Map<Int, String> = projectFieldMap.flatMap { (_, fieldIdValueMap) ->
+            fieldIdValueMap.map { (fieldId, value) ->
+                fieldId to value
+            }
+        }.toMap()
+
+        if (projectFields.isNotEmpty()) {
+            this.gitHubProjectExchange.updateItem(
+                this.organization,
+                this.projectNumber,
+                projectItemId,
+                requestBody = mapOf(
+                    "fields" to projectFields.map { (fieldId, value) ->
+                        mapOf(
+                            "id" to fieldId,
+                            "value" to value
+                        )
+                    }
+                )
+            )
+        } else {
+            log.info("No project fields to update for issue #${createdIssue.number}. Skipping project field update.")
         }
     }
 }
