@@ -1,9 +1,11 @@
 package org.cryptotrader.development.library.model
 
-import org.cryptotrader.development.library.model.project.GitHubProjectModules
+import org.cryptotrader.development.library.model.project.GitHubProjectModule
+import org.cryptotrader.development.library.model.project.IssueEffort
 import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueSize
+import org.cryptotrader.development.library.model.project.ProjectIssuePriority
 import org.cryptotrader.development.library.model.project.IssueType
-import org.cryptotrader.development.library.model.project.IssueUrgency
 
 class UserStoryIssue(
     issueTitle: String,
@@ -11,20 +13,24 @@ class UserStoryIssue(
     labels: List<String>,
     points: Int,
     extraContent: String? = null,
-    urgency: IssueUrgency? = null,
-    modules: GitHubProjectModules? = null,
+    modules: GitHubProjectModule? = null,
     priority: IssuePriority? = null,
-    type: IssueType? = null
+    projectPriority: ProjectIssuePriority? = null,
+    effort: IssueEffort? = null,
+    type: IssueType? = null,
+    size: IssueSize? = null,
 ) : DevelopmentIssue(
     issueTitle,
     tasksToDescription(tasks),
     labels,
     points,
     extraContent,
-    urgency,
     modules,
     priority,
-    type
+    projectPriority,
+    effort,
+    type,
+    size
 ) {
     companion object {
         fun tasksToDescription(tasks: List<String>): String {
