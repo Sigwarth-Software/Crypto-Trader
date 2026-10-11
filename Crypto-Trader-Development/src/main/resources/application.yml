@@ -46,7 +46,9 @@ security:
 
 github:
   token: ${GH_TOKEN}
-  repository: ${GITHUB_REPOSITORY:Sigwarth-Software/Crypto-Trader}
+  repository: ${GITHUB_REPOSITORY:Crypto-Trader}
+  organization: ${GITHUB_ORGANIZATION:Sigwarth-Software}
+  projectNumber: ${GITHUB_PROJECT_NUMBER:1}
 
 management:
   endpoints.web.exposure.include: health,info

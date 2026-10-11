@@ -2,18 +2,30 @@ package org.cryptotrader.development.library.model
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import org.cryptotrader.development.library.model.project.GitHubProjectModule
+import org.cryptotrader.development.library.model.project.IssueEffort
+import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueSize
+import org.cryptotrader.development.library.model.project.ProjectIssuePriority
+import org.cryptotrader.development.library.model.project.IssueType
 
 open class DevelopmentIssue(
     val issueTitle: String,
     val issueDescription: String,
     val labels: List<String>,
     val points: Int,
-    val extraContent: String? = null
+    val extraContent: String? = null,
+    val module: GitHubProjectModule? = null,
+    val priority: IssuePriority? = null,
+    val projectPriority: ProjectIssuePriority? = null,
+    val effort: IssueEffort? = null,
+    val type: IssueType? = null,
+    val size: IssueSize? = null,
 ) : IssueDescriptive, GenerativeContentDisclaimer {
     override fun getDescription(): String {
         val hasExtraContent: Boolean = !this.extraContent.isNullOrBlank()
-
         val sections: MutableList<String> = mutableListOf(this.issueTitle, this.issueDescription)
+
         if (hasExtraContent) {
             sections.add(this.extraContent!!)
         }
