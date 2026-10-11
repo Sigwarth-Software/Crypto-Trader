@@ -29,18 +29,6 @@ open class DevelopmentIssue(
         if (hasExtraContent) {
             sections.add(this.extraContent!!)
         }
-        val metadata = listOfNotNull(
-            this.module?.let { "Modules: ${it.moduleName}" },
-            this.priority?.let { "Priority: ${it.priorityName}" },
-            this.projectPriority?.let { "Project Priority: ${it.priorityName}" },
-            this.effort?.let { "Effort: ${it.effortName}" },
-            this.type?.let { "Type: ${it.typeName}" },
-            this.size?.let { "Size: ${it.sizeName}" }
-        )
-
-        if (metadata.isNotEmpty()) {
-            sections.add(metadata.joinToString("\n"))
-        }
         sections.add("Points: ${this.points}")
         sections.add(this.getGenerativeContentDisclaimer())
 
