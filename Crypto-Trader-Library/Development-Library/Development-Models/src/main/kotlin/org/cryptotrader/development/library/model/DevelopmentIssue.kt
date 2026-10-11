@@ -2,10 +2,12 @@ package org.cryptotrader.development.library.model
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import org.cryptotrader.development.library.model.project.GitHubProjectModules
+import org.cryptotrader.development.library.model.project.GitHubProjectModule
+import org.cryptotrader.development.library.model.project.IssueEffort
 import org.cryptotrader.development.library.model.project.IssuePriority
+import org.cryptotrader.development.library.model.project.IssueSize
+import org.cryptotrader.development.library.model.project.ProjectIssuePriority
 import org.cryptotrader.development.library.model.project.IssueType
-import org.cryptotrader.development.library.model.project.IssueUrgency
 
 open class DevelopmentIssue(
     val issueTitle: String,
@@ -13,24 +15,29 @@ open class DevelopmentIssue(
     val labels: List<String>,
     val points: Int,
     val extraContent: String? = null,
-    val urgency: IssueUrgency? = null,
-    val modules: GitHubProjectModules? = null,
+    val module: GitHubProjectModule? = null,
     val priority: IssuePriority? = null,
-    val type: IssueType? = null
+    val projectPriority: ProjectIssuePriority? = null,
+    val effort: IssueEffort? = null,
+    val type: IssueType? = null,
+    val size: IssueSize? = null,
 ) : IssueDescriptive, GenerativeContentDisclaimer {
     override fun getDescription(): String {
         val hasExtraContent: Boolean = !this.extraContent.isNullOrBlank()
-
         val sections: MutableList<String> = mutableListOf(this.issueTitle, this.issueDescription)
+
         if (hasExtraContent) {
             sections.add(this.extraContent!!)
         }
         val metadata = listOfNotNull(
-            this.urgency?.let { "Urgency: ${it.urgencyLevel}" },
-            this.modules?.let { "Modules: ${it.moduleName}" },
+            this.module?.let { "Modules: ${it.moduleName}" },
             this.priority?.let { "Priority: ${it.priorityName}" },
-            this.type?.let { "Type: ${it.typeName}" }
+            this.projectPriority?.let { "Project Priority: ${it.priorityName}" },
+            this.effort?.let { "Effort: ${it.effortName}" },
+            this.type?.let { "Type: ${it.typeName}" },
+            this.size?.let { "Size: ${it.sizeName}" }
         )
+
         if (metadata.isNotEmpty()) {
             sections.add(metadata.joinToString("\n"))
         }
