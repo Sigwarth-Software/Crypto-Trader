@@ -23,6 +23,5 @@ open module org.cryptotrader.development.library.services {
     exports org.cryptotrader.development.library.services.github.generated.client;
 
     exports org.cryptotrader.development.library.services;
-    exports org.cryptotrader.development.library.services.client;
     exports org.cryptotrader.development.library.services.client.exchange;
 }
