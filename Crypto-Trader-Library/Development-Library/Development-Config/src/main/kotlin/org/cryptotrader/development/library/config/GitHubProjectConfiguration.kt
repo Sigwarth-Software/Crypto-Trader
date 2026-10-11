@@ -1,6 +1,8 @@
 package org.cryptotrader.development.library.config
 
+import org.cryptotrader.development.library.services.client.exchange.GitHubGraphQlExchange
 import org.cryptotrader.development.library.services.client.exchange.GitHubIssueExchange
+import org.cryptotrader.development.library.services.client.exchange.GitHubOrganizationExchange
 import org.cryptotrader.development.library.services.client.exchange.GitHubProjectExchange
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -31,6 +33,28 @@ class GitHubProjectConfiguration {
             this.getBaseClient(restClientBuilder, properties)
 
         return factory.createClient<GitHubIssueExchange>()
+    }
+
+    @Bean
+    fun githubOrganizationExchange(
+        restClientBuilder: RestClient.Builder,
+        properties: GitHubProperties,
+    ): GitHubOrganizationExchange {
+        val factory: HttpServiceProxyFactory =
+            this.getBaseClient(restClientBuilder, properties)
+
+        return factory.createClient<GitHubOrganizationExchange>()
+    }
+
+    @Bean
+    fun githubGraphQlExchange(
+        restClientBuilder: RestClient.Builder,
+        properties: GitHubProperties,
+    ): GitHubGraphQlExchange {
+        val factory: HttpServiceProxyFactory =
+            this.getBaseClient(restClientBuilder, properties)
+
+        return factory.createClient<GitHubGraphQlExchange>()
     }
 
     fun getBaseClient(
