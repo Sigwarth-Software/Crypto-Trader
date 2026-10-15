@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import jakarta.annotation.PostConstruct
 import org.cryptotrader.chat.model.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.messages.*
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider
+import org.springframework.ai.tool.ToolCallback
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -24,6 +27,7 @@ class OpenAiProxyController(
     private val mcpToolCallbackProvider: SyncMcpToolCallbackProvider,
     @Value("\${chat.model.default:gpt-5.4}") private val defaultModel: String
 ) {
+    private val log: Logger = LoggerFactory.getLogger(OpenAiProxyController::class.java)
     private val objectMapper: ObjectMapper = ObjectMapper()
         .registerModule(KotlinModule.Builder().build())
 
@@ -31,24 +35,24 @@ class OpenAiProxyController(
 
     @PostConstruct
     fun init() {
-        val tools = mcpToolCallbackProvider.getToolCallbacks()
-        println("[DEBUG_LOG] MCP tool callbacks discovered: ${tools.size}")
+        val tools: Array<out ToolCallback> = this.mcpToolCallbackProvider.getToolCallbacks()
+        log.debug("MCP tool callbacks discovered: ${tools.size}")
         tools.forEach { tool ->
-            println("[DEBUG_LOG]   - Tool: ${tool.toolDefinition.name()}")
+            log.debug("Tool: ${tool.toolDefinition.name()}")
         }
     }
 
     @PostMapping("/chat/completions")
     fun chatCompletions(@RequestBody request: OpenAiChatCompletionRequest): ResponseEntity<Any> {
-        val requestedModel = request.model ?: defaultModel
-        val createdTimestampSeconds = Instant.now().epochSecond
+        val requestedModel: String = request.model ?: this.defaultModel
+        val createdTimestampSeconds: Long = Instant.now().epochSecond
         val responseId = "chatcmpl-${UUID.randomUUID()}"
 
-        val springMessages = request.messages.mapNotNull(::toSpringAiMessage)
-        val chatClient = chatClientBuilder.build()
+        val springMessages: List<Message> = request.messages.mapNotNull(::toSpringAiMessage)
+        val chatClient: ChatClient = this.chatClientBuilder.build()
 
         return if (request.stream == true) {
-            val stream = streamChatCompletions(
+            val stream: Flux<String> = streamChatCompletions(
                 chatClient = chatClient,
                 springMessages = springMessages,
                 responseId = responseId,
@@ -60,29 +64,30 @@ class OpenAiProxyController(
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .header(HttpHeaders.CACHE_CONTROL, "no-cache")
                 .header(HttpHeaders.CONNECTION, "keep-alive")
+                .header("X-Accel-Buffering", "no")
                 .body(stream)
         } else {
-            val chatResponse = chatClient.prompt()
+            val chatResponse: ChatResponse? = chatClient.prompt()
                 .messages(springMessages)
-                .toolCallbacks(mcpToolCallbackProvider)
+                .toolCallbacks(this.mcpToolCallbackProvider)
                 .call()
                 .chatResponse()
 
-            val assistantText = chatResponse
+            val assistantText: String = chatResponse
                 ?.results
                 ?.firstOrNull()
                 ?.output
                 ?.text
                 ?: ""
 
-            val finishReason = chatResponse
+            val finishReason: String = chatResponse
                 ?.results
                 ?.firstOrNull()
                 ?.metadata
                 ?.finishReason
                 ?: "stop"
 
-            val usage = chatResponse?.metadata?.usage?.let { usage ->
+            val usage: OpenAiUsage? = chatResponse?.metadata?.usage?.let { usage ->
                 OpenAiUsage(
                     promptTokens = usage.promptTokens?.toInt() ?: 0,
                     completionTokens = usage.completionTokens?.toInt() ?: 0,
@@ -118,9 +123,9 @@ class OpenAiProxyController(
         model: String
     ): Flux<String> {
         // Shared state for the stream
-        var actualId = responseId
-        var actualCreated = createdTimestampSeconds
-        var lastModel = model
+        var actualId: String = responseId
+        val actualCreated: Long = createdTimestampSeconds
+        val lastModel: String = model
 
         val initialChunk = OpenAiChatCompletionChunk(
             id = actualId,
@@ -141,9 +146,11 @@ class OpenAiProxyController(
             .stream()
             .chatResponse()
 
-        val contentChunks = responseFlux.map { response ->
+        val contentChunks: Flux<String> = responseFlux.map { response ->
             // Update shared state from the first real upstream response if possible
-            if (response.metadata.id != null) actualId = response.metadata.id
+            if (response.metadata.id != null) {
+                actualId = response.metadata.id
+            }
             // Note: Spring AI ChatResponse metadata created might be a Long or null depending on provider
 
             val chunk = OpenAiChatCompletionChunk(
@@ -162,7 +169,7 @@ class OpenAiProxyController(
         }
 
         // Dedicated stop chunk
-        val stopChunk = Flux.defer {
+        val stopChunk: Flux<String> = Flux.defer {
             val chunk = OpenAiChatCompletionChunk(
                 id = actualId,
                 created = actualCreated,
@@ -175,11 +182,11 @@ class OpenAiProxyController(
                     )
                 )
             )
-            Flux.just(objectMapper.writeValueAsString(chunk))
+            Flux.just(this.objectMapper.writeValueAsString(chunk))
         }
 
         return Flux.concat(
-            Flux.just(objectMapper.writeValueAsString(initialChunk)),
+            Flux.just(this.objectMapper.writeValueAsString(initialChunk)),
             contentChunks,
             stopChunk,
             Flux.just("[DONE]")
@@ -208,7 +215,7 @@ class OpenAiProxyController(
     }
 
     private fun toSpringAiMessage(openAiMessage: OpenAiMessage): Message? {
-        val contentText = when (val content = openAiMessage.content) {
+        val contentText: String = when (val content = openAiMessage.content) {
             null -> ""
             is String -> content
             else -> content.toString()
