@@ -2,6 +2,7 @@
 <aspectj>
     <weaver>
         <include within="org.cryptotrader..*"/>
+        <exclude within="org.cryptotrader..entity..*"/>
     </weaver>
     <aspects>
         <aspect name="org.cryptotrader.logging.config.aspect.TimeTrackingAspect"/>
