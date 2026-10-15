@@ -7,6 +7,8 @@ spring:
     aws:
       region:
         static: us-east-1
+    function:
+      definition: initConversationConsumer
     stream:
       enabled: true
       defaultBinder: kafka
@@ -16,6 +18,13 @@ spring:
           contentType: application/vnd.cryptotrader.encrypted+json
         applicationExceptions-out-0:
           destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+        initConversationConsumer-in-0:
+          destination: ct.chat.init.requests.v1
+          group: crypto-trader-chat-group
+          contentType: application/vnd.cryptotrader.encrypted+json
+        initConversationResponses-out-0:
+          destination: ct.chat.init.responses.v1
           contentType: application/vnd.cryptotrader.encrypted+json
       kafka:
         binder:
