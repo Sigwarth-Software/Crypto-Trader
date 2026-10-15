@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     basePackages = {
         "org.cryptotrader.api.library.repository",
         "org.cryptotrader.data.library.repository",
-        "org.cryptotrader.security.library.repository"
+        "org.cryptotrader.security.library.repository",
+        "org.cryptotrader.chat.library.repository"
     }
 )
 public class JpaRepositoriesConfig {
