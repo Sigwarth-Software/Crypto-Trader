@@ -1,6 +1,7 @@
 package org.cryptotrader.api.library.config
 
 import jakarta.annotation.security.PermitAll
+import jakarta.servlet.DispatcherType
 import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.api.library.infrastructure.dpop.BindingEnforcementFilter
 import org.cryptotrader.api.library.infrastructure.dpop.DpopValidationFilter
@@ -64,6 +65,7 @@ open class SecurityConfig {
             .sessionManagement { it.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
+                it.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                 if (permitAllPaths.isNotEmpty()) {
                     it.requestMatchers(*permitAllPaths).permitAll()
                 }
