@@ -3,6 +3,10 @@
     <div class="chat-bubble" [class.user]="message.role === 'user'"
          [class.assistant]="message.role === 'assistant'">
         <span class="chat-bubble-role">{{ message.role === 'user' ? 'You' : 'AI' }}</span>
-        <p class="chat-bubble-content">{{ message.content }}</p>
+        @if (message.role === 'assistant') {
+            <div class="chat-bubble-content chat-bubble-markdown" [innerHTML]="renderedContent"></div>
+        } @else {
+            <p class="chat-bubble-content">{{ message.content }}</p>
+        }
     </div>
 </ng-container>
