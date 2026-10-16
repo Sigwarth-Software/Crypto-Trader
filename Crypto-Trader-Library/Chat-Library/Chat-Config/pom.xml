@@ -32,33 +32,6 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>23</release>
-                    <useModulePath>true</useModulePath>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.6.0</version>
@@ -90,6 +63,21 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>23</release>
+                    <useModulePath>true</useModulePath>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>2.4.20</version>
@@ -101,7 +89,9 @@
                         <configuration>
                             <jvmTarget>23</jvmTarget>
                             <args>
+                                <!-- Bind to JDK 23 APIs while producing stable bytecode -->
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -113,6 +103,7 @@
                             <jvmTarget>23</jvmTarget>
                             <args>
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -130,7 +121,6 @@
                     </compilerPlugins>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
@@ -246,11 +236,23 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>api-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>chat-communication</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>chat-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
     </dependencies>
 
