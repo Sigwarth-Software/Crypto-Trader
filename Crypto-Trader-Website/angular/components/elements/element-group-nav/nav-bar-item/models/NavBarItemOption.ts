@@ -17,8 +17,8 @@ import {
     whitePotionIcon,
 } from '@assets/image.assets'
 
-/** The options for a navigation bar item.
- *
+/**
+ * The options for a navigation bar item.
  */
 export enum NavBarItemOption {
     Currencies = 'Currencies',
@@ -28,8 +28,10 @@ export enum NavBarItemOption {
     Statistics = 'Statistics',
     Simulator = 'Simulator',
 }
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace NavBarItemOption {
-    /** Returns the image asset for the given option.
+    /**
+     * Returns the image asset for the given option.
      *
      * @param option
      * @returns The image asset for the given option.
@@ -53,7 +55,8 @@ export namespace NavBarItemOption {
         }
     }
 
-    /** Returns the element link for the given option.
+    /**
+     * Returns the element link for the given option.
      *
      * @param option
      * @returns The element link for the given option.
@@ -77,7 +80,8 @@ export namespace NavBarItemOption {
         }
     }
 
-    /** Returns the values of the enum.
+    /**
+     * Returns the values of the enum.
      *
      * @returns The values of the enum.
      */
