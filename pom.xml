@@ -586,6 +586,16 @@
                 <artifactId>crypto-trader-assets</artifactId>
                 <version>0.0.7</version>
             </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>assets-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>assets-config</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.cryptotrader</groupId>
