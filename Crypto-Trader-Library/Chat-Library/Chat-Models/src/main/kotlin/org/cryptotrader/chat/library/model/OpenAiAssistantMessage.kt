@@ -1,4 +1,4 @@
-package org.cryptotrader.chat.model
+package org.cryptotrader.chat.library.model
 
 data class OpenAiAssistantMessage(
     val role: String = "assistant",

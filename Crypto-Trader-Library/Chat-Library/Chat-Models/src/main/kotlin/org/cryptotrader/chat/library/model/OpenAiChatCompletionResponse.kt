@@ -1,13 +1,13 @@
-package org.cryptotrader.chat.model
+package org.cryptotrader.chat.library.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class OpenAiChatCompletionChunk(
+data class OpenAiChatCompletionResponse(
     val id: String,
     @JsonProperty("object")
-    val objectName: String = "chat.completion.chunk",
+    val objectName: String = "chat.completion",
     val created: Long,
     val model: String,
-    val choices: List<OpenAiChunkChoice>,
+    val choices: List<OpenAiChoice>,
     val usage: OpenAiUsage? = null
 )

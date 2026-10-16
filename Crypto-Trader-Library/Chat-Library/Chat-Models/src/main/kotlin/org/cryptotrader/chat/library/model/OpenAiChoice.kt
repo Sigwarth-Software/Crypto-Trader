@@ -1,4 +1,4 @@
-package org.cryptotrader.chat.model
+package org.cryptotrader.chat.library.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

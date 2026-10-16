@@ -3,7 +3,17 @@ package org.cryptotrader.chat.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import jakarta.annotation.PostConstruct
-import org.cryptotrader.chat.model.*
+import org.cryptotrader.chat.library.model.OpenAiAssistantMessage
+import org.cryptotrader.chat.library.model.OpenAiChatCompletionChunk
+import org.cryptotrader.chat.library.model.OpenAiChatCompletionRequest
+import org.cryptotrader.chat.library.model.OpenAiChatCompletionResponse
+import org.cryptotrader.chat.library.model.OpenAiChoice
+import org.cryptotrader.chat.library.model.OpenAiChunkChoice
+import org.cryptotrader.chat.library.model.OpenAiDelta
+import org.cryptotrader.chat.library.model.OpenAiMessage
+import org.cryptotrader.chat.library.model.OpenAiModel
+import org.cryptotrader.chat.library.model.OpenAiModelListResponse
+import org.cryptotrader.chat.library.model.OpenAiUsage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.ai.chat.client.ChatClient
@@ -160,7 +170,9 @@ class OpenAiProxyController(
                 choices = response.results.mapIndexed { index, result ->
                     OpenAiChunkChoice(
                         index = index,
-                        delta = OpenAiDelta(content = result.output?.text ?: ""),
+                        delta = OpenAiDelta(
+                            content = result.output?.text ?: ""
+                        ),
                         finishReason = null
                     )
                 }
@@ -198,13 +210,41 @@ class OpenAiProxyController(
         return OpenAiModelListResponse(
             objectName = "list",
             data = listOf(
-                OpenAiModel(id = "gpt-5.4", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-5.4-mini", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-5.4-nano", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-5.1", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-5.1-chat-latest", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-4o", created = 1715385600, ownedBy = "openai"),
-                OpenAiModel(id = "gpt-4o-mini", created = 1715385600, ownedBy = "openai")
+                OpenAiModel(
+                    id = "gpt-5.4",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-5.4-mini",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-5.4-nano",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-5.1",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-5.1-chat-latest",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-4o",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                ),
+                OpenAiModel(
+                    id = "gpt-4o-mini",
+                    created = 1715385600,
+                    ownedBy = "openai"
+                )
             )
         )
     }
