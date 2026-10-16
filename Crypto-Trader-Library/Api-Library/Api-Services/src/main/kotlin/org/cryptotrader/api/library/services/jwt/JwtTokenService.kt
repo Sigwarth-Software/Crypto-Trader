@@ -88,7 +88,7 @@ class JwtTokenService(
      * @return a simple Kotlin data object with the claims we care about
      * @throws com.auth0.jwt.exceptions.JWTVerificationException if the token is invalid/expired
      */
-    @TimeTracked(expectedMillis = 5, shouldPersist = true)
+    @TimeTracked(expectedMillis = 5, shouldPersist = true, isLogged = false)
     fun validateAndParse(token: String): JwtClaims {
         val verifierBuilder: Verification = JWT.require(this.verifyAlgorithm)
                                                .withIssuer(this.issuer)

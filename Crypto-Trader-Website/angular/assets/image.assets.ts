@@ -200,6 +200,11 @@ export const chatModuleIcon: ImageAsset = {
     alt: 'Chat Module Icon',
 }
 
+export const whiteChatModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('white_chat.svg'),
+    alt: 'White Chat Module Icon',
+}
+
 export const consoleModuleIcon: ImageAsset = {
     src: getModuleIconImagePath('console.svg'),
     alt: 'Console Module Icon',

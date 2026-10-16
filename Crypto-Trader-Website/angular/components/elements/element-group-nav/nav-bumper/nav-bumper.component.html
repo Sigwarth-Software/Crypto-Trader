@@ -3,6 +3,9 @@
     @if (isLoggedIn) {
         <exit-anchor />
     }
+    @if (isUltimate) {
+        <nav-chat />
+    }
     @if (!isUltimate) {
         <nav-upgrade />
     }

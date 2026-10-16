@@ -29,6 +29,103 @@ chat-bubble {
             margin: 0;
         }
 
+        .chat-bubble-markdown {
+            p,
+            ul,
+            ol {
+                margin: 0 0 0.4rem;
+            }
+
+            ul,
+            ol {
+                padding-left: 1.2rem;
+            }
+
+            > :last-child {
+                margin-bottom: 0;
+            }
+
+            strong {
+                font-weight: 700;
+            }
+
+            code {
+                font-size: 0.75rem;
+                padding: 0.05rem 0.25rem;
+                border-radius: 0.2rem;
+                background-color: funcs.add-alpha(vars.$absolute-black, 0.35);
+            }
+
+            pre {
+                overflow-x: auto;
+                padding: 0.4rem;
+                border-radius: 0.3rem;
+                background-color: funcs.add-alpha(vars.$absolute-black, 0.35);
+
+                code {
+                    padding: 0;
+                    background-color: transparent;
+                    color: vars.$alabaster-stone;
+                }
+            }
+
+            .hljs-keyword,
+            .hljs-selector-tag,
+            .hljs-literal,
+            .hljs-built_in,
+            .hljs-tag .hljs-name {
+                color: vars.$sunbeam-yellow;
+            }
+
+            .hljs-string,
+            .hljs-addition,
+            .hljs-regexp {
+                color: vars.$lime;
+            }
+
+            .hljs-number,
+            .hljs-symbol,
+            .hljs-bullet,
+            .hljs-attr,
+            .hljs-meta {
+                color: vars.$bitcoin-color;
+            }
+
+            .hljs-title,
+            .hljs-title.function_,
+            .hljs-function .hljs-title,
+            .hljs-section {
+                color: vars.$morning-frost-blue;
+            }
+
+            .hljs-type,
+            .hljs-title.class_,
+            .hljs-class .hljs-title {
+                color: vars.$pale-mint;
+            }
+
+            .hljs-variable,
+            .hljs-template-variable,
+            .hljs-attribute {
+                color: vars.$sage-green;
+            }
+
+            .hljs-comment,
+            .hljs-quote,
+            .hljs-doctag {
+                color: funcs.add-alpha(vars.$soft-grey, 0.7);
+                font-style: italic;
+            }
+
+            .hljs-deletion {
+                color: vars.$red-orange;
+            }
+
+            .hljs-emphasis {
+                font-style: italic;
+            }
+        }
+
         &.user {
             margin-left: auto;
             background-color: funcs.add-alpha(vars.$sunbeam-yellow, 0.16);
