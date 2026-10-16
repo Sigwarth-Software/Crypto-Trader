@@ -1,9 +1,6 @@
 import { inject, Injectable, NgZone } from '@angular/core'
-import { HttpClientService } from '@theoliverlear/angular-suite'
-import { AuthService } from '@http/auth/auth.service'
 import { PossibleToken } from '@models/auth/types'
 import { TokenStorageService } from '@auth/token-storage.service'
-import { NetRequestClient, StreamRequestClient } from '@services/net/types'
 import { firstValueFrom, Observable } from "rxjs"
 import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { DpopProofService } from '@auth/dpop/dpop-proof.service'
