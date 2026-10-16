@@ -18,6 +18,7 @@ open module org.cryptotrader.assets {
     requires spring.data.jpa;
     requires jakarta.persistence;
     requires org.cryptotrader.assets.library.config;
+    requires org.cryptotrader.security.library.config;
     requires org.jetbrains.annotations;
 
     exports org.cryptotrader.assets;
