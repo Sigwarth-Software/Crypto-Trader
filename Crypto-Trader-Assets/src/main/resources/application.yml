@@ -1,0 +1,175 @@
+server:
+  port: ${SERVER_PORT:8091}
+  forward-headers-strategy: framework
+  ssl:
+    enabled: ${SERVER_SSL_ENABLED:false}
+    key-store: ${SERVER_SSL_KEY_STORE:}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE:PKCS12}
+    key-alias: ${SERVER_SSL_KEY_ALIAS:}
+    certificate: ${SERVER_SSL_CERTIFICATE:}
+    certificate-private-key: ${SERVER_SSL_CERTIFICATE_PRIVATE_KEY:}
+
+spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  application:
+    name: crypto-trader-assets
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 0s
+  thymeleaf:
+    cache: false
+    check-template-location: false
+  freemarker:
+    cache: false
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_USER}
+    password: ${PSQL_PW}
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+      idle-timeout: 30000
+      max-lifetime: 1800000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+    function:
+      sanitization:
+        enabled: false
+      sanitizing:
+        enabled: false
+      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer;detailedPortfolioSimulationResponsesConsumer;initConversationResponsesConsumer
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        executionSpeedLogs-out-0:
+          destination: ct.logging.execution-speed.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        frontendLogs-out-0:
+          destination: ct.logging.frontend.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        applicationLogs-out-0:
+          destination: ct.logging.application.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        applicationExceptions-out-0:
+          destination: ct.logging.exception.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+            max.request.size: 524288000
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
+            fetch.max.bytes: 524288000
+            max.partition.fetch.bytes: 524288000
+        bindings:
+          portfolioSimulationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-simulator-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          detailedPortfolioSimulationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-detailed-simulator-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          consoleResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-console-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          initConversationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-chat-init-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          contactCreated-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.contact.created.v1.DLT
+          orderFilled-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.order.filled.v1.DLT
+
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ${SECURITY_JWT_ISSUER:https://localhost:8080}
+    expiration: 360000
+  auth:
+    dpop:
+      allowed-algs: "ES256"
+      replay-ttl-seconds: 120
+  honeypot:
+    paths: ${SECURITY_HONEYPOT_PATHS:}
+  refresh:
+    cookie-name: rt
+    cookie-samesite: Strict
+    cookie-secure: ${SECURITY_REFRESH_COOKIE_SECURE:true}
+    allow-rebind-once: true
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
+cryptotrader:
+  logging:
+    time-tracking:
+      exceeding-factor: ${TIME_TRACKING_EXCEEDING_FACTOR:0.8}
+      expected-factor: ${TIME_TRACKING_EXPECTED_FACTOR:1.4}
+      warning-factor: ${TIME_TRACKING_WARNING_FACTOR:1.8}
+      alert-factor: ${TIME_TRACKING_ALERT_FACTOR:2.0}
+  api:
+    jpa:
+      enabled: true
+    websocket:
+      enabled: true
+    cors:
+      allowed-origins: ${CRYPTO_TRADER_ALLOWED_ORIGINS:https://localhost:4200}
+      allowed-headers: ${CRYPTO_TRADER_ALLOWED_HEADERS:authorization,dpop,content-type,x-client-app}
