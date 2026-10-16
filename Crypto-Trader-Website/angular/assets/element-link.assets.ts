@@ -90,3 +90,5 @@ export const docsElementLink: TextElementLink = new TextElementLink(
 export const upgradeElementLink: ElementLink = new ElementLink('/upgrade', TargetType.SELF, false)
 
 export const consoleElementLink: ElementLink = new ElementLink('/console', TargetType.SELF, false)
+
+export const chatElementLink: ElementLink = new ElementLink('/chat', TargetType.SELF, false)
