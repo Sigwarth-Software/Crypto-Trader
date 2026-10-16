@@ -1,3 +1,5 @@
+import { environment } from '@environments/environment'
+
 /** Image assets for use in Angular templates.
  *
  */
@@ -57,7 +59,7 @@ export function getCurrencyLogoPath(fileName: string): string {
     return currencyLogoImageAssetPath + fileName
 }
 
-const imageAssetPath: string = 'assets/images/'
+const imageAssetPath: string = `${environment.assetsUrl}/assets/images/`
 const logoImageAssetPath: string = `${imageAssetPath}logos/`
 const iconImageAssetPath: string = `${imageAssetPath}icons/`
 const moduleIconImageAssetPath: string = `${iconImageAssetPath}modules/`
