@@ -12,6 +12,7 @@ enum class CryptoTraderService(val port: Int) {
     CONSOLE(8088),
     AGENT(8089),
     CHAT(8090),
+    ASSETS(8091),
     LOGGING(8093),
     HEALTH(8094),
     SECURITY(8095),

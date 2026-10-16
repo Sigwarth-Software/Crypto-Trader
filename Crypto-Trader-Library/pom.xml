@@ -116,6 +116,8 @@
         <module>Testing-Library</module>
         <module>Testing-Library/Testing-Infrastructure</module>
         <module>Testing-Library/Testing-Scripts</module>
+        <module>Assets-Library</module>
+        <module>Assets-Library/Assets-Config</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
