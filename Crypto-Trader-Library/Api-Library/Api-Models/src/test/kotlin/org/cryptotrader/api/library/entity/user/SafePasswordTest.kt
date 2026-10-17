@@ -1,6 +1,7 @@
 package org.cryptotrader.api.library.entity.user
 
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test
 @Tag("SafePassword")
 @Tag("entity")
 @DisplayName("Safe Password")
+@UnitSuite
 class SafePasswordTest : CryptoTraderTest() {
 
     private lateinit var safePassword: SafePassword
