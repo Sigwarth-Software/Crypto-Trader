@@ -47,6 +47,7 @@ class EmailEmailTemplateServiceTest @Autowired constructor(
 }
 
 fun getExpectedWelcomeHtml(subject: String, body: String, name: String, ctaLabel: String, year: String): String {
+    // language=html
     return """
             <!DOCTYPE html>
             <html lang="en" dir="ltr">
