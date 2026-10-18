@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -24,6 +26,7 @@ class GitHubIssueToolTest : CryptoTraderTest() {
     @Mock
     lateinit var gitHubIssueService: GitHubIssueService
 
+    @InjectMocks
     lateinit var gitHubIssueTool: GitHubIssueTool
 
     private val validTicketRequest: String = """
@@ -35,21 +38,21 @@ class GitHubIssueToolTest : CryptoTraderTest() {
         Points: 5 (hours)
     """.trimIndent()
 
+    lateinit var ticketRequest: String
+
     private fun <T> anyIssue(): T {
         ArgumentMatchers.any<T>()
         @Suppress("UNCHECKED_CAST")
         return null as T
     }
 
-    @BeforeEach
-    fun setUp() {
-        this.gitHubIssueTool = GitHubIssueTool(this.properties, this.gitHubIssueService)
-    }
 
     @Nested
+    @DisplayName("parseTicketRequest")
     inner class ParseTicketRequest {
         @Test
-        fun extractsTitleTasksAndPoints() {
+        @DisplayName("should extract title, tasks, and points")
+        fun extractTitleTasksAndPoints() {
             val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(validTicketRequest)
             assertEquals("As a developer, I want a sample feature.", issue.issueTitle)
             assertEquals(5, issue.points)
@@ -57,20 +60,31 @@ class GitHubIssueToolTest : CryptoTraderTest() {
             assertTrue(issue.issueDescription.contains("Task two."))
         }
 
-        @Test
-        fun defaultsPointsToZero_WhenMissing() {
-            val ticketRequest = """
+        @Nested
+        inner class WhenPointsAreMissing {
+
+            @BeforeEach
+            fun setUp() {
+                ticketRequest = """
                 As a developer, I want a sample feature.
 
                 - [ ] Task one.
             """.trimIndent()
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
-            assertEquals(0, issue.points)
+            }
+
+            @Test
+            @DisplayName("should default points to zero")
+            fun defaultsPointsToZero() {
+                val issue: UserStoryIssue =
+                    gitHubIssueTool.parseTicketRequest(ticketRequest)
+                assertEquals(0, issue.points)
+            }
         }
 
         @Test
-        fun extractsLabels_WhenPresent() {
-            val ticketRequest = """
+        @DisplayName("should extract labels when present")
+        fun extractLabelsWhenPresent() {
+            ticketRequest = """
                 As a developer, I want a sample feature.
 
                 - [ ] Task one.
@@ -82,41 +96,74 @@ class GitHubIssueToolTest : CryptoTraderTest() {
             assertEquals(listOf("bug", "needs triage"), issue.labels)
         }
 
-        @Test
-        fun defaultsLabelsToEmptyList_WhenMissing() {
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(validTicketRequest)
-            assertTrue(issue.labels.isEmpty())
-        }
-
-        @Test
-        fun throwsException_WhenNoTasksPresent() {
-            assertThrows(IllegalArgumentException::class.java) {
-                gitHubIssueTool.parseTicketRequest("As a developer, I want a sample feature.")
+        @Nested
+        inner class WhenLabelsAreMissing {
+            @Test
+            @DisplayName("should default labels to empty list")
+            fun defaultsToAnEmptyList() {
+                val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(validTicketRequest)
+                assertTrue(issue.labels.isEmpty())
             }
         }
 
-        @Test
-        fun stripsTitlePrefix_WhenPresent() {
-            val ticketRequest = """
+        @Nested
+        @DisplayName("when no tasks found")
+        inner class WhenNoTasksPresent {
+            @Test
+            @DisplayName("should throw exception")
+            fun throwException() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    gitHubIssueTool.parseTicketRequest("As a developer, I want a sample feature.")
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("when a title prefix found")
+        inner class WhenTitlePrefixFound {
+            @BeforeEach
+            fun setUp() {
+                ticketRequest = """
                 Title: As a developer, I want a sample feature.
 
                 - [ ] Task one.
             """.trimIndent()
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
-            assertEquals("As a developer, I want a sample feature.", issue.issueTitle)
+            }
+
+
+            @Test
+            @DisplayName("should strip title prefix")
+            fun stripTitlePrefix() {
+                val issue: UserStoryIssue =
+                    gitHubIssueTool.parseTicketRequest(ticketRequest)
+                assertEquals(
+                    "As a developer, I want a sample feature.",
+                    issue.issueTitle
+                )
+            }
         }
 
-        @Test
-        fun stripsIssuePrefix_WhenPresent() {
-            val ticketRequest = """
+        @Nested
+        inner class WhenIssuePrefixFound {
+            @BeforeEach
+            fun setUp() {
+                ticketRequest = """
                 Issue: As a developer, I want a sample feature.
 
                 - [ ] Task one.
             """.trimIndent()
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
-            assertEquals("As a developer, I want a sample feature.", issue.issueTitle)
-        }
+            }
 
+            @Test
+            fun stripsIssuePrefix_WhenPresent() {
+                val issue: UserStoryIssue =
+                    gitHubIssueTool.parseTicketRequest(ticketRequest)
+                assertEquals(
+                    "As a developer, I want a sample feature.",
+                    issue.issueTitle
+                )
+            }
+        }
         @Test
         fun parsesTicketRequest_WithFullTemplateAndFrontMatter() {
             val templateDraft = """
@@ -190,6 +237,7 @@ class GitHubIssueToolTest : CryptoTraderTest() {
     }
 
     @Nested
+    @DisplayName("requireNoSensitiveContent")
     inner class RequireNoSensitiveContent {
         @Test
         fun throwsSecurityException_WhenApiKeyPresent() {
@@ -205,11 +253,13 @@ class GitHubIssueToolTest : CryptoTraderTest() {
     }
 
     @Nested
+    @DisplayName("getIssueCreationPrompt")
     inner class GetIssueCreationPrompt {
         @Test
         fun returnsPromptFromService() {
-            `when`(gitHubIssueService.getIssueCreationPrompt("Add a new feature")).thenReturn("Generated prompt")
-
+            `when`(gitHubIssueService.getIssueCreationPrompt(
+                "Add a new feature"
+            )).thenReturn("Generated prompt")
             val result: String = gitHubIssueTool.getIssueCreationPrompt("Add a new feature")
 
             assertEquals("Generated prompt", result)
