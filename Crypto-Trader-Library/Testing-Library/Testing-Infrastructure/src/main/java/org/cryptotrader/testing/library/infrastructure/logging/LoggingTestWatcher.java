@@ -51,7 +51,7 @@ public class LoggingTestWatcher implements TestWatcher {
     }
 
     private static void logTestContext(final @NotNull ExtensionContext context) {
-        log.info("{}{} - {}{}{}", BOLD, getClassName(context), UNDERLINE, context.getDisplayName(), RESET);
+        log.info("{}{} - {}{}", BOLD, getClassName(context), context.getDisplayName(), RESET);
     }
 
     private static @NotNull String getMethodName(final @NotNull ExtensionContext context) {
