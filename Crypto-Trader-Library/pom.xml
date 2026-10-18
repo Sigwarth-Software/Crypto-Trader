@@ -149,6 +149,13 @@
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                        <include>**/*TestSuite.java</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
