@@ -153,7 +153,7 @@ class FileReaderToolTest : CryptoTraderTest() {
 
             @Test
             @DisplayName("should throw security exception")
-            fun throwAnSecurityException() {
+            fun throwSecurityException() {
                 assertThrows(SecurityException::class.java) {
                     fileReaderTool.readFile(sensitiveFile.toString())
                 }
@@ -162,7 +162,7 @@ class FileReaderToolTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("List Directories")
+    @DisplayName("listDirectories")
     inner class ListDirectories {
         val mockEmptyDirectory = "dir1"
         val mockFile = "file1.txt"
@@ -191,7 +191,7 @@ class FileReaderToolTest : CryptoTraderTest() {
 
             @Test
             @DisplayName("should list files recursively")
-            fun listDirectories_ListsRecursively() {
+            fun listFilesRecursively() {
                 val response: DirectoryListingResponse =
                     fileReaderTool.listDirectories(".", recursive = true)
 
@@ -204,14 +204,18 @@ class FileReaderToolTest : CryptoTraderTest() {
         }
 
         @Nested
+        @DisplayName("when discovering invalid files")
         inner class WhenDiscoveringInvalidFiles {
-
-            @Test
-            @DisplayName("should ignore specified directories")
-            fun listDirectories_IgnoresSpecified() {
+            @BeforeEach
+            fun setUp() {
                 `when`(properties.ignoredDirectories).thenReturn(
                     setOf(ignoredDir)
                 )
+            }
+
+            @Test
+            @DisplayName("should ignore specified directories")
+            fun ignoreSpecifiedDirectories() {
                 tempDir.resolve(ignoredDir).createDirectories()
                 tempDir.resolve(ignoredDirFile).createFile()
                 tempDir.resolve(allowedDir).createDirectories()
@@ -231,7 +235,7 @@ class FileReaderToolTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Search Files")
+    @DisplayName("searchFiles")
     inner class SearchFiles {
         @BeforeEach
         fun setUp() {
@@ -259,13 +263,18 @@ class FileReaderToolTest : CryptoTraderTest() {
             )
 
             assertEquals(1, results.size)
-            assertEquals(mockKotlinSourceFile.replace("/", File.separator), results[0].path.replace("/", File.separator))
+            val actual: String = results[0].path.replace("/", File.separator)
+            assertEquals(mockKotlinSourceFile.replace("/", File.separator),
+                actual
+            )
         }
 
         @Test
         @DisplayName("should ignore files in ignored directories")
-        fun searchFiles_IgnoresIgnored() {
-            val results: List<FileMetadata> = fileReaderTool.searchFiles("Match", glob = "**/*.kt")
+        fun ignoreFilesInIgnoredDirectories() {
+            val results: List<FileMetadata> = fileReaderTool.searchFiles(
+                "Match", "**/*.kt"
+            )
 
             assertEquals(1, results.size)
             assertTrue(results[0].path.contains(allowedDir))
@@ -274,34 +283,55 @@ class FileReaderToolTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Resolve Path")
+    @DisplayName("resolvePath")
     inner class ResolvePath {
+        val targetFileName: String = "very-long-filename-that-is-unique.txt"
+
         @Test
-        @DisplayName("resolvePath should fuzzy match existing files")
-        fun resolvePath_FuzzyMatch() {
-            tempDir.resolve("very-long-filename-that-is-unique.txt").writeText("content")
+        @DisplayName("should fuzzy match existing files")
+        fun fuzzyMatchExistingFiles() {
+            tempDir.resolve(this.targetFileName).writeText("content")
 
-            // Exact match (normalized)
-            val exactMatch = fileReaderTool.resolvePath("very-long-filename-that-is-unique.txt")
-            assertEquals(listOf("very-long-filename-that-is-unique.txt"), exactMatch)
+            val exactMatch: List<String> = fileReaderTool.resolvePath(
+                this.targetFileName
+            )
+            assertEquals(listOf(this.targetFileName), exactMatch)
 
-            // Fuzzy match
-            val fuzzyMatch = fileReaderTool.resolvePath("very-long-unique")
-            assertTrue(fuzzyMatch.contains("very-long-filename-that-is-unique.txt"))
+            val fuzzyMatch: List<String> = fileReaderTool.resolvePath("very-long-unique")
+            assertTrue(fuzzyMatch.contains(this.targetFileName))
         }
 
-        @Test
-        @DisplayName("resolvePath should ignore files in ignored directories")
-        fun resolvePath_IgnoresIgnored() {
-            `when`(properties.ignoredDirectories).thenReturn(setOf("ignored_dir"))
-            tempDir.resolve("ignored_dir").createDirectories()
-            tempDir.resolve("ignored_dir/very-unique-file.txt").writeText("content")
-            tempDir.resolve("allowed_dir").createDirectories()
-            tempDir.resolve("allowed_dir/normal-file.txt").writeText("content")
+        @Nested
+        @DisplayName("when in ignored directories")
+        inner class WhenInIgnoredDirectories {
+            val fileToIgnore: String = "very-unique-file.txt"
 
-            val results = fileReaderTool.resolvePath("very-unique-file")
+            @BeforeEach
+            fun setUp() {
+                `when`(properties.ignoredDirectories).thenReturn(
+                    setOf(ignoredDir)
+                )
+            }
 
-            assertFalse(results.contains("ignored_dir/very-unique-file.txt"), "Results should not contain file from ignored directory")
+            @Test
+            @DisplayName("should ignore files in ignored directories")
+            fun ignoreFilesInIgnoredDirectories() {
+                tempDir.resolve(ignoredDir).createDirectories()
+                tempDir.resolve("$ignoredDir/${this.fileToIgnore}")
+                    .writeText("content")
+                tempDir.resolve(allowedDir).createDirectories()
+                tempDir.resolve("$allowedDir/normal-file.txt")
+                    .writeText("content")
+
+                val results: List<String> = fileReaderTool.resolvePath(
+                    "very-unique-file"
+                )
+
+                assertFalse(
+                    results.contains("$ignoredDir/${this.fileToIgnore}"),
+                    "Results should not contain file from ignored directory"
+                )
+            }
         }
     }
 }
