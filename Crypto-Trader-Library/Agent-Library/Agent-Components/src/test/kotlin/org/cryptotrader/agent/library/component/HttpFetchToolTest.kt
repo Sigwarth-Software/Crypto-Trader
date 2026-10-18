@@ -6,8 +6,10 @@ import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 
@@ -21,12 +23,8 @@ class HttpFetchToolTest : CryptoTraderTest() {
     @Mock
     lateinit var httpGet: HttpGet
 
+    @InjectMocks
     lateinit var httpFetchTool: HttpFetchTool
-
-    @BeforeEach
-    fun setUp() {
-        this.httpFetchTool = HttpFetchTool(properties, httpClient, httpGet)
-    }
 
     @Test
     fun `init should set User-Agent header`() {
@@ -34,6 +32,7 @@ class HttpFetchToolTest : CryptoTraderTest() {
     }
 
     @Nested
+    @DisplayName("stripHtml")
     inner class StripHtml {
         @Test
         fun removesTagsAndDecodesEntities() {
