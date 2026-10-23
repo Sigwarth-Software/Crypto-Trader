@@ -120,7 +120,7 @@ class FileReaderToolTest : CryptoTraderTest() {
             }
 
             @Test
-            @DisplayName("should throw error for binary file")
+            @DisplayName("should throw error")
             fun throwErrorForBinaryFile() {
                 val exception: IllegalArgumentException? =
                     assertThrows(IllegalArgumentException::class.java) {
@@ -169,6 +169,7 @@ class FileReaderToolTest : CryptoTraderTest() {
         val mockNonEmptyDirectory = "dir1/file2.txt"
 
         @Nested
+        @DisplayName("when discovering valid files")
         inner class WhenDiscoveringValidFiles {
             @BeforeEach
             fun setUp() {
