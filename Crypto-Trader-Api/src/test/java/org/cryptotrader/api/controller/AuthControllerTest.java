@@ -27,7 +27,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Auth Controller")
+@DisplayName("AuthController")
 public class AuthControllerTest extends CryptoTraderTest {
     @InjectMocks
     private AuthController authController;
@@ -60,11 +60,11 @@ public class AuthControllerTest extends CryptoTraderTest {
     }
 
     @Nested
-    @DisplayName("Signup")
+    @DisplayName("signup")
     class Signup {
         @Test
-        @DisplayName("Should not sign up users in session")
-        public void signup_NotSignUp_UsersInSession() {
+        @DisplayName("should not sign up users in session")
+        public void notSignUpUsersInSession() {
             when(authContextService.isAuthenticated()).thenReturn(true);
             final ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest, mockDpopProof, mockHttpServletRequest);
             verify(authContextService).isAuthenticated();
@@ -74,90 +74,123 @@ public class AuthControllerTest extends CryptoTraderTest {
             assertEquals(expectedResponse, signupResponse.getBody());
         }
 
-        @Test
-        @DisplayName("Should sign up users not in session")
-        @Disabled
-        public void signup_SignUp_UsersNotInSession() {
-            when(authContextService.isAuthenticated()).thenReturn(false);
-            when(authService.signup(signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-            when(productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
-            final ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest, mockDpopProof, mockHttpServletRequest);
-            verify(authContextService).isAuthenticated();
-            verify(authService).signup(signupRequest);
-            final HttpStatus expectedStatus = HttpStatus.OK;
-            final AuthResponse expectedResponse = new AuthResponse(true);
-            assertEquals(expectedStatus, signupResponse.getStatusCode());
-            assertEquals(expectedResponse, signupResponse.getBody());
+        @Nested
+        class WhenUserNotInSession {
+            @Test
+            @DisplayName("should sign up users not in session")
+            @Disabled
+            public void signUpUsersNotInSession() {
+                when(authContextService.isAuthenticated()).thenReturn(false);
+                when(authService.signup(signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+                when(productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
+                final ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest, mockDpopProof, mockHttpServletRequest);
+                verify(authContextService).isAuthenticated();
+                verify(authService).signup(signupRequest);
+                final HttpStatus expectedStatus = HttpStatus.OK;
+                final AuthResponse expectedResponse = new AuthResponse(true);
+                assertEquals(expectedStatus, signupResponse.getStatusCode());
+                assertEquals(expectedResponse, signupResponse.getBody());
+            }
         }
     }
 
     @Nested
-    @DisplayName("Login")
+    @DisplayName("login")
     class Login {
-        @Test
-        @DisplayName("Should not login users in session")
-        public void login_NotLogin_UsersInSession() {
-            when(authContextService.isAuthenticated()).thenReturn(true);
-            final ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest, mockDpopProof, mockHttpServletRequest);
-            verify(authContextService).isAuthenticated();
-            final HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-            final AuthResponse expectedResponse = new AuthResponse(false);
-            assertEquals(expectedStatus, loginResponse.getStatusCode());
-            assertEquals(expectedResponse, loginResponse.getBody());
+        @Nested
+        @DisplayName("when a user is not in session")
+        class WhenUserNotInSession {
+            @Test
+            @DisplayName("should login users not in session")
+            @Disabled
+            public void loginUsersNotInSession() {
+                when(authContextService.isAuthenticated()).thenReturn(false);
+                when(authService.login(loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+                final ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest, mockDpopProof, mockHttpServletRequest);
+                verify(authContextService).isAuthenticated();
+                verify(authService).login(loginRequest);
+                final HttpStatus expectedStatus = HttpStatus.OK;
+                final AuthResponse expectedResponse = new AuthResponse(true);
+                assertEquals(expectedStatus, loginResponse.getStatusCode());
+                assertEquals(expectedResponse, loginResponse.getBody());
+            }
         }
 
-        @Test
-        @DisplayName("Should login users not in session")
-        @Disabled
-        public void login_Login_UsersNotInSession() {
-            when(authContextService.isAuthenticated()).thenReturn(false);
-            when(authService.login(loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-            final ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest, mockDpopProof, mockHttpServletRequest);
-            verify(authContextService).isAuthenticated();
-            verify(authService).login(loginRequest);
-            final HttpStatus expectedStatus = HttpStatus.OK;
-            final AuthResponse expectedResponse = new AuthResponse(true);
-            assertEquals(expectedStatus, loginResponse.getStatusCode());
-            assertEquals(expectedResponse, loginResponse.getBody());
+        @Nested
+        @DisplayName("when a user is in session")
+        class WhenUserInSession {
+            @Test
+            @DisplayName("should not login users in session")
+            public void notLoginUsersInSession() {
+                when(authContextService.isAuthenticated()).thenReturn(true);
+                final ResponseEntity<AuthResponse> loginResponse =
+                    authController.login(
+                        loginRequest,
+                        mockDpopProof,
+                        mockHttpServletRequest
+                    );
+                verify(authContextService).isAuthenticated();
+                final HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+                final AuthResponse expectedResponse = new AuthResponse(false);
+                assertEquals(expectedStatus, loginResponse.getStatusCode());
+                assertEquals(expectedResponse, loginResponse.getBody());
+            }
         }
+
     }
 
     @Nested
-    @DisplayName("Logout")
+    @DisplayName("logout")
     class Logout {
-        @Test
-        @DisplayName("Should logout users in session")
-        @Disabled
-        public void logout_Logout_UsersInSession() {
-            when(authContextService.isAuthenticated()).thenReturn(true);
-            final ResponseEntity<AuthResponse> logoutResponse = authController.logout(mockDpopProof, mockHttpServletRequest);
-            verify(authContextService).isAuthenticated();
-            final HttpStatus expectedStatus = HttpStatus.OK;
-            final AuthResponse expectedResponse = new AuthResponse(false);
-            assertEquals(expectedStatus, logoutResponse.getStatusCode());
-            assertEquals(expectedResponse, logoutResponse.getBody());
+        @Nested
+        @DisplayName("when a user is in session")
+        class WhenUserInSession {
+            @BeforeEach
+            void setUp() {
+                when(authContextService.isAuthenticated()).thenReturn(true);
+            }
+
+            @Test
+            @DisplayName("should logout users in session")
+            @Disabled
+            public void logoutUsersInSession() {
+                final ResponseEntity<AuthResponse> logoutResponse =
+                    authController.logout(
+                        mockDpopProof,
+                        mockHttpServletRequest
+                    );
+                verify(authContextService).isAuthenticated();
+                final HttpStatus expectedStatus = HttpStatus.OK;
+                final AuthResponse expectedResponse = new AuthResponse(false);
+                assertEquals(expectedStatus, logoutResponse.getStatusCode());
+                assertEquals(expectedResponse, logoutResponse.getBody());
+            }
         }
 
-        @Test
-        @DisplayName("Should not logout users not in session")
-        @Disabled
-        public void logout_NotLogout_UsersNotInSession() {
-            when(authContextService.isAuthenticated()).thenReturn(false);
-            final ResponseEntity<AuthResponse> logoutResponse = authController.logout(mockDpopProof, mockHttpServletRequest);
-            verify(authContextService).isAuthenticated();
-            final HttpStatus expectedStatus = HttpStatus.OK;
-            final AuthResponse expectedResponse = new AuthResponse(false);
-            assertEquals(expectedStatus, logoutResponse.getStatusCode());
-            assertEquals(expectedResponse, logoutResponse.getBody());
+        @Nested
+        @DisplayName("when user is in not session")
+        class WhenUserInNotSession {
+            @Test
+            @DisplayName("should not logout users")
+            @Disabled
+            public void notLogoutUsersNotInSession() {
+                when(authContextService.isAuthenticated()).thenReturn(false);
+                final ResponseEntity<AuthResponse> logoutResponse = authController.logout(mockDpopProof, mockHttpServletRequest);
+                verify(authContextService).isAuthenticated();
+                final HttpStatus expectedStatus = HttpStatus.OK;
+                final AuthResponse expectedResponse = new AuthResponse(false);
+                assertEquals(expectedStatus, logoutResponse.getStatusCode());
+                assertEquals(expectedResponse, logoutResponse.getBody());
+            }
         }
     }
 
     @Nested
-    @DisplayName("Is Logged In")
+    @DisplayName("isLoggedIn")
     class IsLoggedIn {
         @Test
-        @DisplayName("Should count session users as logged in")
-        public void isLoggedIn_LoggedIn_UsersInSession() {
+        @DisplayName("should count session users as logged in")
+        public void countSessionUsersAsLoggedIn() {
             when(authContextService.isAuthenticated()).thenReturn(true);
             final ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
             verify(authContextService).isAuthenticated();
@@ -168,8 +201,8 @@ public class AuthControllerTest extends CryptoTraderTest {
         }
 
         @Test
-        @DisplayName("Should not count unauthorized session users as logged in")
-        public void isLoggedIn_NotLoggedIn_UsersInSession() {
+        @DisplayName("should not count unauthorized session users as logged in")
+        public void countUnauthorizedSessionUsersAsLoggedIn() {
             when(authContextService.isAuthenticated()).thenReturn(false);
             final ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
             verify(authContextService).isAuthenticated();
