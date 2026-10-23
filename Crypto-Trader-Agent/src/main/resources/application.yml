@@ -3,7 +3,7 @@ server:
   address: 127.0.0.1
 spring:
   config:
-    import: aws-secretsmanager:/cryptotrader/dev
+    import: aws-secretsmanager:/cryptotrader${CT_SECRETS_SUFFIX:}/dev
   profiles:
     include: constraints
   application:
