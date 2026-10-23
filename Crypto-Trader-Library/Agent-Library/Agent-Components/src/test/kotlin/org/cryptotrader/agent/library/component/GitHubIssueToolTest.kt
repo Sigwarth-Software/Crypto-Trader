@@ -144,6 +144,7 @@ class GitHubIssueToolTest : CryptoTraderTest() {
         }
 
         @Nested
+        @DisplayName("when the issue prefix is found")
         inner class WhenIssuePrefixFound {
             @BeforeEach
             fun setUp() {
@@ -155,7 +156,8 @@ class GitHubIssueToolTest : CryptoTraderTest() {
             }
 
             @Test
-            fun stripsIssuePrefix_WhenPresent() {
+            @DisplayName("should strip the issue prefix")
+            fun stripIssuePrefix() {
                 val issue: UserStoryIssue =
                     gitHubIssueTool.parseTicketRequest(ticketRequest)
                 assertEquals(
