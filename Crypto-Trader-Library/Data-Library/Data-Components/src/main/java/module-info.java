@@ -15,6 +15,7 @@ open module org.cryptotrader.data.library.components {
     requires org.cryptotrader.universal.library.models;
     requires org.slf4j;
     requires org.jetbrains.annotations;
+    requires kotlin.stdlib;
 
     exports org.cryptotrader.data.library.component;
 }
