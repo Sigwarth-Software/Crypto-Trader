@@ -6,6 +6,7 @@ import org.cryptotrader.security.library.entity.ip.UserIpAddress
 import org.cryptotrader.security.library.event.UserIpDetectionEvent
 import org.cryptotrader.security.library.service.entity.UserIpAddressEntityService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -17,7 +18,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.support.GenericMessage
 
-@DisplayName("User IP Detection Consumer Config")
+@DisplayName("UserIpDetectionConsumerConfig")
+@IntegrationSuite
 class UserIpDetectionConsumerConfigTest : CryptoTraderTest() {
     private lateinit var userIpAddressEntityService: UserIpAddressEntityService
     private lateinit var consumerConfig: UserIpDetectionConsumerConfig
@@ -29,79 +31,114 @@ class UserIpDetectionConsumerConfigTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Consumer Function")
+    @DisplayName("userIpDetection")
     inner class ConsumerFunction {
 
-        @Test
-        @DisplayName("Should record user IP when event payload is valid")
-        fun userIpDetection_RecordsUserIp_WhenPayloadIsValid() {
-            val user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
-            val event = UserIpDetectionEvent("192.168.1.50", user)
-            val message = GenericMessage(event)
+        @Nested
+        @DisplayName("when event payload is valid")
+        inner class WhenEventPayloadIsValid {
+            private lateinit var user: ProductUser
+            private lateinit var message: GenericMessage<UserIpDetectionEvent>
 
-            val expectedIp = UserIpAddress(user, "192.168.1.50")
-            `when`(userIpAddressEntityService.recordUserIp(user, "192.168.1.50")).thenReturn(expectedIp)
+            @BeforeEach
+            fun setUp() {
+                user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
+                val event = UserIpDetectionEvent("192.168.1.50", user)
+                message = GenericMessage(event)
+                val expectedIp = UserIpAddress(user, "192.168.1.50")
+                `when`(userIpAddressEntityService.recordUserIp(user, "192.168.1.50")).thenReturn(expectedIp)
+            }
 
-            val consumer = consumerConfig.userIpDetection()
-            consumer.accept(message)
+            @Test
+            @DisplayName("should record user IP")
+            fun recordUserIP() {
+                val consumer = consumerConfig.userIpDetection()
+                consumer.accept(message)
 
-            verify(userIpAddressEntityService, times(1)).recordUserIp(user, "192.168.1.50")
+                verify(userIpAddressEntityService, times(1)).recordUserIp(user, "192.168.1.50")
+            }
         }
 
-        @Test
-        @DisplayName("Should not record user IP when ip is blank")
-        fun userIpDetection_DoesNotRecord_WhenIpIsBlank() {
-            val user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
-            val event = UserIpDetectionEvent("", user)
-            val message = GenericMessage(event)
+        @Nested
+        @DisplayName("when ip is blank")
+        inner class WhenIpIsBlank {
+            private lateinit var message: GenericMessage<UserIpDetectionEvent>
 
-            val consumer = consumerConfig.userIpDetection()
-            consumer.accept(message)
+            @BeforeEach
+            fun setUp() {
+                val user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
+                val event = UserIpDetectionEvent("", user)
+                message = GenericMessage(event)
+            }
 
-            verifyNoInteractions(userIpAddressEntityService)
+            @Test
+            @DisplayName("should not record user IP")
+            fun notRecordUserIP() {
+                val consumer = consumerConfig.userIpDetection()
+                consumer.accept(message)
+
+                verifyNoInteractions(userIpAddressEntityService)
+            }
         }
 
-        @Test
-        @DisplayName("Should handle service exception gracefully without throwing")
-        fun userIpDetection_HandlesExceptionGracefully() {
-            val user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
-            val event = UserIpDetectionEvent("192.168.1.50", user)
-            val message = GenericMessage(event)
+        @Nested
+        @DisplayName("when the service throws an exception")
+        inner class WhenTheServiceThrowsAnException {
+            private lateinit var user: ProductUser
+            private lateinit var message: GenericMessage<UserIpDetectionEvent>
 
-            `when`(userIpAddressEntityService.recordUserIp(user, "192.168.1.50")).thenThrow(RuntimeException("DB error"))
+            @BeforeEach
+            fun setUp() {
+                user = ProductUser.builder().email("trader@cryptotrader.org").build().apply { id = 42L }
+                val event = UserIpDetectionEvent("192.168.1.50", user)
+                message = GenericMessage(event)
+                `when`(userIpAddressEntityService.recordUserIp(user, "192.168.1.50")).thenThrow(RuntimeException("DB error"))
+            }
 
-            val consumer = consumerConfig.userIpDetection()
-            consumer.accept(message)
+            @Test
+            @DisplayName("should handle service exception gracefully without throwing")
+            fun handleServiceExceptionGracefullyWithoutThrowing() {
+                val consumer = consumerConfig.userIpDetection()
+                consumer.accept(message)
 
-            verify(userIpAddressEntityService, times(1)).recordUserIp(user, "192.168.1.50")
+                verify(userIpAddressEntityService, times(1)).recordUserIp(user, "192.168.1.50")
+            }
         }
     }
 
     @Nested
-    @DisplayName("Conditional Configuration")
+    @DisplayName("consumer bean configuration")
     inner class ConditionalConfiguration {
         private val contextRunner = ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(SecurityAutoConfig::class.java, UserIpDetectionConsumerConfig::class.java))
 
-        @Test
-        @DisplayName("Should not create consumer bean when UserIpAddressEntityService is missing")
-        fun consumerBean_NotCreated_WhenServiceIsMissing() {
-            contextRunner.run { context ->
-                assertThat(context).doesNotHaveBean(UserIpDetectionConsumerConfig::class.java)
-                assertThat(context).doesNotHaveBean("userIpDetection")
-                assertThat(context).doesNotHaveBean("userIpDetectionConsumer")
+        @Nested
+        @DisplayName("when UserIpAddressEntityService is missing")
+        inner class WhenUserIpAddressEntityServiceIsMissing {
+            @Test
+            @DisplayName("should not create consumer bean")
+            fun notCreateConsumerBean() {
+                contextRunner.run { context ->
+                    assertThat(context).doesNotHaveBean(UserIpDetectionConsumerConfig::class.java)
+                    assertThat(context).doesNotHaveBean("userIpDetection")
+                    assertThat(context).doesNotHaveBean("userIpDetectionConsumer")
+                }
             }
         }
 
-        @Test
-        @DisplayName("Should create consumer bean when UserIpAddressEntityService is present")
-        fun consumerBean_Created_WhenServiceIsPresent() {
-            contextRunner
-                .withUserConfiguration(MockServiceConfig::class.java)
-                .run { context ->
-                    assertThat(context).hasSingleBean(UserIpDetectionConsumerConfig::class.java)
-                    assertThat(context).hasBean("userIpDetection")
-                }
+        @Nested
+        @DisplayName("when UserIpAddressEntityService is present")
+        inner class WhenUserIpAddressEntityServiceIsPresent {
+            @Test
+            @DisplayName("should create consumer bean")
+            fun createConsumerBean() {
+                contextRunner
+                    .withUserConfiguration(MockServiceConfig::class.java)
+                    .run { context ->
+                        assertThat(context).hasSingleBean(UserIpDetectionConsumerConfig::class.java)
+                        assertThat(context).hasBean("userIpDetection")
+                    }
+            }
         }
     }
 

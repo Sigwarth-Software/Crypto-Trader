@@ -3,12 +3,14 @@ package org.cryptotrader.api.library.infrastructure
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import kotlin.jvm.java
 import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.ProductUserService
 import org.cryptotrader.security.library.event.UserIpDetectionEvent
 import org.cryptotrader.security.library.event.publisher.SecurityEventsPublisher
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.*
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
@@ -16,11 +18,9 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.context.SecurityContextHolder
-import kotlin.jvm.java
 
-@Tag("infrastructure")
-@Tag("ClientIpFilter")
-@DisplayName("Client IP Filter")
+@DisplayName("ClientIpFilter")
+@UnitSuite
 class ClientIpFilterTest : CryptoTraderTest() {
     private lateinit var securityEventsPublisher: SecurityEventsPublisher
     private lateinit var filter: ClientIpFilter
@@ -40,71 +40,106 @@ class ClientIpFilterTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Filter Internal")
+    @DisplayName("doFilter")
     inner class FilterInternal {
 
-        @Test
-        @DisplayName("Should publish UserIpDetectionEvent when user is authenticated")
-        fun doFilterInternal_PublishesEvent_WhenUserIsAuthenticated() {
-            val request = mock(HttpServletRequest::class.java)
-            val response = mock(HttpServletResponse::class.java)
-            val chain = mock(FilterChain::class.java)
+        @Nested
+        @DisplayName("when user is authenticated")
+        inner class WhenUserIsAuthenticated {
+            private lateinit var request: HttpServletRequest
 
-            val testIp = "192.168.1.100"
-            `when`(request.remoteAddr).thenReturn(testIp)
+            private lateinit var response: HttpServletResponse
+            private lateinit var chain: FilterChain
+            private lateinit var testIp: String
+            private lateinit var user: ProductUser
 
-            val user = ProductUser.builder().email("trader@cryptotrader.org").build()
-            user.id = 42L
+            @BeforeEach
+            fun setUp() {
+                request = mock(HttpServletRequest::class.java)
 
-            val authToken = TestingAuthenticationToken(user, null)
-            SecurityContextHolder.getContext().authentication = authToken
+                response = mock(HttpServletResponse::class.java)
+                chain = mock(FilterChain::class.java)
+                testIp = "192.168.1.100"
+                `when`(request.remoteAddr).thenReturn(testIp)
+                user = ProductUser.builder().email("trader@cryptotrader.org").build()
+                user.id = 42L
+                val authToken = TestingAuthenticationToken(user, null)
+                SecurityContextHolder.getContext().authentication = authToken
+            }
 
-            filter.doFilter(request, response, chain)
+            @Test
+            @DisplayName("should publish UserIpDetectionEvent")
+            fun publishUserIpDetectionEvent() {
+                filter.doFilter(request, response, chain)
 
-            val captor = ArgumentCaptor.forClass(UserIpDetectionEvent::class.java)
-            verify(securityEventsPublisher, times(1)).publish(captor.capture())
-            assertThat(captor.value.ip).isEqualTo(testIp)
-            assertThat(captor.value.productUser).isEqualTo(user)
+                val captor = ArgumentCaptor.forClass(UserIpDetectionEvent::class.java)
+                verify(securityEventsPublisher, times(1)).publish(captor.capture())
+                assertThat(captor.value.ip).isEqualTo(testIp)
+                assertThat(captor.value.productUser).isEqualTo(user)
 
-            verify(chain, times(1)).doFilter(request, response)
+                verify(chain, times(1)).doFilter(request, response)
+            }
         }
 
-        @Test
-        @DisplayName("Should not publish event when authentication is null")
-        fun doFilterInternal_DoesNotPublish_WhenAuthenticationIsNull() {
-            val request = mock(HttpServletRequest::class.java)
-            val response = mock(HttpServletResponse::class.java)
-            val chain = mock(FilterChain::class.java)
+        @Nested
+        @DisplayName("when authentication is null")
+        inner class WhenAuthenticationIsNull {
+            private lateinit var request: HttpServletRequest
 
-            `when`(request.remoteAddr).thenReturn("192.168.1.100")
-            SecurityContextHolder.clearContext()
+            private lateinit var response: HttpServletResponse
+            private lateinit var chain: FilterChain
 
-            filter.doFilter(request, response, chain)
+            @BeforeEach
+            fun setUp() {
+                request = mock(HttpServletRequest::class.java)
 
-            verify(securityEventsPublisher, never()).publish(any(UserIpDetectionEvent::class.java))
-            verify(chain, times(1)).doFilter(request, response)
+                response = mock(HttpServletResponse::class.java)
+                chain = mock(FilterChain::class.java)
+                `when`(request.remoteAddr).thenReturn("192.168.1.100")
+                SecurityContextHolder.clearContext()
+            }
+
+            @Test
+            @DisplayName("should not publish event")
+            fun notPublishEvent() {
+                filter.doFilter(request, response, chain)
+
+                verify(securityEventsPublisher, never()).publish(any(UserIpDetectionEvent::class.java))
+                verify(chain, times(1)).doFilter(request, response)
+            }
         }
 
-        @Test
-        @DisplayName("Should not publish event when principal is not a ProductUser")
-        fun doFilterInternal_DoesNotPublish_WhenPrincipalIsNotProductUser() {
-            val request = mock(HttpServletRequest::class.java)
-            val response = mock(HttpServletResponse::class.java)
-            val chain = mock(FilterChain::class.java)
+        @Nested
+        @DisplayName("when principal is not a ProductUser")
+        inner class WhenPrincipalIsNotAProductUser {
+            private lateinit var request: HttpServletRequest
 
-            `when`(request.remoteAddr).thenReturn("192.168.1.100")
+            private lateinit var response: HttpServletResponse
+            private lateinit var chain: FilterChain
 
-            val anonymousToken = AnonymousAuthenticationToken(
-                "key",
-                "anonymousUser",
-                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
-            )
-            SecurityContextHolder.getContext().authentication = anonymousToken
+            @BeforeEach
+            fun setUp() {
+                request = mock(HttpServletRequest::class.java)
 
-            filter.doFilter(request, response, chain)
+                response = mock(HttpServletResponse::class.java)
+                chain = mock(FilterChain::class.java)
+                `when`(request.remoteAddr).thenReturn("192.168.1.100")
+                val anonymousToken = AnonymousAuthenticationToken(
+                    "key",
+                    "anonymousUser",
+                    AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
+                )
+                SecurityContextHolder.getContext().authentication = anonymousToken
+            }
 
-            verify(securityEventsPublisher, never()).publish(any(UserIpDetectionEvent::class.java))
-            verify(chain, times(1)).doFilter(request, response)
+            @Test
+            @DisplayName("should not publish event")
+            fun notPublishEvent() {
+                filter.doFilter(request, response, chain)
+
+                verify(securityEventsPublisher, never()).publish(any(UserIpDetectionEvent::class.java))
+                verify(chain, times(1)).doFilter(request, response)
+            }
         }
     }
 }

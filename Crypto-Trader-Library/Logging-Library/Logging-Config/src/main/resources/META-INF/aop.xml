@@ -3,6 +3,7 @@
     <weaver>
         <include within="org.cryptotrader..*"/>
         <exclude within="org.cryptotrader..entity..*"/>
+        <exclude within="org.cryptotrader..*$$*"/>
     </weaver>
     <aspects>
         <aspect name="org.cryptotrader.logging.config.aspect.TimeTrackingAspect"/>

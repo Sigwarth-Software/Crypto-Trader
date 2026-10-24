@@ -2,14 +2,15 @@ package org.cryptotrader.api.library.entity.portfolio;
 
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Portfolio Asset")
+@DisplayName("PortfolioAsset")
+@UnitSuite
 public class PortfolioAssetTest extends CryptoTraderTest {
     private Currency testCurrency;
     private PortfolioAsset testAsset;
@@ -25,48 +26,72 @@ public class PortfolioAssetTest extends CryptoTraderTest {
     }
 
     @Nested
-    @DisplayName("Trading Rules")
-    class TradingRules {
-        @Test
-        @DisplayName("Should be sellable with shares")
-        public void testShouldBeSellableWithShares() {
-            testAsset.setShares(1);
-            testAsset.setTargetPrice(100);
-            final boolean expected = true;
-            assertEquals(expected, testAsset.canSell());
+    @DisplayName("canSell")
+    class CanSell {
+        @Nested
+        @DisplayName("when the asset has shares")
+        class WhenTheAssetHasShares {
+            @BeforeEach
+            void setUp() throws Exception {
+                testAsset.setShares(1);
+                testAsset.setTargetPrice(100);
+            }
+
+            @Test
+            @DisplayName("should be sellable with shares")
+            public void beSellableWithShares() {
+                boolean expected = true;
+                assertEquals(expected, testAsset.canSell());
+            }
         }
 
-        @Test
-        @DisplayName("Should not be sellable without shares")
-        public void testShouldNotBeSellableWithoutShares() {
-            testAsset.setShares(0);
-            testAsset.setTargetPrice(100);
-            final boolean expected = false;
-            assertEquals(expected, testAsset.canSell());
-        }
+        @Nested
+        @DisplayName("when the asset has no shares")
+        class WhenTheAssetHasNoShares {
+            @BeforeEach
+            void setUp() throws Exception {
+                testAsset.setShares(0);
+                testAsset.setTargetPrice(100);
+            }
 
-        @Test
-        @DisplayName("Should be buyable with wallet dollars")
-        public void testShouldBeBuyableWithWalletDollars() {
-            testAsset.setAssetWalletDollars(100);
-            testAsset.setTargetPrice(100);
-            final boolean expected = true;
-            assertEquals(expected, testAsset.canBuy());
-        }
-
-        @Test
-        @DisplayName("Should not be buyable with no wallet dollars")
-        public void testShouldNotBeBuyableWithNoWalletDollars() {
-            testAsset.setAssetWalletDollars(0);
+            @Test
+            @DisplayName("should not be sellable without shares")
+            public void notBeSellableWithoutShares() {
+                boolean expected = false;
+                assertEquals(expected, testAsset.canSell());
+            }
         }
     }
 
     @Nested
-    @DisplayName("Value Calculations")
+    @DisplayName("canBuy")
+    class CanBuy {
+        @Nested
+        @DisplayName("when the asset wallet has dollars")
+        class WhenTheAssetWalletHasDollars {
+            @BeforeEach
+            void setUp() throws Exception {
+                testAsset.setAssetWalletDollars(100);
+                testAsset.setTargetPrice(100);
+            }
+
+            @Test
+            @DisplayName("should be buyable with wallet dollars")
+            public void beBuyableWithWalletDollars() {
+                boolean expected = true;
+                assertEquals(expected, testAsset.canBuy());
+            }
+        }
+
+
+    }
+
+    @Nested
+    @DisplayName("updateValues")
     class ValueCalculations {
         @Test
-        @DisplayName("Should calculate values of shares")
-        public void testShouldCalculateValuesOfShares() {
+        @DisplayName("should calculate values of shares")
+        public void calculateValuesOfShares() {
             testAsset.setShares(1);
             testAsset.setTargetPrice(100);
             testAsset.updateValues();
@@ -78,8 +103,8 @@ public class PortfolioAssetTest extends CryptoTraderTest {
         }
 
         @Test
-        @DisplayName("Should calculate total value of a wallet")
-        public void testShouldCalculateTotalValueOfWallet() {
+        @DisplayName("should calculate total value of a wallet")
+        public void calculateTotalValueOfAWallet() {
             testAsset.setAssetWalletDollars(100);
             testAsset.setTargetPrice(100);
             testAsset.setShares(1);

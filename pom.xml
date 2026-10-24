@@ -84,8 +84,8 @@
         <surefire.version>3.2.5</surefire.version>
         <failsafe.version>3.2.5</failsafe.version>
         <skipDokka>false</skipDokka>
-        <!-- Skip Dokka during release builds via -Ddokka.skip=true (set by maven-release-plugin). -->
-        <dokka.skip>false</dokka.skip>
+        <!-- Support -DskipDokka=true and the release plugin's -Ddokka.skip=true override. -->
+        <dokka.skip>${skipDokka}</dokka.skip>
         <skipJavadoc>true</skipJavadoc>
         <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
         <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
@@ -1165,6 +1165,18 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <pluginRepositories>
         <pluginRepository>
@@ -1180,22 +1192,16 @@
             <name>Maven Central</name>
             <url>https://repo.maven.apache.org/maven2</url>
         </pluginRepository>
-        <pluginRepository>
-            <id>jetbrains-dokka</id>
-            <name>JetBrains Dokka Repository</name>
-            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
     </pluginRepositories>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>1.9.20</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
@@ -1394,6 +1400,10 @@
     </distributionManagement>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
         <!-- Spring Milestones and Snapshots for early access artifacts -->
         <repository>
             <id>spring-milestones</id>
@@ -1414,11 +1424,6 @@
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
-        </repository>
-        <!-- Standard public repositories -->
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
     <profiles>

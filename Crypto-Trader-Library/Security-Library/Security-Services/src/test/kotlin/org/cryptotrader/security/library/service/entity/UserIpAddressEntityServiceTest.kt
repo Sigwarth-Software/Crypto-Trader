@@ -1,20 +1,22 @@
 package org.cryptotrader.security.library.service.entity
 
+import java.time.LocalDateTime
+import java.util.Optional
 import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.security.library.entity.ip.UserIpAddress
 import org.cryptotrader.security.library.repository.UserIpAddressRepository
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
-import java.time.LocalDateTime
-import java.util.Optional
 
-@DisplayName("User IP Address Entity Service")
+@DisplayName("UserIpAddressEntityService")
+@UnitSuite
 class UserIpAddressEntityServiceTest : CryptoTraderTest() {
     private lateinit var repository: UserIpAddressRepository
     private lateinit var service: UserIpAddressEntityService
@@ -29,49 +31,64 @@ class UserIpAddressEntityServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Record User IP")
+    @DisplayName("recordUserIp")
     inner class RecordUserIp {
 
-        @Test
-        @DisplayName("Should create new UserIpAddress record when IP does not exist for user")
-        fun recordUserIp_CreatesNew_WhenNotExists() {
-            `when`(repository.findByUserAndIpAddress(testUser, testIp)).thenReturn(Optional.empty())
-            val savedIp = UserIpAddress(testUser, testIp)
-            `when`(repository.save(any(UserIpAddress::class.java))).thenReturn(savedIp)
+        @Nested
+        @DisplayName("when IP does not exist for user")
+        inner class WhenIPDoesNotExistForUser {
+            @BeforeEach
+            fun setUp() {
+                `when`(repository.findByUserAndIpAddress(testUser, testIp)).thenReturn(Optional.empty())
+                val savedIp = UserIpAddress(testUser, testIp)
+                `when`(repository.save(any(UserIpAddress::class.java))).thenReturn(savedIp)
+            }
 
-            val result = service.recordUserIp(testUser, testIp)
+            @Test
+            @DisplayName("should create new UserIpAddress record")
+            fun createNewUserIpAddressRecord() {
+                val result = service.recordUserIp(testUser, testIp)
 
-            val captor = ArgumentCaptor.forClass(UserIpAddress::class.java)
-            verify(repository, times(1)).save(captor.capture())
-            assertThat(captor.value.user).isEqualTo(testUser)
-            assertThat(captor.value.ipAddress).isEqualTo(testIp)
-            assertThat(captor.value.lastAccessed).isNotNull
-            assertThat(result).isNotNull
+                val captor = ArgumentCaptor.forClass(UserIpAddress::class.java)
+                verify(repository, times(1)).save(captor.capture())
+                assertThat(captor.value.user).isEqualTo(testUser)
+                assertThat(captor.value.ipAddress).isEqualTo(testIp)
+                assertThat(captor.value.lastAccessed).isNotNull
+                assertThat(result).isNotNull
+            }
         }
 
-        @Test
-        @DisplayName("Should update lastAccessed when IP already exists for user")
-        fun recordUserIp_UpdatesExisting_WhenExists() {
-            val previousTime = LocalDateTime.now().minusDays(1)
-            val existing = UserIpAddress(testUser, testIp, previousTime)
+        @Nested
+        @DisplayName("when IP already exists for user")
+        inner class WhenIPAlreadyExistsForUser {
+            private lateinit var previousTime: LocalDateTime
+            private lateinit var existing: UserIpAddress
 
-            `when`(repository.findByUserAndIpAddress(testUser, testIp)).thenReturn(Optional.of(existing))
-            `when`(repository.save(any(UserIpAddress::class.java))).thenAnswer { it.getArgument(0) }
+            @BeforeEach
+            fun setUp() {
+                previousTime = LocalDateTime.now().minusDays(1)
+                existing = UserIpAddress(testUser, testIp, previousTime)
+                `when`(repository.findByUserAndIpAddress(testUser, testIp)).thenReturn(Optional.of(existing))
+                `when`(repository.save(any(UserIpAddress::class.java))).thenAnswer { it.getArgument(0) }
+            }
 
-            val result = service.recordUserIp(testUser, testIp)
+            @Test
+            @DisplayName("should update lastAccessed")
+            fun updateLastAccessed() {
+                val result = service.recordUserIp(testUser, testIp)
 
-            verify(repository, times(1)).save(existing)
-            assertThat(result.lastAccessed).isAfter(previousTime)
+                verify(repository, times(1)).save(existing)
+                assertThat(result.lastAccessed).isAfter(previousTime)
+            }
         }
     }
 
     @Nested
-    @DisplayName("Queries")
-    inner class Queries {
-
+    @DisplayName("findByUserAndIpAddress")
+    inner class FindByUserAndIpAddress {
         @Test
-        @DisplayName("Should find by user and IP address")
-        fun findByUserAndIpAddress() {
+        @DisplayName("should find by user and IP address")
+        fun findByUserAndIPAddress() {
             val expected = UserIpAddress(testUser, testIp)
             `when`(repository.findByUserAndIpAddress(testUser, testIp)).thenReturn(Optional.of(expected))
 
@@ -80,10 +97,14 @@ class UserIpAddressEntityServiceTest : CryptoTraderTest() {
             assertThat(result).isPresent
             assertThat(result.get()).isEqualTo(expected)
         }
+    }
 
+    @Nested
+    @DisplayName("findByUserIdAndIpAddress")
+    inner class FindByUserIdAndIpAddress {
         @Test
-        @DisplayName("Should find by userId and IP address")
-        fun findByUserIdAndIpAddress() {
+        @DisplayName("should find by userId and IP address")
+        fun findByUserIdAndIPAddress() {
             val expected = UserIpAddress(testUser, testIp)
             `when`(repository.findByUserIdAndIpAddress(1L, testIp)).thenReturn(Optional.of(expected))
 
@@ -92,9 +113,13 @@ class UserIpAddressEntityServiceTest : CryptoTraderTest() {
             assertThat(result).isPresent
             assertThat(result.get()).isEqualTo(expected)
         }
+    }
 
+    @Nested
+    @DisplayName("findAllByUser")
+    inner class FindAllByUser {
         @Test
-        @DisplayName("Should find all by user")
+        @DisplayName("should find all by user")
         fun findAllByUser() {
             val list = listOf(UserIpAddress(testUser, testIp))
             `when`(repository.findAllByUser(testUser)).thenReturn(list)
@@ -103,9 +128,13 @@ class UserIpAddressEntityServiceTest : CryptoTraderTest() {
 
             assertThat(result).isEqualTo(list)
         }
+    }
 
+    @Nested
+    @DisplayName("findAllByUserId")
+    inner class FindAllByUserId {
         @Test
-        @DisplayName("Should find all by userId")
+        @DisplayName("should find all by userId")
         fun findAllByUserId() {
             val list = listOf(UserIpAddress(testUser, testIp))
             `when`(repository.findAllByUserId(1L)).thenReturn(list)
@@ -114,10 +143,14 @@ class UserIpAddressEntityServiceTest : CryptoTraderTest() {
 
             assertThat(result).isEqualTo(list)
         }
+    }
 
+    @Nested
+    @DisplayName("findAllByIpAddress")
+    inner class FindAllByIpAddress {
         @Test
-        @DisplayName("Should find all by IP address")
-        fun findAllByIpAddress() {
+        @DisplayName("should find all by IP address")
+        fun findAllByIPAddress() {
             val list = listOf(UserIpAddress(testUser, testIp))
             `when`(repository.findAllByIpAddress(testIp)).thenReturn(list)
 

@@ -29,17 +29,6 @@
             <id>central-1</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
-        <repository>
-            <id>jetbrains-dokka</id>
-            <name>JetBrains Dokka Repository</name>
-            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
         <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
         <repository>
             <id>github</id>
