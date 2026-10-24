@@ -81,8 +81,11 @@
         <argLine/>
         <surefireArgLine/>
         <jacoco.version>0.8.12</jacoco.version>
-        <surefire.version>3.2.5</surefire.version>
-        <failsafe.version>3.2.5</failsafe.version>
+        <surefire.version>3.6.0</surefire.version>
+        <failsafe.version>3.6.0</failsafe.version>
+        <surefire-tree-reporter.version>2.1.0</surefire-tree-reporter.version>
+        <cryptotrader.test.slowThresholdMillis>500</cryptotrader.test.slowThresholdMillis>
+        <skipTests>false</skipTests>
         <skipDokka>false</skipDokka>
         <!-- Support -DskipDokka=true and the release plugin's -Ddokka.skip=true override. -->
         <dokka.skip>${skipDokka}</dokka.skip>
@@ -1290,9 +1293,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <!--                Addition that may be buggy-->
-                <version>3.2.5</version>
+                <version>${surefire.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>me.fabriciorby</groupId>
+                        <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+                        <version>${surefire-tree-reporter.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
+                    <reportFormat>plain</reportFormat>
+                    <consoleOutputReporter
+                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputTreeReporter"/>
+                    <statelessTestsetInfoReporter
+                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+                        <theme>ASCII</theme>
+                        <printTestCounts>true</printTestCounts>
+                        <printBlankLineBetweenTests>false</printBlankLineBetweenTests>
+                        <hideResultsOnSuccess>false</hideResultsOnSuccess>
+                        <collapseSuccessfulClasses>false</collapseSuccessfulClasses>
+                        <hideSuccessfulNestedClasses>false</hideSuccessfulNestedClasses>
+                        <printFailureSummary>true</printFailureSummary>
+                        <maxFailuresInSummary>50</maxFailuresInSummary>
+                        <slowTestThreshold>${cryptotrader.test.slowThresholdMillis}</slowTestThreshold>
+                        <printStacktraceOnFailure>true</printStacktraceOnFailure>
+                        <printStacktraceOnError>true</printStacktraceOnError>
+                        <printStdoutOnSuccess>false</printStdoutOnSuccess>
+                        <printStderrOnSuccess>false</printStderrOnSuccess>
+                        <printStdoutOnFailure>true</printStdoutOnFailure>
+                        <printStderrOnFailure>true</printStderrOnFailure>
+                        <printStdoutOnError>true</printStdoutOnError>
+                        <printStderrOnError>true</printStderrOnError>
+                    </statelessTestsetInfoReporter>
                     <forkCount>1C</forkCount>
                     <reuseForks>true</reuseForks>
                     <useModulePath>true</useModulePath>
@@ -1311,8 +1343,40 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>${failsafe.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>me.fabriciorby</groupId>
+                        <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+                        <version>${surefire-tree-reporter.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
+                    <!-- Preserve -DskipTests for Failsafe after upgrading to 3.6.0. -->
+                    <skipTests>${skipTests}</skipTests>
+                    <reportFormat>plain</reportFormat>
+                    <consoleOutputReporter
+                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputTreeReporter"/>
+                    <statelessTestsetInfoReporter
+                            implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+                        <theme>ASCII</theme>
+                        <printTestCounts>true</printTestCounts>
+                        <printBlankLineBetweenTests>false</printBlankLineBetweenTests>
+                        <hideResultsOnSuccess>false</hideResultsOnSuccess>
+                        <collapseSuccessfulClasses>false</collapseSuccessfulClasses>
+                        <hideSuccessfulNestedClasses>false</hideSuccessfulNestedClasses>
+                        <printFailureSummary>true</printFailureSummary>
+                        <maxFailuresInSummary>50</maxFailuresInSummary>
+                        <slowTestThreshold>${cryptotrader.test.slowThresholdMillis}</slowTestThreshold>
+                        <printStacktraceOnFailure>true</printStacktraceOnFailure>
+                        <printStacktraceOnError>true</printStacktraceOnError>
+                        <printStdoutOnSuccess>false</printStdoutOnSuccess>
+                        <printStderrOnSuccess>false</printStderrOnSuccess>
+                        <printStdoutOnFailure>true</printStdoutOnFailure>
+                        <printStderrOnFailure>true</printStderrOnFailure>
+                        <printStdoutOnError>true</printStdoutOnError>
+                        <printStderrOnError>true</printStderrOnError>
+                    </statelessTestsetInfoReporter>
                     <environmentVariables>
                         <TESTCONTAINERS_DISABLED>true</TESTCONTAINERS_DISABLED>
                         <TESTCONTAINERS_RYUK_DISABLED>true</TESTCONTAINERS_RYUK_DISABLED>
