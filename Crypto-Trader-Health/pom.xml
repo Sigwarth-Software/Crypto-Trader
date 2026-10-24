@@ -183,10 +183,10 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</argLine>
+                    <!-- ServiceStatusCheckerTest uses the JDK HTTP server for its local endpoint. -->
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED --add-modules jdk.httpserver --add-reads org.cryptotrader.health=jdk.httpserver</argLine>
                 </configuration>
             </plugin>
             <plugin>
