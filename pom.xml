@@ -84,8 +84,8 @@
         <surefire.version>3.2.5</surefire.version>
         <failsafe.version>3.2.5</failsafe.version>
         <skipDokka>false</skipDokka>
-        <!-- Skip Dokka during release builds via -Ddokka.skip=true (set by maven-release-plugin). -->
-        <dokka.skip>false</dokka.skip>
+        <!-- Support -DskipDokka=true and the release plugin's -Ddokka.skip=true override. -->
+        <dokka.skip>${skipDokka}</dokka.skip>
         <skipJavadoc>true</skipJavadoc>
         <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
         <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
