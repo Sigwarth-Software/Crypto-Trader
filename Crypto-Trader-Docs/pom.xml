@@ -1505,7 +1505,6 @@ This module aggregates documentation for child library modules. Select a sub-mod
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
