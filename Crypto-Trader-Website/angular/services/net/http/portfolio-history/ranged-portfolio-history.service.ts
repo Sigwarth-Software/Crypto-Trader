@@ -3,6 +3,7 @@ import { environment } from '@environments/environment'
 import { Injectable } from '@angular/core'
 import { HttpClientService } from '@theoliverlear/angular-suite'
 import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 /**
  * Fetches the portfolio history for a given date range from the backend API.
@@ -28,6 +29,15 @@ export class RangedPortfolioHistoryService extends HttpClientService<
     public getRangedPortfolioHistory(
         request: RangedPortfolioHistoryRequest,
     ): Observable<PortfolioHistory[]> {
-        return this.post(request)
+        return this.post(request).pipe(
+            map((portfolioHistories: PortfolioHistory[]): PortfolioHistory[] => {
+                // This may be falsey at runtime.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                if (!portfolioHistories || portfolioHistories.length === 0) {
+                    return []
+                }
+                return portfolioHistories
+            }),
+        )
     }
 }
