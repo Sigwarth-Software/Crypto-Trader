@@ -184,7 +184,27 @@ public class PortfolioService {
     }
 
     public List<PortfolioHistory> getRangedPortfolioHistory(final @NotNull Portfolio portfolio, final LocalDateTime startDate, final LocalDateTime endDate) {
-        return this.portfolioHistoryRepository.findAllByPortfolioIdAndLastUpdatedBetweenOrderByLastUpdatedAsc(portfolio.getId(), startDate, endDate);
+        final List<PortfolioHistory> rangedPortfolioHistories = this.portfolioHistoryRepository.findAllByPortfolioIdAndLastUpdatedBetweenOrderByLastUpdatedAsc(portfolio.getId(), startDate, endDate);
+
+        if (rangedPortfolioHistories.isEmpty()) {
+            final PortfolioHistory lastPortfolioHistory = this.portfolioHistoryRepository.findFirstByPortfolioIdOrderByLastUpdatedDesc(portfolio.getId());
+            
+            if (lastPortfolioHistory == null) {
+                return rangedPortfolioHistories;
+            }
+            final PortfolioHistory copyStartDate = PortfolioHistory.builder()
+                    .totalWorth(lastPortfolioHistory.getTotalWorth())
+                        .lastUpdated(startDate)
+                        .build();
+            final PortfolioHistory copyEndDate = PortfolioHistory.builder()
+                    .totalWorth(lastPortfolioHistory.getTotalWorth())
+                        .lastUpdated(endDate)
+                        .build();
+            rangedPortfolioHistories.add(copyEndDate);
+            rangedPortfolioHistories.add(copyStartDate);
+        }
+
+        return rangedPortfolioHistories;
     }
 
     public List<PortfolioHistory> getPortfolioHistory(final Long portfolioId) {
