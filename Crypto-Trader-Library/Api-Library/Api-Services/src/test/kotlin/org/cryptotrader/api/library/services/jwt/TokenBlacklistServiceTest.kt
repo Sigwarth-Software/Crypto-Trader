@@ -1,21 +1,18 @@
 package org.cryptotrader.api.library.services.jwt
 
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
 
-@Tag("TokenBlacklistService")
-@Tag("service")
-@DisplayName("Token Blacklist Service")
+@DisplayName("TokenBlacklistService")
+@UnitSuite
 class TokenBlacklistServiceTest : CryptoTraderTest() {
 
-    @InjectMocks
     private lateinit var tokenBlacklistService: TokenBlacklistService
 
     @BeforeEach
@@ -24,12 +21,11 @@ class TokenBlacklistServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @Tag("blacklistToken")
-    @DisplayName("Blacklist Token")
+    @DisplayName("blacklistToken")
     inner class BlacklistToken {
         @Test
-        @DisplayName("Should add a valid token to blacklist until expiry")
-        fun blacklistToken_BlacklistsUntilExpiry_ValidToken() {
+        @DisplayName("should add a valid token to blacklist until expiry")
+        fun addAValidTokenToBlacklistUntilExpiry() {
             assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
             val expiry = System.currentTimeMillis() + 100L
             tokenBlacklistService.blacklistToken("token", expiry)
@@ -39,40 +35,74 @@ class TokenBlacklistServiceTest : CryptoTraderTest() {
             assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
         }
 
-        @Test
-        @DisplayName("Should ignore blank or expired tokens")
-        fun blacklistToken_Ignores_BlankOrExpiredTokens() {
-            assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
-            val expiry = System.currentTimeMillis() + 5000L
-            tokenBlacklistService.blacklistToken("", expiry)
-            assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
-            tokenBlacklistService.blacklistToken("token", expiry - 100000L)
-            assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
+        @Nested
+        @DisplayName("when the token is blank")
+        inner class WhenTokenIsBlank {
+            @Test
+            @DisplayName("should leave the blacklist empty")
+            fun leaveBlacklistEmpty() {
+                assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
+                val expiry = System.currentTimeMillis() + 5000L
+                tokenBlacklistService.blacklistToken("", expiry)
+                assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
+            }
+        }
+
+        @Nested
+        @DisplayName("when the token is already expired")
+        inner class WhenTokenIsAlreadyExpired {
+            @Test
+            @DisplayName("should leave the blacklist empty")
+            fun leaveBlacklistEmpty() {
+                val expiry = System.currentTimeMillis() + 5000L
+                tokenBlacklistService.blacklistToken("token", expiry - 100000L)
+                assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
+            }
         }
     }
 
     @Nested
-    @Tag("isBlacklisted")
-    @DisplayName("Is Blacklisted")
+    @DisplayName("isBlacklisted")
     inner class IsBlacklisted {
-        @Test
-        @DisplayName("Should return true when token is blacklisted and not expired")
-        fun isBlacklisted_ReturnsTrue_WhenActive() {
-            val expiry = System.currentTimeMillis() + 100_000L;
-            tokenBlacklistService.blacklistToken("token", expiry)
-            assertTrue(tokenBlacklistService.isBlacklisted("token"))
+        @Nested
+        @DisplayName("when token is blacklisted and not expired")
+        inner class WhenTokenIsBlacklistedAndNotExpired {
+            @BeforeEach
+            fun setUp() {
+                val expiry = System.currentTimeMillis() + 100_000L
+                tokenBlacklistService.blacklistToken("token", expiry)
+            }
+
+            @Test
+            @DisplayName("should return true")
+            fun returnTrue() {
+                assertTrue(tokenBlacklistService.isBlacklisted("token"))
+            }
         }
 
-        @Test
-        @DisplayName("Should return false when token is not blacklisted or expired")
-        fun isBlacklisted_ReturnsFalse_WhenNotActive() {
-            assertFalse(tokenBlacklistService.isBlacklisted("token"))
-            val expiry = System.currentTimeMillis() + 100L
-            tokenBlacklistService.blacklistToken("token", expiry)
-            Thread.sleep(100L)
-            tokenBlacklistService.isBlacklisted("token")
-            assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
-            assertFalse(tokenBlacklistService.isBlacklisted("token"))
+        @Nested
+        @DisplayName("when the token is not blacklisted")
+        inner class WhenTokenIsNotBlacklisted {
+            @Test
+            @DisplayName("should return false")
+            fun returnFalse() {
+                assertFalse(tokenBlacklistService.isBlacklisted("token"))
+            }
+        }
+
+        @Nested
+        @DisplayName("when a blacklisted token expires")
+        inner class WhenBlacklistedTokenExpires {
+            @Test
+            @DisplayName("should remove the token and return false")
+            fun removeTokenAndReturnFalse() {
+                val expiry = System.currentTimeMillis() + 100L
+                tokenBlacklistService.blacklistToken("token", expiry)
+                Thread.sleep(100L)
+                tokenBlacklistService.isBlacklisted("token")
+                assertTrue(tokenBlacklistService.blacklistedTokens.isEmpty())
+                assertFalse(tokenBlacklistService.isBlacklisted("token"))
+            }
         }
     }
 }

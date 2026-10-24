@@ -1,10 +1,12 @@
 package org.cryptotrader.agent.library.component
 
+import java.util.UUID
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.development.library.model.DevelopmentIssue
 import org.cryptotrader.development.library.model.UserStoryIssue
 import org.cryptotrader.development.library.services.GitHubIssueService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -17,8 +19,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import java.util.UUID
 
+@DisplayName("GitHubIssueTool")
+@UnitSuite
 class GitHubIssueToolTest : CryptoTraderTest() {
     @Mock
     lateinit var properties: AgentConstraintsProperties
@@ -46,7 +49,6 @@ class GitHubIssueToolTest : CryptoTraderTest() {
         return null as T
     }
 
-
     @Nested
     @DisplayName("parseTicketRequest")
     inner class ParseTicketRequest {
@@ -61,6 +63,132 @@ class GitHubIssueToolTest : CryptoTraderTest() {
         }
 
         @Nested
+        @DisplayName("when labels are present")
+        inner class WhenLabelsArePresent {
+            @BeforeEach
+            fun setUp() {
+                ticketRequest = """
+                As a developer, I want a sample feature.
+
+                - [ ] Task one.
+
+                Labels: bug, needs triage
+                Points: 5 (hours)
+            """.trimIndent()
+            }
+
+            @Test
+            @DisplayName("should extract labels")
+            fun extractLabels() {
+                val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
+                assertEquals(listOf("bug", "needs triage"), issue.labels)
+            }
+        }
+
+        @Nested
+        @DisplayName("when the template has front matter and an explicit title")
+        inner class WhenTheTemplateHasFrontMatterAndAnExplicitTitle {
+            private lateinit var templateDraft: String
+
+            @BeforeEach
+            fun setUp() {
+                templateDraft = """
+                ---
+                name: Agile User Story
+                about: Create a concise user story with a task checklist and an hours-based point estimate
+                title: "As a trader, I want real-time order execution."
+                labels: "needs triage, user story"
+                assignees: ""
+                ---
+
+                <!--
+                Multi-line comment instructions
+                here
+                -->
+
+                As a trader, I want real-time order execution.
+
+                - [ ] Implement order routing service.
+                - [ ] Add unit tests for latency bounds.
+
+                Points: 8 (hours)
+            """.trimIndent()
+            }
+
+            @DisplayName("should parse the title, tasks, points, and labels")
+            @Test
+            fun parseTemplateWithFrontMatter() {
+                val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
+
+                assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
+                assertEquals(listOf("needs triage", "user story"), issue.labels)
+                assertEquals(8, issue.points)
+            }
+        }
+
+        @Nested
+        @DisplayName("when the front matter has no explicit title")
+        inner class WhenTheFrontMatterHasNoExplicitTitle {
+            private lateinit var templateDraft: String
+
+            @BeforeEach
+            fun setUp() {
+                templateDraft = """
+                ---
+                name: Agile User Story
+                about: Create a concise user story with a task checklist and an hours-based point estimate
+                labels: "needs triage, user story"
+                assignees: ""
+                ---
+
+                <!-- Template drafting instructions -->
+
+                As a trader, I want real-time order execution.
+
+                - [ ] Implement order routing service.
+
+                Points: 4 (hours)
+            """.trimIndent()
+            }
+
+            @DisplayName("should use the first content line as the title")
+            @Test
+            fun useFirstContentLineAsTitle() {
+                val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
+
+                assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
+                assertEquals(listOf("needs triage", "user story"), issue.labels)
+                assertEquals(4, issue.points)
+            }
+        }
+
+        @Nested
+        @DisplayName("when labels are quoted")
+        inner class WhenLabelsAreQuoted {
+            private lateinit var ticketRequest: String
+
+            @BeforeEach
+            fun setUp() {
+                ticketRequest = """
+                As a developer, I want a sample feature.
+
+                - [ ] Task one.
+
+                Labels: "bug", 'user story', documentation
+                Points: 3 (hours)
+            """.trimIndent()
+            }
+
+            @DisplayName("should unquote labels")
+            @Test
+            fun unquoteLabels() {
+                val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
+                assertEquals(listOf("bug", "user story", "documentation"), issue.labels)
+            }
+        }
+
+        @DisplayName("when points are missing")
+        @Nested
         inner class WhenPointsAreMissing {
 
             @BeforeEach
@@ -74,40 +202,26 @@ class GitHubIssueToolTest : CryptoTraderTest() {
 
             @Test
             @DisplayName("should default points to zero")
-            fun defaultsPointsToZero() {
+            fun defaultPointsToZero() {
                 val issue: UserStoryIssue =
                     gitHubIssueTool.parseTicketRequest(ticketRequest)
                 assertEquals(0, issue.points)
             }
         }
 
-        @Test
-        @DisplayName("should extract labels when present")
-        fun extractLabelsWhenPresent() {
-            ticketRequest = """
-                As a developer, I want a sample feature.
-
-                - [ ] Task one.
-
-                Labels: bug, needs triage
-                Points: 5 (hours)
-            """.trimIndent()
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
-            assertEquals(listOf("bug", "needs triage"), issue.labels)
-        }
-
+        @DisplayName("when labels are missing")
         @Nested
         inner class WhenLabelsAreMissing {
             @Test
             @DisplayName("should default labels to empty list")
-            fun defaultsToAnEmptyList() {
+            fun defaultLabelsToEmptyList() {
                 val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(validTicketRequest)
                 assertTrue(issue.labels.isEmpty())
             }
         }
 
         @Nested
-        @DisplayName("when no tasks found")
+        @DisplayName("when no tasks are present")
         inner class WhenNoTasksPresent {
             @Test
             @DisplayName("should throw exception")
@@ -119,7 +233,7 @@ class GitHubIssueToolTest : CryptoTraderTest() {
         }
 
         @Nested
-        @DisplayName("when a title prefix found")
+        @DisplayName("when a title prefix is found")
         inner class WhenTitlePrefixFound {
             @BeforeEach
             fun setUp() {
@@ -129,7 +243,6 @@ class GitHubIssueToolTest : CryptoTraderTest() {
                 - [ ] Task one.
             """.trimIndent()
             }
-
 
             @Test
             @DisplayName("should strip title prefix")
@@ -157,7 +270,7 @@ class GitHubIssueToolTest : CryptoTraderTest() {
 
             @Test
             @DisplayName("should strip the issue prefix")
-            fun stripIssuePrefix() {
+            fun stripTheIssuePrefix() {
                 val issue: UserStoryIssue =
                     gitHubIssueTool.parseTicketRequest(ticketRequest)
                 assertEquals(
@@ -166,99 +279,41 @@ class GitHubIssueToolTest : CryptoTraderTest() {
                 )
             }
         }
-        @Test
-        fun parsesTicketRequest_WithFullTemplateAndFrontMatter() {
-            val templateDraft = """
-                ---
-                name: Agile User Story
-                about: Create a concise user story with a task checklist and an hours-based point estimate
-                title: "As a trader, I want real-time order execution."
-                labels: "needs triage, user story"
-                assignees: ""
-                ---
-
-                <!--
-                Multi-line comment instructions
-                here
-                -->
-
-                As a trader, I want real-time order execution.
-
-                - [ ] Implement order routing service.
-                - [ ] Add unit tests for latency bounds.
-
-                Points: 8 (hours)
-            """.trimIndent()
-
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
-
-            assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
-            assertEquals(listOf("needs triage", "user story"), issue.labels)
-            assertEquals(8, issue.points)
-        }
-
-        @Test
-        fun parsesTicketRequest_WithFrontMatterWithoutExplicitTitle() {
-            val templateDraft = """
-                ---
-                name: Agile User Story
-                about: Create a concise user story with a task checklist and an hours-based point estimate
-                labels: "needs triage, user story"
-                assignees: ""
-                ---
-
-                <!-- Template drafting instructions -->
-
-                As a trader, I want real-time order execution.
-
-                - [ ] Implement order routing service.
-
-                Points: 4 (hours)
-            """.trimIndent()
-
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(templateDraft)
-
-            assertEquals("As a trader, I want real-time order execution.", issue.issueTitle)
-            assertEquals(listOf("needs triage", "user story"), issue.labels)
-            assertEquals(4, issue.points)
-        }
-
-        @Test
-        fun unquotesLabelsCorrectly() {
-            val ticketRequest = """
-                As a developer, I want a sample feature.
-
-                - [ ] Task one.
-
-                Labels: "bug", 'user story', documentation
-                Points: 3 (hours)
-            """.trimIndent()
-            val issue: UserStoryIssue = gitHubIssueTool.parseTicketRequest(ticketRequest)
-            assertEquals(listOf("bug", "user story", "documentation"), issue.labels)
-        }
     }
 
     @Nested
     @DisplayName("requireNoSensitiveContent")
     inner class RequireNoSensitiveContent {
-        @Test
-        fun throwsSecurityException_WhenApiKeyPresent() {
-            assertThrows(SecurityException::class.java) {
-                gitHubIssueTool.requireNoSensitiveContent("api_key: abc123xyz")
+        @Nested
+        @DisplayName("when an API key is present")
+        inner class WhenAnAPIKeyIsPresent {
+            @DisplayName("should throw SecurityException")
+            @Test
+            fun throwSecurityException() {
+                assertThrows(SecurityException::class.java) {
+                    gitHubIssueTool.requireNoSensitiveContent("api_key: abc123xyz")
+                }
             }
         }
 
-        @Test
-        fun doesNotThrow_WhenContentIsClean() {
-            gitHubIssueTool.requireNoSensitiveContent(validTicketRequest)
+        @Nested
+        @DisplayName("when the content has no sensitive data")
+        inner class WhenTheContentHasNoSensitiveData {
+            @DisplayName("should accept safe content")
+            @Test
+            fun acceptSafeContent() {
+                gitHubIssueTool.requireNoSensitiveContent(validTicketRequest)
+            }
         }
+
     }
 
     @Nested
     @DisplayName("getIssueCreationPrompt")
     inner class GetIssueCreationPrompt {
+        @DisplayName("should return the prompt from the service")
         @Test
-        fun returnsPromptFromService() {
+        fun returnPromptFromService() {
             `when`(gitHubIssueService.getIssueCreationPrompt(
                 "Add a new feature"
             )).thenReturn("Generated prompt")
@@ -267,85 +322,145 @@ class GitHubIssueToolTest : CryptoTraderTest() {
             assertEquals("Generated prompt", result)
         }
 
-        @Test
-        fun throwsException_WhenPromptBlank() {
-            assertThrows(IllegalArgumentException::class.java) {
-                gitHubIssueTool.getIssueCreationPrompt("   ")
+        @Nested
+        @DisplayName("when the prompt is blank")
+        inner class WhenThePromptIsBlank {
+            @DisplayName("should throw IllegalArgumentException")
+            @Test
+            fun throwIllegalArgumentException() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    gitHubIssueTool.getIssueCreationPrompt("   ")
+                }
             }
         }
     }
 
+    @DisplayName("createIssue")
     @Nested
     inner class CreateIssue {
-        @Test
-        fun createsIssueAndReturnsIdentifier() {
-            `when`(gitHubIssueService.createIssueUuid()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000001"))
-            `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
+        @Nested
+        @DisplayName("when the ticket request is valid")
+        inner class WhenTheTicketRequestIsValid {
+            private lateinit var result: String
 
-            val result: String = gitHubIssueTool.createIssue(validTicketRequest)
+            @BeforeEach
+            fun setUp() {
+                `when`(gitHubIssueService.createIssueUuid()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000001"))
+                `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
 
-            assertTrue(result.contains("Presented issue"))
-            assertTrue(result.contains("00000000-0000-0000-0000-000000000001"))
+                result = gitHubIssueTool.createIssue(validTicketRequest)
+            }
+
+            @DisplayName("should return the proposed issue identifier")
+            @Test
+            fun returnProposedIssueIdentifier() {
+                assertTrue(result.contains("Presented issue"))
+                assertTrue(result.contains("00000000-0000-0000-0000-000000000001"))
+            }
         }
 
-        @Test
-        fun throwsException_WhenTicketRequestBlank() {
-            assertThrows(IllegalArgumentException::class.java) {
-                gitHubIssueTool.createIssue("   ")
+        @Nested
+        @DisplayName("when the ticket request is blank")
+        inner class WhenTheTicketRequestIsBlank {
+            @DisplayName("should throw IllegalArgumentException")
+            @Test
+            fun throwIllegalArgumentException() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    gitHubIssueTool.createIssue("   ")
+                }
             }
         }
     }
 
+    @DisplayName("confirmIssue")
     @Nested
     inner class ConfirmIssue {
-        @Test
-        fun confirmsPreviouslyProposedIssue() {
-            val issueId = UUID.fromString("00000000-0000-0000-0000-000000000002")
-            `when`(gitHubIssueService.createIssueUuid()).thenReturn(issueId)
-            `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
+        @Nested
+        @DisplayName("when the issue was proposed")
+        inner class WhenTheIssueWasProposed {
+            private lateinit var issueId: UUID
 
-            gitHubIssueTool.createIssue(validTicketRequest)
-            val result: String = gitHubIssueTool.confirmIssue(issueId.toString())
+            private lateinit var result: String
 
-            assertTrue(result.contains("confirmed"))
-        }
+            @BeforeEach
+            fun setUp() {
+                issueId = UUID.fromString("00000000-0000-0000-0000-000000000002")
+                `when`(gitHubIssueService.createIssueUuid()).thenReturn(issueId)
+                `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
+                gitHubIssueTool.createIssue(validTicketRequest)
 
-        @Test
-        fun throwsException_WhenIssueIdUnknown() {
-            assertThrows(IllegalArgumentException::class.java) {
-                gitHubIssueTool.confirmIssue(UUID.randomUUID().toString())
+                result = gitHubIssueTool.confirmIssue(issueId.toString())
+            }
+
+            @DisplayName("should confirm the proposed issue")
+            @Test
+            fun confirmProposedIssue() {
+                assertTrue(result.contains("confirmed"))
             }
         }
 
-        @Test
-        fun throwsException_WhenIssueIdMalformed() {
-            assertThrows(IllegalArgumentException::class.java) {
-                gitHubIssueTool.confirmIssue("not-a-uuid")
+        @Nested
+        @DisplayName("when the issue identifier is unknown")
+        inner class WhenTheIssueIdentifierIsUnknown {
+            @DisplayName("should throw IllegalArgumentException")
+            @Test
+            fun throwIllegalArgumentException() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    gitHubIssueTool.confirmIssue(UUID.randomUUID().toString())
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("when the issue identifier is malformed")
+        inner class WhenTheIssueIdentifierIsMalformed {
+            @DisplayName("should throw IllegalArgumentException")
+            @Test
+            fun throwIllegalArgumentException() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    gitHubIssueTool.confirmIssue("not-a-uuid")
+                }
             }
         }
     }
 
+    @DisplayName("publishIssue")
     @Nested
     inner class PublishIssue {
-        @Test
-        fun publishesConfirmedIssue() {
-            val issueId = UUID.fromString("00000000-0000-0000-0000-000000000003")
-            `when`(gitHubIssueService.createIssueUuid()).thenReturn(issueId)
-            `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
-            `when`(gitHubIssueService.publishIssue(anyIssue<DevelopmentIssue>())).thenReturn("https://github.com/example/repo/issues/1")
+        @Nested
+        @DisplayName("when the issue was confirmed")
+        inner class WhenTheIssueWasConfirmed {
+            private lateinit var result: String
 
-            gitHubIssueTool.createIssue(validTicketRequest)
-            gitHubIssueTool.confirmIssue(issueId.toString())
-            val result: String = gitHubIssueTool.publishIssue()
+            @BeforeEach
+            fun setUp() {
+                val issueId = UUID.fromString("00000000-0000-0000-0000-000000000003")
+                `when`(gitHubIssueService.createIssueUuid()).thenReturn(issueId)
+                `when`(gitHubIssueService.presentIssue(anyIssue<DevelopmentIssue>())).thenReturn("Presented issue")
+                `when`(gitHubIssueService.publishIssue(anyIssue<DevelopmentIssue>())).thenReturn("https://github.com/example/repo/issues/1")
+                gitHubIssueTool.createIssue(validTicketRequest)
+                gitHubIssueTool.confirmIssue(issueId.toString())
 
-            assertTrue(result.contains("https://github.com/example/repo/issues/1"))
-            verify(gitHubIssueService).publishIssue(anyIssue())
+                result = gitHubIssueTool.publishIssue()
+            }
+
+            @DisplayName("should publish the confirmed issue")
+            @Test
+            fun publishConfirmedIssue() {
+                assertTrue(result.contains("https://github.com/example/repo/issues/1"))
+                verify(gitHubIssueService).publishIssue(anyIssue())
+            }
         }
 
-        @Test
-        fun throwsException_WhenNoIssueConfirmed() {
-            assertThrows(IllegalStateException::class.java) {
-                gitHubIssueTool.publishIssue()
+        @Nested
+        @DisplayName("when no issue is confirmed")
+        inner class WhenNoIssueIsConfirmed {
+            @DisplayName("should throw IllegalStateException")
+            @Test
+            fun throwIllegalStateException() {
+                assertThrows(IllegalStateException::class.java) {
+                    gitHubIssueTool.publishIssue()
+                }
             }
         }
     }

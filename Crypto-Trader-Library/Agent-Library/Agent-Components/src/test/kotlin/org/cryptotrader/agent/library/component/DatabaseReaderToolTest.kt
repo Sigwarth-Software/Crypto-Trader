@@ -1,5 +1,6 @@
 package org.cryptotrader.agent.library.component
 
+import javax.sql.DataSource
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
@@ -7,14 +8,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import javax.sql.DataSource
 
-@Tag("DatabaseReaderTool")
 @DisplayName("DatabaseReaderTool")
 @UnitSuite
 class DatabaseReaderToolTest : CryptoTraderTest() {
@@ -27,18 +25,12 @@ class DatabaseReaderToolTest : CryptoTraderTest() {
     @InjectMocks
     lateinit var databaseReaderTool: DatabaseReaderTool
 
-    @BeforeEach
-    fun setUp() {
-
-    }
-
-    @Tag("listAllowedTables")
     @DisplayName("listAllowedTables")
     @Nested
     inner class ListAllowedTables {
 
         @Nested
-        @DisplayName("when properties configured")
+        @DisplayName("when properties are configured")
         inner class WhenPropertiesConfigured {
             @BeforeEach
             fun setUp() {

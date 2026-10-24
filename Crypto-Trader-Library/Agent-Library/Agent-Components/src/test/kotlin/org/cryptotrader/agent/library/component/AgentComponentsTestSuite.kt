@@ -5,6 +5,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.platform.suite.api.SelectPackages
 
 @SelectPackages("org.cryptotrader.agent.library.component")
-@DisplayName("Agent-Components")
 @TestSuite
+@DisplayName("Agent-Components")
 class AgentComponentsTestSuite

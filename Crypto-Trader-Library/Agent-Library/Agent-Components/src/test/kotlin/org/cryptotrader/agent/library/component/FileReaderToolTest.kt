@@ -1,5 +1,10 @@
 package org.cryptotrader.agent.library.component
 
+import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
+import kotlin.io.path.writeText
 import org.cryptotrader.agent.library.communication.response.DirectoryListingResponse
 import org.cryptotrader.agent.library.communication.response.FileContentResponse
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
@@ -10,21 +15,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.io.TempDir
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import java.io.File
-import java.nio.file.Path
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.writeText
 
 @DisplayName("FileReaderTool")
-@Tag("FileReaderTool")
 @UnitSuite
 class FileReaderToolTest : CryptoTraderTest() {
 
@@ -34,7 +31,6 @@ class FileReaderToolTest : CryptoTraderTest() {
     @Mock
     lateinit var properties: AgentConstraintsProperties
 
-    @InjectMocks
     lateinit var fileReaderTool: FileReaderTool
 
     val mockKotlinSource = "src/main/kotlin"
@@ -55,22 +51,24 @@ class FileReaderToolTest : CryptoTraderTest() {
 
     @Nested
     @DisplayName("readFile")
-    @Tag("readFile")
     inner class ReadFile {
-        lateinit var testFile: Path
 
-        @Test
-        @DisplayName("should throw error for file outside root")
-        fun throwErrorForFileOutsideRoot() {
-            assertThrows(IllegalArgumentException::class.java) {
-                fileReaderTool.readFile("../outside.txt")
+        @Nested
+        @DisplayName("when the file is outside the allowed root")
+        inner class WhenTheFileIsOutsideTheAllowedRoot {
+            @Test
+            @DisplayName("should throw error for file outside root")
+            fun throwErrorForFileOutsideRoot() {
+                assertThrows(IllegalArgumentException::class.java) {
+                    fileReaderTool.readFile("../outside.txt")
+                }
             }
         }
-
 
         @Nested
         @DisplayName("when the file is text")
         inner class WhenFileIsText {
+            private lateinit var testFile: Path
             val mockTextFileName: String = "test.txt"
 
             @BeforeEach
@@ -78,32 +76,48 @@ class FileReaderToolTest : CryptoTraderTest() {
                 testFile = tempDir.resolve(mockTextFileName)
             }
 
-            @Test
-            @DisplayName("should read content of a text file")
-            fun readContentOfTextFile() {
-                val content = "Line 1\nLine 2\nLine 3"
-                testFile.writeText(content)
+            @Nested
+            @DisplayName("when the whole file is requested")
+            inner class WhenWholeFileIsRequested {
+                private val content = "Line 1\nLine 2\nLine 3"
 
-                val response: FileContentResponse = fileReaderTool.readFile(mockTextFileName)
+                @BeforeEach
+                fun setUp() {
+                    testFile.writeText(content)
+                }
 
-                assertEquals(mockTextFileName, response.path)
-                assertEquals(3, response.totalLines)
-                assertEquals(content, response.content)
-                assertFalse(response.isTruncated)
+                @Test
+                @DisplayName("should read content of a text file")
+                fun readContentOfATextFile() {
+                    val response: FileContentResponse = fileReaderTool.readFile(mockTextFileName)
+
+                    assertEquals(mockTextFileName, response.path)
+                    assertEquals(3, response.totalLines)
+                    assertEquals(content, response.content)
+                    assertFalse(response.isTruncated)
+                }
             }
 
-            @Test
-            @DisplayName("should respect start and end lines")
-            fun respectStartAndEndLines() {
-                val content = "Line 1\nLine 2\nLine 3\nLine 4"
-                testFile.writeText(content)
+            @Nested
+            @DisplayName("when a line range is requested")
+            inner class WhenLineRangeIsRequested {
+                private val content = "Line 1\nLine 2\nLine 3\nLine 4"
 
-                val response: FileContentResponse = fileReaderTool.readFile(
-                    mockTextFileName, 2, 3
-                )
+                @BeforeEach
+                fun setUp() {
+                    testFile.writeText(content)
+                }
 
-                assertEquals(4, response.totalLines)
-                assertEquals("Line 2\nLine 3", response.content)
+                @Test
+                @DisplayName("should respect start and end lines")
+                fun respectStartAndEndLines() {
+                    val response: FileContentResponse = fileReaderTool.readFile(
+                        mockTextFileName, 2, 3
+                    )
+
+                    assertEquals(4, response.totalLines)
+                    assertEquals("Line 2\nLine 3", response.content)
+                }
             }
         }
 
@@ -114,14 +128,14 @@ class FileReaderToolTest : CryptoTraderTest() {
             lateinit var testFile: Path
 
             @BeforeEach
-            fun setup() {
+            fun setUp() {
                 this.testFile = tempDir.resolve(this.mockBinaryFileName)
                 this.testFile.toFile().writeBytes(byteArrayOf(0, 1, 2, 3))
             }
 
             @Test
             @DisplayName("should throw error")
-            fun throwErrorForBinaryFile() {
+            fun throwError() {
                 val exception: IllegalArgumentException? =
                     assertThrows(IllegalArgumentException::class.java) {
                         fileReaderTool.readFile(this.mockBinaryFileName)
@@ -138,7 +152,6 @@ class FileReaderToolTest : CryptoTraderTest() {
                 )
             }
         }
-
 
         @Nested
         @DisplayName("when attempting super-admin privileged access as a non-super-admin")
@@ -180,7 +193,7 @@ class FileReaderToolTest : CryptoTraderTest() {
 
             @Test
             @DisplayName("should list files in the directory")
-            fun listFilesInDirectory() {
+            fun listFilesInTheDirectory() {
                 val response: DirectoryListingResponse =
                     fileReaderTool.listDirectories(".", recursive = false)
 
@@ -212,16 +225,16 @@ class FileReaderToolTest : CryptoTraderTest() {
                 `when`(properties.ignoredDirectories).thenReturn(
                     setOf(ignoredDir)
                 )
+
+                tempDir.resolve(ignoredDir).createDirectories()
+                tempDir.resolve(ignoredDirFile).createFile()
+                tempDir.resolve(allowedDir).createDirectories()
+                tempDir.resolve(allowedDirFile).createFile()
             }
 
             @Test
             @DisplayName("should ignore specified directories")
             fun ignoreSpecifiedDirectories() {
-                tempDir.resolve(ignoredDir).createDirectories()
-                tempDir.resolve(ignoredDirFile).createFile()
-                tempDir.resolve(allowedDir).createDirectories()
-                tempDir.resolve(allowedDirFile).createFile()
-
                 val response =
                     fileReaderTool.listDirectories(".", recursive = true)
 
@@ -240,7 +253,6 @@ class FileReaderToolTest : CryptoTraderTest() {
     inner class SearchFiles {
         @BeforeEach
         fun setUp() {
-            tempDir.resolve(mockKotlinSource).createDirectories()
             tempDir.resolve(mockKotlinSource).createDirectories()
             tempDir.resolve(mockKotlinSourceFile).writeText("content")
             tempDir.resolve(mockKotlinTestFile).writeText("content")
@@ -288,18 +300,35 @@ class FileReaderToolTest : CryptoTraderTest() {
     inner class ResolvePath {
         val targetFileName: String = "very-long-filename-that-is-unique.txt"
 
-        @Test
-        @DisplayName("should fuzzy match existing files")
-        fun fuzzyMatchExistingFiles() {
-            tempDir.resolve(this.targetFileName).writeText("content")
+        @Nested
+        @DisplayName("when the target file exists")
+        inner class WhenTargetFileExists {
+            @BeforeEach
+            fun setUp() {
+                tempDir.resolve(targetFileName).writeText("content")
+            }
 
-            val exactMatch: List<String> = fileReaderTool.resolvePath(
-                this.targetFileName
-            )
-            assertEquals(listOf(this.targetFileName), exactMatch)
+            @Nested
+            @DisplayName("when the path matches exactly")
+            inner class WhenPathMatchesExactly {
+                @Test
+                @DisplayName("should return the exact match")
+                fun returnExactMatch() {
+                    val exactMatch: List<String> = fileReaderTool.resolvePath(targetFileName)
+                    assertEquals(listOf(targetFileName), exactMatch)
+                }
+            }
 
-            val fuzzyMatch: List<String> = fileReaderTool.resolvePath("very-long-unique")
-            assertTrue(fuzzyMatch.contains(this.targetFileName))
+            @Nested
+            @DisplayName("when the path matches approximately")
+            inner class WhenPathMatchesApproximately {
+                @Test
+                @DisplayName("should return the fuzzy match")
+                fun returnFuzzyMatch() {
+                    val fuzzyMatch: List<String> = fileReaderTool.resolvePath("very-long-unique")
+                    assertTrue(fuzzyMatch.contains(targetFileName))
+                }
+            }
         }
 
         @Nested
@@ -312,18 +341,18 @@ class FileReaderToolTest : CryptoTraderTest() {
                 `when`(properties.ignoredDirectories).thenReturn(
                     setOf(ignoredDir)
                 )
-            }
 
-            @Test
-            @DisplayName("should ignore files in ignored directories")
-            fun ignoreFilesInIgnoredDirectories() {
                 tempDir.resolve(ignoredDir).createDirectories()
                 tempDir.resolve("$ignoredDir/${this.fileToIgnore}")
                     .writeText("content")
                 tempDir.resolve(allowedDir).createDirectories()
                 tempDir.resolve("$allowedDir/normal-file.txt")
                     .writeText("content")
+            }
 
+            @Test
+            @DisplayName("should ignore files in ignored directories")
+            fun ignoreFilesInIgnoredDirectories() {
                 val results: List<String> = fileReaderTool.resolvePath(
                     "very-unique-file"
                 )

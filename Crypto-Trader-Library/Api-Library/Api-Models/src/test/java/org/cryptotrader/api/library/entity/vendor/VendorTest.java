@@ -1,14 +1,15 @@
 package org.cryptotrader.api.library.entity.vendor;
 
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Vendor")
+@UnitSuite
 public class VendorTest extends CryptoTraderTest {
     private Vendor testVendor;
     @BeforeEach
@@ -17,11 +18,11 @@ public class VendorTest extends CryptoTraderTest {
     }
 
     @Nested
-    @DisplayName("Price Adjustment")
+    @DisplayName("getAdjustedPrice")
     class PriceAdjustment {
         @Test
-        @DisplayName("Should adjust prices")
-        public void testShouldAdjustPrices() {
+        @DisplayName("should adjust prices")
+        public void adjustPrices() {
             final double price = 100;
             final double expectedPrice = 110;
             final double actualPrice = testVendor.getAdjustedPrice(price);

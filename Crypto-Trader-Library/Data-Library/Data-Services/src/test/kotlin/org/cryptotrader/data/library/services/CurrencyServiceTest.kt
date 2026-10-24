@@ -14,7 +14,9 @@ import org.cryptotrader.data.library.services.entity.CurrencyHistoryEntityServic
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService
 import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -24,8 +26,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 
-@DisplayName("Currency Service")
+@DisplayName("CurrencyService")
 @Disabled
+@UnitSuite
 class CurrencyServiceTest : CryptoTraderTest() {
     @InjectMocks
     lateinit var currencyService: CurrencyService
@@ -83,11 +86,11 @@ class CurrencyServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Top Ten Currencies")
+    @DisplayName("getTopTenCurrencies")
     inner class TopTenCurrencies {
         @Test
-        @DisplayName("Should get the top ten currencies with ten or more currencies in the database")
-        fun getTopTenCurrencies_GetsTopTenCurrencies_DatabaseHasTenCurrencies() {
+        @DisplayName("should return the top ten currencies")
+        fun returnTopTenCurrencies() {
             Mockito.`when`(currencyRepository.findTop10ByOrderByValueDesc()).thenReturn(
                 topTenCurrenciesList
             )
@@ -101,18 +104,30 @@ class CurrencyServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Save Currency If New")
+    @DisplayName("saveCurrencyIfNew")
     inner class SaveCurrencyIfNew {
-        @Test
-        @DisplayName("Should save currencies when value changes")
-        fun saveCurrencyIfNew_SavesCurrencies_ValueChanges() {
-            val currency: Currency = Currency.builder().currencyCode("BTC").value(2.0).build()
-            val previousCurrency: Currency = Currency.builder().currencyCode("BTC").value(1.0).build()
-            val updatedCurrency: Currency = Currency.builder().currencyCode("BTC").value(2.0).build()
-            currencyService.saveCurrencyIfNew(currency, previousCurrency, updatedCurrency)
-            Mockito.verify(currencyEntityService).save(currency)
-            Mockito.verify(currencyHistoryEntityService)
-                .save(any<CurrencyHistory>())
+        @Nested
+        @DisplayName("when value changes")
+        inner class WhenValueChanges {
+            private lateinit var currency: Currency
+            private lateinit var previousCurrency: Currency
+            private lateinit var updatedCurrency: Currency
+
+            @BeforeEach
+            fun setUp() {
+                currency = Currency.builder().currencyCode("BTC").value(2.0).build()
+                previousCurrency = Currency.builder().currencyCode("BTC").value(1.0).build()
+                updatedCurrency = Currency.builder().currencyCode("BTC").value(2.0).build()
+            }
+
+            @Test
+            @DisplayName("should save currencies")
+            fun saveCurrencies() {
+                currencyService.saveCurrencyIfNew(currency, previousCurrency, updatedCurrency)
+                Mockito.verify(currencyEntityService).save(currency)
+                Mockito.verify(currencyHistoryEntityService)
+                    .save(any<CurrencyHistory>())
+            }
         }
     }
 }

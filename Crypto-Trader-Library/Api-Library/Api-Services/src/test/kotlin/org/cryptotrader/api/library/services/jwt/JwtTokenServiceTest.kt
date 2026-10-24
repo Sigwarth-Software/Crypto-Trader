@@ -3,10 +3,12 @@ package org.cryptotrader.api.library.services.jwt
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertNotNull
 
-@DisplayName("JWT Token Service")
+@DisplayName("JwtTokenService")
+@UnitSuite
 class JwtTokenServiceTest : CryptoTraderTest() {
 
     lateinit var jwtTokenService: JwtTokenService
@@ -23,11 +25,11 @@ class JwtTokenServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Initialization")
+    @DisplayName("constructor")
     inner class Initialization {
         @Test
-        @DisplayName("Should initialize service with valid values")
-        fun unit_Initialize_ValidValues() {
+        @DisplayName("should initialize service with valid values")
+        fun initializeServiceWithValidValues() {
             assertDoesNotThrow {
                 val rsa = RsaKeyService(null, null, null)
                 JwtTokenService(
@@ -41,11 +43,11 @@ class JwtTokenServiceTest : CryptoTraderTest() {
     }
 
     @Nested
-    @DisplayName("Token Operations")
+    @DisplayName("generateToken and validateAndParse")
     inner class TokenOperations {
         @Test
-        @DisplayName("Should generate a token with valid values and parse claims")
-        fun generateAndParse_GeneratesAndParsesToken() {
+        @DisplayName("should generate a token with valid values and parse claims")
+        fun generateATokenWithValidValuesAndParseClaims() {
             val token: String = jwtTokenService.generateToken("1", "ollie@ollie.com")
             assert(token.isNotBlank())
             val decodedClaims: JwtClaims = jwtTokenService.validateAndParse(token)

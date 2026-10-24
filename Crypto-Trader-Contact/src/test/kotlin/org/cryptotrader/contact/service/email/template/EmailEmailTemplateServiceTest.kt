@@ -2,17 +2,20 @@ package org.cryptotrader.contact.service.email.template
 
 import org.cryptotrader.contact.natives.normalized
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.junit.jupiter.api.Assertions.assertEquals
 
+@DisplayName("EmailTemplateService")
 @SpringBootTest(properties = [
     "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
     "docs.autoconfigure.enabled=false"
 ])
+@IntegrationSuite
 class EmailEmailTemplateServiceTest @Autowired constructor(
     private val emailTemplateService: EmailTemplateService
 ) : CryptoTraderTest() {
@@ -25,11 +28,11 @@ class EmailEmailTemplateServiceTest @Autowired constructor(
     val year: String = "2026"
 
     @Nested
-    @DisplayName("Process Template")
+    @DisplayName("process")
     inner class ProcessEmailTemplate {
         @Test
-        @DisplayName("Should properly inject variables")
-        fun processTemplate_InjectsVariables() {
+        @DisplayName("should properly inject variables")
+        fun properlyInjectVariables() {
             val expectedHtml: String = getExpectedWelcomeHtml(testSubject, testBody, name, ctaLabel, year).normalized()
             val actualHtml: String = emailTemplateService.process(
                 testEmailTemplate,

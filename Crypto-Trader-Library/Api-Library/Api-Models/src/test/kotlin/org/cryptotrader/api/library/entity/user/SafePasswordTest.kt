@@ -8,12 +8,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
-@Tag("SafePassword")
-@Tag("entity")
-@DisplayName("Safe Password")
+@DisplayName("SafePassword")
 @UnitSuite
 class SafePasswordTest : CryptoTraderTest() {
 
@@ -26,43 +23,35 @@ class SafePasswordTest : CryptoTraderTest() {
     }
 
     @Nested
-    @Tag("constructor")
-    @DisplayName("Constructors")
+    @DisplayName("constructor")
     inner class Constructors {
         @Test
-        @DisplayName("Should construct with no-args")
-        fun constructor_Constructs_NoArgs() {
+        @DisplayName("should construct with no-args")
+        fun constructWithNoArgs() {
             safePassword = SafePassword()
             assertNotNull { safePassword }
             assertNotNull { safePassword.encodedPassword }
             assertNotNull { safePassword.encoder }
-
         }
-
-        @Test
-        @DisplayName("Should construct from unencoded password")
-        fun constructor_Constructs_FromUnencoded() { }
     }
 
     @Nested
-    @Tag("encodePassword")
-    @DisplayName("Encode Password")
+    @DisplayName("encodePassword")
     inner class EncodePassword {
         @Test
-        @DisplayName("Should encode a valid raw password")
-        fun encodePassword_Encodes_ValidRawPassword() {
+        @DisplayName("should encode a valid raw password")
+        fun encodeAValidRawPassword() {
             val encodedPassword = safePassword.encodePassword(testUnencodedPassword)
             assertNotEquals(testUnencodedPassword, encodedPassword)
         }
     }
 
     @Nested
-    @Tag("compareUnencodedPassword")
-    @DisplayName("Compare Unencoded Password")
+    @DisplayName("compareUnencodedPassword")
     inner class CompareUnencodedPassword {
         @Test
-        @DisplayName("Should match corresponding raw password to encoded")
-        fun compareUnencodedPassword_Matches_RawPasswordToEncoded() {
+        @DisplayName("should match corresponding raw password to encoded")
+        fun matchCorrespondingRawPasswordToEncoded() {
             val encodedPassword = safePassword.encodePassword(testUnencodedPassword)
             assertNotEquals(testUnencodedPassword, encodedPassword)
             val matches = safePassword.compareUnencodedPassword(testUnencodedPassword)
