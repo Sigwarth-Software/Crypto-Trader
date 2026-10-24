@@ -136,9 +136,9 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>true</useModulePath>
+                    <!-- Preserve Surefire 3.2.5's classpath behavior for inline Mockito mocks. -->
+                    <useModulePath>false</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
