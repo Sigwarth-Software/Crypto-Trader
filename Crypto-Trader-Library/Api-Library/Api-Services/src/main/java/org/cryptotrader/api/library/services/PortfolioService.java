@@ -200,8 +200,8 @@ public class PortfolioService {
                     .totalWorth(lastPortfolioHistory.getTotalWorth())
                         .lastUpdated(endDate)
                         .build();
-            rangedPortfolioHistories.add(copyEndDate);
             rangedPortfolioHistories.add(copyStartDate);
+            rangedPortfolioHistories.add(copyEndDate);
         }
 
         return rangedPortfolioHistories;
