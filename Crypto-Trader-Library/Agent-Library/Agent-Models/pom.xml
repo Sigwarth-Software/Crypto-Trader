@@ -280,11 +280,6 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>testing-infrastructure</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
         </dependency>
     </dependencies>
