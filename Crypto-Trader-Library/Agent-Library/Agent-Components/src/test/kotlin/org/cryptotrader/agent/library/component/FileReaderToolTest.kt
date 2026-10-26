@@ -8,7 +8,7 @@ import kotlin.io.path.writeText
 import org.cryptotrader.agent.library.communication.response.DirectoryListingResponse
 import org.cryptotrader.agent.library.communication.response.FileContentResponse
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.agent.library.model.FileMetadata
+import org.cryptotrader.agent.library.model.file.FileMetadata
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
 import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions.*

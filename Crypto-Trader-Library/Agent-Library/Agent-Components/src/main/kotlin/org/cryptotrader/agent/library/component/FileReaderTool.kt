@@ -5,8 +5,8 @@ import org.cryptotrader.agent.library.communication.response.DirectoryListingRes
 import org.cryptotrader.agent.library.communication.response.FileContentResponse
 import org.cryptotrader.agent.library.communication.response.FileSearchResponse
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.agent.library.model.FileMetadata
-import org.cryptotrader.agent.library.model.FileSearchResult
+import org.cryptotrader.agent.library.model.file.FileMetadata
+import org.cryptotrader.agent.library.model.file.FileSearchResult
 import org.cryptotrader.security.library.infrastructure.annotation.UserRestricted
 import org.cryptotrader.api.library.entity.user.UserRoleTier
 import org.springaicommunity.mcp.annotation.McpToolParam
