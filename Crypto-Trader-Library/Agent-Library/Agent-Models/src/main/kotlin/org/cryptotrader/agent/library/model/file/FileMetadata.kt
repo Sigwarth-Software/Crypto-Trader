@@ -1,4 +1,4 @@
-package org.cryptotrader.agent.library.model
+package org.cryptotrader.agent.library.model.file
 
 data class FileMetadata(
     val path: String,

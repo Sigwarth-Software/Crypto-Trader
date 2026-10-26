@@ -1,4 +1,4 @@
-package org.cryptotrader.agent.library.model
+package org.cryptotrader.agent.library.model.database
 
 // TODO: Might be universal, and extendable.
 data class DatabaseColumnMetadata(
