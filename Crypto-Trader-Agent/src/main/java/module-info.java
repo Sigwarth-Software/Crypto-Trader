@@ -4,12 +4,14 @@ module org.cryptotrader.agent {
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires spring.context;
+    requires spring.data.jpa;
     requires spring.core;
     requires spring.web;
     requires spring.webmvc;
     requires com.fasterxml.jackson.databind;
     requires org.cryptotrader.agent.library.components;
     requires org.cryptotrader.agent.library.config;
+    requires org.cryptotrader.agent.library.infrastructure;
     requires org.cryptotrader.universal.library.config;
     requires org.cryptotrader.security.library.config;
     requires org.cryptotrader.development.library.config;
