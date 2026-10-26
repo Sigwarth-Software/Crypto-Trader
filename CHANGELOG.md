@@ -38,111 +38,116 @@
 
 ### Module Version - Library
 
-| Module                  | Version |
-|-------------------------|---------|
-| Admin-Library           | v.v.v   |
-| Admin-Events            | v.v.v   |
-| Admin-Models            | v.v.v   |
-| Agent-Library           | v.v.v   |
-| Agent-Communication     | v.v.v   |
-| Agent-Components        | v.v.v   |
-| Agent-Config            | v.v.v   |
-| Agent-Infrastructure    | v.v.v   |
-| Agent-Models            | v.v.v   |
-| Api-Library             | v.v.v   |
-| Api-Communication       | v.v.v   |
-| Api-Components          | v.v.v   |
-| Api-Config              | v.v.v   |
-| Api-Events              | v.v.v   |
-| Api-Extensions          | v.v.v   |
-| Api-Infrastructure      | v.v.v   |
-| Api-Models              | v.v.v   |
-| Api-Repositories        | v.v.v   |
-| Api-Scripts             | v.v.v   |
-| Api-Services            | v.v.v   |
-| Chat-Library            | v.v.v   |
-| Chat-Communication      | v.v.v   |
-| Chat-Components         | v.v.v   |
-| Chat-Config             | v.v.v   |
-| Chat-Events             | v.v.v   |
-| Chat-Models             | v.v.v   |
-| Chat-Repositories       | v.v.v   |
-| Chat-Services           | v.v.v   |
-| Console-Library         | v.v.v   |
-| Console-Communication   | v.v.v   |
-| Console-Components      | v.v.v   |
-| Console-Events          | v.v.v   |
-| Console-Infrastructure  | v.v.v   |
-| Console-Models          | v.v.v   |
-| Console-Repositories    | v.v.v   |
-| Console-Scripts         | v.v.v   |
-| Console-Services        | v.v.v   |
-| Contact-Library         | v.v.v   |
-| Contact-Events          | v.v.v   |
-| Contact-Models          | v.v.v   |
-| Contact-Repositories    | v.v.v   |
-| Data-Library            | v.v.v   |
-| Data-Communication      | v.v.v   |
-| Data-Components         | v.v.v   |
-| Data-Models             | v.v.v   |
-| Data-Repositories       | v.v.v   |
-| Data-Services           | v.v.v   |
-| Desktop-Library         | v.v.v   |
-| Desktop-Components      | v.v.v   |
-| Desktop-Styles          | v.v.v   |
-| Development-Library     | v.v.v   |
-| Development-Config      | v.v.v   |
-| Development-Models      | v.v.v   |
-| Development-Services    | v.v.v   |
-| Engine-Library          | v.v.v   |
-| Engine-Models           | v.v.v   |
-| Engine-Services         | v.v.v   |
-| Externals-Library       | v.v.v   |
-| Health-Library          | v.v.v   |
-| Health-Communication    | v.v.v   |
-| Health-Components       | v.v.v   |
-| Health-Config           | v.v.v   |
-| Health-Models           | v.v.v   |
-| Health-Repositories     | v.v.v   |
-| Health-Services         | v.v.v   |
-| Logging-Library         | v.v.v   |
-| Logging-Communication   | v.v.v   |
-| Logging-Config          | v.v.v   |
-| Logging-Events          | v.v.v   |
-| Logging-Infrastructure  | v.v.v   |
-| Logging-Models          | v.v.v   |
-| Logging-Repositories    | v.v.v   |
-| Logging-Scripts         | v.v.v   |
-| Logging-Services        | v.v.v   |
-| Security-Library        | v.v.v   |
-| Security-Config         | v.v.v   |
-| Security-Events         | v.v.v   |
-| Security-Infrastructure | v.v.v   |
-| Security-Models         | v.v.v   |
-| Security-Repositories   | v.v.v   |
-| Security-Services       | v.v.v   |
-| Simulator-Library       | v.v.v   |
-| Simulator-Communication | v.v.v   |
-| Simulator-Config        | v.v.v   |
-| Simulator-Events        | v.v.v   |
-| Simulator-Models        | v.v.v   |
-| Simulator-Repositories  | v.v.v   |
-| Simulator-Scripts       | v.v.v   |
-| Simulator-Services      | v.v.v   |
-| Testing-Library         | v.v.v   |
-| Testing-Infrastructure  | v.v.v   |
-| Testing-Scripts         | v.v.v   |
-| Universal-Library       | v.v.v   |
-| Universal-Communication | v.v.v   |
-| Universal-Components    | v.v.v   |
-| Universal-Config        | v.v.v   |
-| Universal-Events        | v.v.v   |
-| Universal-Extensions    | v.v.v   |
-| Universal-Models        | v.v.v   |
-| Universal-Scripts       | v.v.v   |
-| Universal-Services      | v.v.v   |
-| Version-Library         | v.v.v   |
-| Version-Models          | v.v.v   |
+| Module                    | Version |
+|---------------------------|---------|
+| Admin-Library             | v.v.v   |
+| Admin-Events              | v.v.v   |
+| Admin-Models              | v.v.v   |
+| Agent-Library             | v.v.v   |
+| Agent-Communication       | v.v.v   |
+| Agent-Components          | v.v.v   |
+| Agent-Config              | v.v.v   |
+| Agent-Infrastructure      | v.v.v   |
+| Agent-Models              | v.v.v   |
+| Agent-Repositories        | v.v.v   |
+| Agent-Services            | v.v.v   |
+| Api-Library               | v.v.v   |
+| Api-Communication         | v.v.v   |
+| Api-Components            | v.v.v   |
+| Api-Config                | v.v.v   |
+| Api-Events                | v.v.v   |
+| Api-Extensions            | v.v.v   |
+| Api-Infrastructure        | v.v.v   |
+| Api-Models                | v.v.v   |
+| Api-Repositories          | v.v.v   |
+| Api-Scripts               | v.v.v   |
+| Api-Services              | v.v.v   |
+| Assets-Library            | v.v.v   |
+| Assets-Config             | v.v.v   |
+| Chat-Library              | v.v.v   |
+| Chat-Communication        | v.v.v   |
+| Chat-Components           | v.v.v   |
+| Chat-Config               | v.v.v   |
+| Chat-Events               | v.v.v   |
+| Chat-Models               | v.v.v   |
+| Chat-Repositories         | v.v.v   |
+| Chat-Services             | v.v.v   |
+| Console-Library           | v.v.v   |
+| Console-Communication     | v.v.v   |
+| Console-Components        | v.v.v   |
+| Console-Events            | v.v.v   |
+| Console-Infrastructure    | v.v.v   |
+| Console-Models            | v.v.v   |
+| Console-Repositories      | v.v.v   |
+| Console-Scripts           | v.v.v   |
+| Console-Services          | v.v.v   |
+| Contact-Library           | v.v.v   |
+| Contact-Events            | v.v.v   |
+| Contact-Models            | v.v.v   |
+| Contact-Repositories      | v.v.v   |
+| Data-Library              | v.v.v   |
+| Data-Communication        | v.v.v   |
+| Data-Components           | v.v.v   |
+| Data-Models               | v.v.v   |
+| Data-Repositories         | v.v.v   |
+| Data-Services             | v.v.v   |
+| Desktop-Library           | v.v.v   |
+| Desktop-Components        | v.v.v   |
+| Desktop-Styles            | v.v.v   |
+| Development-Library       | v.v.v   |
+| Development-Communication | v.v.v   |
+| Development-Config        | v.v.v   |
+| Development-Models        | v.v.v   |
+| Development-Services      | v.v.v   |
+| Engine-Library            | v.v.v   |
+| Engine-Models             | v.v.v   |
+| Engine-Services           | v.v.v   |
+| Externals-Library         | v.v.v   |
+| Health-Library            | v.v.v   |
+| Health-Communication      | v.v.v   |
+| Health-Components         | v.v.v   |
+| Health-Config             | v.v.v   |
+| Health-Models             | v.v.v   |
+| Health-Repositories       | v.v.v   |
+| Health-Services           | v.v.v   |
+| Logging-Library           | v.v.v   |
+| Logging-Communication     | v.v.v   |
+| Logging-Config            | v.v.v   |
+| Logging-Events            | v.v.v   |
+| Logging-Infrastructure    | v.v.v   |
+| Logging-Models            | v.v.v   |
+| Logging-Repositories      | v.v.v   |
+| Logging-Scripts           | v.v.v   |
+| Logging-Services          | v.v.v   |
+| Security-Library          | v.v.v   |
+| Security-Config           | v.v.v   |
+| Security-Events           | v.v.v   |
+| Security-Infrastructure   | v.v.v   |
+| Security-Models           | v.v.v   |
+| Security-Repositories     | v.v.v   |
+| Security-Services         | v.v.v   |
+| Simulator-Library         | v.v.v   |
+| Simulator-Communication   | v.v.v   |
+| Simulator-Config          | v.v.v   |
+| Simulator-Events          | v.v.v   |
+| Simulator-Models          | v.v.v   |
+| Simulator-Repositories    | v.v.v   |
+| Simulator-Scripts         | v.v.v   |
+| Simulator-Services        | v.v.v   |
+| Testing-Library           | v.v.v   |
+| Testing-Infrastructure    | v.v.v   |
+| Testing-Scripts           | v.v.v   |
+| Universal-Library         | v.v.v   |
+| Universal-Communication   | v.v.v   |
+| Universal-Components      | v.v.v   |
+| Universal-Config          | v.v.v   |
+| Universal-Events          | v.v.v   |
+| Universal-Extensions      | v.v.v   |
+| Universal-Models          | v.v.v   |
+| Universal-Scripts         | v.v.v   |
+| Universal-Services        | v.v.v   |
+| Version-Library           | v.v.v   |
+| Version-Models            | v.v.v   |
 
 ### Breaking changes
 - Bullet
@@ -293,6 +298,16 @@
 - Bullet
 - Bullet
 
+### [Assets Library](Crypto-Trader-Library/Assets-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Assets Config](Crypto-Trader-Library/Assets-Library/Assets-Config)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Agent Library](Crypto-Trader-Library/Agent-Library)
 - Bullet
 - Bullet
@@ -319,6 +334,16 @@
 - Bullet
 
 ### [Agent Models](Crypto-Trader-Library/Agent-Library/Agent-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Agent Repositories](Crypto-Trader-Library/Agent-Library/Agent-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Agent Services](Crypto-Trader-Library/Agent-Library/Agent-Services)
 - Bullet
 - Bullet
 - Bullet
@@ -538,6 +563,11 @@
 - Bullet
 - Bullet
 
+### [Development Communication](Crypto-Trader-Library/Development-Library/Development-Communication)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Development Models](Crypto-Trader-Library/Development-Library/Development-Models)
 - Bullet
 - Bullet
@@ -634,6 +664,11 @@
 - Bullet
 
 ### [Logging Repositories](Crypto-Trader-Library/Logging-Library/Logging-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Logging Scripts](Crypto-Trader-Library/Logging-Library/Logging-Scripts)
 - Bullet
 - Bullet
 - Bullet
