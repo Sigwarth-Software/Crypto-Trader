@@ -23,6 +23,10 @@ class ToolSecurityFilter {
         "@annotation(org.cryptotrader.security.library.infrastructure.annotation.UserRestricted))"
     )
     fun checkSecurity(joinPoint: JoinPoint) {
+        // TODO: Remove once better auth is implemented.
+        if (System.getProperty("cryptotrader.local-development") == "true") {
+            return
+        }
         val method: Method = (joinPoint.signature as MethodSignature).method
         val requiredRole: UserRoleTier? = when {
             method.isAnnotationPresent(SuperAdminRestricted::class.java) -> UserRoleTier.SUPER_ADMIN
