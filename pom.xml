@@ -522,6 +522,16 @@
                 <artifactId>agent-models</artifactId>
                 <version>0.0.4</version>
             </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-services</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-repositories</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.cryptotrader</groupId>
