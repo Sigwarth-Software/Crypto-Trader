@@ -80,6 +80,8 @@
         <module>Agent-Library/Agent-Components</module>
         <module>Agent-Library/Agent-Models</module>
         <module>Agent-Library/Agent-Infrastructure</module>
+        <module>Agent-Library/Agent-Services</module>
+        <module>Agent-Library/Agent-Repositories</module>
         <module>Engine-Library</module>
         <module>Engine-Library/Engine-Models</module>
         <module>Engine-Library/Engine-Services</module>

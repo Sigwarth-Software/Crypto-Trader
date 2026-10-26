@@ -1,8 +1,8 @@
 package org.cryptotrader.agent.library.component
 
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.agent.library.model.DatabaseColumnMetadata
-import org.cryptotrader.agent.library.model.DatabaseTableValidationMessage
+import org.cryptotrader.agent.library.model.database.DatabaseColumnMetadata
+import org.cryptotrader.agent.library.model.database.DatabaseTableValidationMessage
 import org.springaicommunity.mcp.annotation.McpToolParam
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.stereotype.Component

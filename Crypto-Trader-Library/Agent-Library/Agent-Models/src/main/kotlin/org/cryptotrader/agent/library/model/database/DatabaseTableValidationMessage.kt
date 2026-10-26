@@ -1,4 +1,4 @@
-package org.cryptotrader.agent.library.model
+package org.cryptotrader.agent.library.model.database
 
 enum class DatabaseTableValidationMessage(message: String) {
     SUCCESS("No issues found."),
