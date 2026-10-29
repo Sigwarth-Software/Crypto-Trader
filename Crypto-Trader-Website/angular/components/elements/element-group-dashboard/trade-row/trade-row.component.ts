@@ -47,12 +47,22 @@ export class TradeRowComponent implements OnInit {
     }
 
     protected getSharesChange(): string {
-        if (this.trade.sharesChange > 0) {
+        if (this.trade.sharesChange !== 0) {
             const formattedShares: string = this.sharesFormatter.formatShares(
                 this.trade.sharesChange,
                 this.trade.currency,
             )
-            return `+${formattedShares}`
+            let prefix: string
+
+            if (this.trade.sharesChange > 0) {
+                prefix = '+'
+            } else if (this.trade.sharesChange < 0) {
+                prefix = '-'
+            } else {
+                prefix = ''
+            }
+
+            return `${prefix}${formattedShares}`
         }
 
         return '+0.00'
