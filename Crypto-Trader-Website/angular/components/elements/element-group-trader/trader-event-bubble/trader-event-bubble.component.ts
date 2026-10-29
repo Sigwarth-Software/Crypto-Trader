@@ -141,12 +141,15 @@ export class TraderEventBubbleComponent {
 
     getSharesChange(): string {
         let numDecimals: number = 2;
-        if (this.tradeEvent.sharesChange < 1) {
+
+        if (Math.abs(this.tradeEvent.sharesChange) < 1) {
             const sharesString: string = this.tradeEvent.sharesChange
                 .toString()
                 .split('.')[1];
+
             if (sharesString !== undefined) {
                 numDecimals = sharesString.length;
+
                 for (let i = 0; i < numDecimals; i++) {
                     if (sharesString[i] !== '0') {
                         numDecimals = i + 1;
@@ -163,7 +166,16 @@ export class TraderEventBubbleComponent {
         const sharesChange: number = sharesFormatter.format(
             this.tradeEvent.sharesChange,
         ) as unknown as number;
-        return '+' + sharesChange.toString() + ' ' + this.getCurrencyCode();
+        let prefix: string;
+
+        if (this.tradeEvent.sharesChange > 0) {
+            prefix = '+';
+        } else if (this.tradeEvent.sharesChange < 0) {
+            prefix = '-';
+        } else {
+            prefix = '';
+        }
+        return `${prefix + sharesChange.toString()} ${this.getCurrencyCode()}`;
     }
 
     isSharesChange(): boolean {
