@@ -290,8 +290,18 @@ class PortfolioServiceTest : CryptoTraderTest() {
             }
 
             @Test
-            @DisplayName("should set sharesChange to 0")
-            fun setSharesChangeTo0() {
+            @DisplayName("should preserve the share loss on re-entry")
+            fun preserveShareLoss() {
+                portfolioService.setPortfolioSharesChange(previous, current)
+
+                assertEquals(-6.0, current.sharesChange, 1e-9)
+            }
+
+            @Test
+            @DisplayName("should not count a full sale as a share loss")
+            fun excludeFullSale() {
+                current.shares = 0.0
+
                 portfolioService.setPortfolioSharesChange(previous, current)
 
                 assertEquals(0.0, current.sharesChange, 1e-9)
