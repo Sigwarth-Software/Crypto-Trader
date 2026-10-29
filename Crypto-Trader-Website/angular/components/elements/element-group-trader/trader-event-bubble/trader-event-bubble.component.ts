@@ -164,7 +164,7 @@ export class TraderEventBubbleComponent {
             maximumFractionDigits: numDecimals,
         });
         const sharesChange: number = sharesFormatter.format(
-            this.tradeEvent.sharesChange,
+            Math.abs(this.tradeEvent.sharesChange),
         ) as unknown as number;
         let prefix: string;
 
