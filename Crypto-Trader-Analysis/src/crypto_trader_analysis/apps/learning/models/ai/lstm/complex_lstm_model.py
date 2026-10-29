@@ -7,7 +7,7 @@ from attrs import define
 from keras import Sequential, Input
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Dense
-from keras.saving.save import load_model
+from keras.models import load_model
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.base_model import BaseModel
 from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
     RichTrainingLogger
@@ -61,7 +61,7 @@ class ComplexLstmModel(BaseModel):
         log_dir = os.path.join("logs", "COMPLEX_LSTM_MODEL", target_currency, timestamp)
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
-            profile_batch=10,
+            profile_batch=int(os.getenv("TENSORBOARD_PROFILE_BATCH", "0")),
             histogram_freq=1
         )
 

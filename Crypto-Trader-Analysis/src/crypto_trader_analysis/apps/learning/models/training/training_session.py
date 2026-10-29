@@ -29,6 +29,7 @@ from src.crypto_trader_analysis.apps.learning.models.prediction.predictions impo
 from src.crypto_trader_analysis.apps.learning.models.training.multi_layer_training_model import \
     MultiLayerTrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
+from src.crypto_trader_analysis.apps.learning.models.training.train_model import get_training_device
 from src.crypto_trader_analysis.core.http_client import post_json
 
 
@@ -132,8 +133,9 @@ class TrainingSession:
         dataset, val_dataset, target_scaler, historical_prices = self._transform_to_dataset(dataframe)
         self._model = self._get_model(historical_prices, use_previous_model)
         self._training_start_time = datetime.now()
-        with tf.device(f"/GPU:{self.gpu_id}"):
-            logging.info(f"Training on GPU...")
+        device = get_training_device(self.gpu_id)
+        with tf.device(device):
+            logging.info("Training on %s...", device)
             history = self._model.train(dataset,
                                         val_dataset=val_dataset,
                                         epochs=self.training_model.epochs,
@@ -183,8 +185,9 @@ class TrainingSession:
         dataset, val_dataset, target_scaler, short_data, med_data, long_data = self._transform_multi_layer_to_dataset(dataframe)
         self._model = self._get_model(short_data, use_previous_model)
         self._training_start_time = datetime.now()
-        with tf.device(f"/GPU:{self.gpu_id}"):
-            logging.info(f"Training on GPU...")
+        device = get_training_device(self.gpu_id)
+        with tf.device(device):
+            logging.info("Training on %s...", device)
             history = self._model.train(dataset,
                                         val_dataset=val_dataset,
                                         epochs=self.training_model.epochs,

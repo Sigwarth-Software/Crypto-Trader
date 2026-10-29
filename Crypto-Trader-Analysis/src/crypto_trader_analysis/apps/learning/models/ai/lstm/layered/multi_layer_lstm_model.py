@@ -8,7 +8,7 @@ from attrs import define
 
 from keras import Input, Model
 from keras.layers import LSTM, Dropout, Dense, Concatenate
-from keras.saving.save import load_model
+from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
@@ -75,7 +75,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
 
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
-            profile_batch=10,
+            profile_batch=int(os.getenv("TENSORBOARD_PROFILE_BATCH", "0")),
             histogram_freq=1
         )
 

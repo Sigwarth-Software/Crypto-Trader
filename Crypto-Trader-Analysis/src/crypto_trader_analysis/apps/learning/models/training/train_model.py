@@ -61,6 +61,24 @@ def setup_tensorflow_env():
         logging.warning("No GPU devices detected. Running on CPU.")
     logging.info(f"TensorFlow Configured for CPU Cores and {len(gpus)} GPU(s).")
 
+#----------------------------Get-Training-Device------------------------------
+def get_training_device(gpu_id: int) -> str:
+    if gpu_id < 0:
+        raise ValueError("GPU index must be non-negative.")
+    gpus = tf.config.list_logical_devices('GPU')
+    if not gpus:
+        return "/CPU:0"
+    if gpu_id < len(gpus):
+        return f"/GPU:{gpu_id}"
+    if len(gpus) == 1:
+        logging.warning(
+            "Requested GPU %d, but TensorFlow exposes only one GPU. Using /GPU:0.",
+            gpu_id,
+        )
+        return "/GPU:0"
+    raise ValueError(f"Requested GPU {gpu_id}, but TensorFlow exposes {len(gpus)} GPUs.")
+
+
 #----------------------------Get-Untrained-Models-----------------------------
 def get_untrained_models() -> list[str]:
     currencies: list[str] = get_all_currency_codes(False)
@@ -227,8 +245,9 @@ def train_model(target_currency: str = 'BTC',
     logging.info(f"Getting model for {target_currency} at {model_path}...")
     model = get_model(model_type.value, target_currency, model_path, historical_prices, training_type.value, use_previous_model)
     logging.info(f"Training model for {target_currency}...")
-    with tf.device(f'/GPU:{gpu_id}'):
-        logging.info(f"Training on GPU...")
+    device = get_training_device(gpu_id)
+    with tf.device(device):
+        logging.info("Training on %s...", device)
         model.train(train_ds, val_dataset=val_ds,
                      epochs=training_type.value.epochs,
                      patience=training_type.value.patience)
@@ -408,8 +427,9 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                       training_type.value)
 
     logging.info(f"Training Multi-Layer Model for {target_currency}...")
-    with tf.device(f'/GPU:{gpu_id}'):
-        logging.info(f"Training on GPU...")
+    device = get_training_device(gpu_id)
+    with tf.device(device):
+        logging.info("Training on %s...", device)
         model.train(
             train_ds,
             val_dataset=val_ds,
