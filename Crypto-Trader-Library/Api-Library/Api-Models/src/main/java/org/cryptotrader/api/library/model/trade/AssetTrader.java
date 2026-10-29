@@ -12,27 +12,39 @@ public class AssetTrader extends TradeEngine {
     //============================-Variables-=================================
     protected PortfolioAsset asset;
     protected double minProfitPercent;
-    private static final double DEFAULT_MIN_PROFIT_PERCENT = 0.01;
+    protected double lossTolerancePercent;
+
+    private static final double DEFAULT_MIN_PROFIT_PERCENT = 0.001;
+    private static final double DEFAULT_LOSS_TOLERANCE_PERCENT = 0.03;
     //===========================-Constructors-===============================
     public AssetTrader(final PortfolioAsset asset) {
-        this(asset, DEFAULT_MIN_PROFIT_PERCENT);
+        this(asset, DEFAULT_MIN_PROFIT_PERCENT, DEFAULT_LOSS_TOLERANCE_PERCENT);
     }
 
     public AssetTrader(final PortfolioAsset asset, final TradeContext context) {
         super(context);
         this.asset = asset;
         this.minProfitPercent = DEFAULT_MIN_PROFIT_PERCENT;
+        this.lossTolerancePercent = DEFAULT_LOSS_TOLERANCE_PERCENT;
     }
 
     public AssetTrader(final PortfolioAsset asset, final double minProfitPercent) {
         this.asset = asset;
         this.minProfitPercent = minProfitPercent;
+        this.lossTolerancePercent = DEFAULT_LOSS_TOLERANCE_PERCENT;
+    }
+
+    public AssetTrader(final PortfolioAsset asset, final double minProfitPercent, final double lossTolerancePercent) {
+        this.asset = asset;
+        this.minProfitPercent = minProfitPercent;
+        this.lossTolerancePercent = lossTolerancePercent;
     }
 
     public AssetTrader(final PortfolioAsset asset, final TradeContext context, final double minProfitPercent) {
         super(context);
         this.asset = asset;
         this.minProfitPercent = minProfitPercent;
+        this.lossTolerancePercent = DEFAULT_LOSS_TOLERANCE_PERCENT;
     }
 
     //=============================-Methods-==================================
@@ -47,9 +59,17 @@ public class AssetTrader extends TradeEngine {
     @Override
     public boolean trade(final double currentPrice) {
         final double targetPrice = this.asset.getTargetPrice();
-        final double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+        final double absPriceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+        final double priceChangePercent = (currentPrice - targetPrice) / targetPrice;
 
-        if (priceChangePercent < this.minProfitPercent) {
+        if (priceChangePercent >= this.lossTolerancePercent && this.asset.isDollarsOnly()) {
+            log.info("Accepting a {} percent loss for asset {}", absPriceChangePercent * 100, this.asset.getId());
+            this.asset.setTargetPrice(currentPrice);
+            this.buy(currentPrice);
+            return true;
+        }
+
+        if (absPriceChangePercent < this.minProfitPercent) {
             return false;
         }
 
