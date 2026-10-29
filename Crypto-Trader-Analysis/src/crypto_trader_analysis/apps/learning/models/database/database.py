@@ -9,7 +9,7 @@ from django.conf import settings
 import pandas as pd
 from attr import attr
 from attrs import define
-from sqlalchemy import create_engine, QueuePool, text, Engine, \
+from sqlalchemy import create_engine, inspect, QueuePool, text, Engine, \
     PoolProxiedConnection
 
 from src.crypto_trader_analysis.apps.learning.models.database.query_type import QueryType
@@ -226,13 +226,22 @@ class Database:
 
     #-----------------------Get-Price-Column-Names----------------------------
     def _get_price_column_names(self) -> list[str]:
-        return [f"{code.lower()}_price" for code in self.get_currencies_list()]
+        # The exchange may list currencies before their snapshot columns exist.
+        columns = inspect(self.engine).get_columns("market_snapshots")
+        price_cols = sorted(
+            column["name"] for column in columns
+            if column["name"].endswith("_price")
+        )
+        if not price_cols:
+            raise ValueError("No price columns found in market_snapshots.")
+        return price_cols
 
     #-------------------------Get-Select-Columns------------------------------
     def _get_select_columns(self) -> str:
         price_cols: list[str] = self._get_price_column_names()
         select_cols: list[str] = ["last_updated", *price_cols]
-        return ", ".join(select_cols)
+        quote = self.engine.dialect.identifier_preparer.quote
+        return ", ".join(quote(column) for column in select_cols)
 
     #----------------------Get-Market-Snapshot-Query--------------------------
     def _get_market_snapshot_query(self) -> str:

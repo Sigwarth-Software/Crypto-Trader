@@ -9,7 +9,7 @@ from attrs import define
 from keras import Input, Model
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Concatenate, Dense
-from keras.saving.save import load_model
+from keras.models import load_model
 import tensorflow as tf
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
 from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
@@ -80,7 +80,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         log_dir = os.path.join("logs", "COMPLEX_MULTI_LAYER_LSTM", target_currency, timestamp)
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
-            profile_batch=10,
+            profile_batch=int(os.getenv("TENSORBOARD_PROFILE_BATCH", "0")),
             histogram_freq=1
         )
 

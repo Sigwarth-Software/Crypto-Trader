@@ -6,7 +6,7 @@ from typing_extensions import override
 from attrs import define
 from keras import Sequential, Input
 from keras.layers import LSTM, Dropout, Dense
-from keras.saving.save import load_model
+from keras.models import load_model
 
 from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
     RichTrainingLogger
@@ -45,7 +45,7 @@ class LstmModel(BaseModel):
         log_dir = os.path.join("logs", "LSTM_MODEL", target_currency, timestamp)
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
-            profile_batch=10,
+            profile_batch=int(os.getenv("TENSORBOARD_PROFILE_BATCH", "0")),
             histogram_freq=1
         )
 
