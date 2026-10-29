@@ -62,7 +62,7 @@ public class AssetTrader extends TradeEngine {
         final double absPriceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
         final double priceChangePercent = (currentPrice - targetPrice) / targetPrice;
 
-        if (priceChangePercent > this.lossTolerancePercent && this.asset.isDollarsOnly()) {
+        if (priceChangePercent >= this.lossTolerancePercent && this.asset.isDollarsOnly()) {
             log.info("Accepting a {} percent loss for asset {}", absPriceChangePercent * 100, this.asset.getId());
             this.asset.setTargetPrice(currentPrice);
             this.buy(currentPrice);
