@@ -11,7 +11,7 @@ data class PortfolioAssetResponse(
     val assetWalletDollars: Double,
     val totalValueInDollars: Double,
     val targetPrice: Double,
-    val lastUpdated: String,
+    val lastTraded: String,
     val vendorName: String
 ) {
     constructor(portfolioAsset: PortfolioAsset) : this(
@@ -23,7 +23,7 @@ data class PortfolioAssetResponse(
         portfolioAsset.assetWalletDollars,
         portfolioAsset.totalValueInDollars,
         portfolioAsset.targetPrice,
-        portfolioAsset.lastUpdated.toString(),
+        portfolioAsset.lastTraded.toString(),
         portfolioAsset.vendor.name
     )
 }
