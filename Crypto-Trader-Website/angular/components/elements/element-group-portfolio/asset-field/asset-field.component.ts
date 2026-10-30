@@ -60,7 +60,7 @@ export class AssetFieldComponent {
                 );
             case PortfolioAssetFieldType.LAST_UPDATED:
                 return this.getFormattedLastUpdated();
-            case PortfolioAssetFieldType.VENDOR_NAME:
+            case PortfolioAssetFieldType.VENDOR:
                 return this.asset.vendorName;
             case PortfolioAssetFieldType.TOTAL_VALUE:
                 return this.currencyFormatter.formatCurrency(
@@ -97,7 +97,7 @@ export class AssetFieldComponent {
 
     private getFormattedLastUpdated(): string {
         return this.timeFormatter
-            .formatTime(this.asset.lastUpdated)
+            .formatTime(this.asset.lastTraded)
             .replace(',', '');
     }
 

@@ -8,7 +8,7 @@ portfolio-assets-report {
 
     @extend %softer-border-radius;
     padding: vars.$one-percent;
-    width: vars.$sixty-percent;
+    width: calc(vars.$sixty-percent + vars.$five-percent);
     margin: vars.$one-percent 0;
 
     hr {

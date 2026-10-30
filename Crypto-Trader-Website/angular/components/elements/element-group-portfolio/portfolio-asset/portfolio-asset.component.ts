@@ -24,7 +24,7 @@ export class PortfolioAssetComponent {
         assetWalletDollars: 0,
         totalValueInDollars: 0,
         targetPrice: 0,
-        lastUpdated: '',
+        lastTraded: '',
         vendorName: '',
     }
     @Input() public isFirst: boolean = false
