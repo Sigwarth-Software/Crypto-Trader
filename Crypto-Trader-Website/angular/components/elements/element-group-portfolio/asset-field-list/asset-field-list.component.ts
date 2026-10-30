@@ -23,7 +23,7 @@ export class AssetFieldListComponent {
         assetWalletDollars: 0,
         totalValueInDollars: 0,
         targetPrice: 0,
-        lastUpdated: '',
+        lastTraded: '',
         vendorName: '',
     };
     @Input() public showFieldTitles: boolean = true;
