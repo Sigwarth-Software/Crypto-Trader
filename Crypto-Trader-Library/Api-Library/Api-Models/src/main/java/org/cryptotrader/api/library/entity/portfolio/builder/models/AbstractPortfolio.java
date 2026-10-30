@@ -28,4 +28,6 @@ public abstract class AbstractPortfolio implements BuilderFactory<Portfolio> {
     public abstract @NotNull AbstractPortfolio portfolioHistory(
         @NotNull List<PortfolioHistory> portfolioHistory
     );
+
+    public abstract @NotNull AbstractPortfolio lastTraded(@Nullable LocalDateTime lastTraded);
 }
