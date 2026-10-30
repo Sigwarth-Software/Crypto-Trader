@@ -2,7 +2,7 @@ export type Portfolio = {
     dollarBalance: number;
     shareBalance: number;
     totalWorth: number;
-    lastUpdated: string;
+    lastTraded: string;
     assets: PortfolioAsset[];
 };
 
@@ -15,7 +15,7 @@ export type PortfolioAsset = {
     assetWalletDollars: number;
     totalValueInDollars: number;
     targetPrice: number;
-    lastUpdated: string;
+    lastTraded: string;
     vendorName: string;
 };
 
