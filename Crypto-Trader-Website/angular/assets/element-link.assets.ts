@@ -92,3 +92,5 @@ export const upgradeElementLink: ElementLink = new ElementLink('/upgrade', Targe
 export const consoleElementLink: ElementLink = new ElementLink('/console', TargetType.SELF, false)
 
 export const chatElementLink: ElementLink = new ElementLink('/chat', TargetType.SELF, false)
+
+export const healthElementLink: ElementLink = new ElementLink('/health', TargetType.SELF, false)
