@@ -14,6 +14,9 @@ import { NavBumperComponent } from 'angular/components/elements/element-group-na
 import { NavConsoleComponent } from 'angular/components/elements/element-group-nav/nav-console/nav-console.component'
 import { NavUpgradeComponent } from 'angular/components/elements/element-group-nav/nav-upgrade/nav-upgrade.component'
 import { NavChatComponent } from '@components/elements/element-group-nav/nav-chat/nav-chat.component'
+import {
+    NavHealthComponent
+} from '@components/elements/element-group-nav/nav-health/nav-health.component'
 
 const navComponents = [
     ExitAnchorComponent,
@@ -26,6 +29,7 @@ const navComponents = [
     NavChatComponent,
     NavConsoleComponent,
     NavUpgradeComponent,
+    NavHealthComponent,
 ]
 
 /**
