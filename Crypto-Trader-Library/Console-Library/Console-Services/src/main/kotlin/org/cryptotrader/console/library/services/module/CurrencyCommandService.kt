@@ -1,4 +1,4 @@
-package org.cryptotrader.console.library.services
+package org.cryptotrader.console.library.services.module
 
 import org.cryptotrader.api.library.communication.response.CurrencyNamesResponse
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
