@@ -237,6 +237,11 @@ export const healthModuleIcon: ImageAsset = {
     alt: 'Health Module Icon',
 }
 
+export const whiteHealthModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('white_health.svg'),
+    alt: 'White Health Module Icon',
+}
+
 export const engineModuleIcon: ImageAsset = {
     src: getModuleIconImagePath('engine.svg'),
     alt: 'Engine Module Icon',
