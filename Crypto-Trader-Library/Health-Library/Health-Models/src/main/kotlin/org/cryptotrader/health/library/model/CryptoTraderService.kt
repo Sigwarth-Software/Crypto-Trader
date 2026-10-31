@@ -24,6 +24,16 @@ enum class CryptoTraderService(val port: Int) {
 
     companion object {
         const val PREFIX = "Crypto Trader"
+
+        fun getLocalServices(): List<CryptoTraderService> {
+            return listOf(ADMIN, VERSION)
+        }
+
+        fun nonLocalEntries(): List<CryptoTraderService> {
+            return CryptoTraderService.entries.toList().filterNot {
+                !CryptoTraderService.getLocalServices().contains(it)
+            }
+        }
     }
 
     override fun toString(): String {
