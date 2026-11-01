@@ -19,7 +19,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
     "org.cryptotrader.api.library.entity",
     "org.cryptotrader.data.library.entity",
     "org.cryptotrader.security.library.entity",
-    "org.cryptotrader.chat.library.entity"
+    "org.cryptotrader.chat.library.entity",
+    "org.cryptotrader.health.library.entity"
 })
 @ComponentScan(basePackages = {
     "org.cryptotrader.api",
@@ -41,7 +42,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
     "org.cryptotrader.simulator.library.config",
     "org.cryptotrader.security.library.config",
     "org.cryptotrader.chat.library.services",
-    "org.cryptotrader.chat.library.events"
+    "org.cryptotrader.chat.library.events",
+    "org.cryptotrader.health.library.service"
 })
 public class CryptoTraderApiApplication {
     public static void main(final String[] args) {
