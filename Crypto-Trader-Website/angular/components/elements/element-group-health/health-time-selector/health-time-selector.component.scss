@@ -1,0 +1,58 @@
+health-time-selector {
+    display: block;
+    margin-bottom: 20px;
+    font-family: system-ui, sans-serif;
+
+    .health-time-selector {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .health-time-selector-label {
+        color: #24292f;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .health-time-selector-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        background: #f6f8fa;
+    }
+
+    button {
+        min-height: 36px;
+        padding: 6px 12px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background: transparent;
+        color: #57606a;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+
+        &:hover {
+            background: #eaeef2;
+            color: #24292f;
+        }
+
+        &.selected {
+            border-color: #d0d7de;
+            background: #fff;
+            color: #24292f;
+            box-shadow: 0 1px 2px #1f23280a;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #0969da;
+            outline-offset: 2px;
+        }
+    }
+}
