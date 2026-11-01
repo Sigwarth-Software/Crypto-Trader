@@ -13,6 +13,9 @@ import org.cryptotrader.console.library.model.exception.CommandNotSupportedExcep
 import org.cryptotrader.console.library.scripts.formatConsoleHelp
 import org.cryptotrader.console.library.services.entity.ConsoleCommandExecutionEntityService
 import org.cryptotrader.console.library.services.models.ConsoleCommandExecutor
+import org.cryptotrader.console.library.services.module.CurrencyCommandService
+import org.cryptotrader.console.library.services.module.HealthCommandService
+import org.cryptotrader.console.library.services.module.PortfolioCommandService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +27,7 @@ class ConsoleCommandService @Autowired constructor(
     private val commandParser: ConsoleCommandParser,
     private val currencyCommandService: CurrencyCommandService,
     private val portfolioCommandService: PortfolioCommandService,
+    private val healthCommandService: HealthCommandService,
     private val commandExecutors: List<ConsoleCommandExecutor>,
     private val commandExecutionEntityService: ConsoleCommandExecutionEntityService,
     private val authContextService: AuthContextService
@@ -44,6 +48,7 @@ class ConsoleCommandService @Autowired constructor(
                 HELP -> ConsoleCommandResponse(this.buildHelpText())
                 CURRENCY -> this.currencyCommandService.executeCommand(command.commandText)
                 PORTFOLIO -> this.portfolioCommandService.executeCommand(command.commandText)
+                HEALTH -> this.healthCommandService.executeCommand(command.commandText)
                 AUTH -> TODO()
                 TRADE -> TODO()
                 TRADER -> TODO()
