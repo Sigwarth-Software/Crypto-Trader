@@ -95,6 +95,7 @@
         <module>Logging-Library/Logging-Scripts</module>
         <module>Logging-Library/Logging-Services</module>
         <module>Health-Library</module>
+        <module>Health-Library/Health-Events</module>
         <module>Health-Library/Health-Models</module>
         <module>Health-Library/Health-Services</module>
         <module>Health-Library/Health-Repositories</module>
