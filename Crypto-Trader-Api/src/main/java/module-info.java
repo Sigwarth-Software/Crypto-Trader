@@ -97,8 +97,9 @@ open module org.cryptotrader.api {
     requires spring.aspects;
     requires org.jetbrains.annotations;
     requires org.cryptotrader.logging.library.scripts;
-    requires org.cryptotrader.health.library.services;
     requires org.cryptotrader.health.library.models;
+    requires org.cryptotrader.health.library.communication;
+    requires org.cryptotrader.health.library.events;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
