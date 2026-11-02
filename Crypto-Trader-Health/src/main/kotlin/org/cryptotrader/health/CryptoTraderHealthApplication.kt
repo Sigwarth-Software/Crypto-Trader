@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
     "org.cryptotrader.health.library.component",
     "org.cryptotrader.health.library.service",
     "org.cryptotrader.health.library.config",
+    "org.cryptotrader.universal.library.events",
+    "org.cryptotrader.universal.library.config",
 ])
 @EntityScan(basePackages = ["org.cryptotrader.health.library.entity"])
 @EnableJpaRepositories(basePackages = ["org.cryptotrader.health.library.repository"])
