@@ -4,6 +4,172 @@
 @use '../../../../styles/global-mixins' as mixins;
 @use '../../../../styles/global-placeholders' as placeholders;
 
-health-chart {
+// TODO: Replace pixels with dynamic sizing.
 
+health-chart {
+    display: block;
+    min-width: 0;
+    color: #24292f;
+    font-family: system-ui, sans-serif;
+
+    [data-status] {
+        --health-status-color: #d0d7de;
+    }
+
+    [data-status='ALIVE'] {
+        --health-status-color: #2da44e;
+    }
+
+    [data-status='DEAD'] {
+        --health-status-color: #cf222e;
+    }
+
+    [data-status='DEGRADED'] {
+        --health-status-color: #bf8700;
+    }
+
+    [data-status='MAINTENANCE'] {
+        --health-status-color: #0969da;
+    }
+
+    .health-chart {
+        padding: 24px;
+    }
+
+    .health-chart-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        margin-bottom: 16px;
+
+        h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    .health-chart-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #57606a;
+        font-size: 13px;
+
+        > span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--health-status-color);
+        }
+    }
+
+    .health-chart-history {
+        display: flex;
+        gap: 3px;
+        height: 34px;
+    }
+
+    .health-chart-day {
+        position: relative;
+        flex: 1 1 0;
+        min-width: 0;
+        border-radius: 2px;
+        background: var(--health-status-color);
+
+        &:hover,
+        &:focus-visible {
+            outline: 2px solid #0969da;
+            outline-offset: 2px;
+            z-index: 1;
+
+            .health-chart-tooltip {
+                display: block;
+            }
+        }
+
+        &.tooltip-start .health-chart-tooltip {
+            left: 0;
+            transform: none;
+        }
+
+        &.tooltip-end .health-chart-tooltip {
+            right: 0;
+            left: auto;
+            transform: none;
+        }
+    }
+
+    .health-chart-tooltip {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        width: 190px;
+        padding: 12px;
+        border-radius: 6px;
+        background: #24292f;
+        color: #fff;
+        box-shadow: 0 4px 12px #24292f26;
+        font-size: 12px;
+        line-height: 1.6;
+        text-align: center;
+        pointer-events: none;
+        transform: translateX(-50%);
+
+        strong {
+            display: block;
+        }
+    }
+
+    .health-chart-axis {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+        color: #57606a;
+        font-size: 12px;
+    }
+
+    .health-chart-axis-line {
+        flex: 1;
+        height: 1px;
+        background: #d8dee4;
+    }
+
+    .health-chart-error {
+        margin: 0 0 12px;
+        color: #cf222e;
+        font-size: 13px;
+
+        button {
+            padding: 4px 8px;
+            border: 1px solid #d0d7de;
+            border-radius: 4px;
+            background: #f6f8fa;
+            color: #24292f;
+            font: inherit;
+            cursor: pointer;
+
+            &:focus-visible {
+                outline: 2px solid #0969da;
+                outline-offset: 2px;
+            }
+        }
+    }
+
+    @media (width <= 600px) {
+        .health-chart {
+            padding: 20px 16px;
+        }
+
+        .health-chart-history {
+            gap: 1px;
+            height: 30px;
+        }
+    }
 }
