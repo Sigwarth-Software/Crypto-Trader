@@ -34,10 +34,17 @@ enum class CryptoTraderService(val port: Int) {
                 !CryptoTraderService.getLocalServices().contains(it)
             }
         }
+
+        fun from(moduleName: String): CryptoTraderService {
+            return entries.firstOrNull {
+                it.toString().equals(moduleName, ignoreCase = true)
+            } ?: throw IllegalArgumentException("Invalid module name: $moduleName")
+        }
     }
 
     override fun toString(): String {
         val normalizedName: String = this.name.lowercase().replaceFirstChar { it.uppercase() }
+
         return "$PREFIX $normalizedName".replace(" ", "-")
     }
 }
