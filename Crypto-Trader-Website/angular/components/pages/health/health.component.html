@@ -1,4 +1,13 @@
 <!-- health.component.html -->
 <ng-container>
-
+    <page-title-stripe [titleStripe]="healthPageTitleStripe"/>
+    <div class="health-history">
+        <health-time-selector [(timeRange)]="timeRange" />
+        <p class="health-history-caption">{{ rangeOptions[timeRange].description }}.</p>
+        <div class="health-history-charts">
+            @for (module of modules; track module) {
+                <health-chart [serviceName]="module" [timeRange]="timeRange" />
+            }
+        </div>
+    </div>
 </ng-container>
