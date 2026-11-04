@@ -1,8 +1,8 @@
 // health-time-selector.component.ts
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HealthStatusTimeRange } from '@models/health/HealthStatusTimeRange';
-import { healthChartTimeRanges } from '@assets/health-chart.assets';
 import { type HealthChartTimeRanges } from '@models/health/types';
+import {healthChartTimeRanges} from "@assets/health-chart-time-ranges.assets";
 
 /** Selects one availability range for every module on the health page. */
 @Component({
