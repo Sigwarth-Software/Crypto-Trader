@@ -1,6 +1,13 @@
 name: Codequiry PR evaluation
 
 on:
+  # TEMPORARY PR #181 rehearsal. Remove this push trigger before merging.
+  # Only workflow edits on this exact branch can start a paid test.
+  push:
+    branches:
+      - 134-as-a-maintainer-i-want-to-block-prs-whose-estimated-ai-code-score-exceeds-a-configurable-limit
+    paths:
+      - '.github/workflows/codequiry-evaluation.yml'
   # Runs trusted base-branch tooling; never check out or execute the PR head.
   pull_request_target:
     branches: [development]
@@ -27,14 +34,16 @@ permissions:
   checks: write
 
 concurrency:
-  group: codequiry-evaluation-${{ github.event.pull_request.number || inputs.pr_number }}
+  group: codequiry-evaluation-${{ github.event.pull_request.number || inputs.pr_number || (github.event_name == 'push' && 181) }}
   cancel-in-progress: false
 
 jobs:
   evaluate:
     if: >-
       github.repository_id == '642387518' &&
-      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/development' && inputs.authorize_upload_and_charges) ||
+      ((github.event_name == 'push' && !github.event.deleted &&
+        github.ref == 'refs/heads/134-as-a-maintainer-i-want-to-block-prs-whose-estimated-ai-code-score-exceeds-a-configurable-limit') ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/development' && inputs.authorize_upload_and_charges) ||
        (github.event_name == 'pull_request_target' && !github.event.pull_request.draft &&
         github.event.pull_request.head.repo.owner.id == 279793999 &&
         (github.event.action != 'edited' || github.event.changes.base)))
@@ -52,6 +61,7 @@ jobs:
           fi
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          # Base commit for PR events; reviewed feature commit for the temporary push test.
           ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -64,8 +74,8 @@ jobs:
           CODEQUIRY_ENGINE_ID: ${{ vars.CODEQUIRY_ENGINE_ID }}
           AI_DETECTION_MAX_SCORE: ${{ vars.AI_DETECTION_MAX_SCORE }}
           AI_DETECTION_MIN_LINES: ${{ vars.AI_DETECTION_MIN_LINES }}
-          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
-          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number || (github.event_name == 'push' && 181) }}
+          EXPECTED_HEAD_SHA: ${{ github.event_name == 'push' && github.sha || github.event.pull_request.head.sha }}
           DELETE_AFTER: ${{ inputs.delete_after }}
         run: |
           mkdir -p "$RUNNER_TEMP/codequiry"
@@ -80,7 +90,7 @@ jobs:
       - name: Publish the result on the PR commit
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EXPECTED_HEAD_SHA: ${{ github.event_name == 'push' && github.sha || github.event.pull_request.head.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python -m scripts.ai_detection.github_check "$RUNNER_TEMP/codequiry/report.json" --head-sha "$EXPECTED_HEAD_SHA" --details-url "$RUN_URL"
