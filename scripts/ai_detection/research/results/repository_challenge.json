@@ -1,0 +1,326 @@
+[
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "diff.py",
+    "unit": "whole file",
+    "source_sha256": "b05404b0610d2a748429159d2d9a1a5f20cf7ccc1ca8d9678dd4b2fc24e3487f",
+    "lines": 57,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "diff.py",
+    "unit": "build_manifest",
+    "source_sha256": "a541bb6b51a04202b95d0172b17a16888679c695361111193dff0ea8cd67674a",
+    "lines": 20,
+    "outcome": "PASS",
+    "score": "5119873285293579/100000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "whole file",
+    "source_sha256": "43b7c64c87f31651eae62263a2e917391e5f995a8f84105d43b2f49db7f3d15d",
+    "lines": 133,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "_count",
+    "source_sha256": "265545349c6a147b437bf15a434f5e588307cdcede0c514cd13aa0e396a10070",
+    "lines": 5,
+    "outcome": "PASS",
+    "score": "42186257243156433/1000000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "_revision",
+    "source_sha256": "36356039570ee36d8742ac36669025e582c57739d4dbf55ecafe739adc116062",
+    "lines": 14,
+    "outcome": "PASS",
+    "score": "45954838395118713/1000000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "_range",
+    "source_sha256": "8cf0158ba76ba58d398ef2c5229f1fd9ba4f86737a2c15d7589edf73be5d9b5b",
+    "lines": 7,
+    "outcome": "PASS",
+    "score": "119496488571167/2000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "_read_patch",
+    "source_sha256": "5a53a4143157fbcf47334946c7ef8727e27f558d85cc0a2d02bdccf1f58821b4",
+    "lines": 50,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_diff.py",
+    "unit": "read_manifest",
+    "source_sha256": "2b594360389e1fff381a3e3bc66f281db0c6de4462b22f4a41e4344345a88076",
+    "lines": 45,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_api.py",
+    "unit": "whole file",
+    "source_sha256": "dbb5172c13afa897d3e658ec7c3656e8bd8c83f52bef1f10a2634faf8ba93da0",
+    "lines": 148,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_api.py",
+    "unit": "_retry_delay",
+    "source_sha256": "7cc3a10346b1ffc0d47408ea3b9680b00dc43f893713bebd4ebcdba2ea92e646",
+    "lines": 19,
+    "outcome": "PASS",
+    "score": "20600786805152893/500000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "github_api.py",
+    "unit": "_has_next_page",
+    "source_sha256": "c78886358a456912bd32a6b9e0e3f2235f04c57fe47b972181157a0ac55bb5cb",
+    "lines": 23,
+    "outcome": "PASS",
+    "score": "260879248380661/5000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "detector.py",
+    "unit": "whole file",
+    "source_sha256": "38c8ee6091f07d17b004a82405002cd83e08aa4c61404eb74b2f5e9b2df10741",
+    "lines": 13,
+    "outcome": "FAIL",
+    "score": "7357310056686401/100000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "policy.py",
+    "unit": "whole file",
+    "source_sha256": "202f2ea8265813c74a4933938058e3751a5ee4738e842512f851aae7d3a794f4",
+    "lines": 76,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "policy.py",
+    "unit": "evaluate_diff",
+    "source_sha256": "b24cace0565344138dd1c921c15c31b13ef31913c309a65fb84a40531cde0d25",
+    "lines": 10,
+    "outcome": "PASS",
+    "score": "5480620861053467/100000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "policy.py",
+    "unit": "evaluate",
+    "source_sha256": "1797f95a98b5342b46e5e8b24af5dbf334211e5284217f468335954e2680f186",
+    "lines": 36,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "__main__.py",
+    "unit": "whole file",
+    "source_sha256": "b52a4b42203a0b1f6b935bf1257c8142c53294cfd26f7b7cd3b9dc5692b2a2b7",
+    "lines": 52,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "__main__.py",
+    "unit": "inspect",
+    "source_sha256": "dba1376b793e82b5beb8bb57cbd6052fec145552800ab7ebbfb1a33ffa140962",
+    "lines": 26,
+    "outcome": "PASS",
+    "score": "5139831304550171/100000000000000"
+  },
+  {
+    "candidate": "GraphCodeBERT",
+    "file": "__main__.py",
+    "unit": "main",
+    "source_sha256": "72bce7db27992367b854ec3527fc47b3561398534735fb04806a4c61a78f561b",
+    "lines": 17,
+    "outcome": "PASS",
+    "score": "9628705382347107/200000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "diff.py",
+    "unit": "whole file",
+    "source_sha256": "b05404b0610d2a748429159d2d9a1a5f20cf7ccc1ca8d9678dd4b2fc24e3487f",
+    "lines": 57,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "diff.py",
+    "unit": "build_manifest",
+    "source_sha256": "a541bb6b51a04202b95d0172b17a16888679c695361111193dff0ea8cd67674a",
+    "lines": 20,
+    "outcome": "PASS",
+    "score": "7882406115531921/100000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "whole file",
+    "source_sha256": "43b7c64c87f31651eae62263a2e917391e5f995a8f84105d43b2f49db7f3d15d",
+    "lines": 133,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "_count",
+    "source_sha256": "265545349c6a147b437bf15a434f5e588307cdcede0c514cd13aa0e396a10070",
+    "lines": 5,
+    "outcome": "PASS",
+    "score": "5907642841339111/100000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "_revision",
+    "source_sha256": "36356039570ee36d8742ac36669025e582c57739d4dbf55ecafe739adc116062",
+    "lines": 14,
+    "outcome": "PASS",
+    "score": "7821995615959167/100000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "_range",
+    "source_sha256": "8cf0158ba76ba58d398ef2c5229f1fd9ba4f86737a2c15d7589edf73be5d9b5b",
+    "lines": 7,
+    "outcome": "PASS",
+    "score": "1995072215795517/50000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "_read_patch",
+    "source_sha256": "5a53a4143157fbcf47334946c7ef8727e27f558d85cc0a2d02bdccf1f58821b4",
+    "lines": 50,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_diff.py",
+    "unit": "read_manifest",
+    "source_sha256": "2b594360389e1fff381a3e3bc66f281db0c6de4462b22f4a41e4344345a88076",
+    "lines": 45,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_api.py",
+    "unit": "whole file",
+    "source_sha256": "dbb5172c13afa897d3e658ec7c3656e8bd8c83f52bef1f10a2634faf8ba93da0",
+    "lines": 148,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_api.py",
+    "unit": "_retry_delay",
+    "source_sha256": "7cc3a10346b1ffc0d47408ea3b9680b00dc43f893713bebd4ebcdba2ea92e646",
+    "lines": 19,
+    "outcome": "PASS",
+    "score": "5326071381568909/100000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "github_api.py",
+    "unit": "_has_next_page",
+    "source_sha256": "c78886358a456912bd32a6b9e0e3f2235f04c57fe47b972181157a0ac55bb5cb",
+    "lines": 23,
+    "outcome": "PASS",
+    "score": "345388126373291/4000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "detector.py",
+    "unit": "whole file",
+    "source_sha256": "38c8ee6091f07d17b004a82405002cd83e08aa4c61404eb74b2f5e9b2df10741",
+    "lines": 13,
+    "outcome": "PASS",
+    "score": "457571417093277/10000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "policy.py",
+    "unit": "whole file",
+    "source_sha256": "202f2ea8265813c74a4933938058e3751a5ee4738e842512f851aae7d3a794f4",
+    "lines": 76,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "policy.py",
+    "unit": "evaluate_diff",
+    "source_sha256": "b24cace0565344138dd1c921c15c31b13ef31913c309a65fb84a40531cde0d25",
+    "lines": 10,
+    "outcome": "PASS",
+    "score": "2586164176464081/50000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "policy.py",
+    "unit": "evaluate",
+    "source_sha256": "1797f95a98b5342b46e5e8b24af5dbf334211e5284217f468335954e2680f186",
+    "lines": 36,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "__main__.py",
+    "unit": "whole file",
+    "source_sha256": "b52a4b42203a0b1f6b935bf1257c8142c53294cfd26f7b7cd3b9dc5692b2a2b7",
+    "lines": 52,
+    "outcome": "INCONCLUSIVE",
+    "score": null
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "__main__.py",
+    "unit": "inspect",
+    "source_sha256": "dba1376b793e82b5beb8bb57cbd6052fec145552800ab7ebbfb1a33ffa140962",
+    "lines": 26,
+    "outcome": "FAIL",
+    "score": "2477797418832779/25000000000000"
+  },
+  {
+    "candidate": "VKR_Model",
+    "file": "__main__.py",
+    "unit": "main",
+    "source_sha256": "72bce7db27992367b854ec3527fc47b3561398534735fb04806a4c61a78f561b",
+    "lines": 17,
+    "outcome": "FAIL",
+    "score": "9891083240509033/100000000000000"
+  }
+]
