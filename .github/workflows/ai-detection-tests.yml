@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/ai_detection/**'
       - '.github/workflows/ai-detection-tests.yml'
+      - '.github/workflows/codequiry-evaluation.yml'
 
 permissions:
   contents: read

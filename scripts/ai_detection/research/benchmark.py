@@ -6,6 +6,7 @@ from decimal import Decimal
 from fractions import Fraction
 import hashlib
 import json
+import os
 from pathlib import Path
 from time import perf_counter
 
@@ -135,18 +136,37 @@ def run(samples: list[dict], detector: Detector) -> dict:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
-    parser.add_argument("--candidate", required=True, choices=MODEL_HASHES)
-    parser.add_argument("--model-dir", required=True, type=Path)
+    parser.add_argument("--candidate", required=True, choices=(*MODEL_HASHES, "Codequiry"))
+    parser.add_argument("--model-dir", type=Path)
+    parser.add_argument("--engine-id", type=int)
+    parser.add_argument("--receipt-dir", type=Path)
+    parser.add_argument("--max-paid-checks", type=int, default=0)
+    parser.add_argument("--authorize-upload-and-charges", action="store_true")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Choose a fresh output path to preserve the previous run")
     samples = load_samples(args.manifest)
     start = perf_counter()
-    detector = LocalClassifier(args.candidate, args.model_dir)
+    if args.candidate == "Codequiry":
+        if (not args.authorize_upload_and_charges or args.receipt_dir is None
+                or args.engine_id is None or args.engine_id <= 0
+                or args.max_paid_checks < len(samples) or not os.getenv("CODEQUIRY_API_KEY")):
+            parser.error("Codequiry requires charge authorization, CODEQUIRY_API_KEY, a positive --engine-id, "
+                         "--receipt-dir and --max-paid-checks covering every sample")
+        from ..codequiry import CodequiryClient
+        from ..codequiry_detector import CodequiryCorpusDetector
+        args.receipt_dir.mkdir(parents=True, exist_ok=True)
+        detector = CodequiryCorpusDetector(CodequiryClient(os.environ["CODEQUIRY_API_KEY"]),
+                                          args.engine_id, args.receipt_dir)
+    else:
+        if args.model_dir is None:
+            parser.error("Local models require --model-dir")
+        detector = LocalClassifier(args.candidate, args.model_dir)
     loaded = perf_counter()
     results = run(samples, detector)
-    results.update(candidate=args.candidate, model_sha256=MODEL_HASHES[args.candidate]["model.safetensors"],
+    results.update(candidate=args.candidate,
+                   model_sha256=MODEL_HASHES.get(args.candidate, {}).get("model.safetensors"),
                    manifest_sha256=hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
                    load_seconds=loaded-start, evaluate_seconds=perf_counter()-loaded)
     with args.output.open("x", encoding="utf-8") as out:

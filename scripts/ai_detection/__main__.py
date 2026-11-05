@@ -6,11 +6,14 @@ import os
 
 from .github_api import GitHubReadError, ORGANIZATION_ID, PullRequestReader
 from .github_diff import IncompleteDiff
-from .policy import Outcome, evaluate
+from .policy import Outcome, ScorePolicy, evaluate
+from .detector import Detector
 
 
-def inspect(reader: PullRequestReader) -> dict:
-    before = reader.snapshot()
+def inspect(reader: PullRequestReader, *, before: dict | None = None, detector: Detector | None = None,
+            policy: ScorePolicy | None = None) -> dict:
+    if before is None:
+        before = reader.snapshot()
     base_ref = before["base"].get("ref")
     if not isinstance(base_ref, str) or not base_ref:
         raise GitHubReadError("Missing PR target branch.")
@@ -26,15 +29,20 @@ def inspect(reader: PullRequestReader) -> dict:
         return {"outcome": Outcome.FORK_EXEMPT, "reason": "Head repository belongs to an external owner."}
 
     manifest = reader.manifest(before)
-    decision = evaluate(manifest)
+    decision = evaluate(manifest, detector=detector, policy=policy)
     return {
         "outcome": decision.outcome,
         "reason": decision.reason,
         "head_sha": head["sha"],
+        "base_sha": before["base"]["sha"],
         "physical_added_lines": manifest.physical_lines,
         "eligible_added_lines": manifest.eligible_lines,
         "excluded_added_lines": manifest.physical_lines - manifest.eligible_lines,
         "analyzed_added_lines": decision.analyzed_lines,
+        "estimated_ai_likelihood": (
+            str(round(float(decision.score), 2)) if decision.score is not None else None
+        ),
+        "exact_score": str(decision.score) if decision.score is not None else None,
     }
 
 
