@@ -1,6 +1,10 @@
 name: Codequiry PR evaluation
 
 on:
+  # Runs trusted base-branch tooling; never check out or execute the PR head.
+  pull_request_target:
+    branches: [development]
+    types: [opened, synchronize, reopened, ready_for_review, edited]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -20,14 +24,20 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  checks: write
 
 concurrency:
-  group: codequiry-evaluation
+  group: codequiry-evaluation-${{ github.event.pull_request.number || inputs.pr_number }}
   cancel-in-progress: false
 
 jobs:
   evaluate:
-    if: github.ref == 'refs/heads/development' && inputs.authorize_upload_and_charges
+    if: >-
+      github.repository_id == '642387518' &&
+      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/development' && inputs.authorize_upload_and_charges) ||
+       (github.event_name == 'pull_request_target' && !github.event.pull_request.draft &&
+        github.event.pull_request.head.repo.owner.id == 279793999 &&
+        (github.event.action != 'edited' || github.event.changes.base)))
     runs-on: ubuntu-latest
     timeout-minutes: 12
     environment: codequiry-analysis
@@ -54,7 +64,8 @@ jobs:
           CODEQUIRY_ENGINE_ID: ${{ vars.CODEQUIRY_ENGINE_ID }}
           AI_DETECTION_MAX_SCORE: ${{ vars.AI_DETECTION_MAX_SCORE }}
           AI_DETECTION_MIN_LINES: ${{ vars.AI_DETECTION_MIN_LINES }}
-          PR_NUMBER: ${{ inputs.pr_number }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           DELETE_AFTER: ${{ inputs.delete_after }}
         run: |
           mkdir -p "$RUNNER_TEMP/codequiry"
@@ -62,12 +73,24 @@ jobs:
           if [ "$DELETE_AFTER" = "true" ]; then
             options+=(--delete-after)
           fi
-          python -m scripts.ai_detection.codequiry_run "$PR_NUMBER" --engine-id "$CODEQUIRY_ENGINE_ID" --receipt "$RUNNER_TEMP/codequiry/receipt.json" --summary "$GITHUB_STEP_SUMMARY" --authorize-upload-and-charges "${options[@]}"
+          if [ -n "$EXPECTED_HEAD_SHA" ]; then
+            options+=(--expected-head-sha "$EXPECTED_HEAD_SHA")
+          fi
+          python -m scripts.ai_detection.codequiry_run "$PR_NUMBER" --engine-id "$CODEQUIRY_ENGINE_ID" --receipt "$RUNNER_TEMP/codequiry/receipt.json" --report "$RUNNER_TEMP/codequiry/report.json" --summary "$GITHUB_STEP_SUMMARY" --authorize-upload-and-charges "${options[@]}"
+      - name: Publish the result on the PR commit
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -m scripts.ai_detection.github_check "$RUNNER_TEMP/codequiry/report.json" --head-sha "$EXPECTED_HEAD_SHA" --details-url "$RUN_URL"
       - name: Preserve the provider receipt for reconciliation
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: codequiry-receipt-${{ github.run_id }}
-          path: ${{ runner.temp }}/codequiry/receipt.json
+          path: |
+            ${{ runner.temp }}/codequiry/receipt.json
+            ${{ runner.temp }}/codequiry/report.json
           if-no-files-found: ignore
           retention-days: 7

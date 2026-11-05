@@ -151,6 +151,7 @@ class CodequiryDetectorTests(unittest.TestCase):
         argv = shlex.split(command)[3:]
         replacements = {"$PR_NUMBER": "42", "$CODEQUIRY_ENGINE_ID": "9",
                         "$RUNNER_TEMP/codequiry/receipt.json": str(self.directory / "job.json"),
+                        "$RUNNER_TEMP/codequiry/report.json": str(self.directory / "report.json"),
                         "$GITHUB_STEP_SUMMARY": str(self.directory / "summary.md")}
         argv = [replacements.get(value, value) for value in argv if value != "${options[@]}"]
         env = {"CODEQUIRY_API_KEY": "fake-test-key", "AI_DETECTION_MAX_SCORE": "100",
@@ -161,6 +162,27 @@ class CodequiryDetectorTests(unittest.TestCase):
                 with redirect_stdout(StringIO()):
                     self.assertEqual(main(argv), 0)
         self.assertTrue((self.directory / "summary.md").exists())
+        self.assertEqual(json.loads((self.directory / "report.json").read_text())["outcome"], "OUT_OF_SCOPE")
+
+    def test_obsolete_closed_or_draft_event_does_not_upload(self):
+        for snapshot in ({"head": {"sha": "b" * 40}},
+                         {"head": {"sha": "a" * 40}, "state": "closed"},
+                         {"head": {"sha": "a" * 40}, "draft": True}):
+            with self.subTest(snapshot=snapshot):
+                env = {"CODEQUIRY_API_KEY": "fake-test-key", "AI_DETECTION_MAX_SCORE": "50",
+                       "AI_DETECTION_MIN_LINES": "1"}
+                with patch.dict("os.environ", env), patch("scripts.ai_detection.codequiry_run.PullRequestReader") as reader:
+                    reader.return_value.snapshot.return_value = snapshot
+                    with patch("scripts.ai_detection.codequiry_run.CodequiryClient", return_value=self.client):
+                        output = StringIO()
+                        with redirect_stdout(output):
+                            main(["42", "--engine-id", "9", "--receipt", str(self.directory / "r"),
+                                  "--expected-head-sha", "a" * 40, "--authorize-upload-and-charges"])
+                report = json.loads(output.getvalue())
+                self.assertEqual(report["outcome"], "INCONCLUSIVE")
+                self.assertEqual(report["head_sha"], "a" * 40)
+                self.client.create_check.assert_not_called()
+                reader.return_value.manifest.assert_not_called()
 
     def test_cli_reports_paid_result_and_checks_latest_revision(self):
         fixture = json.loads((Path(__file__).parent / "fixtures/pr_files.json").read_text())
@@ -182,3 +204,38 @@ class CodequiryDetectorTests(unittest.TestCase):
                 self.assertEqual(report["provider_check_id"], 42)
                 self.assertEqual(report["exact_score"], "50")
                 self.assertNotIn("fake-test-key", output.getvalue())
+
+    def test_result_for_changed_pr_is_neutral_on_original_commit(self):
+        before = {"base": {"sha": "b" * 40, "ref": "development"}, "head": {"sha": "a" * 40}}
+        latest = {"base": before["base"], "head": {"sha": "c" * 40}}
+        env = {"CODEQUIRY_API_KEY": "fake-test-key", "AI_DETECTION_MAX_SCORE": "50",
+               "AI_DETECTION_MIN_LINES": "1"}
+        with patch.dict("os.environ", env), patch("scripts.ai_detection.codequiry_run.PullRequestReader") as reader:
+            reader.return_value.snapshot.side_effect = [before, latest]
+            decision = {"outcome": "FAIL", "head_sha": "a" * 40, "base_sha": "b" * 40,
+                        "estimated_ai_likelihood": "99", "exact_score": "99"}
+            with patch("scripts.ai_detection.codequiry_run.inspect", return_value=decision):
+                output = StringIO()
+                with redirect_stdout(output):
+                    main(["42", "--engine-id", "9", "--receipt", str(self.directory / "r"),
+                          "--expected-head-sha", "a" * 40, "--authorize-upload-and-charges"])
+        report = json.loads(output.getvalue())
+        self.assertEqual(report["outcome"], "INCONCLUSIVE")
+        self.assertEqual(report["head_sha"], "a" * 40)
+        self.assertIsNone(report["exact_score"])
+
+    def test_external_fork_does_not_use_provider(self):
+        before = {"base": {"sha": "b" * 40, "ref": "development"},
+                  "head": {"sha": "a" * 40, "repo": {"owner": {"id": 123}}}}
+        env = {"CODEQUIRY_API_KEY": "fake-test-key", "AI_DETECTION_MAX_SCORE": "50",
+               "AI_DETECTION_MIN_LINES": "1"}
+        with patch.dict("os.environ", env), patch("scripts.ai_detection.codequiry_run.PullRequestReader") as reader:
+            reader.return_value.snapshot.return_value = before
+            with patch("scripts.ai_detection.codequiry_run.CodequiryClient", return_value=self.client):
+                output = StringIO()
+                with redirect_stdout(output):
+                    main(["42", "--engine-id", "9", "--receipt", str(self.directory / "r"),
+                          "--expected-head-sha", "a" * 40, "--authorize-upload-and-charges"])
+        self.assertEqual(json.loads(output.getvalue())["outcome"], "FORK_EXEMPT")
+        self.client.create_check.assert_not_called()
+        reader.return_value.manifest.assert_not_called()
