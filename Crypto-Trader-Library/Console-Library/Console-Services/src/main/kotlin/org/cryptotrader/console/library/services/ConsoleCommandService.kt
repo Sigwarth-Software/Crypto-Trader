@@ -67,7 +67,7 @@ class ConsoleCommandService @Autowired constructor(
         }
 
         this.recordCommandExecution(
-            command, resolvedCommandName, true, null
+            command, resolvedCommandName, response.isSuccessful, null
         )
         return response
     }
