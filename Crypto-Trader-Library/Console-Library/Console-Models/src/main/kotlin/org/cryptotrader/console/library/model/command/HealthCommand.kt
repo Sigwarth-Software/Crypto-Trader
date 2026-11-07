@@ -7,5 +7,5 @@ enum class HealthCommand(
 ) : ConsoleCommandRegex {
     TOP_LEVEL("""^health$"""),
     LIST("""^health list$"""),
-    OVERVIEW("""^health overview$""")
+    OVERVIEW("""^health overview \S+$""")
 }
