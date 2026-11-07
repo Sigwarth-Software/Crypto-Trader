@@ -18,17 +18,20 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     "org.cryptotrader.data.library.services",
     "org.cryptotrader.data.library.component",
     "org.cryptotrader.universal.library.events",
-    "org.cryptotrader.api.library.events"
+    "org.cryptotrader.api.library.events",
+    "org.cryptotrader.health.library.service"
 ])
 @EnableJpaRepositories(basePackages = [
     "org.cryptotrader.console.library.repository",
     "org.cryptotrader.data.library.repository",
-    "org.cryptotrader.api.library.repository"
+    "org.cryptotrader.api.library.repository",
+    "org.cryptotrader.health.library.repository"
 ])
 @EntityScan(basePackages = [
     "org.cryptotrader.console.library.entity",
     "org.cryptotrader.data.library.entity",
-    "org.cryptotrader.api.library.entity"
+    "org.cryptotrader.api.library.entity",
+    "org.cryptotrader.health.library.entity"
 ])
 open class CryptoTraderConsoleApplication
 

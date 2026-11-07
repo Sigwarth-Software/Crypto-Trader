@@ -1,4 +1,4 @@
-package org.cryptotrader.console.library.services
+package org.cryptotrader.console.library.services.module
 
 import org.cryptotrader.api.library.communication.response.PortfolioResponse
 import org.cryptotrader.api.library.entity.portfolio.Portfolio

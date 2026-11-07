@@ -63,5 +63,7 @@ open module org.cryptotrader.console {
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.security.library.config;
 
+    requires org.cryptotrader.health.library.services;
+
     exports org.cryptotrader.console;
 }

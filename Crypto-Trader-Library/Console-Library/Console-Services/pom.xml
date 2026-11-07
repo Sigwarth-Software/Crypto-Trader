@@ -203,6 +203,14 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>console-repositories</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-models</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -41,7 +41,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
     "org.cryptotrader.simulator.library.config",
     "org.cryptotrader.security.library.config",
     "org.cryptotrader.chat.library.services",
-    "org.cryptotrader.chat.library.events"
+    "org.cryptotrader.chat.library.events",
+    "org.cryptotrader.health.library.event"
 })
 public class CryptoTraderApiApplication {
     public static void main(final String[] args) {

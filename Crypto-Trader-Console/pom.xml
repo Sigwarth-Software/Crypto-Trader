@@ -419,5 +419,17 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>console-components</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-models</artifactId>
+        </dependency>
     </dependencies>
 </project>

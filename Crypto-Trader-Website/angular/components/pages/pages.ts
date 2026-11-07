@@ -4,9 +4,11 @@ import { NotFoundComponent } from './not-found/not-found.component'
 import { StatisticsComponent } from './statistics/statistics.component'
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component'
 import { IntelligencePanelComponent } from "./intelligence-panel/intelligence-panel.component";
+import { HealthComponent } from "./health/health.component";
 
 export const pages = [
     AccountComponent,
+    HealthComponent,
     HomeComponent,
     IntelligencePanelComponent,
     NotFoundComponent,

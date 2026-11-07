@@ -1,5 +1,5 @@
 import {
-    PageTitleStripe
+    type PageTitleStripe
 } from '@components/elements/element-group-system/page-title-stripe/models/PageTitleStripe'
 
 export const dashboardPageTitleStripe: PageTitleStripe = {
@@ -25,4 +25,8 @@ export const traderPageTitleStripe: PageTitleStripe = {
 export const modulesPageTitleStripe: PageTitleStripe = {
     pageTitle: 'The Crypto Trader Ecosystem',
     pageSubtitle: '20 modules. One mission. Democratizing automated trading.',
+}
+export const healthPageTitleStripe: PageTitleStripe = {
+    pageTitle: 'Health',
+    pageSubtitle: "Full transparency of Crypto Trader's health.",
 }
