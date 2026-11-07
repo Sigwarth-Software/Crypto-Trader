@@ -31,13 +31,14 @@ enum class CryptoTraderService(val port: Int) {
 
         fun nonLocalEntries(): List<CryptoTraderService> {
             return CryptoTraderService.entries.toList().filterNot {
-                !CryptoTraderService.getLocalServices().contains(it)
+                CryptoTraderService.getLocalServices().contains(it)
             }
         }
 
         fun from(moduleName: String): CryptoTraderService {
             return entries.firstOrNull {
-                it.toString().equals(moduleName, ignoreCase = true)
+                it.name.equals(moduleName, ignoreCase = true) ||
+                    it.toString().equals(moduleName, ignoreCase = true)
             } ?: throw IllegalArgumentException("Invalid module name: $moduleName")
         }
     }
