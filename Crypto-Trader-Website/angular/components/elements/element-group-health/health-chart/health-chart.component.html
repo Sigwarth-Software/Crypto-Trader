@@ -1,0 +1,43 @@
+<ng-container>
+    <section
+        class="health-chart"
+        [attr.aria-label]="serviceName + ' availability history'"
+        [attr.aria-busy]="loading"
+    >
+        <div class="health-chart-heading">
+            <h2>{{ serviceName }}</h2>
+            <span class="health-chart-status" [attr.data-status]="latestStatus" aria-live="polite">
+            <span aria-hidden="true"></span>{{ summary }}
+        </span>
+        </div>
+        @if (loadError) {
+            <p class="health-chart-error" role="alert">
+                Could not load this module’s history.
+                <button type="button" (click)="loadStatuses()">Retry</button>
+            </p>
+        }
+        <div class="health-chart-history" role="group" [attr.aria-label]="range.description">
+            @for (day of days; track $index) {
+                <span
+                    class="health-chart-day"
+                    [class.tooltip-start]="$index < days.length / 3"
+                    [class.tooltip-end]="$index >= days.length * 2 / 3"
+                    [attr.data-status]="statusAt($index)"
+                    tabindex="0"
+                    role="img"
+                    [attr.aria-label]="day + ': ' + intervalDescription($index)"
+                >
+                <span class="health-chart-tooltip" aria-hidden="true">
+                    <strong>{{ day }}</strong>
+                    {{ intervalDescription($index) }}
+                </span>
+            </span>
+            }
+        </div>
+        <div class="health-chart-axis" aria-hidden="true">
+            <span>{{ range.startLabel }}</span>
+            <span class="health-chart-axis-line"></span>
+            <span>{{ range.endLabel }}</span>
+        </div>
+    </section>
+</ng-container>

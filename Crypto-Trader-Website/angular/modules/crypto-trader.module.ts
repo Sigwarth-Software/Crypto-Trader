@@ -35,6 +35,7 @@ import { TradeModule } from './feature/trade.module';
 import { TraderModule } from './feature/trader.module';
 import { AngularSuiteModule } from '@theoliverlear/angular-suite';
 import {LoggerContext} from "@models/logging/LoggerContext";
+import {HealthModule} from "@modules/feature/health.module";
 
 @NgModule({
     declarations: [AppComponent, ...elements, ...pages],
@@ -61,6 +62,7 @@ import {LoggerContext} from "@models/logging/LoggerContext";
         PromoModule,
         TradeModule,
         TraderModule,
+        HealthModule,
     ],
     bootstrap: [AppComponent],
     exports: [],
