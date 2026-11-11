@@ -10,6 +10,11 @@ on:
       - '.github/workflows/maven-publish-check.yml'
       - '.aws/buildspec-maven-publish-check.yml'
 
+# This CodeBuild project permits only one build, across all branches and triggers.
+concurrency:
+  group: ct-maven-publish-check
+  cancel-in-progress: false
+
 permissions:
   contents: read
   packages: read

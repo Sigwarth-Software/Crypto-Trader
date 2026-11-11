@@ -1,5 +1,5 @@
 // portfolio-overview.component.ts
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
+import { Component, Input, OnChanges, OnInit, type SimpleChanges } from '@angular/core'
 
 import { TagType } from '@theoliverlear/angular-suite'
 import { ImageAsset } from '@assets/image.assets'

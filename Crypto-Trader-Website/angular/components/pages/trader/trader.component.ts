@@ -4,7 +4,7 @@ import {
     HostListener,
     OnChanges,
     OnInit,
-    SimpleChanges,
+    type SimpleChanges,
 } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';

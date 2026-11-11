@@ -7,7 +7,7 @@ import {
     OnChanges,
     OnInit,
     Output,
-    SimpleChanges,
+    type SimpleChanges,
 } from '@angular/core'
 
 import { CurrencyFormatterService } from '@ui/currency-formatter.service'

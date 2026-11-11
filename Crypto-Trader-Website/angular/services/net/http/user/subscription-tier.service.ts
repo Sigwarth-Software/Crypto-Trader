@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '@theoliverlear/angular-suite';
-import { SubscriptionTier, SubscriptionTierResponse } from '@models/user/types'
+import { type SubscriptionTierResponse } from '@models/user/types'
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

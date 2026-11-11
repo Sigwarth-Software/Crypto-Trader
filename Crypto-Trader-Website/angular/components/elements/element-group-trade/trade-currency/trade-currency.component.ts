@@ -8,7 +8,7 @@ import {
     OnDestroy,
     OnInit,
     SimpleChange,
-    SimpleChanges,
+    type SimpleChanges,
 } from '@angular/core';
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 

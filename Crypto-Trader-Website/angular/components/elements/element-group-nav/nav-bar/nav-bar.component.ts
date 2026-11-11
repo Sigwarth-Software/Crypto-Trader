@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnChanges, OnInit, SimpleChanges } from '@angular/core'
+import { Component, HostBinding, OnChanges, OnInit, type SimpleChanges } from '@angular/core'
 
 import { TextElementLink } from '@theoliverlear/angular-suite'
 import { navBarHomeLink } from '@assets/element-link.assets'

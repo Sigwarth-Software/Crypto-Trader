@@ -4,7 +4,7 @@ import {
     Input,
     OnChanges,
     OnInit,
-    SimpleChanges,
+    type SimpleChanges,
     ViewChild,
 } from '@angular/core'
 

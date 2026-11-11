@@ -6,7 +6,7 @@ import {
     Input,
     OnChanges,
     OnDestroy,
-    SimpleChanges,
+    type SimpleChanges,
     ViewChild,
 } from '@angular/core'
 import * as d3 from 'd3'
