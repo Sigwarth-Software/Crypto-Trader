@@ -94,6 +94,8 @@
         <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
         <!-- Default: exclude Docker-tagged tests to allow builds without Docker -->
         <junit.platform.excludeTags>docker</junit.platform.excludeTags>
+        <!-- Map the legacy CI flag to Surefire/Failsafe's actual tag filter; allow -DexcludedGroups overrides. -->
+        <excludedGroups>${junit.platform.excludeTags}</excludedGroups>
         <!-- Coverage thresholds (defaults allow build to pass; enable enforcement with -Dcoverage.check.skip=false) -->
         <coverage.check.skip>true</coverage.check.skip>
         <coverage.line.min>0.00</coverage.line.min>
@@ -1343,6 +1345,7 @@
                     <forkCount>1C</forkCount>
                     <reuseForks>true</reuseForks>
                     <useModulePath>true</useModulePath>
+                    <excludedGroups>${excludedGroups}</excludedGroups>
                     <argLine>@{argLine} -Xmx2g -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                     <environmentVariables>
                         <TESTCONTAINERS_DISABLED>true</TESTCONTAINERS_DISABLED>
@@ -1351,7 +1354,6 @@
                     </environmentVariables>
                     <systemPropertyVariables>
                         <server.ssl.enabled>false</server.ssl.enabled>
-                        <junit.platform.excludeTags>${junit.platform.excludeTags}</junit.platform.excludeTags>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -1369,6 +1371,7 @@
                 <configuration>
                     <!-- Preserve -DskipTests for Failsafe after upgrading to 3.6.0. -->
                     <skipTests>${skipTests}</skipTests>
+                    <excludedGroups>${excludedGroups}</excludedGroups>
                     <reportFormat>plain</reportFormat>
                     <consoleOutputReporter
                             implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputTreeReporter"/>
@@ -1399,7 +1402,6 @@
                     </environmentVariables>
                     <systemPropertyVariables>
                         <server.ssl.enabled>false</server.ssl.enabled>
-                        <junit.platform.excludeTags>${junit.platform.excludeTags}</junit.platform.excludeTags>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
