@@ -12,9 +12,15 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# Tag and release events can target the same package version.
+concurrency:
+  group: python-package-publish
+  cancel-in-progress: false
+
 jobs:
   build-and-publish:
-    runs-on: ubuntu-latest
+    # Python 3.10.16 has a published toolcache build for Ubuntu 24.04.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       id-token: write

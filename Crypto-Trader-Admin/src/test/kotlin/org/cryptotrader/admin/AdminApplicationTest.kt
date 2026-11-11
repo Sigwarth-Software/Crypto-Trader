@@ -10,11 +10,13 @@ import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSui
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 
 @DisplayName("AdminApplication")
 @IntegrationSuite
+@Tag("ui")
 class AdminApplicationTest : CryptoTraderTest() {
     companion object {
         @JvmStatic

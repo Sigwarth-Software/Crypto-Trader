@@ -1,5 +1,5 @@
 // performance-arrow.component.ts
-import { Component, HostBinding, Input, OnChanges, SimpleChanges } from '@angular/core'
+import { Component, HostBinding, Input, OnChanges, type SimpleChanges } from '@angular/core'
 
 import { TagType } from '@theoliverlear/angular-suite'
 import { ImageAsset, upArrowIcon, whiteUpArrowIcon } from '@assets/image.assets'

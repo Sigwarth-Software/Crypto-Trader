@@ -6,7 +6,7 @@ import { BaseChartComponent } from '@components/elements/element-group-chart/bas
 import { ChartService } from '@ui/chart.service'
 import { CurrencyFormatterService } from '@ui/currency-formatter.service'
 import { PixelCalculatorService } from '@ui/pixel-calculator.service'
-import { ChartConfig, type ChartScales, type ParsedPoint } from '@models/chart/types'
+import { type ChartConfig, type ChartScales, type ParsedPoint } from '@models/chart/types'
 
 /** A line chart component with time and price labels. Extends the shared
  *  base chart lifecycle and delegates D3 logic to the engine service.

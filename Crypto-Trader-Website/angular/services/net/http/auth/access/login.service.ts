@@ -8,7 +8,7 @@ import {
     httpOptionsWithCredentials,
 } from '@theoliverlear/angular-suite';
 import { environment } from '@environments/environment';
-import { AuthResponse, LoginRequest, PersistMethod } from '@models/auth/types';
+import { type AuthResponse, type LoginRequest, PersistMethod } from '@models/auth/types';
 import { resolveAbsoluteHttpUrl } from '@app/scripts/url-resolver.script';
 
 import { DpopKeyService } from '../../../../auth/dpop/dpop-key.service';
