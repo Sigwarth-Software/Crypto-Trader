@@ -3,7 +3,7 @@ server:
 
 spring:
   config:
-    import: aws-secretsmanager:/cryptotrader/dev
+    import: aws-secretsmanager:/cryptotrader${CT_SECRETS_SUFFIX:}/dev
   application:
     name: crypto-trader-health
   datasource:
@@ -19,10 +19,19 @@ spring:
     aws:
       region:
         static: us-east-1
+    function:
+      definition: healthStatusConsumer
     stream:
       enabled: true
       defaultBinder: kafka
       bindings:
+        healthStatusConsumer-in-0:
+          destination: ct.health.status.requests.v1
+          group: crypto-trader-health-status-group
+          contentType: application/vnd.cryptotrader.encrypted+json
+        healthStatusResponses-out-0:
+          destination: ct.health.status.responses.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
         applicationLogs-out-0:
           destination: ct.logging.application.v1
           contentType: application/vnd.cryptotrader.encrypted+json
@@ -32,6 +41,12 @@ spring:
       kafka:
         binder:
           brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+security:
+  crypto:
+    tink:
+      keyset-name: ${SECURITY_TINK_KEYSET_NAME:default-aead}
+      generate-if-missing: ${SECURITY_TINK_GENERATE_IF_MISSING:true}
 
 ct:
   health:

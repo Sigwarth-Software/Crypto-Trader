@@ -44,6 +44,7 @@ import static org.cryptotrader.health.library.model.ServiceStatusChecker.isServi
     "org.cryptotrader.api.library.model",
     "org.cryptotrader.data.library",
     "org.cryptotrader.engine.library.services",
+    "org.cryptotrader.security.library.event",
     "org.cryptotrader.universal.library.events"
 })
 @EnableJpaRepositories(basePackages = {

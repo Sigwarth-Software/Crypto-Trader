@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
     </parent>
 
     <artifactId>agent-library</artifactId>
     <name>Agent-Library</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Parent library for agent-related modules — contains communication, components, and models for autonomous agents.
     </description>
@@ -58,7 +58,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

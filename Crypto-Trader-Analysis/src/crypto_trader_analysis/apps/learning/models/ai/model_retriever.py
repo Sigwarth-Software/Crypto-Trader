@@ -67,7 +67,7 @@ def delete_checkpoint(target_currency: str, model_type: ModelType = ModelType.LS
     base_dir = current_file_path.parents[3]
     checkpoint_path = base_dir / "checkpoints" / checkpoint_file
     if checkpoint_path.is_file():
-        logging.debug(f"Deleting checkpoint at: {checkpoint_path}")
+        logging.info(f"Deleting checkpoint at: {checkpoint_path}")
         checkpoint_path.unlink()
     else:
-        logging.debug(f"Checkpoint file not found at: {checkpoint_path}, nothing to delete.")
+        logging.info(f"Checkpoint file not found at: {checkpoint_path}, nothing to delete.")

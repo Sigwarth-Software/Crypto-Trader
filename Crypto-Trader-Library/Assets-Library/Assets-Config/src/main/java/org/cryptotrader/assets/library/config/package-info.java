@@ -1,0 +1,1 @@
+package org.cryptotrader.assets.library.config;

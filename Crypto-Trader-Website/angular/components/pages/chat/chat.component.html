@@ -37,7 +37,9 @@
                         <chat-bubble [message]="message" />
                     }
                     @if (isLoading) {
-                        <loading-wheel />
+                        <loading-wheel
+                            [colorScheme]="LoadingWheelColorScheme.Terminal"
+                            [size]="ElementSize.SMALL" />
                     }
                 </div>
                 <chat-input

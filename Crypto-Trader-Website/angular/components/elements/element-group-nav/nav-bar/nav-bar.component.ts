@@ -52,7 +52,6 @@ export class NavBarComponent implements OnInit, OnChanges {
 
     private listenForAuthStatus(): void {
         this.loggedInService.getAuthState().subscribe((authStatus: boolean): void => {
-            this.logger.debug(`Auth status changed: ${authStatus}`)
             this.isLoggedIn = authStatus
         })
     }

@@ -1,4 +1,4 @@
-module org.cryptotrader.simulator.library.events {
+open module org.cryptotrader.simulator.library.events {
     requires kotlin.stdlib;
     requires spring.context;
     requires org.slf4j;
@@ -9,6 +9,4 @@ module org.cryptotrader.simulator.library.events {
 
     exports org.cryptotrader.simulator.library.events;
     exports org.cryptotrader.simulator.library.events.publisher;
-
-    opens org.cryptotrader.simulator.library.events to spring.core, spring.beans, spring.context;
 }

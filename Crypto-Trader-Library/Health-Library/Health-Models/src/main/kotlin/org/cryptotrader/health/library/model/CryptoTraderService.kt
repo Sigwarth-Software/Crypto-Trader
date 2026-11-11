@@ -12,6 +12,7 @@ enum class CryptoTraderService(val port: Int) {
     CONSOLE(8088),
     AGENT(8089),
     CHAT(8090),
+    ASSETS(8091),
     LOGGING(8093),
     HEALTH(8094),
     SECURITY(8095),
@@ -23,10 +24,28 @@ enum class CryptoTraderService(val port: Int) {
 
     companion object {
         const val PREFIX = "Crypto Trader"
+
+        fun getLocalServices(): List<CryptoTraderService> {
+            return listOf(ADMIN, VERSION)
+        }
+
+        fun nonLocalEntries(): List<CryptoTraderService> {
+            return CryptoTraderService.entries.toList().filterNot {
+                CryptoTraderService.getLocalServices().contains(it)
+            }
+        }
+
+        fun from(moduleName: String): CryptoTraderService {
+            return entries.firstOrNull {
+                it.name.equals(moduleName, ignoreCase = true) ||
+                    it.toString().equals(moduleName, ignoreCase = true)
+            } ?: throw IllegalArgumentException("Invalid module name: $moduleName")
+        }
     }
 
     override fun toString(): String {
         val normalizedName: String = this.name.lowercase().replaceFirstChar { it.uppercase() }
+
         return "$PREFIX $normalizedName".replace(" ", "-")
     }
 }

@@ -70,12 +70,19 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.simulator.library.events;
     requires org.cryptotrader.simulator.library.communication;
     requires org.cryptotrader.universal.library.communication;
+    requires org.cryptotrader.universal.library.services;
     requires org.cryptotrader.logging.library.communication;
     requires org.cryptotrader.logging.library.events;
     requires org.cryptotrader.logging.library.config;
     requires org.cryptotrader.security.library.models;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
+
+    requires org.cryptotrader.chat.library.communication;
+    requires org.cryptotrader.chat.library.events;
+    requires org.cryptotrader.chat.library.models;
+    requires org.cryptotrader.chat.library.services;
+    requires org.cryptotrader.chat.library.repository;
 
     requires org.cryptotrader.security.library.services;
     requires spring.security.core;
@@ -90,6 +97,9 @@ open module org.cryptotrader.api {
     requires spring.aspects;
     requires org.jetbrains.annotations;
     requires org.cryptotrader.logging.library.scripts;
+    requires org.cryptotrader.health.library.models;
+    requires org.cryptotrader.health.library.communication;
+    requires org.cryptotrader.health.library.events;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;

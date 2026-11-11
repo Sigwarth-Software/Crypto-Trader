@@ -20,6 +20,7 @@ import { DashboardGuard } from '@guards/dashboard.guard'
 import {
     SimulatorComponent
 } from '@components/pages/simulator/simulator.component'
+import { HealthComponent } from '@components/pages/health/health.component'
 
 const isDevelopment: boolean = environment.environmentName === 'development'
 
@@ -169,6 +170,15 @@ export const simulatorRoute: Route = {
     },
 }
 
+export const healthRoute: Route = {
+    path: 'health',
+    component: HealthComponent,
+    data: {
+        meta: {
+            title: 'Health | Crypto Trader',
+        },
+    },
+}
 export const routes: Routes = [
     accountRoute,
     authorizeRoute,
@@ -184,4 +194,5 @@ export const routes: Routes = [
     dashboardRoute,
     statisticsRoute,
     simulatorRoute,
+    healthRoute,
 ]

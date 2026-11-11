@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>engine-services</artifactId>
     <name>Engine-Services</name>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <description>
         Trading engine services — provides the core trading logic, strategy execution, and portfolio management.
     </description>

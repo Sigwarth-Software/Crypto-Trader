@@ -1,21 +1,21 @@
 package org.cryptotrader.data.library.entity.currency
 
+import java.io.File
 import org.antlr.v4.runtime.misc.Utils.writeFile
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import java.io.File
 
-@Tag("SupportedCurrencies")
-@Tag("entity")
-@DisplayName("Supported Currencies")
+@DisplayName("SupportedCurrencies")
 @Disabled
+@UnitSuite
 class SupportedCurrenciesTest : CryptoTraderTest() {
 
     companion object {
@@ -57,37 +57,22 @@ class SupportedCurrenciesTest : CryptoTraderTest() {
     }
 
     @Nested
-    @Tag("staticLoad")
-    @DisplayName("Static Load")
+    @DisplayName("loadCurrenciesFromJson")
     inner class StaticLoad {
-        @Test
-        @DisplayName("Should skip static load when system property is false")
-        fun staticLoad_Skips_WhenPropertyFalse() {
-            System.setProperty("org.cryptotrader.load.currency", "false")
-            SupportedCurrencies.loadCurrenciesFromJson()
-            assertTrue(SupportedCurrencies.SUPPORTED_CURRENCIES.isEmpty())
+        @Nested
+        @DisplayName("when system property is false")
+        inner class WhenSystemPropertyIsFalse {
+            @BeforeEach
+            fun setUp() {
+                System.setProperty("org.cryptotrader.load.currency", "false")
+            }
+
+            @Test
+            @DisplayName("should skip static load")
+            fun skipStaticLoad() {
+                SupportedCurrencies.loadCurrenciesFromJson()
+                assertTrue(SupportedCurrencies.SUPPORTED_CURRENCIES.isEmpty())
+            }
         }
-    }
-
-    @Nested
-    @Tag("loadCurrenciesFromJson")
-    @DisplayName("Load Currencies From JSON")
-    inner class LoadCurrenciesFromJson {
-        @Test
-        @DisplayName("Should load currencies from JSON file")
-        fun loadCurrenciesFromJson_Loads() { }
-
-        @Test
-        @DisplayName("Should use empty list when file missing")
-        fun loadCurrenciesFromJson_UsesEmpty_WhenMissingFile() { }
-    }
-
-    @Nested
-    @Tag("constants")
-    @DisplayName("Constants")
-    inner class Constants {
-        @Test
-        @DisplayName("Should expose BITCOIN constant and supported list")
-        fun constants_Exposed() { }
     }
 }

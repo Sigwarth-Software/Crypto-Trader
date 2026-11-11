@@ -12,7 +12,7 @@ server:
 
 spring:
   config:
-    import: aws-secretsmanager:/cryptotrader/dev
+    import: aws-secretsmanager:/cryptotrader${CT_SECRETS_SUFFIX:}/dev
   application:
     name: crypto-trader-api
   web:
@@ -53,7 +53,7 @@ spring:
         enabled: false
       sanitizing:
         enabled: false
-      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer;detailedPortfolioSimulationResponsesConsumer
+      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer;detailedPortfolioSimulationResponsesConsumer;initConversationResponsesConsumer;healthStatusResponsesConsumer
     stream:
       enabled: true
       defaultBinder: kafka
@@ -68,6 +68,10 @@ spring:
 
         consoleRequests-out-0:
           destination: ct.console.requests
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        userIpDetection-out-0:
+          destination: ct.security.requests
           contentType: application/vnd.cryptotrader.encrypted+json
 
         consoleResponsesConsumer-in-0:
@@ -112,6 +116,25 @@ spring:
           destination: ct.logging.exception.v1
           contentType: application/vnd.cryptotrader.encrypted+json
 
+        initConversationRequests-out-0:
+          destination: ct.chat.init.requests.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        initConversationResponsesConsumer-in-0:
+          destination: ct.chat.init.responses.v1
+          group: crypto-trader-api-chat-init-responses
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        healthStatusRequests-out-0:
+          destination: ct.health.status.requests.v1
+          contentType: application/vnd.cryptotrader.encrypted+json
+
+        healthStatusResponsesConsumer-in-0:
+          destination: ct.health.status.responses.v1
+          # Each API instance must receive replies for its own in-memory pending requests.
+          group: crypto-trader-api-health-status-responses-${API_INSTANCE_ID:${random.uuid}}
+          contentType: application/vnd.cryptotrader.encrypted+json
+
       kafka:
         binder:
           brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
@@ -127,6 +150,9 @@ spring:
             fetch.max.bytes: 524288000
             max.partition.fetch.bytes: 524288000
         bindings:
+          healthStatusResponsesConsumer-in-0:
+            consumer:
+              startOffset: latest
           portfolioSimulationResponsesConsumer-in-0:
             consumer:
               configuration:
@@ -145,6 +171,13 @@ spring:
             consumer:
               configuration:
                 group.instance.id: api-console-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          initConversationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-chat-init-responder-01
                 session.timeout.ms: 30000
                 heartbeat.interval.ms: 10000
                 max.poll.interval.ms: 900000

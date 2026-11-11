@@ -1,6 +1,7 @@
 package org.cryptotrader.api.controller
 
 import org.cryptotrader.api.service.HoneypotService
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
@@ -22,12 +23,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@DisplayName("Honeypot Controller")
+@DisplayName("HoneypotController")
 @TestPropertySource(properties = [
     "spring.web.resources.add-mappings=false",
     "spring.mvc.pathmatch.matching-strategy=path_pattern_parser"
 ])
 @Disabled
+@IntegrationSuite
 class HoneypotControllerTest {
 
     @Autowired
@@ -40,11 +42,11 @@ class HoneypotControllerTest {
     private lateinit var honeypotService: HoneypotService
 
     @Nested
-    @DisplayName("Handle Configured Paths")
+    @DisplayName("handle")
     inner class HandleConfiguredPaths {
         @Test
-        @DisplayName("All configured honeypot paths are non-empty and are handled by the controller")
-        fun allConfiguredPathsAreHandledByController() {
+        @DisplayName("should handle every configured honeypot path")
+        fun handleEveryConfiguredHoneypotPath() {
             val raw = env.getProperty("security.honeypot.paths") ?: ""
             val paths = raw.split(',')
                 .map { it.trim() }

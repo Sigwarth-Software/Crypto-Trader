@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>universal-models</artifactId>
     <name>Universal-Models</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <description>
         Universal domain models — defines platform-agnostic data structures and shared entities.
     </description>
@@ -251,7 +251,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>

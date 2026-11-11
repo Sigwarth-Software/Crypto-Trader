@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>logging-config</artifactId>
     <name>Logging-Config</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <description>
         Standardized logging auto-configuration, HTTP/WebSocket logging filters, properties, and logback config for Crypto Trader.
     </description>
@@ -26,6 +26,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>testing-infrastructure</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
@@ -130,12 +135,24 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-scripts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>logging-scripts</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Preserve the classpath execution used by Surefire 3.2.5. Transitive
+                         model modules require provided Hibernate modules absent from these tests. -->
+                    <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>

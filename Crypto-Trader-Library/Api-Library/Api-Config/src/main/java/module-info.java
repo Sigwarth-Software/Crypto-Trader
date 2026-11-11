@@ -18,7 +18,9 @@ open module org.cryptotrader.api.library.config {
     requires org.slf4j;
     requires kotlin.stdlib;
     requires org.cryptotrader.security.library.services;
+    requires org.cryptotrader.security.library.events;
     requires org.cryptotrader.api.library.infrastructure;
+    requires org.cryptotrader.chat.library.config;
     requires spring.aop;
     requires spring.tx;
     requires spring.data.jpa;

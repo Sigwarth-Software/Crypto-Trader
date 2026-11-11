@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>universal-components</artifactId>
     <name>Universal-Components</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Universal components — provides independent and module-agnostic components.
     </description>
@@ -123,7 +123,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>

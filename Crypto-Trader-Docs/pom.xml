@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-docs</artifactId>
     <name>Crypto-Trader-Docs</name>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <description>
         Documentation tooling — generates OpenAPI specs from running services and bundles the project docs site.
     </description>
@@ -1505,7 +1505,6 @@ This module aggregates documentation for child library modules. Select a sub-mod
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>

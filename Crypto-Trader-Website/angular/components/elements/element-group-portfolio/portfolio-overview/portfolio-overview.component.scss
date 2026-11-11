@@ -46,7 +46,10 @@ portfolio-overview {
     }
 
     .currency-images {
-        @include mixins.flex(space-around, center, row);
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: calc(100% / 6);
+        align-items: center;
         max-width: 80vw;
         overflow-x: auto;
         width: 100%;
@@ -61,8 +64,14 @@ portfolio-overview {
         @extend %blue-center-reflection;
         @extend %softer-border-radius;
 
+        background-attachment: scroll;
+        background-position: center;
+        background-size: cover;
+
         ss-img {
             @include mixins.square-size(vars.$four-percent);
+            box-sizing: border-box;
+            max-width: 100%;
             border-radius: 50%;
             padding: vars.$quarter-percent;
             background-color: vars.$air-blue;
@@ -70,6 +79,13 @@ portfolio-overview {
 
         .portfolio-asset-value-image {
             @include mixins.flex(center, center, column);
+            min-width: 0;
+
+            ss-title {
+                max-width: 100%;
+                overflow-wrap: anywhere;
+                text-align: center;
+            }
         }
     }
 }

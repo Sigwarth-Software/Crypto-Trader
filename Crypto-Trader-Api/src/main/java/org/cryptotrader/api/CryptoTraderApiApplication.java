@@ -11,32 +11,38 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @EnableScheduling
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 @ConfigurationPropertiesScan
 @EntityScan(basePackages = {
-        "org.cryptotrader.api.library.entity",
-        "org.cryptotrader.data.library.entity",
-        "org.cryptotrader.security.library.entity"
+    "org.cryptotrader.api.library.entity",
+    "org.cryptotrader.data.library.entity",
+    "org.cryptotrader.security.library.entity",
+    "org.cryptotrader.chat.library.entity"
 })
 @ComponentScan(basePackages = {
-        "org.cryptotrader.api",
-        "org.cryptotrader.api.library.component",
-        "org.cryptotrader.api.library.config",
-        "org.cryptotrader.api.library.services",
-        "org.cryptotrader.api.library.infrastructure",
-        "org.cryptotrader.data.library.services",
-        "org.cryptotrader.data.library.services.harvest",
-        "org.cryptotrader.data.library.component",
-        "org.cryptotrader.security.library.service",
-        "org.cryptotrader.console.library.component",
-        "org.cryptotrader.universal.library.component",
-        "org.cryptotrader.universal.library.events",
-        "org.cryptotrader.logging.library.events.publisher",
-        "org.cryptotrader.simulator.library.events",
-        "org.cryptotrader.simulator.library.services",
-        "org.cryptotrader.simulator.library.config",
+    "org.cryptotrader.api",
+    "org.cryptotrader.api.library.component",
+    "org.cryptotrader.api.library.config",
+    "org.cryptotrader.api.library.services",
+    "org.cryptotrader.api.library.infrastructure",
+    "org.cryptotrader.data.library.services",
+    "org.cryptotrader.data.library.services.harvest",
+    "org.cryptotrader.data.library.component",
+    "org.cryptotrader.security.library.service",
+    "org.cryptotrader.security.library.event",
+    "org.cryptotrader.console.library.component",
+    "org.cryptotrader.universal.library.component",
+    "org.cryptotrader.universal.library.events",
+    "org.cryptotrader.logging.library.events.publisher",
+    "org.cryptotrader.simulator.library.events",
+    "org.cryptotrader.simulator.library.services",
+    "org.cryptotrader.simulator.library.config",
+    "org.cryptotrader.security.library.config",
+    "org.cryptotrader.chat.library.services",
+    "org.cryptotrader.chat.library.events",
+    "org.cryptotrader.health.library.event"
 })
 public class CryptoTraderApiApplication {
     public static void main(final String[] args) {

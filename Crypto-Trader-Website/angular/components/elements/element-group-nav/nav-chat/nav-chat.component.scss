@@ -1,0 +1,43 @@
+// nav-chat.component.scss
+@use '../../../../styles/global-variables' as vars;
+@use '../../../../styles/global-functions' as funcs;
+@use '../../../../styles/global-mixins' as mixins;
+@use '../../../../styles/global-placeholders' as placeholders;
+
+nav-chat {
+    @include mixins.flex(center, center, row);
+    border-radius: vars.$quarter-percent;
+
+    // background-color: $ocean-blue;
+    background-color: vars.$light-charcoal;
+    padding: calc(#{vars.$half-percent} * 0.8);
+    position: relative;
+    box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.5) 0 0 vars.$quarter-percent
+    funcs.simplest-calc(0.001);
+    transition: background-color, box-shadow, scale, 0.15s;
+
+    ss-anchor {
+        ss-img {
+            @include mixins.square-size(calc(#{vars.$two-percent} * 1.1));
+
+            // filter: invert(1);
+        }
+    }
+
+    &:hover {
+        // background-color: $almost-white;
+        $box-shadow-size: funcs.simplest-calc(0.25);
+        box-shadow: funcs.add-alpha(vars.$light-charcoal, 0.25) 0 0 vars.$half-percent
+        funcs.simplest-calc(0.005);
+        cursor: pointer;
+    }
+
+    &:active {
+        box-shadow: none;
+        scale: 0.9;
+
+        // $top-and-right: simplest-calc(0.25);
+        // transform: translate($top-and-right, $top-and-right);
+    }
+
+}

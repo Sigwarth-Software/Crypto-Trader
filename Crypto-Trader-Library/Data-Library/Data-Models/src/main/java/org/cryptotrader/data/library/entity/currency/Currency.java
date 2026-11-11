@@ -1,9 +1,7 @@
 package org.cryptotrader.data.library.entity.currency;
 //=================================-Imports-==================================
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +20,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "currencies")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
 public class Currency extends Identifiable<String> {
     //============================-Variables-=================================
     @Column(name = "currency_name")
@@ -90,10 +87,12 @@ public class Currency extends Identifiable<String> {
         this.value = this.getApiValue();
     }
     //---------------------------Get-Api-Value--------------------------------
+    @JsonIgnore
     public double getApiValue() {
         final String currencyApiJson = this.getCurrencyApiJson();
         final boolean isEmpty = currencyApiJson == null || currencyApiJson.isEmpty();
         final boolean isNoDataString = currencyApiJson.equals(ApiDataRetriever.NO_DATA_ERROR_MESSAGE);
+
         if (isNoDataString || isEmpty) {
             final String errorMessage = "No data received from API for %s. Aborting Currency construction.".formatted(this.currencyCode);
             throw new IllegalStateException(errorMessage);
@@ -103,12 +102,14 @@ public class Currency extends Identifiable<String> {
     //----------------------------Format-Value--------------------------------
     public @NotNull String formatValue(final double value) {
         String reformattedValue = decimalFormat.format(value);
+
         if (reformattedValue == null) {
             reformattedValue = "";
         }
         return reformattedValue;
     }
     //-----------------------Get-Currency-Api-Json----------------------------
+    @JsonIgnore
     public String getCurrencyApiJson() {
         final ApiDataRetriever apiDataRetriever = new ApiDataRetriever(this.urlPath);
         return apiDataRetriever.getResponse();
@@ -128,10 +129,12 @@ public class Currency extends Identifiable<String> {
         return currencyValue;
     }
     //-------------------------Get-Updated-Value------------------------------
+    @JsonIgnore
     public double getUpdatedValue() {
         if (this.urlPath == null || this.urlPath.isEmpty()) {
             this.urlPath = this.getCoinbaseUrl();
         }
+
         if (this.urlPath.equals(TESTING_URL)) {
             return this.value;
         }
@@ -170,6 +173,7 @@ public class Currency extends Identifiable<String> {
         if (this == object) {
             return true;
         }
+        
         if (object instanceof final @NotNull Currency comparedCurrency) {
             final boolean sameName = this.name.equals(comparedCurrency.name);
             final boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);

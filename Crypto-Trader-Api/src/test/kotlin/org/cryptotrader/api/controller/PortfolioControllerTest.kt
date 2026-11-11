@@ -5,19 +5,18 @@ import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.AuthContextService
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.springframework.http.HttpStatus
 
-@Tag("PortfolioController")
-@Tag("controller")
-@DisplayName("Portfolio Controller")
+@DisplayName("PortfolioController")
+@UnitSuite
 class PortfolioControllerTest : CryptoTraderTest() {
 
     @Mock lateinit var authContextService: AuthContextService
@@ -41,73 +40,23 @@ class PortfolioControllerTest : CryptoTraderTest() {
     }
 
     @Nested
-    @Tag("getPortfolio")
-    @DisplayName("Get Portfolio")
+    @DisplayName("getPortfolio")
     inner class GetPortfolio {
-        @Test
-        @DisplayName("Should return portfolio for authenticated user")
-        fun getPortfolio_Returns_WhenAuthenticated() {
-            `when`(portfolioService.getPortfolioByUserId(testUser.id)).thenReturn(testPortfolio)
-            val response = controller.getPortfolio(testUser)
-            assertEquals(HttpStatus.OK, response.statusCode)
-            assertEquals(testPortfolio.id, response.body?.id)
+        @Nested
+        @DisplayName("when the user has a portfolio")
+        inner class WhenAuthenticated {
+            @BeforeEach
+            fun setUp() {
+                `when`(portfolioService.getPortfolioByUserId(testUser.id)).thenReturn(testPortfolio)
+            }
+
+            @Test
+            @DisplayName("should return portfolio for authenticated user")
+            fun returnPortfolioForAuthenticatedUser() {
+                val response = controller.getPortfolio(testUser)
+                assertEquals(HttpStatus.OK, response.statusCode)
+                assertEquals(testPortfolio.id, response.body?.id)
+            }
         }
-    }
-
-    @Nested
-    @Tag("addPortfolioAsset")
-    @DisplayName("Add Portfolio Asset")
-    inner class AddPortfolioAsset {
-        @Test
-        @DisplayName("Should add asset to portfolio for authenticated user")
-        fun addPortfolioAsset_Adds_WhenAuthenticated() { }
-
-        @Test
-        @DisplayName("Should return bad request when request missing")
-        fun addPortfolioAsset_ReturnsBadRequest_WhenMissing() { }
-    }
-
-    @Nested
-    @Tag("emptyPortfolio")
-    @DisplayName("Empty Portfolio")
-    inner class EmptyPortfolio {
-        @Test
-        @DisplayName("Should return whether portfolio is empty")
-        fun emptyPortfolio_ReturnsFlag() { }
-    }
-
-    @Nested
-    @Tag("getPortfolioHistory")
-    @DisplayName("Get Portfolio History")
-    inner class GetPortfolioHistory {
-        @Test
-        @DisplayName("Should return history or no content")
-        fun getPortfolioHistory_ReturnsHistory_OrNoContent() { }
-    }
-
-    @Nested
-    @Tag("getPortfolioAssetHistory")
-    @DisplayName("Get Portfolio Asset History")
-    inner class GetPortfolioAssetHistory {
-        @Test
-        @DisplayName("Should return asset history list")
-        fun getPortfolioAssetHistory_ReturnsList() { }
-
-        @Test
-        @DisplayName("Should return asset history by currency")
-        fun getPortfolioAssetHistoryByCurrency_ReturnsList() { }
-    }
-
-    @Nested
-    @Tag("getPortfolioProfit")
-    @DisplayName("Get Portfolio Profit")
-    inner class GetPortfolioProfit {
-        @Test
-        @DisplayName("Should return portfolio profit")
-        fun getPortfolioProfit_ReturnsProfit() { }
-
-        @Test
-        @DisplayName("Should return profit by currency")
-        fun getPortfolioProfitByCurrency_ReturnsProfit() { }
     }
 }

@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
     </parent>
 
     <artifactId>crypto-trader-agent</artifactId>
     <name>Crypto-Trader-Agent</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         AI-driven developer agent for Crypto Trader — provides automated code analysis, MCP-based tools, and project assistance.
     </description>
@@ -62,17 +62,17 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>data-services</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>security-services</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
 
         <!-- Kotlin -->
@@ -130,6 +130,18 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>development-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>agent-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>agent-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>agent-repositories</artifactId>
         </dependency>
     </dependencies>
 

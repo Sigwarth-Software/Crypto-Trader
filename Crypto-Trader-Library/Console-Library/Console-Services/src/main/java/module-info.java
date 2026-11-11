@@ -32,9 +32,12 @@ open module org.cryptotrader.console.library.services {
     requires org.cryptotrader.console.library.repositories;
     requires org.cryptotrader.universal.library.models;
     requires org.cryptotrader.universal.library.services;
+    requires org.cryptotrader.health.library.services;
+    requires org.cryptotrader.health.library.models;
     requires org.hibernate.orm.core;
 
     exports org.cryptotrader.console.library.services;
     exports org.cryptotrader.console.library.services.models;
     exports org.cryptotrader.console.library.services.entity;
+    exports org.cryptotrader.console.library.services.module;
 }

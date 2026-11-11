@@ -8,7 +8,7 @@ logging:
 
 spring:
   config:
-    import: aws-secretsmanager:/cryptotrader/dev
+    import: aws-secretsmanager:/cryptotrader${CT_SECRETS_SUFFIX:}/dev
   application:
     name: crypto-trader-contact
   mail:

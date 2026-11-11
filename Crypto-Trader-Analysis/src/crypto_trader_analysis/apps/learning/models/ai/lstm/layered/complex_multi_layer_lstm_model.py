@@ -9,9 +9,11 @@ from attrs import define
 from keras import Input, Model
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Concatenate, Dense
-from keras.saving.save import load_model
+from keras.models import load_model
 import tensorflow as tf
 from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
+from src.crypto_trader_analysis.apps.learning.models.logging.training_logger import \
+    RichTrainingLogger
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
@@ -78,7 +80,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         log_dir = os.path.join("logs", "COMPLEX_MULTI_LAYER_LSTM", target_currency, timestamp)
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
-            profile_batch=10,
+            profile_batch=int(os.getenv("TENSORBOARD_PROFILE_BATCH", "0")),
             histogram_freq=1
         )
 
@@ -97,6 +99,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                                        f"{self.target_currency}_checkpoint.keras")
 
         monitor = "val_loss" if val_dataset is not None else "loss"
+        training_logger = RichTrainingLogger(title=f"Complex Multi-Layer LSTM • {self.target_currency}")
         callbacks = [
             EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
@@ -104,16 +107,18 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                             save_best_only=True),
             ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
                               min_lr=1e-6),
-            ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
+            ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency),
+            training_logger
         ]
         for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               verbose=1,
+                               verbose=0,
                                validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
+                training_logger.close()
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
@@ -131,7 +136,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
 
     @override
     def predict(self, input_data_list, target_scaler: MinMaxScaler):
-        scaled_pred = self.model.predict(input_data_list)
+        scaled_pred = self.model.predict(input_data_list, verbose=0)
         real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
         return real_price
 

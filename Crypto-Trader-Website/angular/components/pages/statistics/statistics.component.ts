@@ -1,7 +1,6 @@
 // statistics.component.ts
 import { AfterViewInit, Component, OnInit } from '@angular/core'
 
-import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service'
 import { LoggerContext } from '@models/logging/LoggerContext'
 import type { ChartConfig } from '@models/chart/types'
 import { defaultChartConfig } from '@assets/chart.assets'
@@ -20,6 +19,12 @@ import {
 import { MultiDataLoaderService } from '@ui/multi-data-loader.service'
 import { finalize } from 'rxjs'
 import { statisticsPageTitleStripe } from '@assets/page-title-stripe.assets'
+import {
+    BaseLoggingElementComponent
+} from '@components/elements/element-group-system/base-logging-element/base-logging-element.component'
+import {
+    PageTitleStripe
+} from '@components/elements/element-group-system/page-title-stripe/models/PageTitleStripe'
 
 /**
  * The page displaying statistics about user's Crypto Trader performance.
@@ -30,7 +35,7 @@ import { statisticsPageTitleStripe } from '@assets/page-title-stripe.assets'
     styleUrls: ['./statistics.component.scss'],
     standalone: false,
 })
-export class StatisticsComponent implements OnInit, AfterViewInit {
+export class StatisticsComponent extends BaseLoggingElementComponent implements OnInit, AfterViewInit {
     protected chartConfig: ChartConfig = {
         ...defaultChartConfig,
         dimensions: { ...defaultChartConfig.dimensions },
@@ -40,17 +45,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
     protected chartData: HistoryPoint[] = []
 
     constructor(
-        private readonly log: CryptoTraderLoggerService,
         private readonly portfolioHistoryService: PortfolioHistoryService,
         private readonly rangedPortfolioHistoryService: RangedPortfolioHistoryService,
         private readonly multiDataLoaderService: MultiDataLoaderService
-    ) {}
+    ) {
+        super()
+        this.loggerContext = LoggerContext.Statistics
+    }
 
     /**
      * On init, set the logger context.
      */
     public ngOnInit(): void {
-        this.log.setContext(LoggerContext.Statistics)
+        super.ngOnInit()
         this.multiDataLoaderService.setLoading('portfolio-history', true)
     }
 
@@ -58,7 +65,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
         return this.multiDataLoaderService.getLoading('portfolio-history')
     }
 
+    /**
+     * After view initialization, fetch the portfolio history for the graph.
+     */
     public ngAfterViewInit(): void {
+        this.log.log('Loading view for statistics.')
         const today: Date = new Date()
         const sevenDaysAgo: Date = new Date(today)
         sevenDaysAgo.setDate(today.getDate() - 7)
@@ -72,10 +83,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
                     this.multiDataLoaderService.setLoading('portfolio-history', false)
                 }),
             )
-            .subscribe((portfolioHistories): void => {
+            .subscribe((portfolioHistories: PortfolioHistory[]): void => {
                 this.portfolioHistories = portfolioHistories
                 this.log.log(`Fetched ${portfolioHistories.length} portfolio history entries.`)
-                this.chartData = portfolioHistories.map((portfolioHistory): HistoryPoint => {
+                this.chartData = portfolioHistories.map((portfolioHistory: PortfolioHistory): HistoryPoint => {
                     return {
                         date: new Date(portfolioHistory.lastUpdated),
                         value: portfolioHistory.totalWorth,
@@ -85,7 +96,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
             })
     }
 
-    protected readonly ElementSize = ElementSize
-    protected readonly LoadingWheelColorScheme = LoadingWheelColorScheme
-    protected readonly statisticsPageTitleStripe = statisticsPageTitleStripe
+    protected readonly ElementSize: typeof ElementSize = ElementSize
+    protected readonly LoadingWheelColorScheme: typeof LoadingWheelColorScheme = LoadingWheelColorScheme
+    protected readonly statisticsPageTitleStripe: PageTitleStripe = statisticsPageTitleStripe
 }

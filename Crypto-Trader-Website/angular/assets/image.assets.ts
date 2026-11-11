@@ -1,3 +1,5 @@
+import { environment } from '@environments/environment'
+
 /** Image assets for use in Angular templates.
  *
  */
@@ -57,7 +59,7 @@ export function getCurrencyLogoPath(fileName: string): string {
     return currencyLogoImageAssetPath + fileName
 }
 
-const imageAssetPath: string = 'assets/images/'
+const imageAssetPath: string = `${environment.assetsUrl}/assets/images/`
 const logoImageAssetPath: string = `${imageAssetPath}logos/`
 const iconImageAssetPath: string = `${imageAssetPath}icons/`
 const moduleIconImageAssetPath: string = `${iconImageAssetPath}modules/`
@@ -200,6 +202,11 @@ export const chatModuleIcon: ImageAsset = {
     alt: 'Chat Module Icon',
 }
 
+export const whiteChatModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('white_chat.svg'),
+    alt: 'White Chat Module Icon',
+}
+
 export const consoleModuleIcon: ImageAsset = {
     src: getModuleIconImagePath('console.svg'),
     alt: 'Console Module Icon',
@@ -228,6 +235,11 @@ export const docsModuleIcon: ImageAsset = {
 export const healthModuleIcon: ImageAsset = {
     src: getModuleIconImagePath('health.svg'),
     alt: 'Health Module Icon',
+}
+
+export const whiteHealthModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('white_health.svg'),
+    alt: 'White Health Module Icon',
 }
 
 export const engineModuleIcon: ImageAsset = {

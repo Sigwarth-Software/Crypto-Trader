@@ -18,6 +18,18 @@ class TrainingModel:
     sequence_length: int = attr(default=10)
     query_type: QueryType = attr(default=QueryType.HISTORICAL_PRICE)
 
+    def __str__(self) -> str:
+        return f"""
+        Training Model:
+            Max Rows: {self.max_rows}
+            Epochs: {self.epochs}
+            Batch Size: {self.batch_size}
+            Patience: {self.patience}
+            Skip Small Samples: {self.skip_small_samples}
+            Sequence Length: {self.sequence_length}
+            Query Type: {self.query_type}
+        """
+
     @staticmethod
     def builder() -> 'TrainingModelBuilder':
         from src.crypto_trader_analysis.apps.learning.models.training.training_model_builder import TrainingModelBuilder

@@ -15,10 +15,16 @@ import org.springframework.web.client.RestTemplate;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Slf4j
 @Service
 public class HealthCheckService {
+
+    private static final List<CryptoTraderService> HTTPS_SERVICES = List.of(
+        CryptoTraderService.API,
+        CryptoTraderService.ASSETS
+    );
 
     private final RestTemplate restTemplate;
 
@@ -105,6 +111,7 @@ public class HealthCheckService {
         if (service == CryptoTraderService.DATA) {
             return "http://" + this.ctDataHost + ":" + service.getPort() + "/actuator/health";
         }
-        return "http://localhost:" + service.getPort() + "/actuator/health";
+        final String secureSuffix = HTTPS_SERVICES.contains(service) ? "s" : "";
+        return "http%s://localhost:%s/actuator/health".formatted(secureSuffix, service.getPort());
     }
 }

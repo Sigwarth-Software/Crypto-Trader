@@ -7,7 +7,7 @@ data class PortfolioResponse(
     val dollarBalance: Double,
     val shareBalance: Double,
     val totalWorth: Double,
-    val lastUpdated: String,
+    val lastTraded: String,
     val assets: List<PortfolioAssetResponse>
 ) {
     constructor(portfolio: Portfolio) : this(
@@ -15,7 +15,7 @@ data class PortfolioResponse(
         portfolio.dollarBalance,
         portfolio.shareBalance,
         portfolio.totalWorth,
-        portfolio.lastUpdated.toString(),
+        portfolio.lastTraded.toString(),
         portfolio.assets.map { PortfolioAssetResponse(it) }
     )
 }

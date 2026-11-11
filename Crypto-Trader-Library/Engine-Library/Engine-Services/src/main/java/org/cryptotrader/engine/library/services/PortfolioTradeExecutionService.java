@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -84,6 +85,13 @@ public class PortfolioTradeExecutionService {
         this.saveAll(traderAsset, traderPortfolio, portfolioAssetHistory, portfolioHistory);
         if (tradeOccurred) {
             this.saveTradeEvent(portfolioAssetHistory);
+
+            final Portfolio portfolio = portfolioAssetHistory.getPortfolio();
+            portfolio.setLastTraded(LocalDateTime.now());
+            portfolioAssetHistory.getPortfolioAsset().setLastTraded(LocalDateTime.now());
+
+            this.portfolioService.savePortfolio(portfolio);
+            this.portfolioService.savePortfolioAsset(portfolioAssetHistory.getPortfolioAsset());
         }
     }
 

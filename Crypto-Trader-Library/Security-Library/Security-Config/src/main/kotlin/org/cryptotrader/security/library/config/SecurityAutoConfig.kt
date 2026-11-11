@@ -29,6 +29,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.messaging.converter.MessageConverter
@@ -44,6 +45,7 @@ import javax.sql.DataSource
     value = ["classpath:application-secure.yml"],
     factory = YamlPropertySourceFactory::class
 )
+@Import(UserIpDetectionConsumerConfig::class)
 open class SecurityAutoConfig {
 
     @Configuration(proxyBeanMethods = false)

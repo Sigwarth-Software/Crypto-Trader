@@ -24,6 +24,7 @@ open module org.cryptotrader.security.library.config {
     requires org.cryptotrader.security.library.services;
     requires org.cryptotrader.security.library.models;
     requires org.cryptotrader.universal.library.models;
+    requires org.cryptotrader.universal.library.services;
     requires com.fasterxml.jackson.databind;
 
     exports org.cryptotrader.security.library.config;

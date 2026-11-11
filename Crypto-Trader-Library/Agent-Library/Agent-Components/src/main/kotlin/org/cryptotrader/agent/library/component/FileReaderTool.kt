@@ -5,8 +5,8 @@ import org.cryptotrader.agent.library.communication.response.DirectoryListingRes
 import org.cryptotrader.agent.library.communication.response.FileContentResponse
 import org.cryptotrader.agent.library.communication.response.FileSearchResponse
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
-import org.cryptotrader.agent.library.model.FileMetadata
-import org.cryptotrader.agent.library.model.FileSearchResult
+import org.cryptotrader.agent.library.model.file.FileMetadata
+import org.cryptotrader.agent.library.model.file.FileSearchResult
 import org.cryptotrader.security.library.infrastructure.annotation.UserRestricted
 import org.cryptotrader.api.library.entity.user.UserRoleTier
 import org.springaicommunity.mcp.annotation.McpToolParam
@@ -149,7 +149,7 @@ class FileReaderTool @Autowired constructor(
 
             override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
                 val relPath: Path = allowedRoot.relativize(file)
-                if (pathMatcher.matches(relPath) && !looksLikeBinaryFile(file)) {
+                if (pathMatcher.matches(relPath) && !isShadowedJavaScript(file) && !looksLikeBinaryFile(file)) {
                     if (isSensitive(file) && !isSuperAdmin) {
                         return FileVisitResult.CONTINUE
                     }
@@ -221,7 +221,8 @@ class FileReaderTool @Autowired constructor(
 
             override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
                 val relPath: Path = allowedRoot.relativize(file)
-                if (pathMatcher.matches(relPath) && file.fileName.toString().contains(query, ignoreCase = true)) {
+                if (pathMatcher.matches(relPath) && file.fileName.toString().contains(query, ignoreCase = true)
+                    && !isShadowedJavaScript(file)) {
                     results.add(createMetadata(file))
                 }
                 return FileVisitResult.CONTINUE
@@ -303,6 +304,22 @@ class FileReaderTool @Autowired constructor(
             .sortedBy { it.second }
             .take(5)
             .map { it.first }
+    }
+
+    private fun isShadowedJavaScript(path: Path): Boolean {
+        val fileName: String = path.fileName.toString()
+
+        if (!fileName.endsWith(".js")) {
+            return false
+        }
+        val baseName: String = fileName.removeSuffix(".js")
+
+        return listOf(".ts", ".tsx").any { extension ->
+            val source: Path = path.resolveSibling(baseName + extension).normalize()
+                 source.startsWith(this.allowedRoot) &&
+                !source.fileName.toString().endsWith(".d.ts") &&
+                 source.isRegularFile(LinkOption.NOFOLLOW_LINKS)
+        }
     }
 
     internal fun resolveAndVerify(relativePath: String): Path {

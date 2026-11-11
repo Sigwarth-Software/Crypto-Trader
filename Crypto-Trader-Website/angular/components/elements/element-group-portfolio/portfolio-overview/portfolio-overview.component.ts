@@ -8,6 +8,10 @@ import { CurrencyImageService } from '@ui/currency-image.service'
 import { SharesFormatterService } from '@ui/shares-formatter.service'
 import { TimeFormatterService } from '@ui/time-formatter.service'
 import { Portfolio, PortfolioAsset } from '@models/portfolio/types'
+import {
+    BaseLoggingElementComponent
+} from '@components/elements/element-group-system/base-logging-element/base-logging-element.component'
+import { LoggerContext } from '@models/logging/LoggerContext'
 
 // TODO: Move to types or asset file.
 type ImageWithText = [string, ImageAsset]
@@ -21,7 +25,7 @@ type ImageWithText = [string, ImageAsset]
     styleUrls: ['./portfolio-overview.component.scss'],
     standalone: false,
 })
-export class PortfolioOverviewComponent implements OnInit, OnChanges {
+export class PortfolioOverviewComponent extends BaseLoggingElementComponent implements OnInit, OnChanges {
     @Input() public portfolio: Portfolio
     protected currencyImagesValues: ImageWithText[] = []
 
@@ -30,7 +34,10 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
         private readonly timeFormatter: TimeFormatterService,
         private readonly currencyImageService: CurrencyImageService,
         private readonly sharesFormatter: SharesFormatterService,
-    ) {}
+    ) {
+        super()
+        this.loggerContext = LoggerContext.Portfolio
+    }
 
     /**
      * On changes, load new currency images.
@@ -63,7 +70,8 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      */
     private async loadCurrencyImages(): Promise<void> {
         this.currencyImagesValues = await Promise.all(
-            this.portfolio.assets
+            [...this.portfolio.assets]
+                .sort((a, b): number => b.totalValueInDollars - a.totalValueInDollars)
                 .map(async (asset: PortfolioAsset): Promise<ImageWithText> => {
                     const currencyImage: ImageAsset =
                         await this.currencyImageService.resolveImageAsset(asset.currencyCode)
@@ -71,8 +79,7 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
                         asset.totalValueInDollars,
                     )
                     return [assetValue, currencyImage] as ImageWithText
-                })
-                .reverse(),
+                }),
         )
     }
 
@@ -101,11 +108,11 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
     }
 
     /**
-     * Provides a formatted last updated time for the portfolio.
+     * Provides a formatted last traded time for the portfolio.
      * @returns A readable time string.
      */
-    protected getLastUpdated(): string {
-        return this.timeFormatter.formatTime(this.portfolio.lastUpdated)
+    protected getLastTraded(): string {
+        return this.timeFormatter.formatTime(this.portfolio.lastTraded)
     }
 
     protected readonly TagType: typeof TagType = TagType

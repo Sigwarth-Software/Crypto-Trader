@@ -25,6 +25,10 @@ const ENV = {
         process.env.WEBSITE_API_URL ||
         process.env.API_URL ||
         '/api',
+    ASSETS_URL:
+        process.env.WEBSITE_ASSETS_URL ||
+        process.env.ASSETS_URL ||
+        '',
     WEBSOCKET_URL:
         process.env.WEBSITE_WEBSOCKET_URL ||
         process.env.WEBSOCKET_URL ||
@@ -54,6 +58,7 @@ function fileContent({
     production,
     environmentName,
     apiUrl,
+    assetsUrl,
     websocketUrl,
     enableDebug,
     featureFlag,
@@ -67,6 +72,7 @@ export const environment: Environment = {
     production: ${production},
     environmentName: ${JSON.stringify(environmentName)},
     apiUrl: ${JSON.stringify(apiUrl)},
+    assetsUrl: ${JSON.stringify(assetsUrl)},
     websocketUrl: ${JSON.stringify(websocketUrl)},
     enableDebug: ${enableDebug},
     featureFlag: ${featureFlag},
@@ -90,6 +96,7 @@ const files = [
             production: false,
             environmentName: ENV.ENVIRONMENT,
             apiUrl: ENV.API_URL,
+            assetsUrl: ENV.ASSETS_URL,
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
@@ -110,6 +117,7 @@ const files = [
             production: false,
             environmentName: 'development',
             apiUrl: ENV.API_URL,
+            assetsUrl: ENV.ASSETS_URL,
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
@@ -133,6 +141,10 @@ const files = [
                 process.env.WEBSITE_API_URL_PROD ||
                 process.env.API_URL_PROD ||
                 ENV.API_URL,
+            assetsUrl:
+                process.env.WEBSITE_ASSETS_URL_PROD ||
+                process.env.ASSETS_URL_PROD ||
+                ENV.ASSETS_URL,
             websocketUrl:
                 process.env.WEBSITE_WEBSOCKET_URL_PROD ||
                 process.env.WEBSOCKET_URL_PROD ||

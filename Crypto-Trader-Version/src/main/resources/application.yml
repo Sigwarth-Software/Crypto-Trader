@@ -2,7 +2,7 @@ server:
   port: 9001
 spring:
   config:
-    import: aws-secretsmanager:/cryptotrader/dev
+    import: aws-secretsmanager:/cryptotrader${CT_SECRETS_SUFFIX:}/dev
   application:
     name: crypto-trader-version
   datasource:

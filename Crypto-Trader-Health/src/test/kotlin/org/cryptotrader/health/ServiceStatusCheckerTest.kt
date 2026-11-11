@@ -4,21 +4,23 @@ import com.sun.net.httpserver.HttpContext
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
+import java.net.InetSocketAddress
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import org.cryptotrader.health.library.model.CryptoTraderService
 import org.cryptotrader.health.library.model.isServiceAlive
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.net.InetSocketAddress
-import java.nio.charset.StandardCharsets
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
-@DisplayName("Service Status Checker")
+@DisplayName("ServiceStatusChecker")
+@IntegrationSuite
 class ServiceStatusCheckerTest : CryptoTraderTest() {
 
     private lateinit var server: HttpServer
@@ -27,12 +29,10 @@ class ServiceStatusCheckerTest : CryptoTraderTest() {
     private var port: Int = 8000
     private var sandboxPort: Int = -1
 
-
     @BeforeEach
     fun setUp() {
         this.server = HttpServer.create(InetSocketAddress(0), 0)
         this.sandboxPort = this.server.address.port
-
 
         this.statusHandler = MutableStatusHandler(initialStatusCode = 200)
         this.healthContext = this.server.createContext("/actuator/health", this.statusHandler)
@@ -42,23 +42,40 @@ class ServiceStatusCheckerTest : CryptoTraderTest() {
         System.setProperty("ct.health.base", "http://localhost:$sandboxPort")
     }
 
-
     @Nested
-    @DisplayName("Is Service Alive")
+    @DisplayName("isServiceAlive")
     inner class IsServiceAlive {
-        @Test
-        @DisplayName("Should report status health")
-        fun isServiceAlive_shouldReportStatusHealth() {
-            val service = CryptoTraderService.ANALYSIS
-            var expectedAliveStatus = true
-            var actualAliveStatus: Boolean = isServiceAlive(service)
-            assertEquals(expectedAliveStatus, actualAliveStatus)
+        @Nested
+        @DisplayName("when the health endpoint returns success")
+        inner class WhenHealthEndpointReturnsSuccess {
+            @Test
+            @DisplayName("should report the analysis service alive")
+            fun reportAnalysisServiceAlive() {
+                val service = CryptoTraderService.ANALYSIS
+                val expectedAliveStatus = true
+                val actualAliveStatus: Boolean = isServiceAlive(service)
+                assertEquals(expectedAliveStatus, actualAliveStatus)
+            }
+        }
 
-            statusHandler.updateStatus(503)
+        @Nested
+        @DisplayName("when the health endpoint returns unavailable")
+        inner class WhenHealthEndpointReturnsUnavailable {
+            private var expectedAliveStatus: Boolean = false
 
-            expectedAliveStatus = false
-            actualAliveStatus = isServiceAlive(CryptoTraderService.API)
-            assertEquals(expectedAliveStatus, actualAliveStatus)
+            @BeforeEach
+            fun setUp() {
+                statusHandler.updateStatus(503)
+
+                expectedAliveStatus = false
+            }
+
+            @Test
+            @DisplayName("should report the API service unavailable")
+            fun reportApiServiceUnavailable() {
+                val actualAliveStatus = isServiceAlive(CryptoTraderService.API)
+                assertEquals(expectedAliveStatus, actualAliveStatus)
+            }
         }
     }
 

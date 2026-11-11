@@ -1,8 +1,7 @@
 package org.cryptotrader.api.library.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,10 +22,6 @@ import java.util.List;
 @Table(name = "product_users")
 @Getter
 @Setter
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id"
-)
 public class ProductUser extends User implements UserDetails {
     //============================-Variables-=================================
     @Loggable
@@ -129,11 +124,13 @@ public class ProductUser extends User implements UserDetails {
         return new ProductUserBuilder();
     }
 
+    @JsonIgnore
     @Override
     public @NotNull Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         if (this.safePassword == null) {

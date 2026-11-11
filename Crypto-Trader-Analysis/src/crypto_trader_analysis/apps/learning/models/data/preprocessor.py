@@ -1,4 +1,5 @@
 # preprocessor.py
+import logging
 
 import numpy as np
 import pandas as pd
@@ -236,6 +237,7 @@ class Preprocessor:
         input features, and fit/apply the MinMaxScaler. Returns a
         PreparedData container with all arrays needed downstream.
         """
+        logging.info(f"Preparing dataframe for target currency: {target_currency}")
         if dataframe.empty:
             raise ValueError(
                 "Error: The dataframe is empty. No data retrieved from database.")
@@ -259,7 +261,7 @@ class Preprocessor:
 
         # --- raw features as returns; keep target as price ---
         df[raw_input_cols] = df[raw_input_cols].pct_change(fill_method=None)
-        df = df.dropna(subset=raw_input_cols).reset_index(drop=True)
+        df[raw_input_cols] = df[raw_input_cols].replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
         target_price = df[target_column].to_numpy(dtype=np.float32)
         raw_returns = df[raw_input_cols].to_numpy(dtype=np.float32)

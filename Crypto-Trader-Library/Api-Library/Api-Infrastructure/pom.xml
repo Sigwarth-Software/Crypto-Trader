@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -17,7 +17,7 @@
     <description>
         Infrastructure for API modules — messaging, persistence, and cross-cutting utilities for Crypto Trader.
     </description>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -136,9 +136,9 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>true</useModulePath>
+                    <!-- Preserve Surefire 3.2.5's classpath behavior for inline Mockito mocks. -->
+                    <useModulePath>false</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
@@ -165,6 +165,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -306,6 +310,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>security-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-events</artifactId>
         </dependency>
     </dependencies>
 

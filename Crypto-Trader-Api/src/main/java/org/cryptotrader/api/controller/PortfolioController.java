@@ -1,6 +1,7 @@
 package org.cryptotrader.api.controller;
 
 //=================================-Imports-==================================
+import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.RangedPortfolioHistoryRequest;
 import org.cryptotrader.api.library.communication.response.*;
 import org.cryptotrader.api.library.services.PortfolioService;
@@ -20,8 +21,10 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/portfolio")
 public class PortfolioController {
@@ -93,6 +96,9 @@ public class PortfolioController {
     @PostMapping("/history/ranged/get")
     @PreAuthorize("isAuthenticated()")
     public @NotNull ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal final @NotNull ProductUser user, @RequestBody final @NotNull RangedPortfolioHistoryRequest request) {
+        final String formattedStartDate = LocalDateTime.parse(request.getStartDate()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        final String formattedEndDate = LocalDateTime.parse(request.getEndDate()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        log.info("Getting ranged portfolio history for user {} from {} to {}", user.getId(), formattedStartDate, formattedEndDate);
         final Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         final LocalDateTime startDate = LocalDateTime.parse(request.getStartDate());
         final LocalDateTime endDate = LocalDateTime.parse(request.getEndDate());
@@ -104,6 +110,7 @@ public class PortfolioController {
         final List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
             .map(PortfolioHistoryResponse::new)
             .toList();
+        log.info("Returning {} portfolio history entries for user: {}", historyResponses.size(), user.getId());
         return ResponseEntity.ok(historyResponses);
     }
 

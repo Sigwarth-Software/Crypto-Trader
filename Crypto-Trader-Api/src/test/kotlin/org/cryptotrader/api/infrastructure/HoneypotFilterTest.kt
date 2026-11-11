@@ -1,6 +1,7 @@
 package org.cryptotrader.api.infrastructure
 
 import org.cryptotrader.api.service.HoneypotService
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
+@DisplayName("HoneypotFilter")
 @WebMvcTest(
     controllers = [HoneypotFilterTest.MinimalBoot::class,
                    HoneypotFilterTest.DummyController::class]
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController
 @TestPropertySource(properties = [
     "spring.web.resources.add-mappings=false"
 ])
+@IntegrationSuite
 class HoneypotFilterTest {
 
     @Configuration
@@ -55,19 +58,17 @@ class HoneypotFilterTest {
     }
 
     @Autowired lateinit var mvc: MockMvc
-
     @Autowired lateinit var env: Environment
-
     @MockitoBean
     lateinit var honeypotService: HoneypotService
 
     @Nested
-    @DisplayName("Filter Interception")
+    @DisplayName("doFilterInternal")
     @Disabled("Context fails to load aws-secretsmanager in CI")
     inner class FilterInterception {
         @Test
-        @DisplayName("all configured honeypot paths are intercepted and service invoked")
-        fun allConfiguredPathsAreIntercepted() {
+        @DisplayName("should intercept configured paths and invoke the service")
+        fun interceptConfiguredPathsAndInvokeTheService() {
             `when`(honeypotService.captureHoneypot(any()))
                                               .thenReturn(ResponseEntity.notFound().build())
 

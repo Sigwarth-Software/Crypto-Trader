@@ -1,0 +1,17 @@
+<ng-container>
+    <div class="health-time-selector" role="group" aria-label="Time range for all modules">
+        <span class="health-time-selector-label">Time range</span>
+        <div class="health-time-selector-options">
+            @for (range of ranges; track range) {
+                <button
+                    type="button"
+                    [class.selected]="timeRange === range"
+                    [attr.aria-pressed]="timeRange === range"
+                    (click)="timeRangeChange.emit(range)"
+                >
+                    {{ rangeOptions[range].label }}
+                </button>
+            }
+        </div>
+    </div>
+</ng-container>

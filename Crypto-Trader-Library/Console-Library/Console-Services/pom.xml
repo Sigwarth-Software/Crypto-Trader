@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>console-services</artifactId>
     <name>Console-Services</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Console backend services — provides command execution logic and terminal management services.
     </description>
@@ -202,6 +202,14 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>console-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>health-models</artifactId>
         </dependency>
     </dependencies>
     <build>

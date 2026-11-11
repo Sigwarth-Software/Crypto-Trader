@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
     </parent>
 
     <name>Crypto-Trader-Transactions</name>
     <artifactId>crypto-trader-transactions</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Transaction management service for Crypto Trader — handles order execution, historical records, and financial auditing.
     </description>
@@ -55,11 +55,9 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

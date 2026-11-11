@@ -6,6 +6,7 @@ import java.util.List;
 
 public class SupportedVendors {
     public static final Vendor PAPER_MODE = new Vendor("Paper Mode", 0.0);
+    // TODO: The rates need to be stored in the database.
     public static final Vendor COINBASE = new Vendor("Coinbase", (0.5) / 100);
     public static final List<Vendor> VENDOR_LIST = List.of(PAPER_MODE, COINBASE);
     public static @NotNull Vendor from(final String vendorName) {

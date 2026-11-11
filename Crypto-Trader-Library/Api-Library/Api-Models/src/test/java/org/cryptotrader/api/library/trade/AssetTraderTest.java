@@ -1,18 +1,18 @@
 package org.cryptotrader.api.library.trade;
 
-
-import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.model.trade.AssetTrader;
+import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.annotation.UnitSuite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Asset Trader")
+@DisplayName("AssetTrader")
+@UnitSuite
 public class AssetTraderTest extends CryptoTraderTest {
     private Currency testCurrency;
     private PortfolioAsset testAsset;
@@ -30,49 +30,69 @@ public class AssetTraderTest extends CryptoTraderTest {
     }
 
     @Nested
-    @DisplayName("Trading Decisions")
+    @DisplayName("trade")
     class TradingDecisions {
-        @Test
-        @DisplayName("Should sell at an increased price")
-        public void testShouldSell() {
-            testAsset.setShares(1);
-            testAsset.setTargetPrice(100);
-            boolean expected = false;
-            assertEquals(expected, testTrader.trade());
-            testCurrency.setValue(101);
-            expected = true;
-            assertEquals(expected, testTrader.trade());
+        @Nested
+        @DisplayName("when the price increases above the target")
+        class WhenThePriceIncreasesAboveTheTarget {
+            @BeforeEach
+            void setUp() throws Exception {
+                testAsset.setShares(1);
+                testAsset.setTargetPrice(100);
+            }
+
+            @Test
+            @DisplayName("should sell at an increased price")
+            public void sellAtAnIncreasedPrice() {
+                boolean expected = false;
+                assertEquals(expected, testTrader.trade());
+                testCurrency.setValue(101);
+                expected = true;
+                assertEquals(expected, testTrader.trade());
+            }
         }
 
-        @Test
-        @DisplayName("Should buy at a decreased price")
-        public void testShouldBuy() {
-            testAsset.setShares(0);
-            testAsset.setAssetWalletDollars(100);
-            testAsset.setTargetPrice(100);
-            boolean expected = false;
-            assertEquals(expected, testTrader.trade());
-            testCurrency.setValue(99);
-            expected = true;
-            assertEquals(expected, testTrader.trade());
+        @Nested
+        @DisplayName("when the price decreases below the target")
+        class WhenThePriceDecreasesBelowTheTarget {
+            @BeforeEach
+            void setUp() throws Exception {
+                testAsset.setShares(0);
+                testAsset.setAssetWalletDollars(100);
+                testAsset.setTargetPrice(100);
+            }
+
+            @Test
+            @DisplayName("should buy at a decreased price")
+            public void buyAtADecreasedPrice() {
+                boolean expected = false;
+                assertEquals(expected, testTrader.trade());
+                testCurrency.setValue(99);
+                expected = true;
+                assertEquals(expected, testTrader.trade());
+            }
         }
     }
 
     @Nested
-    @DisplayName("Trade Execution")
-    class TradeExecution {
+    @DisplayName("sell")
+    class Sell {
         @Test
-        @DisplayName("Selling should empty shares")
-        public void testShouldEmptyShares() {
+        @DisplayName("should empty the shares")
+        public void emptyTheShares() {
             testAsset.setShares(1);
             testAsset.setTargetPrice(100);
             testTrader.sell(testCurrency.getValue());
             assertEquals(0, testAsset.getShares());
         }
+    }
 
+    @Nested
+    @DisplayName("buy")
+    class Buy {
         @Test
-        @DisplayName("Buying should add shares")
-        public void testShouldAddShares() {
+        @DisplayName("should add shares")
+        public void addShares() {
             testAsset.setShares(0);
             testAsset.setAssetWalletDollars(100);
             testAsset.setTargetPrice(100);

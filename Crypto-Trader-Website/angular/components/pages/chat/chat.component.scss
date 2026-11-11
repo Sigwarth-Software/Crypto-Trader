@@ -9,17 +9,19 @@ chat {
     @extend %fill-container;
     height: 100%;
     flex: 1;
-    background: linear-gradient(
-        180deg,
-        darken(vars.$charcoal, 3%) 0%,
-        vars.$charcoal 100%
-    );
+    //background: linear-gradient(
+    //    180deg,
+    //    darken(vars.$charcoal, 3%) 0%,
+    //    vars.$charcoal 100%
+    //);
+    background: vars.$pure-white;
     padding: vars.$half-percent;
     box-sizing: border-box;
 
     .chat-layout {
         @include mixins.flex(stretch, stretch, row);
         @extend %fill-container;
+        flex: 1;
         border-radius: vars.$half-percent;
         border: 1px solid funcs.add-alpha(vars.$pure-white, 0.08);
         box-shadow:

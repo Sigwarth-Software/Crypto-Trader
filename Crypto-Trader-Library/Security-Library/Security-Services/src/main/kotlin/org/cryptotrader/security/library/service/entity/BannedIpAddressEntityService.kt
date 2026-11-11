@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class BannedIpAddressEntityService @Autowired constructor(
+open class BannedIpAddressEntityService @Autowired constructor(
     repository: BannedIpAddressRepository
 ) : BaseEntityService<BannedIpAddress, Long, BannedIpAddressRepository>(repository) {
 

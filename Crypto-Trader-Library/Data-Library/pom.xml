@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>data-library</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <name>Data-Library</name>
     <description>
         Parent library for data-related modules — core data access, persistence, and storage components.
@@ -43,7 +43,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>

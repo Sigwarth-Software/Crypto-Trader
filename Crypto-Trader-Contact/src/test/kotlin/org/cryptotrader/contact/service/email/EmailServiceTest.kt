@@ -2,23 +2,26 @@ package org.cryptotrader.contact.service.email
 
 import com.icegreen.greenmail.util.GreenMail
 import com.icegreen.greenmail.util.ServerSetup
+import java.time.Year
 import org.assertj.core.api.Assertions.*
 import org.cryptotrader.contact.comm.email.request.EmailRequest
 import org.cryptotrader.contact.natives.normalized
 import org.cryptotrader.contact.service.email.template.EmailTemplate
 import org.cryptotrader.contact.service.email.template.getExpectedWelcomeHtml
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import java.time.Year
 
+@DisplayName("EmailService")
 @SpringBootTest(properties = [
     "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
     "docs.autoconfigure.enabled=false"
 ])
+@IntegrationSuite
 class EmailServiceTest @Autowired constructor(
     private val emailService: EmailService
 ) : CryptoTraderTest() {
@@ -27,7 +30,7 @@ class EmailServiceTest @Autowired constructor(
             GreenMail(ServerSetup(0, null, ServerSetup.PROTOCOL_SMTP))
 
         @JvmStatic @BeforeAll
-        fun beforeAll() {
+        fun setUp() {
             this.greenMail.start()
         }
 
@@ -52,11 +55,11 @@ class EmailServiceTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("Send Email")
+    @DisplayName("send")
     inner class SendEmail {
         @Test
-        @DisplayName("Should send email with valid request")
-        fun sendEmail_ValidRequest() {
+        @DisplayName("should send email with valid request")
+        fun sendEmailWithValidRequest() {
             val request = EmailRequest(
                 "test@local",
                 "Testing Crypto Trader",

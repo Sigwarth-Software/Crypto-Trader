@@ -47,5 +47,6 @@ class BaseModel(ABC):
         pass
 
     def log_model_summary(self):
-        logging.info("\n" + "=" * 40 + "\nModel Summary:\n" + "=" * 40)
-        self.model.summary(print_fn=lambda print_func: logging.info(print_func))
+        lines: list[str] = []
+        self.model.summary(print_fn=lambda line, *args, **kwargs: lines.append(line))
+        logging.info("Model Summary:\n" + "\n".join(lines))

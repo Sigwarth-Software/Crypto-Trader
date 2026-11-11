@@ -2,6 +2,7 @@ package org.cryptotrader.data;
 
 import org.cryptotrader.data.library.component.CurrencyDataRetriever;
 import org.cryptotrader.testing.library.infrastructure.CryptoTraderTest;
+import org.cryptotrader.testing.library.infrastructure.annotation.IntegrationSuite;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("ConfigLoad")
 @SpringBootTest(
     classes = TestApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "server.port=8085"
     }
 )
+@IntegrationSuite
 class ConfigLoadTest extends CryptoTraderTest {
 
     @MockitoBean
@@ -31,11 +33,11 @@ class ConfigLoadTest extends CryptoTraderTest {
     private Environment environment;
 
     @Nested
-    @DisplayName("Application Yaml")
+    @DisplayName("application configuration")
     class ApplicationYaml {
         @Test
-        @DisplayName("loadsApplicationYaml_propertiesPresent")
-        void loadsApplicationYaml_propertiesPresent() {
+        @DisplayName("should load the application properties")
+        void loadTheApplicationProperties() {
             assertThat(environment.getProperty("spring.application.name")).isEqualTo("crypto-trader-data");
             assertThat(environment.getProperty("server.port")).isEqualTo("8085");
         }

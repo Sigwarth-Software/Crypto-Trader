@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
     </parent>
 
     <artifactId>crypto-trader-health</artifactId>
     <name>Crypto-Trader-Health</name>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <description>
         Health monitoring application — liveness/readiness probes, dependency checks, and uptime metrics.
     </description>
@@ -36,12 +36,28 @@
             <artifactId>logging-config</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,6 +89,16 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -183,10 +209,10 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</argLine>
+                    <!-- Tests exercise the JDK HTTP server and the encrypted event pipeline. -->
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED --add-modules jdk.httpserver --add-reads org.cryptotrader.health=jdk.httpserver,org.cryptotrader.health.library.communication,org.cryptotrader.health.library.events,spring.cloud.stream,spring.cloud.function.context,spring.messaging</argLine>
                 </configuration>
             </plugin>
             <plugin>

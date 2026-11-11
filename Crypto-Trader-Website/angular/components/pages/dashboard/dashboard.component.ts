@@ -324,8 +324,8 @@ export class DashboardComponent implements OnInit {
         return this.currencyFormatter.formatCurrency(this.portfolio.shareBalance)
     }
 
-    protected getLastUpdated(): string {
-        return this.timeFormatter.formatTime(this.portfolio.lastUpdated)
+    protected getLastTraded(): string {
+        return this.timeFormatter.formatTime(this.portfolio.lastTraded)
     }
 
     protected getAssetCount(): string {

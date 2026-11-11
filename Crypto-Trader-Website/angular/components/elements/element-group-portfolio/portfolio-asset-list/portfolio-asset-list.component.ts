@@ -78,7 +78,7 @@ export class PortfolioAssetListComponent implements OnInit {
             case PortfolioAssetFieldType.TARGET_PRICE:
                 this.sortByTargetPrice()
                 break
-            case PortfolioAssetFieldType.VENDOR_NAME:
+            case PortfolioAssetFieldType.VENDOR:
                 this.sortByVendorName()
                 break
             default:
@@ -138,9 +138,9 @@ export class PortfolioAssetListComponent implements OnInit {
     private sortByLastUpdated(): void {
         const sortType: SimpleSortState = this.sortState[1]
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b): number => a.lastUpdated.localeCompare(b.lastUpdated))
+            this.assets.sort((a, b): number => a.lastTraded.localeCompare(b.lastTraded))
         } else {
-            this.assets.sort((a, b): number => b.lastUpdated.localeCompare(a.lastUpdated))
+            this.assets.sort((a, b): number => b.lastTraded.localeCompare(a.lastTraded))
         }
     }
 

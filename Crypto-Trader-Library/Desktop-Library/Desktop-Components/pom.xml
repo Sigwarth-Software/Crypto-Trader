@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -15,14 +15,13 @@
     <description>
         Reusable and injectable JavaFX components for Crypto Trader desktop applications.
     </description>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>
         <javafx.version>21.0.6</javafx.version>
         <kotlin.version>2.4.20</kotlin.version>
-        <dokka.skip>false</dokka.skip>
         <argLine/>
     </properties>
 
@@ -310,7 +309,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>

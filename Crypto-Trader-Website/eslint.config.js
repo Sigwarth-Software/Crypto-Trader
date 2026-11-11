@@ -2,7 +2,6 @@ import eslint from '@eslint/js';
 import angular from 'angular-eslint';
 import prettierConfig from 'eslint-config-prettier';
 import jsdoc from 'eslint-plugin-jsdoc';
-import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -27,17 +26,13 @@ export default tseslint.config(
         files: ['**/*.ts'],
         extends: [
             eslint.configs.recommended,
-            ...tseslint.configs.recommendedTypeChecked,
+            ...tseslint.configs.recommended,
             ...angular.configs.tsRecommended,
         ],
         processor: angular.processInlineTemplates,
         languageOptions: {
             globals: {
                 ...globals.browser,
-            },
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
             },
         },
         rules: {
@@ -66,21 +61,6 @@ export default tseslint.config(
             'no-console': 'off',
             'prefer-template': 'warn',
             'prefer-const': 'error',
-            '@typescript-eslint/no-unsafe-assignment': 'warn',
-            '@typescript-eslint/no-unsafe-call': 'warn',
-            '@typescript-eslint/no-unsafe-member-access': 'warn',
-            '@typescript-eslint/no-unsafe-return': 'warn',
-            '@typescript-eslint/no-floating-promises': 'error',
-            '@typescript-eslint/await-thenable': 'error',
-            '@typescript-eslint/no-misused-promises': [
-                'error',
-                {
-                    checksVoidReturn: {
-                        attributes: false,
-                    },
-                },
-            ],
-            '@typescript-eslint/no-unnecessary-condition': 'warn',
             '@typescript-eslint/explicit-member-accessibility': [
                 'warn',
                 {
@@ -108,7 +88,6 @@ export default tseslint.config(
                 },
             ],
             '@typescript-eslint/no-inferrable-types': 'off',
-            '@typescript-eslint/prefer-readonly': 'warn',
             'no-multiple-empty-lines': ['warn', { max: 1, maxEOF: 0, maxBOF: 0 }],
             'max-len': [
                 'error',
@@ -174,6 +153,34 @@ export default tseslint.config(
         },
     },
     {
+        files: ['angular/**/*.ts', 'setup-jest.ts'],
+        extends: [...tseslint.configs.recommendedTypeChecked],
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+        rules: {
+            '@typescript-eslint/no-unsafe-assignment': 'warn',
+            '@typescript-eslint/no-unsafe-call': 'warn',
+            '@typescript-eslint/no-unsafe-member-access': 'warn',
+            '@typescript-eslint/no-unsafe-return': 'warn',
+            '@typescript-eslint/no-floating-promises': 'error',
+            '@typescript-eslint/await-thenable': 'error',
+            '@typescript-eslint/no-misused-promises': [
+                'error',
+                {
+                    checksVoidReturn: {
+                        attributes: false,
+                    },
+                },
+            ],
+            '@typescript-eslint/no-unnecessary-condition': 'warn',
+            '@typescript-eslint/prefer-readonly': 'warn',
+        },
+    },
+    {
         files: ['**/*.ts'],
         plugins: {
             jsdoc,
@@ -212,21 +219,6 @@ export default tseslint.config(
         rules: {
             'no-undef': 'off',
             'jsdoc/require-jsdoc': 'off',
-        },
-    },
-    {
-        files: ['**/*.ts', '**/*.html'],
-        plugins: {
-            prettier: prettierPlugin,
-        },
-        rules: {
-            'prettier/prettier': 'warn',
-        },
-    },
-    {
-        files: ['**/*.html'],
-        rules: {
-            'prettier/prettier': 'off',
         },
     },
     prettierConfig,

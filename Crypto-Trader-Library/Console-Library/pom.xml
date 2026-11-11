@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>console-library</artifactId>
     <name>Console-Library</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Parent library for console-related modules — provides CLI interfaces, command processing, and terminal interactions.
     </description>
@@ -61,7 +61,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

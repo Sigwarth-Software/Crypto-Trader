@@ -21,6 +21,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "org.cryptotrader.api.library.events",
     "org.cryptotrader.api.library.config",
     "org.cryptotrader.api.library.infrastructure",
+    "org.cryptotrader.security.library.event",
+    "org.cryptotrader.universal.library.events",
     "org.cryptotrader.data.library.component",
     "org.cryptotrader.logging.config",
     "org.cryptotrader.logging.library.service",

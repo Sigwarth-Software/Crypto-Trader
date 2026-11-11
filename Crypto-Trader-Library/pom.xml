@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-            <version>0.5.1</version>
+            <version>0.5.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -50,8 +50,9 @@
         <module>Data-Library/Data-Communication</module>
         <module>Data-Library/Data-Components</module>
         <module>Development-Library</module>
-        <module>Development-Library/Development-Models</module>
+        <module>Development-Library/Development-Communication</module>
         <module>Development-Library/Development-Config</module>
+        <module>Development-Library/Development-Models</module>
         <module>Development-Library/Development-Services</module>
         <module>Universal-Library</module>
         <module>Universal-Library/Universal-Communication</module>
@@ -79,6 +80,8 @@
         <module>Agent-Library/Agent-Components</module>
         <module>Agent-Library/Agent-Models</module>
         <module>Agent-Library/Agent-Infrastructure</module>
+        <module>Agent-Library/Agent-Services</module>
+        <module>Agent-Library/Agent-Repositories</module>
         <module>Engine-Library</module>
         <module>Engine-Library/Engine-Models</module>
         <module>Engine-Library/Engine-Services</module>
@@ -92,6 +95,7 @@
         <module>Logging-Library/Logging-Scripts</module>
         <module>Logging-Library/Logging-Services</module>
         <module>Health-Library</module>
+        <module>Health-Library/Health-Events</module>
         <module>Health-Library/Health-Models</module>
         <module>Health-Library/Health-Services</module>
         <module>Health-Library/Health-Repositories</module>
@@ -115,6 +119,8 @@
         <module>Testing-Library</module>
         <module>Testing-Library/Testing-Infrastructure</module>
         <module>Testing-Library/Testing-Scripts</module>
+        <module>Assets-Library</module>
+        <module>Assets-Library/Assets-Config</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
@@ -122,7 +128,7 @@
     <description>
         Shared libraries for Crypto Trader, including models, components, communication, and repositories.
     </description>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,10 +148,16 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                        <include>**/*TestSuite.java</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>

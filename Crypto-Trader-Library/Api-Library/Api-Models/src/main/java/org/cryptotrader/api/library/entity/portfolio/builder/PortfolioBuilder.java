@@ -19,6 +19,7 @@ public class PortfolioBuilder extends AbstractPortfolio {
     private double shareBalance;
     private double totalWorth;
     private @Nullable LocalDateTime lastUpdated;
+    private @Nullable LocalDateTime lastTraded;
     private List<PortfolioAsset> assets;
     private List<PortfolioHistory> portfolioHistory;
 
@@ -30,6 +31,7 @@ public class PortfolioBuilder extends AbstractPortfolio {
         this.assets = new ArrayList<>();
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
+        this.lastTraded = LocalDateTime.now();
     }
 
     @Override
@@ -81,12 +83,23 @@ public class PortfolioBuilder extends AbstractPortfolio {
     }
 
     @Override
+    public @NotNull AbstractPortfolio lastTraded(@Nullable LocalDateTime lastTraded) {
+        if (lastTraded == null) {
+            this.lastTraded = LocalDateTime.now();
+            return this;
+        }
+        this.lastTraded = lastTraded;
+        return this;
+    }
+
+    @Override
     public @NotNull Portfolio build() {
         return new Portfolio(this.user,
                              this.dollarBalance,
                              this.shareBalance,
                              this.totalWorth,
                              this.lastUpdated,
+                             this.lastTraded,
                              this.assets,
                              this.portfolioHistory);
     }
