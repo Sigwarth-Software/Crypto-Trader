@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
     </parent>
 
     <artifactId>engine-library</artifactId>
     <name>Engine-Library</name>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <description>
         Parent library for trading engine modules — contains the core algorithms and services for automated trading.
     </description>

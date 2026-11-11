@@ -9,11 +9,11 @@
         orders, and platform operations.
     </description>
     <artifactId>crypto-trader-api</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>

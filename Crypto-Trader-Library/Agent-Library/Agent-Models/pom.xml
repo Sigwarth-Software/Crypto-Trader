@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>agent-models</artifactId>
     <name>Agent-Models</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <description>
         Agent domain models — data structures for representing agent state, tasks, and interaction history.
     </description>
