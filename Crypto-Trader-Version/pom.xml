@@ -315,7 +315,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Sigwarth-Software-Suite</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
