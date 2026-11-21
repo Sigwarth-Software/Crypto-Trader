@@ -1504,7 +1504,7 @@
         </repository>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Sigwarth-Software-Suite</url>
         </repository>
     </repositories>
     <profiles>
