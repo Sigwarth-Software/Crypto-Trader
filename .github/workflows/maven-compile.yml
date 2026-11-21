@@ -1,0 +1,62 @@
+name: Maven Compile
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-on-aws:
+    name: Compile Maven on AWS
+    # Only trusted, ready PRs can run with AWS and private package credentials.
+    if: github.event_name != 'pull_request' || (!github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository)
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: ct-maven-compile
+      cancel-in-progress: false
+      queue: max
+    runs-on: ubuntu-latest
+    timeout-minutes: 220
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::698784776814:role/ct-maven-compile-github-actions
+          aws-region: us-east-1
+
+      - name: Compile on CodeBuild and wait
+        uses: aws-actions/aws-codebuild-run-build@v1
+        with:
+          project-name: ct-maven-compile
+          buildspec-override: .aws/buildspec-maven-compile.yml
+          source-version-override: ${{ github.sha }}
+
+  compile-gate:
+    # Preserve the required check name; a skipped AWS job must not pass the gate.
+    name: Compile Maven Reactor
+    needs: compile-on-aws
+    if: ${{ always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft) }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require successful trusted compilation
+        env:
+          IS_FORK: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+          COMPILE_RESULT: ${{ needs.compile-on-aws.result }}
+        run: |
+          if [[ "$IS_FORK" == "true" ]]; then
+            echo "::error::Fork PRs require trusted compilation. A maintainer must move reviewed changes to a branch in this repository and open a PR from that branch. This fork PR remains blocked."
+            exit 1
+          fi
+          if [[ "$COMPILE_RESULT" != "success" ]]; then
+            echo "::error::AWS Maven compilation did not succeed (result: $COMPILE_RESULT)."
+            exit 1
+          fi
+          echo "Trusted Maven compilation succeeded."
