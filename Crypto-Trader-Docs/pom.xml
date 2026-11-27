@@ -140,6 +140,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Admin/README.md" tofile="${staging.dir}/Admin/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Admin/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Admin/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Admin/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -152,6 +154,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Agent/README.md" tofile="${staging.dir}/Agent/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Agent/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Agent/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Agent/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -169,6 +173,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Api/README.md" tofile="${staging.dir}/Api/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Api/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Api/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Api/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -181,6 +187,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Assets/README.md" tofile="${staging.dir}/Assets/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Assets/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Assets/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Assets/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -193,6 +201,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Chat/README.md" tofile="${staging.dir}/Chat/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Chat/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Chat/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Chat/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -205,6 +215,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Console/README.md" tofile="${staging.dir}/Console/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Console/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Console/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Console/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -217,6 +229,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Data/README.md" tofile="${staging.dir}/Data/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Data/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Data/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Data/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -229,6 +243,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Engine/README.md" tofile="${staging.dir}/Engine/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Engine/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Engine/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Engine/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -241,6 +257,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Contact/README.md" tofile="${staging.dir}/Contact/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Contact/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Contact/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Contact/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -253,6 +271,8 @@
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Library/README.md" tofile="${staging.dir}/Library/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -288,7 +308,7 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 ## Chat Library
 - [Chat-Communication](Chat-Library/Chat-Communication/api/index.html)
-- [Chat-Components](Chat-Library/Chat-Components/api/index.html)
+- [Chat-Components](Chat-Library/Chat-Components/README.md)
 - [Chat-Config](Chat-Library/Chat-Config/api/index.html)
 - [Chat-Events](Chat-Library/Chat-Events/api/index.html)
 - [Chat-Models](Chat-Library/Chat-Models/api/index.html)
@@ -335,7 +355,7 @@ This module aggregates documentation for child library modules. Select a sub-mod
 - [Logging-Communication](Logging-Library/Logging-Communication/api/index.html)
 - [Logging-Config](Logging-Library/Logging-Config/api/index.html)
 - [Logging-Events](Logging-Library/Logging-Events/api/index.html)
-- [Logging-Infrastructure](Logging-Library/Logging-Infrastructure/api/index.html)
+- [Logging-Infrastructure](Logging-Library/Logging-Infrastructure/README.md)
 - [Logging-Models](Logging-Library/Logging-Models/api/index.html)
 - [Logging-Repositories](Logging-Library/Logging-Repositories/api/index.html)
 - [Logging-Services](Logging-Library/Logging-Services/api/index.html)
@@ -367,6 +387,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -378,6 +400,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -389,6 +413,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -400,6 +426,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -411,6 +439,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -422,6 +452,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Extensions/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Extensions/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Extensions/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -433,6 +465,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Infrastructure/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -444,6 +478,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -455,6 +491,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -466,6 +504,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Scripts/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Scripts/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -477,6 +517,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Api-Library/Api-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -489,6 +531,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -500,6 +544,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/Agent-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -511,6 +557,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/Agent-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -522,6 +570,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/Agent-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -533,6 +583,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/Agent-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Infrastructure/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -544,6 +596,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Agent-Library/Agent-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -556,6 +610,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -567,6 +623,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -578,6 +636,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -589,6 +649,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -600,6 +662,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -611,6 +675,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -622,6 +688,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -633,6 +701,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Chat-Library/Chat-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Chat-Library/Chat-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -645,6 +715,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -656,6 +728,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/Console-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -667,6 +741,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/Console-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -678,6 +754,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/Console-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -689,6 +767,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/Console-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -700,6 +780,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Console-Library/Console-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -712,6 +794,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -723,6 +807,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/Data-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -734,6 +820,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/Data-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -745,6 +833,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/Data-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -756,6 +846,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/Data-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -767,6 +859,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Data-Library/Data-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Data-Library/Data-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -779,6 +873,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Desktop-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -790,6 +886,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Desktop-Library/Desktop-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/Desktop-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/Desktop-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -802,6 +900,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Engine-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -813,6 +913,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Engine-Library/Engine-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/Engine-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/Engine-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -825,6 +927,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Version-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -836,6 +940,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Version-Library/Version-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/Version-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/Version-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -848,6 +954,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Externals-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Externals-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Externals-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -860,6 +968,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -871,6 +981,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -882,6 +994,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -893,6 +1007,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -904,6 +1020,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -915,6 +1033,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -926,6 +1046,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Health-Library/Health-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -938,6 +1060,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -949,6 +1073,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Communication/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Communication/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -960,6 +1086,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -971,6 +1099,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -982,6 +1112,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Infrastructure/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -993,6 +1125,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1004,6 +1138,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1015,6 +1151,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Logging-Library/Logging-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1027,6 +1165,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Universal-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1038,6 +1178,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Universal-Library/Universal-Components/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Components/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Components/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1049,6 +1191,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Universal-Library/Universal-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1060,6 +1204,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Universal-Library/Universal-Extensions/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Extensions/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Extensions/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1071,6 +1217,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Universal-Library/Universal-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1083,6 +1231,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Contact-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1094,6 +1244,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Contact-Library/Contact-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1105,6 +1257,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Contact-Library/Contact-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1116,6 +1270,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Contact-Library/Contact-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1128,6 +1284,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Admin-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1139,6 +1297,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Admin-Library/Admin-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1150,6 +1310,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Admin-Library/Admin-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1162,6 +1324,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1173,6 +1337,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Config/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1184,6 +1350,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Events/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Events/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1195,6 +1363,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Infrastructure/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1206,6 +1376,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Models/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Models/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1217,6 +1389,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Repositories/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Repositories/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1228,6 +1402,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy todir="${staging.dir}/Library/Security-Library/Security-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Services/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/Security-Library/Security-Services/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1240,6 +1416,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Security/README.md" tofile="${staging.dir}/Security/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Security/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Security/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Security/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1252,6 +1430,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Logging/README.md" tofile="${staging.dir}/Logging/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Logging/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Logging/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Logging/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1264,6 +1444,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Health/README.md" tofile="${staging.dir}/Health/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Health/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Health/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Health/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1276,6 +1458,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Testing/README.md" tofile="${staging.dir}/Testing/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Testing/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Testing/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Testing/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1293,6 +1477,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Simulator/README.md" tofile="${staging.dir}/Simulator/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Simulator/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Simulator/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Simulator/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1305,6 +1491,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Transactions/README.md" tofile="${staging.dir}/Transactions/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Transactions/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Transactions/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Transactions/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1317,6 +1505,8 @@ This module aggregates documentation for child library modules. Select a sub-mod
 <div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
                                 <copy file="${repo.root}/Crypto-Trader-Version/README.md" tofile="${staging.dir}/Version/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Version/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Version/target/dokka" erroronmissingdir="false"/>
                                     <fileset dir="${repo.root}/Crypto-Trader-Version/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
@@ -1330,6 +1520,296 @@ This module aggregates documentation for child library modules. Select a sub-mod
                                 <copy file="${repo.root}/Crypto-Trader-Website/README.md" tofile="${staging.dir}/Website/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Website/api" overwrite="true" failonerror="false">
                                     <fileset dir="${repo.root}/Crypto-Trader-Website/docs" erroronmissingdir="false"/>
+                                </copy>
+
+
+                                <!-- Additional modules listed in mkdocs.yml; provide a README fallback. -->
+                                <mkdir dir="${staging.dir}/Coverage"/>
+                                <echo file="${staging.dir}/Coverage/README.md"># Coverage&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Coverage/README.md" tofile="${staging.dir}/Coverage/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Development"/>
+                                <echo file="${staging.dir}/Development/README.md"># Development&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Development/README.md" tofile="${staging.dir}/Development/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Docs"/>
+                                <echo file="${staging.dir}/Docs/README.md"># Docs&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Docs/README.md" tofile="${staging.dir}/Docs/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Library/Development-Library"/>
+                                <echo file="${staging.dir}/Library/Development-Library/README.md"># Development-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Development-Library/README.md" tofile="${staging.dir}/Library/Development-Library/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Communication"/>
+                                <echo file="${staging.dir}/Library/Development-Library/Development-Communication/README.md"># Development-Communication&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Communication/README.md" tofile="${staging.dir}/Library/Development-Library/Development-Communication/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Communication/api"/>
+                                <copy todir="${staging.dir}/Library/Development-Library/Development-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Communication/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Communication/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Config"/>
+                                <echo file="${staging.dir}/Library/Development-Library/Development-Config/README.md"># Development-Config&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Config/README.md" tofile="${staging.dir}/Library/Development-Library/Development-Config/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Config/api"/>
+                                <copy todir="${staging.dir}/Library/Development-Library/Development-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Config/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Config/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Models"/>
+                                <echo file="${staging.dir}/Library/Development-Library/Development-Models/README.md"># Development-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Models/README.md" tofile="${staging.dir}/Library/Development-Library/Development-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Models/api"/>
+                                <copy todir="${staging.dir}/Library/Development-Library/Development-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Models/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Services"/>
+                                <echo file="${staging.dir}/Library/Development-Library/Development-Services/README.md"># Development-Services&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Services/README.md" tofile="${staging.dir}/Library/Development-Library/Development-Services/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Development-Library/Development-Services/api"/>
+                                <copy todir="${staging.dir}/Library/Development-Library/Development-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Services/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Development-Library/Development-Services/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Communication"/>
+                                <echo file="${staging.dir}/Library/Universal-Library/Universal-Communication/README.md"># Universal-Communication&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Communication/README.md" tofile="${staging.dir}/Library/Universal-Library/Universal-Communication/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Communication/api"/>
+                                <copy todir="${staging.dir}/Library/Universal-Library/Universal-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Communication/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Communication/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Events"/>
+                                <echo file="${staging.dir}/Library/Universal-Library/Universal-Events/README.md"># Universal-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Events/README.md" tofile="${staging.dir}/Library/Universal-Library/Universal-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Events/api"/>
+                                <copy todir="${staging.dir}/Library/Universal-Library/Universal-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Events/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Scripts"/>
+                                <echo file="${staging.dir}/Library/Universal-Library/Universal-Scripts/README.md"># Universal-Scripts&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Scripts/README.md" tofile="${staging.dir}/Library/Universal-Library/Universal-Scripts/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Scripts/api"/>
+                                <copy todir="${staging.dir}/Library/Universal-Library/Universal-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Scripts/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Scripts/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Services"/>
+                                <echo file="${staging.dir}/Library/Universal-Library/Universal-Services/README.md"># Universal-Services&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Services/README.md" tofile="${staging.dir}/Library/Universal-Library/Universal-Services/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Universal-Library/Universal-Services/api"/>
+                                <copy todir="${staging.dir}/Library/Universal-Library/Universal-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Services/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Universal-Library/Universal-Services/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Infrastructure"/>
+                                <echo file="${staging.dir}/Library/Console-Library/Console-Infrastructure/README.md"># Console-Infrastructure&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Infrastructure/README.md" tofile="${staging.dir}/Library/Console-Library/Console-Infrastructure/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Infrastructure/api"/>
+                                <copy todir="${staging.dir}/Library/Console-Library/Console-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Infrastructure/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Repositories"/>
+                                <echo file="${staging.dir}/Library/Console-Library/Console-Repositories/README.md"># Console-Repositories&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Repositories/README.md" tofile="${staging.dir}/Library/Console-Library/Console-Repositories/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Repositories/api"/>
+                                <copy todir="${staging.dir}/Library/Console-Library/Console-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Repositories/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Repositories/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Scripts"/>
+                                <echo file="${staging.dir}/Library/Console-Library/Console-Scripts/README.md"># Console-Scripts&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Scripts/README.md" tofile="${staging.dir}/Library/Console-Library/Console-Scripts/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Console-Library/Console-Scripts/api"/>
+                                <copy todir="${staging.dir}/Library/Console-Library/Console-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Scripts/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Console-Library/Console-Scripts/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Agent-Library/Agent-Services"/>
+                                <echo file="${staging.dir}/Library/Agent-Library/Agent-Services/README.md"># Agent-Services&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Services/README.md" tofile="${staging.dir}/Library/Agent-Library/Agent-Services/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Agent-Library/Agent-Services/api"/>
+                                <copy todir="${staging.dir}/Library/Agent-Library/Agent-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Services/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Services/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Agent-Library/Agent-Repositories"/>
+                                <echo file="${staging.dir}/Library/Agent-Library/Agent-Repositories/README.md"># Agent-Repositories&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Repositories/README.md" tofile="${staging.dir}/Library/Agent-Library/Agent-Repositories/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Agent-Library/Agent-Repositories/api"/>
+                                <copy todir="${staging.dir}/Library/Agent-Library/Agent-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Repositories/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Agent-Library/Agent-Repositories/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Engine-Library/Engine-Models"/>
+                                <echo file="${staging.dir}/Library/Engine-Library/Engine-Models/README.md"># Engine-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Engine-Library/Engine-Models/README.md" tofile="${staging.dir}/Library/Engine-Library/Engine-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Engine-Library/Engine-Models/api"/>
+                                <copy todir="${staging.dir}/Library/Engine-Library/Engine-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/Engine-Models/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Engine-Library/Engine-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Logging-Library/Logging-Scripts"/>
+                                <echo file="${staging.dir}/Library/Logging-Library/Logging-Scripts/README.md"># Logging-Scripts&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Scripts/README.md" tofile="${staging.dir}/Library/Logging-Library/Logging-Scripts/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Logging-Library/Logging-Scripts/api"/>
+                                <copy todir="${staging.dir}/Library/Logging-Library/Logging-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Scripts/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Logging-Library/Logging-Scripts/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Health-Library/Health-Events"/>
+                                <echo file="${staging.dir}/Library/Health-Library/Health-Events/README.md"># Health-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Events/README.md" tofile="${staging.dir}/Library/Health-Library/Health-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Health-Library/Health-Events/api"/>
+                                <copy todir="${staging.dir}/Library/Health-Library/Health-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Events/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Health-Library/Health-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/README.md"># Simulator-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/README.md" tofile="${staging.dir}/Library/Simulator-Library/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Models"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Models/README.md"># Simulator-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Models/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Models/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Models/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Models/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Scripts"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Scripts/README.md"># Simulator-Scripts&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Scripts/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Scripts/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Scripts/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Scripts/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Scripts/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Services"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Services/README.md"># Simulator-Services&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Services/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Services/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Services/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Services/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Services/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Services/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Repositories"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Repositories/README.md"># Simulator-Repositories&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Repositories/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Repositories/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Repositories/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Repositories/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Repositories/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Repositories/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Events"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Events/README.md"># Simulator-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Events/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Events/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Events/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Events/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Config"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Config/README.md"># Simulator-Config&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Config/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Config/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Config/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Config/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Config/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Communication"/>
+                                <echo file="${staging.dir}/Library/Simulator-Library/Simulator-Communication/README.md"># Simulator-Communication&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Communication/README.md" tofile="${staging.dir}/Library/Simulator-Library/Simulator-Communication/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Simulator-Library/Simulator-Communication/api"/>
+                                <copy todir="${staging.dir}/Library/Simulator-Library/Simulator-Communication/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Communication/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Simulator-Library/Simulator-Communication/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Testing-Library"/>
+                                <echo file="${staging.dir}/Library/Testing-Library/README.md"># Testing-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Testing-Library/README.md" tofile="${staging.dir}/Library/Testing-Library/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Library/Testing-Library/Testing-Infrastructure"/>
+                                <echo file="${staging.dir}/Library/Testing-Library/Testing-Infrastructure/README.md"># Testing-Infrastructure&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Infrastructure/README.md" tofile="${staging.dir}/Library/Testing-Library/Testing-Infrastructure/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Testing-Library/Testing-Infrastructure/api"/>
+                                <copy todir="${staging.dir}/Library/Testing-Library/Testing-Infrastructure/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Infrastructure/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Infrastructure/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Testing-Library/Testing-Scripts"/>
+                                <echo file="${staging.dir}/Library/Testing-Library/Testing-Scripts/README.md"># Testing-Scripts&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Scripts/README.md" tofile="${staging.dir}/Library/Testing-Library/Testing-Scripts/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Testing-Library/Testing-Scripts/api"/>
+                                <copy todir="${staging.dir}/Library/Testing-Library/Testing-Scripts/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Scripts/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Testing-Library/Testing-Scripts/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Assets-Library"/>
+                                <echo file="${staging.dir}/Library/Assets-Library/README.md"># Assets-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Assets-Library/README.md" tofile="${staging.dir}/Library/Assets-Library/README.md" overwrite="true" failonerror="false"/>
+
+                                <mkdir dir="${staging.dir}/Library/Assets-Library/Assets-Config"/>
+                                <echo file="${staging.dir}/Library/Assets-Library/Assets-Config/README.md"># Assets-Config&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Assets-Library/Assets-Config/README.md" tofile="${staging.dir}/Library/Assets-Library/Assets-Config/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Assets-Library/Assets-Config/api"/>
+                                <copy todir="${staging.dir}/Library/Assets-Library/Assets-Config/api" overwrite="true" failonerror="false">
+                                    <!-- Support default Dokka output and the release profile output. -->
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Assets-Library/Assets-Config/target/dokka" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Assets-Library/Assets-Config/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
                             </target>
@@ -1385,6 +1865,9 @@ This module aggregates documentation for child library modules. Select a sub-mod
                                 <copy todir="${project.basedir}/docs/library" overwrite="true" failonerror="false">
                                     <fileset dir="${project.basedir}/docs/reference/Library" erroronmissingdir="false"/>
                                 </copy>
+                                <!-- Keep the module README addressable alongside the library index. -->
+                                <copy file="${project.basedir}/docs/library/README.md"
+                                      tofile="${project.basedir}/docs/library/module.md" overwrite="true"/>
                             </target>
                         </configuration>
                     </execution>
