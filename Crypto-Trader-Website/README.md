@@ -17,29 +17,10 @@ documentation.
 
 ### ⭐️ Core Features
 
-<div class="grid cards" markdown>
-
--   __Value Proposition__
-    [:material-presentation-play:](#)
-
-    Presents plans, features, and safety guardrails in an approachable way for new users.
-
--   __Ecosystem Integration__
-    [:material-transit-connection-variant:](#)
-
-    Direct links to Guides, APIs, and Module References in the central hub.
-
--   __Real-time Information__
-    [:material-newspaper-variant:](#)
-
-    Surfaces platform updates, roadmap changes, and performance directions at a glance.
-
--   __Brand Consistency__
-    [:material-palette:](#)
-
-    Uses shared visuals and conventions from the `Crypto-Trader-Assets` module.
-
-</div>
+- **Value Proposition**: Presents plans, features, and safety guardrails in an approachable way for new users.
+- **Ecosystem Integration**: Direct links to Guides, APIs, and Module References in the central hub.
+- **Real-time Information**: Surfaces platform updates, roadmap changes, and performance directions at a glance.
+- **Brand Consistency**: Uses shared visuals and conventions from the `Crypto-Trader-Assets` module.
 
 ---
 
@@ -84,11 +65,10 @@ This will:
 
 ### 🔗 Documentation Quick Links
 
-- [Guides](https://theoliverlear.github.io/Crypto-Trader/guides/)
-- [CT API](https://theoliverlear.github.io/Crypto-Trader/api/)
-- [Data API](https://theoliverlear.github.io/Crypto-Trader/data/)
-- [Engine API](https://theoliverlear.github.io/Crypto-Trader/engine/)
-- [Reference Hub](https://theoliverlear.github.io/Crypto-Trader/reference/)
+- [Guides](https://sigwarth-software.github.io/Crypto-Trader/guides/)
+- [CT API](https://sigwarth-software.github.io/Crypto-Trader/api/)
+- [Data API](https://sigwarth-software.github.io/Crypto-Trader/data/)
+- [Reference Hub](https://sigwarth-software.github.io/Crypto-Trader/reference/)
 
 ---
 
