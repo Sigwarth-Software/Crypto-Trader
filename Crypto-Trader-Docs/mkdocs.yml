@@ -31,12 +31,12 @@ nav:
   - Home: index.md
   - Guides:
       - Guides: guides/index.md
-  - CT API: api/index.md
+  - Crypto-Trader API: api/index.md
   - Data API: data/index.md
   - Website:
       - README: reference/Website/README.md
       - Complete Docs: reference/Website/api/index.html
-  - References:
+  - Documentation:
     - Admin:
       - README: reference/Admin/README.md
       - Complete Docs: reference/Admin/api/index.html
@@ -60,9 +60,15 @@ nav:
     - Contact:
       - README: reference/Contact/README.md
       - Complete Docs: reference/Contact/api/index.html
+    - Coverage:
+      - README: reference/Coverage/README.md
     - Data:
       - README: reference/Data/README.md
       - Complete Docs: reference/Data/api/index.html
+    - Development:
+      - README: reference/Development/README.md
+    - Docs:
+      - README: reference/Docs/README.md
     - Engine:
       - README: reference/Engine/README.md
       - Complete Docs: reference/Engine/api/index.html
@@ -82,27 +88,23 @@ nav:
       - Complete Docs: reference/Simulator/api/index.html
     - Testing:
       - README: reference/Testing/README.md
-      - Complete Docs: reference/Testing/api/index.html
     - Transactions:
       - README: reference/Transactions/README.md
-      - Complete Docs: reference/Transactions/api/index.html
     - Version:
       - README: reference/Version/README.md
       - Complete Docs: reference/Version/api/index.html
   - Library:
     - Overview: library/index.md
     - Library:
-      - README: library/README.md
-    - Admin-Library:
-      - README: library/Admin-Library/README.md
+      - README: library/module.md
     - Admin-Events:
       - README: library/Admin-Library/Admin-Events/README.md
       - Complete Docs: library/Admin-Library/Admin-Events/api/index.html
+    - Admin-Library:
+      - README: library/Admin-Library/README.md
     - Admin-Models:
       - README: library/Admin-Library/Admin-Models/README.md
       - Complete Docs: library/Admin-Library/Admin-Models/api/index.html
-    - Agent-Library:
-      - README: library/Agent-Library/README.md
     - Agent-Communication:
       - README: library/Agent-Library/Agent-Communication/README.md
       - Complete Docs: library/Agent-Library/Agent-Communication/api/index.html
@@ -115,11 +117,17 @@ nav:
     - Agent-Infrastructure:
       - README: library/Agent-Library/Agent-Infrastructure/README.md
       - Complete Docs: library/Agent-Library/Agent-Infrastructure/api/index.html
+    - Agent-Library:
+      - README: library/Agent-Library/README.md
     - Agent-Models:
       - README: library/Agent-Library/Agent-Models/README.md
       - Complete Docs: library/Agent-Library/Agent-Models/api/index.html
-    - Api-Library:
-      - README: library/Api-Library/README.md
+    - Agent-Repositories:
+      - README: library/Agent-Library/Agent-Repositories/README.md
+      - Complete Docs: library/Agent-Library/Agent-Repositories/api/index.html
+    - Agent-Services:
+      - README: library/Agent-Library/Agent-Services/README.md
+      - Complete Docs: library/Agent-Library/Agent-Services/api/index.html
     - Api-Communication:
       - README: library/Api-Library/Api-Communication/README.md
       - Complete Docs: library/Api-Library/Api-Communication/api/index.html
@@ -138,6 +146,8 @@ nav:
     - Api-Infrastructure:
       - README: library/Api-Library/Api-Infrastructure/README.md
       - Complete Docs: library/Api-Library/Api-Infrastructure/api/index.html
+    - Api-Library:
+      - README: library/Api-Library/README.md
     - Api-Models:
       - README: library/Api-Library/Api-Models/README.md
       - Complete Docs: library/Api-Library/Api-Models/api/index.html
@@ -150,20 +160,24 @@ nav:
     - Api-Services:
       - README: library/Api-Library/Api-Services/README.md
       - Complete Docs: library/Api-Library/Api-Services/api/index.html
-    - Chat-Library:
-      - README: library/Chat-Library/README.md
+    - Assets-Config:
+      - README: library/Assets-Library/Assets-Config/README.md
+      - Complete Docs: library/Assets-Library/Assets-Config/api/index.html
+    - Assets-Library:
+      - README: library/Assets-Library/README.md
     - Chat-Communication:
       - README: library/Chat-Library/Chat-Communication/README.md
       - Complete Docs: library/Chat-Library/Chat-Communication/api/index.html
     - Chat-Components:
       - README: library/Chat-Library/Chat-Components/README.md
-      - Complete Docs: library/Chat-Library/Chat-Components/api/index.html
     - Chat-Config:
       - README: library/Chat-Library/Chat-Config/README.md
       - Complete Docs: library/Chat-Library/Chat-Config/api/index.html
     - Chat-Events:
       - README: library/Chat-Library/Chat-Events/README.md
       - Complete Docs: library/Chat-Library/Chat-Events/api/index.html
+    - Chat-Library:
+      - README: library/Chat-Library/README.md
     - Chat-Models:
       - README: library/Chat-Library/Chat-Models/README.md
       - Complete Docs: library/Chat-Library/Chat-Models/api/index.html
@@ -173,8 +187,6 @@ nav:
     - Chat-Services:
       - README: library/Chat-Library/Chat-Services/README.md
       - Complete Docs: library/Chat-Library/Chat-Services/api/index.html
-    - Console-Library:
-      - README: library/Console-Library/README.md
     - Console-Communication:
       - README: library/Console-Library/Console-Communication/README.md
       - Complete Docs: library/Console-Library/Console-Communication/api/index.html
@@ -184,31 +196,42 @@ nav:
     - Console-Events:
       - README: library/Console-Library/Console-Events/README.md
       - Complete Docs: library/Console-Library/Console-Events/api/index.html
+    - Console-Infrastructure:
+      - README: library/Console-Library/Console-Infrastructure/README.md
+      - Complete Docs: library/Console-Library/Console-Infrastructure/api/index.html
+    - Console-Library:
+      - README: library/Console-Library/README.md
     - Console-Models:
       - README: library/Console-Library/Console-Models/README.md
       - Complete Docs: library/Console-Library/Console-Models/api/index.html
+    - Console-Repositories:
+      - README: library/Console-Library/Console-Repositories/README.md
+      - Complete Docs: library/Console-Library/Console-Repositories/api/index.html
+    - Console-Scripts:
+      - README: library/Console-Library/Console-Scripts/README.md
+      - Complete Docs: library/Console-Library/Console-Scripts/api/index.html
     - Console-Services:
       - README: library/Console-Library/Console-Services/README.md
       - Complete Docs: library/Console-Library/Console-Services/api/index.html
-    - Contact-Library:
-      - README: library/Contact-Library/README.md
     - Contact-Events:
       - README: library/Contact-Library/Contact-Events/README.md
       - Complete Docs: library/Contact-Library/Contact-Events/api/index.html
+    - Contact-Library:
+      - README: library/Contact-Library/README.md
     - Contact-Models:
       - README: library/Contact-Library/Contact-Models/README.md
       - Complete Docs: library/Contact-Library/Contact-Models/api/index.html
     - Contact-Repositories:
       - README: library/Contact-Library/Contact-Repositories/README.md
       - Complete Docs: library/Contact-Library/Contact-Repositories/api/index.html
-    - Data-Library:
-      - README: library/Data-Library/README.md
     - Data-Communication:
       - README: library/Data-Library/Data-Communication/README.md
       - Complete Docs: library/Data-Library/Data-Communication/api/index.html
     - Data-Components:
       - README: library/Data-Library/Data-Components/README.md
       - Complete Docs: library/Data-Library/Data-Components/api/index.html
+    - Data-Library:
+      - README: library/Data-Library/README.md
     - Data-Models:
       - README: library/Data-Library/Data-Models/README.md
       - Complete Docs: library/Data-Library/Data-Models/api/index.html
@@ -218,20 +241,34 @@ nav:
     - Data-Services:
       - README: library/Data-Library/Data-Services/README.md
       - Complete Docs: library/Data-Library/Data-Services/api/index.html
-    - Desktop-Library:
-      - README: library/Desktop-Library/README.md
     - Desktop-Components:
       - README: library/Desktop-Library/Desktop-Components/README.md
       - Complete Docs: library/Desktop-Library/Desktop-Components/api/index.html
+    - Desktop-Library:
+      - README: library/Desktop-Library/README.md
+    - Development-Communication:
+      - README: library/Development-Library/Development-Communication/README.md
+      - Complete Docs: library/Development-Library/Development-Communication/api/index.html
+    - Development-Config:
+      - README: library/Development-Library/Development-Config/README.md
+      - Complete Docs: library/Development-Library/Development-Config/api/index.html
+    - Development-Library:
+      - README: library/Development-Library/README.md
+    - Development-Models:
+      - README: library/Development-Library/Development-Models/README.md
+      - Complete Docs: library/Development-Library/Development-Models/api/index.html
+    - Development-Services:
+      - README: library/Development-Library/Development-Services/README.md
+      - Complete Docs: library/Development-Library/Development-Services/api/index.html
     - Engine-Library:
       - README: library/Engine-Library/README.md
+    - Engine-Models:
+      - README: library/Engine-Library/Engine-Models/README.md
     - Engine-Services:
       - README: library/Engine-Library/Engine-Services/README.md
       - Complete Docs: library/Engine-Library/Engine-Services/api/index.html
     - Externals-Library:
       - README: library/Externals-Library/README.md
-    - Health-Library:
-      - README: library/Health-Library/README.md
     - Health-Communication:
       - README: library/Health-Library/Health-Communication/README.md
       - Complete Docs: library/Health-Library/Health-Communication/api/index.html
@@ -241,6 +278,11 @@ nav:
     - Health-Config:
       - README: library/Health-Library/Health-Config/README.md
       - Complete Docs: library/Health-Library/Health-Config/api/index.html
+    - Health-Events:
+      - README: library/Health-Library/Health-Events/README.md
+      - Complete Docs: library/Health-Library/Health-Events/api/index.html
+    - Health-Library:
+      - README: library/Health-Library/README.md
     - Health-Models:
       - README: library/Health-Library/Health-Models/README.md
       - Complete Docs: library/Health-Library/Health-Models/api/index.html
@@ -250,8 +292,6 @@ nav:
     - Health-Services:
       - README: library/Health-Library/Health-Services/README.md
       - Complete Docs: library/Health-Library/Health-Services/api/index.html
-    - Logging-Library:
-      - README: library/Logging-Library/README.md
     - Logging-Communication:
       - README: library/Logging-Library/Logging-Communication/README.md
       - Complete Docs: library/Logging-Library/Logging-Communication/api/index.html
@@ -263,18 +303,20 @@ nav:
       - Complete Docs: library/Logging-Library/Logging-Events/api/index.html
     - Logging-Infrastructure:
       - README: library/Logging-Library/Logging-Infrastructure/README.md
-      - Complete Docs: library/Logging-Library/Logging-Infrastructure/api/index.html
+    - Logging-Library:
+      - README: library/Logging-Library/README.md
     - Logging-Models:
       - README: library/Logging-Library/Logging-Models/README.md
       - Complete Docs: library/Logging-Library/Logging-Models/api/index.html
     - Logging-Repositories:
       - README: library/Logging-Library/Logging-Repositories/README.md
       - Complete Docs: library/Logging-Library/Logging-Repositories/api/index.html
+    - Logging-Scripts:
+      - README: library/Logging-Library/Logging-Scripts/README.md
+      - Complete Docs: library/Logging-Library/Logging-Scripts/api/index.html
     - Logging-Services:
       - README: library/Logging-Library/Logging-Services/README.md
       - Complete Docs: library/Logging-Library/Logging-Services/api/index.html
-    - Security-Library:
-      - README: library/Security-Library/README.md
     - Security-Config:
       - README: library/Security-Library/Security-Config/README.md
       - Complete Docs: library/Security-Library/Security-Config/api/index.html
@@ -284,6 +326,8 @@ nav:
     - Security-Infrastructure:
       - README: library/Security-Library/Security-Infrastructure/README.md
       - Complete Docs: library/Security-Library/Security-Infrastructure/api/index.html
+    - Security-Library:
+      - README: library/Security-Library/README.md
     - Security-Models:
       - README: library/Security-Library/Security-Models/README.md
       - Complete Docs: library/Security-Library/Security-Models/api/index.html
@@ -293,20 +337,61 @@ nav:
     - Security-Services:
       - README: library/Security-Library/Security-Services/README.md
       - Complete Docs: library/Security-Library/Security-Services/api/index.html
-    - Universal-Library:
-      - README: library/Universal-Library/README.md
+    - Simulator-Communication:
+      - README: library/Simulator-Library/Simulator-Communication/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Communication/api/index.html
+    - Simulator-Config:
+      - README: library/Simulator-Library/Simulator-Config/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Config/api/index.html
+    - Simulator-Events:
+      - README: library/Simulator-Library/Simulator-Events/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Events/api/index.html
+    - Simulator-Library:
+      - README: library/Simulator-Library/README.md
+    - Simulator-Models:
+      - README: library/Simulator-Library/Simulator-Models/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Models/api/index.html
+    - Simulator-Repositories:
+      - README: library/Simulator-Library/Simulator-Repositories/README.md
+    - Simulator-Scripts:
+      - README: library/Simulator-Library/Simulator-Scripts/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Scripts/api/index.html
+    - Simulator-Services:
+      - README: library/Simulator-Library/Simulator-Services/README.md
+      - Complete Docs: library/Simulator-Library/Simulator-Services/api/index.html
+    - Testing-Infrastructure:
+      - README: library/Testing-Library/Testing-Infrastructure/README.md
+      - Complete Docs: library/Testing-Library/Testing-Infrastructure/api/index.html
+    - Testing-Library:
+      - README: library/Testing-Library/README.md
+    - Testing-Scripts:
+      - README: library/Testing-Library/Testing-Scripts/README.md
+    - Universal-Communication:
+      - README: library/Universal-Library/Universal-Communication/README.md
+      - Complete Docs: library/Universal-Library/Universal-Communication/api/index.html
     - Universal-Components:
       - README: library/Universal-Library/Universal-Components/README.md
       - Complete Docs: library/Universal-Library/Universal-Components/api/index.html
     - Universal-Config:
       - README: library/Universal-Library/Universal-Config/README.md
       - Complete Docs: library/Universal-Library/Universal-Config/api/index.html
+    - Universal-Events:
+      - README: library/Universal-Library/Universal-Events/README.md
+      - Complete Docs: library/Universal-Library/Universal-Events/api/index.html
     - Universal-Extensions:
       - README: library/Universal-Library/Universal-Extensions/README.md
       - Complete Docs: library/Universal-Library/Universal-Extensions/api/index.html
+    - Universal-Library:
+      - README: library/Universal-Library/README.md
     - Universal-Models:
       - README: library/Universal-Library/Universal-Models/README.md
       - Complete Docs: library/Universal-Library/Universal-Models/api/index.html
+    - Universal-Scripts:
+      - README: library/Universal-Library/Universal-Scripts/README.md
+      - Complete Docs: library/Universal-Library/Universal-Scripts/api/index.html
+    - Universal-Services:
+      - README: library/Universal-Library/Universal-Services/README.md
+      - Complete Docs: library/Universal-Library/Universal-Services/api/index.html
     - Version-Library:
       - README: library/Version-Library/README.md
     - Version-Models:
