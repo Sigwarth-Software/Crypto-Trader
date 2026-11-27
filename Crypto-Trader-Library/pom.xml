@@ -201,7 +201,7 @@
                                 <skipAfterFailureCount>1</skipAfterFailureCount>
                                 <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
                                 <useModulePath>true</useModulePath>
-                                <argLine>${argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                                <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                                 <systemPropertyVariables>
                                     <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
                                     <logging.level.root>WARN</logging.level.root>
@@ -216,7 +216,7 @@
                             <version>${failsafe.version}</version>
                             <configuration>
                                 <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
-                                <skipITs>true</skipITs>
+                                <skipITs>${skipITs}</skipITs>
                             </configuration>
                         </plugin>
                     </plugins>
