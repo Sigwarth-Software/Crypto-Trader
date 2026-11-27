@@ -1,58 +1,36 @@
 # Crypto Trader
 
-A modular, end‑to‑end platform for building, testing, and running crypto trading systems. This documentation site brings together interactive APIs, module references, and library docs so you can explore and integrate quickly.
+A modular, end‑to‑end platform for building, testing, and running crypto
+trading systems. This is a project spearheaded by Sigwarth Software. Crypto
+Trader is the leading the way a non-profit organization with the goal of
+democratizing high frequency trading.
 
-> Tip: Use the navigation bar at the top to jump to API explorers (CT, Data, Engine, Contact), deep references, or library docs.
+This documentation site brings together interactive APIs, module references,
+and library docs so you can explore and integrate quickly.
+
+> Tip: Use the navigation bar at the top to jump to the Crypto-Trader and Data
+> API explorers, module documentation, or shared library docs.
 
 ---
 
 ## At a glance
 
-- CT API – orchestration and application-facing endpoints. See: [CT API](api/index.md)
-- Data API – market data ingestion, storage, and access. See: [Data API](data/index.md)
-- Engine API – execution, strategies, and order routing. See: [Engine API](engine/index.md)
-- Contact API – notifications, alerts, and user messaging. See: [Contact API](contact/index.md)
-- Health, Logging, Security, Testing, Version – full module references under [References](#module-references)
-- Libraries – reusable packages used across services under [Library](library/index.md)
+- **Crypto-Trader API** - orchestration and application-facing endpoints. See: [Crypto-Trader API](api/index.md)
+- **Crypto-Trader-Data API** - market data ingestion, storage, and access. See: [Data API](data/index.md)
+- **Modules** - purposes and reference links under [Module references](#module-references)
+- **Libraries** - reusable packages used across services under [Library](library/index.md)
 
 ---
 
 ## Quickstart
 
-Choose how you want to begin.
+### Explore APIs in the browser
 
-### 1) Explore APIs in the browser
-
-- Open any API section from the top nav: [CT API](api/index.md), [Data API](data/index.md), [Engine API](engine/index.md), or [Contact API](contact/index.md).
+- Open [Crypto-Trader API](api/index.md) or [Data API](data/index.md) from the top navigation.
+- Explore Engine, Contact, and other services through the [module references](#module-references).
 - Use the interactive explorer to list endpoints, inspect schemas, and try requests.
 
-> Note: Some endpoints require authentication. See Authentication below.
-
-### 2) Run the platform locally (developers)
-
-- Clone the repository: https://github.com/Sigwarth-Software/Crypto-Trader
-- Build the project (pick one):
-  - Gradle (Windows PowerShell): `./gradlew build` or `gradlew.bat build`
-  - Maven (Windows PowerShell): `mvn -q -DskipTests package`
-- Start the services you need (API, Data, Engine, Contact). Refer to the README files within each module for specific run instructions.
-- Once running, navigate back here to use the API explorers against your local services.
-
----
-
-## Authentication
-
-Most protected endpoints expect a bearer token.
-
-- Send the header: `Authorization: Bearer <your-token>`
-- Obtain tokens via your configured Security/Auth flow (see Security module under References), or use an admin‑issued token in development.
-
-Example curl (replace values appropriately):
-
-```bash
-curl -H "Authorization: Bearer <token>" -H "Content-Type: application/json" <your-api-base>/...endpoint
-```
-
-If you receive 401/403 responses, verify your token, scopes/roles, and target environment.
+> Note: Some endpoints require authentication. See the [Api module README](reference/Api/README.md) for context.
 
 ---
 
@@ -60,42 +38,53 @@ If you receive 401/403 responses, verify your token, scopes/roles, and target en
 
 - Getting started guides: Guides → [Guides](guides/index.md)
 - API explorers:
-  - [CT API](api/index.md)
-  - [Data API](data/index.md)
-  - [Engine API](engine/index.md)
-  - [Contact API](contact/index.md)
-- Module References (generated docs):
-  - Admin: [README](reference/Admin/README.md) · [Complete Docs](reference/Admin/api/index.html)
-  - Api: [README](reference/Api/README.md) · [Complete Docs](reference/Api/api/index.html)
-  - Assets: [README](reference/Assets/README.md) · [Complete Docs](reference/Assets/api/index.html)
-  - Contact: [README](reference/Contact/README.md) · [Complete Docs](reference/Contact/api/index.html)
-  - Data: [README](reference/Data/README.md) · [Complete Docs](reference/Data/api/index.html)
-  - Engine: [README](reference/Engine/README.md) · [Complete Docs](reference/Engine/api/index.html)
-  - Health: [README](reference/Health/README.md) · [Complete Docs](reference/Health/api/index.html)
-  - Logging: [README](reference/Logging/README.md) · [Complete Docs](reference/Logging/api/index.html)
-  - Security: [README](reference/Security/README.md) · [Complete Docs](reference/Security/api/index.html)
-  - Testing: [README](reference/Testing/README.md) · [Complete Docs](reference/Testing/api/index.html)
-  - Version: [README](reference/Version/README.md) · [Complete Docs](reference/Version/api/index.html)
-- Libraries:
-  - [Overview](library/index.md)
-  - Explore individual library packages from the Library section in the navigation.
+  - [Crypto-Trader API](api/index.md)
+  - [Crypto-Trader-Data API](data/index.md)
 
----
+### Module references
 
-## Development notes
+The repository contains the following 23 top-level modules. These modules all
+hold separate responsibilities and offload work to other modules where
+relevant. This helps load balance and allocate resources for services as well
+as promote a decentralized architecture for reliability.
 
-- JDK: Use a modern LTS JDK (17+) compatible with your build tooling.
-- Build: The repository supports Gradle and Maven in most modules.
-- Frontend: The Website (Angular) lives under `Crypto-Trader-Website` if you’re working on UI components.
-- CI and coverage: See [Coverage report](coverage/index.html) for recent test coverage snapshots.
+| Module | Purpose | Documentation |
+| --- | --- | --- |
+| Admin | Desktop operations and administration interface. | [README](reference/Admin/README.md) · [Complete Docs](reference/Admin/api/index.html) |
+| Agent | MCP server exposing platform tools to AI assistants. | [README](reference/Agent/README.md) · [Complete Docs](reference/Agent/api/index.html) |
+| Analysis | Market analytics, model training, and prediction workflows. | [README](reference/Analysis/README.md) |
+| Api | Application backend for identity, accounts, portfolios, and orchestration. | [README](reference/Api/README.md) · [Complete Docs](reference/Api/api/index.html) |
+| Assets | Shared resources and asset access for platform interfaces. | [README](reference/Assets/README.md) · [Complete Docs](reference/Assets/api/index.html) |
+| Chat | Conversational interface using AI and the Agent module's tools. | [README](reference/Chat/README.md) · [Complete Docs](reference/Chat/api/index.html) |
+| Console | Command-oriented interaction with the platform. | [README](reference/Console/README.md) · [Complete Docs](reference/Console/api/index.html) |
+| Contact | Messaging and support communications. | [README](reference/Contact/README.md) · [Complete Docs](reference/Contact/api/index.html) |
+| Coverage | Aggregated test coverage reports across applications and libraries. | [README](reference/Coverage/README.md) · [Coverage report](coverage/index.html) |
+| Data | Market data collection, price history, and data exchange. | [README](reference/Data/README.md) · [Complete Docs](reference/Data/api/index.html) |
+| Development | Project management and organization. | [README](reference/Development/README.md) |
+| Docs | Guides, API specifications, and the assembled documentation site. | [README](reference/Docs/README.md) |
+| Engine | Trading execution and strategy orchestration. | [README](reference/Engine/README.md) · [Complete Docs](reference/Engine/api/index.html) |
+| Health | Service availability and dependency health checks. | [README](reference/Health/README.md) · [Complete Docs](reference/Health/api/index.html) |
+| Library | Shared domain concepts, service foundations, and reusable interface components. | [README](library/module.md) · [Library overview](library/index.md) |
+| Logging | Structured application logs and operational context. | [README](reference/Logging/README.md) · [Complete Docs](reference/Logging/api/index.html) |
+| Mobile | Native mobile interface for platform users. | [README](reference/Mobile/README.md) |
+| Security | Control monitoring, request safeguards, and security signals. | [README](reference/Security/README.md) · [Complete Docs](reference/Security/api/index.html) |
+| Simulator | Historical portfolio replay and strategy comparisons. | [README](reference/Simulator/README.md) · [Complete Docs](reference/Simulator/api/index.html) |
+| Testing | Shared testing support, fixtures, and verification conventions. | [README](reference/Testing/README.md) |
+| Transactions | Trade order and transaction-record domain. | [README](reference/Transactions/README.md) |
+| Version | Version metadata and release tooling. | [README](reference/Version/README.md) · [Complete Docs](reference/Version/api/index.html) |
+| Website | Web interface and public platform information. | [README](reference/Website/README.md) · [Complete Docs](reference/Website/api/index.html) |
 
----
+### Shared libraries
 
-## Troubleshooting
+The [Library overview](library/index.md) introduces the reusable packages that
+support these modules. The Library navigation contains their individual references,
+including the following families:
 
-- 401/403 from API calls: Check bearer token and roles; ensure you’re pointing to the right environment/base URL.
-- CORS when testing from browser: Confirm the API’s CORS configuration in the Security module.
-- Build failures: Clean and retry (`gradlew clean build` or `mvn clean package`), then consult module READMEs.
+- [Admin](library/Admin-Library/README.md), [Agent](library/Agent-Library/README.md), [Api](library/Api-Library/README.md), and [Assets](library/Assets-Library/README.md).
+- [Chat](library/Chat-Library/README.md), [Console](library/Console-Library/README.md), [Contact](library/Contact-Library/README.md), and [Data](library/Data-Library/README.md).
+- [Desktop](library/Desktop-Library/README.md), [Development](library/Development-Library/README.md), [Engine](library/Engine-Library/README.md), and [Externals](library/Externals-Library/README.md).
+- [Health](library/Health-Library/README.md), [Logging](library/Logging-Library/README.md), [Security](library/Security-Library/README.md), and [Simulator](library/Simulator-Library/README.md).
+- [Testing](library/Testing-Library/README.md), [Universal](library/Universal-Library/README.md), and [Version](library/Version-Library/README.md).
 
 ---
 
@@ -103,6 +92,7 @@ If you receive 401/403 responses, verify your token, scopes/roles, and target en
 
 - Issues and feature requests: use GitHub Issues in the main repository.
 - See CHANGELOG.md in the repo root for release notes.
-- For security‑related topics, consult the Security module under References and follow responsible disclosure guidelines.
+- For security‑related topics, consult the Security module under References
+  and follow responsible disclosure guidelines.
 
-Next steps: Head to the [Guides](guides/index.md) or open an API explorer (e.g., [CT API](api/index.md)) to start building.
+Next steps: Head to the [Guides](guides/index.md) or open an API explorer (e.g., [Crypto Trader API](api/index.md)) to start building.
