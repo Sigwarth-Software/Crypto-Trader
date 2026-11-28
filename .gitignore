@@ -48,4 +48,6 @@ tink/
 /.junie/**
 .env
 /.local
+/.venv-docs-preview/
+/.venv-docs/
 /**/.env
