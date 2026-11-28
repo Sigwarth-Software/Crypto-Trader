@@ -129,7 +129,8 @@ fun startService(name: String, jar: File, port: Int, springInstrument: File, ext
         "--server.ssl.enabled=false",
         "--spring.kafka.bootstrap-servers=$kafkaBrokers",
         "--spring.cloud.stream.kafka.binder.brokers=$kafkaBrokers",
-        "--spring.config.import=optional:aws-secretsmanager:/cryptotrader/dev"
+        "--spring.config.import=optional:aws-secretsmanager:/cryptotrader/dev",
+        "--cryptotrader.harvest.currency=false"
     )
     val process = ProcessBuilder(command)
         .directory(root)
