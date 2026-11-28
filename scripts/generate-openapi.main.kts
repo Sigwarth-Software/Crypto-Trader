@@ -92,7 +92,8 @@ fun startService(name: String, module: String, port: Int, instrument: File): Pro
         addAll(
             listOf("-javaagent:${instrument.absolutePath}", "-jar", findJar(module).absolutePath,
                 "--spring.profiles.active=docs", "--server.port=$port", "--server.ssl.enabled=false",
-                "--spring.config.import=optional:aws-secretsmanager:/cryptotrader/dev")
+                "--spring.config.import=optional:aws-secretsmanager:/cryptotrader/dev",
+                "--cryptotrader.harvest.currency=false")
         )
     }
     val process = ProcessBuilder(arguments).directory(root).redirectErrorStream(true)
