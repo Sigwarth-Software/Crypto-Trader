@@ -1,0 +1,13 @@
+.git
+.local
+.idea
+.agents
+.codex
+.venv*
+**/node_modules
+**/target
+**/.env
+**/.env.*
+**/site
+**/__pycache__
+certs

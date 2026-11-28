@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +19,17 @@ public class TrainingSessionController {
     private final TrainingSessionService trainingSessionService;
 
     @Autowired
-    public TrainingSessionController(final TrainingSessionService trainingSessionService) {
+    public TrainingSessionController(
+        @NotNull final TrainingSessionService trainingSessionService
+    ) {
         this.trainingSessionService = trainingSessionService;
     }
 
 
-    @RequestMapping("/add")
-    public @NotNull ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody final @Nullable TrainingSessionRequest request) {
+    @PostMapping("/add")
+    public @NotNull ResponseEntity<OperationSuccessfulResponse> addTrainingSession(
+        @RequestBody final @Nullable TrainingSessionRequest request
+    ) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

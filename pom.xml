@@ -80,7 +80,7 @@
         <docs.mainClass>org.cryptotrader.api.CryptoTraderApiApplication</docs.mainClass>
         <argLine/>
         <surefireArgLine/>
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <surefire.version>3.6.0</surefire.version>
         <failsafe.version>3.6.0</failsafe.version>
         <surefire-tree-reporter.version>2.1.0</surefire-tree-reporter.version>
@@ -1369,6 +1369,8 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <!-- JaCoCo prepares the integration-test agent before this phase. -->
+                    <argLine>@{argLine} -Xmx2g -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                     <!-- Preserve -DskipTests for Failsafe after upgrading to 3.6.0. -->
                     <skipTests>${skipTests}</skipTests>
                     <excludedGroups>${excludedGroups}</excludedGroups>
