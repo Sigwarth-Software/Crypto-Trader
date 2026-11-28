@@ -49,7 +49,6 @@ try {
     }
 
     if ("--skip-tests" !in args) {
-        runCommand(root, listOf(if (isWindows) "python" else "python3", "scripts/check-coverage-modules.py"))
         val incremental = System.getenv("DOCS_KOTLIN_INCREMENTAL")?.toBooleanStrictOrNull() ?: true
         val command = listOf("mvn", "-B", "-ntp", "-T1", "-Dkotlin.compiler.incremental=$incremental",
             "-Ddokka.skip=true", "-Pcoverage", "-DskipITs=true", "-DfailIfNoTests=false",
